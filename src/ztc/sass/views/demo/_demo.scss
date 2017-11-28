@@ -1,0 +1,14 @@
+@import '../../lib/responsive';
+
+
+$demo-max-width: $breakpoint-laptop-l;
+
+
+.demo {
+  margin: auto;
+  max-width: $demo-max-width;
+
+  .demo__logo-img {
+    float: right;
+  }
+}
