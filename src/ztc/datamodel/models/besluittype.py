@@ -17,8 +17,6 @@ class BesluitType(models.Model):
     Het betreft de indeling of groepering van besluiten naar hun aard, zoals bouwvergunning,
     ontheffing geluidhinder en monumentensubsidie
     """
-    mnemonic = 'BST'
-
     besluittype_omschrijving = models.CharField(
         _('besluittype omschrijving'), max_length=80, blank=True, null=True,
         help_text=_('Omschrijving van de aard van BESLUITen van het BESLUITTYPE.'))
@@ -62,6 +60,7 @@ class BesluitType(models.Model):
     #     help_text=_('Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.'))
 
     class Meta:
+        mnemonic = 'BST'
         unique_together = ('maakt_deel_uit_van', 'besluittype_omschrijving')
 
     def __str__(self):

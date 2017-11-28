@@ -19,8 +19,6 @@ class Catalogus(models.Model):
     KING bepaalt niet op voorhand welke waarden 'Domein' kan aannemen, maar registreert wel
     alle gebruikte waarden
     """
-    mnemonic = 'CAT'
-
     domein = models.CharField(  # waardenverzameling hoofdletters
         _('domein'), max_length=5, validators=[RegexValidator('^[A-Z]*$')],
         help_text=_('Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS'))
@@ -39,4 +37,5 @@ class Catalogus(models.Model):
         help_text=_('Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.'))
 
     class Meta:
+        mnemonic = 'CAT'
         unique_together = ('domein', 'rsin')

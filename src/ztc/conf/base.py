@@ -1,4 +1,5 @@
 import os
+import django.db.models.options as options
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 DJANGO_PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -274,6 +275,7 @@ AUTHENTICATION_BACKENDS = [
 PROJECT_NAME = 'ztc'
 ENVIRONMENT = None
 SHOW_ALERT = True
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('mnemonic',)
 
 #
 # Library settings
