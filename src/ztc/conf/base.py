@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     # Project applications.
     'ztc.accounts',
+    'ztc.datamodel',
     'ztc.utils',
 ]
 
