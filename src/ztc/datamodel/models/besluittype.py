@@ -3,10 +3,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ztc.datamodel.choices import JaNee
-from ztc.utils.fields import StUFDateField
+from .mixins import GeldigheidMixin
 
 
-class BesluitType(models.Model):
+class BesluitType(GeldigheidMixin, models.Model):
     """
     Generieke aanduiding van de aard van een besluit
 
@@ -44,12 +44,6 @@ class BesluitType(models.Model):
     toelichting = models.TextField(
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit BESLUITTYPE.'))
-    datum_begin_geldigheid_besluittype = StUFDateField(
-        _('datum begin geldigheid besluittype'),
-        help_text=_('De datum waarop het BESLUITTYPE is ontstaan.'))
-    datum_einde_geldigheid_besluittype = StUFDateField(
-        _('datum einde geldigheid besluittype'), blank=True, null=True,
-        help_text=_('De datum waarop het BESLUITTYPE is opgeheven.'))
 
     maakt_deel_uit_van = models.ForeignKey(
         'datamodel.Catalogus', verbose_name=_('maakt deel uit van Catalogus'),

@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ztc.datamodel.choices import VertrouwelijkheidAanduiding
-from ztc.datamodel.models.mixins import GeldigheidMixin
+from .mixins import GeldigheidMixin
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):

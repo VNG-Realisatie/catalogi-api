@@ -7,7 +7,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ztc.datamodel.choices import FormaatChoices
-from ztc.utils.fields import StUFDateField
+from .mixins import GeldigheidMixin
 
 
 class EigenschapSpecificatie(models.Model):
@@ -121,7 +121,7 @@ class EigenschapReferentie(models.Model):
         pass
 
 
-class Eigenschap(models.Model):
+class Eigenschap(GeldigheidMixin, models.Model):
     """
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE
     geregistreerd moet kunnen worden en geen standaard kenmerk is van een
@@ -182,10 +182,6 @@ class Eigenschap(models.Model):
         help_text=_('Verwijzing naar de standaard waarin de eigenschap is gespecificeerd'))
     toelichting = models.TextField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
         'Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.'))
-    datum_begin_geldigheid_eigenschap = StUFDateField(
-        _('datum begin geldigheid eigenschap'), help_text=_('De datum waarop de EIGENSCHAP is ontstaan.'))
-    datum_einde_geldigheid_eigenschap = StUFDateField(
-        _('datum einde geldigheid eigenschap'), blank=True, null=True, help_text=_('De datum waarop de EIGENSCHAP is opgeheven.'))
 
     # TODO: implement this when ZaakType is implemented
     # is_van = models.ForeignKey('datamodel.ZaakType', help_text=_(
