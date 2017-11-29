@@ -70,5 +70,9 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
 
+    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
+                                           help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.'))
+
     class Meta:
         mnemonic = 'DCT'
+        unique_together = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving')
