@@ -1,4 +1,5 @@
 from decimal import Decimal, InvalidOperation
+from datetime import timedelta
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
@@ -7,6 +8,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ztc.datamodel.choices import FormaatChoices
+from ztc.datamodel.validators import KardinaliteitValidator
+from ztc.utils.stuff_date import parse_onvolledige_datum
 from .mixins import GeldigheidMixin
 
 
@@ -25,7 +28,7 @@ class EigenschapSpecificatie(models.Model):
         'Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.'))
     lengte = models.CharField(_('lengte'), max_length=14, help_text=_(
         'Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd.'))
-    kardinaliteit = models.CharField(_('kardinaliteit'), max_length=3, help_text=_(
+    kardinaliteit = models.CharField(_('kardinaliteit'), max_length=3, validators=[KardinaliteitValidator], help_text=_(
         'Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE.'))
 
     # waardenverzameling dient beheert te worden in de admin, misschien is een apart model wenselijker dan een ArrayField?
@@ -34,10 +37,6 @@ class EigenschapSpecificatie(models.Model):
 
     def clean(self):
         """
-        Waardenverzameling heeft de volgende regels:
-
-        Kardinaliteit: gehele getallen groter dan 0, 'N' voor ongelimiteerd
-
         waardenverzameling voor veld lengte hangt af van formaat
 
         Als Formaat = tekst: 0-255
@@ -46,14 +45,6 @@ class EigenschapSpecificatie(models.Model):
         Als Formaat = datum: 8
         Als Formaat = datum/tijd: 14
         """
-        if self.kardinaliteit != 'N':
-            try:
-                error = int(self.kardinaliteit) <= 0
-            except Exception:
-                error = True
-            if error:
-                raise ValidationError(_("Gebruik gehele getallen groter dan 0 of 'N' voor ongelimiteerd voor het veld 'kardinaliteit'"))
-
         if self.formaat == FormaatChoices.tekst:
             try:
                 error = not (0 <= int(self.lengte) <= 255)
@@ -198,5 +189,20 @@ class Eigenschap(GeldigheidMixin, models.Model):
         - specificatie van eigenschap, of
         - referentie naar eigenschap
         """
-        if bool(self.specificatie_van_eigenschap) + bool(self.referentie_naar_eigenschap) != 1:
+        if bool(self.specificatie_van_eigenschap) ^ bool(self.referentie_naar_eigenschap):  # xor
             raise ValidationError(_('Één van twee groepen attributen is verplicht: specificatie van eigenschap of referentie naar eigenschap'))
+
+        # TODO: uncomment en check nadat ZaakType is geimplementeerd
+        # if self.datum_begin_geldigheid != self.is_van.versiedatum:
+        #     raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
+        #
+        if self.datum_einde_geldigheid:
+            datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
+            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+            # versiedatum = parse_onvolledige_datum(self.is_van.versiedatum)
+
+            if datum_einde < datum_begin:
+                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
+
+            # if datum_einde + timedelta(days=1) != versiedatum:
+            #     raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))

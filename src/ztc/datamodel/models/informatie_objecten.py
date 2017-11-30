@@ -1,8 +1,10 @@
 from django.contrib.postgres.fields import ArrayField
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ztc.datamodel.choices import VertrouwelijkheidAanduiding
+from ztc.utils.stuff_date import parse_onvolledige_datum
 from .mixins import GeldigheidMixin
 
 
@@ -38,6 +40,19 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
 
     class Meta:
         mnemonic = 'DOG'
+
+    def clean(self):
+        """
+        Er is alleen een regel voor datum_einde_geldigheid:
+        Alleen een datum die gelijk is aan of die gelegen is na de datum zoals opgenomen onder 'Datum
+        begin geldigheid’ kan in de registratie worden opgenomen.
+        """
+        if self.datum_einde_geldigheid:
+            datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
+            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+
+            if datum_einde < datum_begin:
+                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
 
 
 # TODO: voor beide ArrayFields (trefwoord en model) check of de ArrayField leeg mag zijn. En mogelijk verander naar een m2m met een apart model
@@ -76,3 +91,23 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'DCT'
         unique_together = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving')
+
+    def clean(self):
+        """
+        Voor datum_begin_geldigheid geldt:
+        - De datum is gelijk aan een Versiedatum van een gerelateerd zaaktype.
+
+        Voor datum_einde_geldigheid geldt:
+        - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid informatieobjecttype’.
+        - De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
+        """
+        # TODO: Zaak heeft relevant InformatieObjectType, de inverse relatie moet hier worden gebruikt om de versie
+        # datum van de gerelateerde zaak te gebruiken. Mogelijk willen we die relatie alsnog op dit mogel zetten, zodat
+        # we afdwingen dat een InformatieObjectType altijd een ZaakType heeft.
+        if self.datum_einde_geldigheid:
+            datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
+            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+
+            if datum_einde < datum_begin:
+                raise ValidationError(_(
+                    "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))

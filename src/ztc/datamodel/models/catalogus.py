@@ -19,9 +19,10 @@ class Catalogus(models.Model):
     KING bepaalt niet op voorhand welke waarden 'Domein' kan aannemen, maar registreert wel
     alle gebruikte waarden
     """
+    # TODO [KING]:  "Voor de waardenverzameling wordt door KING een waardenlijst beheerd waarin wordt bijgehouden welke afkorting welk domein betreft." ZTC 2.1, blz 42 - Waar dan?
     domein = models.CharField(  # waardenverzameling hoofdletters
-        _('domein'), max_length=5, validators=[RegexValidator('^[A-Z]*$')],
-        help_text=_('Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS'))
+        _('domein'), max_length=5, validators=[RegexValidator('^[A-Z]*$')], help_text=_(
+            'Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt.'))
     # rsin is gespecificeerd als N9, ivm voorloopnullen gekozen voor CharField. Geen waardenverzameling gedefinieerd
     rsin = models.CharField(
         _('rsin'), max_length=9, help_text=_('Het door een kamer toegekend uniek nummer voor de INGESCHREVEN '

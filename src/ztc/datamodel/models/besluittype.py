@@ -27,6 +27,8 @@ class BesluitType(GeldigheidMixin, models.Model):
     besluitcategorie = models.CharField(
         _('besluitcategorie'), max_length=40, blank=True, null=True,
         help_text=_('Typering van de aard van BESLUITen van het BESLUITTYPE.'))
+    # TODO [KING]: Kardinaliteit is 1-1, maar in de toelichting staat: "De telling begint bij de dag volgend op de verzend- of publicatiedatum.
+    # Indien geen sprake is van een reactietermijn dan is de waarde nul." Als 0 wordt ingevuld is er dus een reactietermijn van 0 dagen. Moet er ook een optie None/leeg zijn, anders dan 0 dagen?
     reactietermijn = models.PositiveSmallIntegerField(
         _('reactietermijn'), validators=[MaxValueValidator(999)],
         help_text=_('Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen '
@@ -34,14 +36,14 @@ class BesluitType(GeldigheidMixin, models.Model):
     publicatie_indicatie = models.CharField(
         _('publicatie indicatie'), max_length=1, choices=JaNee.choices,
         help_text=_('Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten worden.'))
-    publicatietekst = models.TextField(
+    publicatietekst = models.CharField(
         _('publicatietekst'), max_length=1000, blank=True, null=True,
         help_text=_('De generieke tekst van de publicatie van BESLUITen van dit BESLUITTYPE'))
     publicatietermijn = models.PositiveSmallIntegerField(
         _('publicatietermijn'), blank=True, null=True, validators=[MaxValueValidator(999)],
         help_text=_('Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit '
                     'BESLUITTYPE gepubliceerd moeten blijven.'))
-    toelichting = models.TextField(
+    toelichting = models.CharField(
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit BESLUITTYPE.'))
 
@@ -62,4 +64,6 @@ class BesluitType(GeldigheidMixin, models.Model):
         """
         return '{} - {}'.format(self.maakt_deel_uit_van, self.besluittype_omschrijving)
 
-
+    def clean(self):
+        # TODO: validatie voor datum geldigheid. Deze gaat via de relatie vanaf ZaakType.heeft_relevant (de inverse dus)
+        pass

@@ -1,5 +1,7 @@
 from django.db.models import CharField
 
+from ztc.datamodel.validators import OnvolledigeDatumValidator
+
 
 class StUFDateField(CharField):
     """
@@ -27,6 +29,7 @@ class StUFDateField(CharField):
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = kwargs.get('max_length', 1 + 8)
         super(StUFDateField, self).__init__(*args, **kwargs)
+        self.validators.append(OnvolledigeDatumValidator())
 
 
 class StUFDateTimeField(CharField):
