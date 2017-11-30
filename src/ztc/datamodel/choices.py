@@ -24,3 +24,16 @@ class VertrouwelijkheidAanduiding(DjangoChoices):
     intern = ChoiceItem('intern', _('intern'))
     beperkt_openbaar = ChoiceItem('beperkt_openbaar', _('beperkt openbaar'))
     openbaar = ChoiceItem('openbaar', _('openbaar'))
+
+
+class ArchiefNominaties(DjangoChoices):
+    blijvend_bewaren = ChoiceItem('blijvend_bewaren', _('blijvend bewaren'))
+    vernietigen = ChoiceItem('vernietigen', _('vernietigen'))
+
+
+class ArchiefProcedure(DjangoChoices):
+    afgehandeld = ChoiceItem('afgehandeld', _('afgehandeld'))
+    ingangsdatum_besluit = ChoiceItem('ingangsdatum_besluit', _('ingangsdatum besluit'))
+    vervaldatum_besluit = ChoiceItem('vervaldatum_besluit', _('vervaldatum besluit'))
+    eigenschap = ChoiceItem('eigenschap', _('eigenschap'))
+    ander_datumkenmerk = ChoiceItem('ander_datumkenmerk', _('ander datumkenmerk'))

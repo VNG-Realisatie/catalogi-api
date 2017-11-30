@@ -54,6 +54,9 @@ class BesluitType(GeldigheidMixin, models.Model):
     wordt_vastgelegd_in = models.ManyToManyField(
         'datamodel.InformatieObjectType', verbose_name=_('informatieobjecttype'), blank=True,
         help_text=_('Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.'))
+    is_resultaat_van = models.ManyToManyField(
+        'datamodel.ResultaatType', verbose_name=_('is resultaat van'), related_name='leidt_tot', help_text=_(
+            '(inverse van:) Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE.'))
 
     class Meta:
         mnemonic = 'BST'
