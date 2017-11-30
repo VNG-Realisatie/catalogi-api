@@ -37,3 +37,13 @@ class ArchiefProcedure(DjangoChoices):
     vervaldatum_besluit = ChoiceItem('vervaldatum_besluit', _('vervaldatum besluit'))
     eigenschap = ChoiceItem('eigenschap', _('eigenschap'))
     ander_datumkenmerk = ChoiceItem('ander_datumkenmerk', _('ander datumkenmerk'))
+
+
+class RolTypeOmschrijving(DjangoChoices):
+    adviseur = ChoiceItem('adviseur', _('adviseur'))  # Kennis in dienst stellen van de behandeling van (een deel van) een zaak.
+    behandelaar = ChoiceItem('behandelaar', _('behandelaar'))  # De vakinhoudelijke behandeling doen van (een deel van) een zaak.
+    belanghebbende = ChoiceItem('belanghebbende', _('belanghebbende'))  # Vanuit eigen en objectief belang rechtstreeks betrokken zijn bij de behandeling en/of de uitkomst van een zaak.
+    beslisser = ChoiceItem('beslisser', _('beslisser'))  # Nemen van besluiten die voor de uitkomst van een zaak noodzakelijk zijn.
+    initiator = ChoiceItem('initiator', _('initiator'))  # Aanleiding geven tot de start van een zaak ..
+    klantcontacter = ChoiceItem('klantcontacter', _('klantcontacter'))  # Het eerste aanspreekpunt zijn voor vragen van burgers en bedrijven ..
+    zaakcoordinator = ChoiceItem('zaakcoordinator', _('zaakcoördinator'))  # Er voor zorg dragen dat de behandeling van de zaak in samenhang uitgevoerd wordt conform de daarover gemaakte afspraken.
