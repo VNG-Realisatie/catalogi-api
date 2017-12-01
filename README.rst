@@ -1,138 +1,78 @@
+=================
+Zaaktypecatalogus
+=================
+
+:Version: TBD
+:Source: https://github.com/Haarlem/Zaaktypecataloguscomponent
+:Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
+
+Implementatie van het informatiemodel Zaaktypecatalogus (ImZTC) 2.1 welke
+beheerd kan worden middels een webinterface en ontsloten wordt middels een
+RESTful API.
+
+Ontwikkeld door `Maykin Media B.V. <https://www.maykinmedia.nl>`_ in opdracht
+van de Gemeente Haarlem.
 
 
-.. image:: https://requires.io/bitbucket/maykinmedia/ztc/requirements.svg?branch=master
-     :target: https://requires.io/bitbucket/maykinmedia/haarlem-ztc/requirements/?branch=master
-     :alt: Requirements Status
+Introductie
+===========
 
-Project layout
-==============
+De GEMMA Zaaktypecatalogus 2 (ZTC2, ofwel de 2e generatie zaaktypecatalogus)
+helpt gemeenten om het proces vanuit de 'vraag van een klant' (productaanvraag,
+melding, aangifte, informatieverzoek e.d.) tot en met het leveren van een
+passend antwoord daarop in te richten, inclusief de bijbehorende
+informatievoorziening. Opslag van gegevens gebeurt conform het ImZTC (2.1).
 
-The project layout was made in such a way that code is seperated from non-code
-files that you typically want to serve in another way (static and media files)
-or keep in a different location (like the virtual environment)::
+KING heeft onderkend dat er niet één landelijke zaaktypecatalogus kan bestaan
+waarin alle zaaktypen van alle overheidsorganisaties volledig uitgewerkt een
+plaats hebben of krijgen. Het gevolg is dat er niet één, maar vele
+zaaktypecatalogi zullen ontstaan.
 
-    haarlem-ztc
-    |
-    +-- bin                 -- Useful scripts (mostly for developers).
-    |
-    +-- build               -- All Gulp tasks.
-    |
-    +-- doc                 -- Documentation source and generated files.
-    |
-    +-- env                 -- Virtual environment files.
-    |
-    +-- log                 -- All log files are stored here.
-    |
-    +-- media               -- Default location for uploaded media files.
-    |
-    +-- requirements        -- Project requirements for each type of installation.
-    |
-    +-- src                 -- Container for one or more source directories.
-    |   |
-    |   +-- ztc
-    |       |
-    |       +-- conf        -- Django settings files.
-    |       |
-    |       +-- js          -- JavaScript source files.
-    |       |
-    |       +-- sass        -- Sass (css pre-processor) source files.
-    |       |
-    |       +-- static      -- Default location for project static files.
-    |       |
-    |       +-- templates   -- Project templates.
-    |       |
-    |       +-- test        -- Automated tests.
-    |       |
-    |       +-- utils       -- Project-wide utility functions.
-    |       |
-    |       +-- ...         -- Project specific applications.
-    |
-    +-- static              -- Default location for collected static files.
+De ZTC2 ondersteunt de volgende functionaliteiten:
+
+* Webinterface voor het aanmaken, wijzigen en verwijderen van catalogi en alle
+  bijbehorende zakentypen, besluittypen, etc.
+* Exporteren en importeren van catalogi of delen daarvan
+* Referentie en/of voorbeeld catalogi inladen
+* Ontsluiten van catalogi middels een RESTful API
 
 
-Installation
+Opmerking
+=========
+
+In afwijking van de specificatie is er geen vertaling van het ImZTC naar het
+uitwisselformaat `StUF-ZTC`_ en de bijbehorende SOAP-services. Met het oog op
+de toekomst is gekeken naar `RSGB Bevragingen`_ en de strategieën gebruikt in
+het `Digitaal Stelsel Omgevingswet`_ (DSO).
+
+
+Documentatie
 ============
 
-New installations (for development or production) should follow the steps
-below.
+Zie ``INSTALL.rst`` voor installatie instructies, commando's en instellingen.
 
-1. Navigate to the location where you want to place your project.
-
-2. Get the code::
-
-    $ git clone ssh://git@bitbucket.org/maykinmedia/haarlem-ztc.git
-    $ cd haarlem-ztc
-
-3. Bootstrap the virtual environment and install all required libraries. The
-   ``bootstrap.py`` script basically sets the proper Django settings file to be
-   used::
-
-    $ python bootstrap.py <production|staging|test|dev>
-
-4. Activate your virtual environment and create the statics and database::
-
-    $ source env/bin/activate
-    $ python src/manage.py collectstatic --link
-    $ python src/manage.py migrate
+* `Informatiemodel Zaaktypen/Zaaktypecatalogus 2.1 (ImZTC) <http://www.gemmaonline.nl/index.php/Informatiemodel_Zaaktypen_(ImZTC)>`_
+* `GEMMA Zaaktypecatalogus <https://www.gemmaonline.nl/index.php/GEMMA_Zaaktypecatalogus>`_
 
 
-Developers
-----------
 
-Optionally, you can load demo data and extract demo media files::
+Verwijzingen
+============
 
-    $ python src/manage.py loaddata demo
-    $ cd media
-    $ tar -xzf demo.tgz
-
-You can now run your installation and point your browser to the address given
-by this command::
-
-    $ python src/manage.py runserver
-
-If you are making local, machine specific, changes, add them to
-``src/ztc/conf/local.py``. You can base this file on
-the example file included in the same directory.
-
-Install the front-end CLI tools if you've never installed them before::
-
-    $ npm install -g gulp
-    $ npm install
-
-Enable watch tasks::
-
-    $ gulp
-
-By default this will compile the sass to css on every sass file save.
-
-For more information on SASS, see: http://sass-lang.com/.
-For more information on Node.js, see: http://nodejs.org/.
+* `Community <https://discussie.kinggemeenten.nl/discussie/gemma/ztc>`_
+  (rapporteren van bugs, functionaliteit aanvragen, algemene vragen)
+* `Issues <https://github.com/Haarlem/zaakregistratiecomponent/issues>`_
+* `Code <https://github.com/Haarlem/zaakregistratiecomponent>`_
 
 
-Staging and production
-----------------------
+.. |build-status| image:: https://secure.travis-ci.org/Haarlem/Zaaktypecataloguscomponent.svg?branch=develop
+    :alt: Build status
+    :target: https://travis-ci.org/Haarlem/Zaaktypecataloguscomponent
 
-See https://bitbucket.org/maykinmedia/maykin-deployment/ on how to enable
-Ansible deployments.
+.. |coverage| image:: https://codecov.io/github/Haarlem/Zaaktypecataloguscomponent/coverage.svg?branch=develop
+    :alt: Coverage
+    :target: https://codecov.io/github/Haarlem/Zaaktypecataloguscomponent?branch=develop
 
-
-Update installation
-===================
-
-When updating an existing installation:
-
-1. Activate the virtual environment::
-
-    $ cd ztc
-    $ source env/bin/activate
-
-2. Update the code and libraries::
-
-    $ git pull
-    $ pip install -r requirements/<production|staging|test|dev>.txt
-    $ npm install
-
-3. Update the statics and database::
-
-    $ python src/manage.py collectstatic --link
-    $ python src/manage.py migrate
+.. _RSGB Bevragingen: https://www.gemmaonline.nl/index.php/RSGB_Bevragingen
+.. _StUF-ZTC: https://www.gemmaonline.nl/index.php/Sectormodel_Zaaktypen(-catalogus):_StUF%E2%80%93ZTC
+.. _Digitaal Stelsel Omgevingswet: https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/
