@@ -1,15 +1,19 @@
+var path = require('path');
 var paths = require('./build/paths');
 var webpackConfig = require('./webpack.config.js');
 
 
 // Add istanbul-instrumenter to webpack configuration
-webpackConfig.module.postLoaders = [
-    {
-        test: /\.js$/,
-        include: paths.jsSrcDir,
-        loader: 'istanbul-instrumenter'
+webpackConfig.module.loaders.push({
+    test: /\.js$/,
+    include: __dirname + '/' + paths.jsSrcDir,
+    loader: 'istanbul-instrumenter-loader',
+    enforce: 'post',
+
+    options: {
+        esModules: true
     }
-];
+});
 
 
 // The preprocessor config
@@ -40,19 +44,17 @@ var configuration = function(config) {
             noInfo: true
         },
 
-        coverageReporter: {
-            reporters: [
-                { type: 'cobertura', dir: paths.coverageDir, subdir: '.', file: 'coverage.xml' },
-                { type: 'html', dir: paths.coverageDir, subdir: 'html' },
-                { type: 'text' }
-            ]
-        },
-
-        reporters: ['spec', 'coverage'],
+        reporters: ['spec', 'coverage-istanbul'],
 
         browsers: ['Chrome', 'Firefox', 'PhantomJS'],
+
+        coverageIstanbulReporter: {
+            reports: ['clover', 'text-summary'],
+            dir: paths.coverageDir,
+            fixWebpackSourcePaths: true,
+        }
     });
-}
+};
 
 
 module.exports = configuration;

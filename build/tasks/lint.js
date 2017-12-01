@@ -12,5 +12,8 @@ var paths = require('../paths');
 gulp.task('lint', function() {
     return gulp.src([paths.jsSrc, paths.jsSpec])
         .pipe(jshint())
-        .pipe(jshint.reporter('default'))
+        .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(jshint.reporter('gulp-jshint-jslint-file-reporter', {
+            filename: paths.coverageDir + '/jshint-output.xml'
+        }));
 });

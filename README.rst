@@ -1,7 +1,7 @@
 
 
 .. image:: https://requires.io/bitbucket/maykinmedia/ztc/requirements.svg?branch=master
-     :target: https://requires.io/bitbucket/maykinmedia/ztc/requirements/?branch=master
+     :target: https://requires.io/bitbucket/maykinmedia/haarlem-ztc/requirements/?branch=master
      :alt: Requirements Status
 
 Project layout
@@ -11,7 +11,7 @@ The project layout was made in such a way that code is seperated from non-code
 files that you typically want to serve in another way (static and media files)
 or keep in a different location (like the virtual environment)::
 
-    ztc
+    haarlem-ztc
     |
     +-- bin                 -- Useful scripts (mostly for developers).
     |
@@ -60,8 +60,8 @@ below.
 
 2. Get the code::
 
-    $ git clone ssh://git@bitbucket.org/maykinmedia/ztc.git
-    $ cd ztc
+    $ git clone ssh://git@bitbucket.org/maykinmedia/haarlem-ztc.git
+    $ cd haarlem-ztc
 
 3. Bootstrap the virtual environment and install all required libraries. The
    ``bootstrap.py`` script basically sets the proper Django settings file to be

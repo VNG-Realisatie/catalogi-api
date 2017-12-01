@@ -9,7 +9,6 @@ from shutil import move
 from subprocess import call
 from tempfile import mkstemp
 
-
 description = """
 Set up my development environment for me!
 """
