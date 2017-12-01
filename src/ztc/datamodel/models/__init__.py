@@ -4,3 +4,4 @@ from .eigenschap import *  # noqa
 from .informatie_objecten import *  # noqa
 from .resultaattype import *  # noqa
 from .roltype import *  # noqa
+from .statustype import *  # noqa
