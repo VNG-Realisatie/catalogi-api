@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator, _lazy_re_compile
 from django.utils.deconstruct import deconstructible
@@ -70,3 +73,17 @@ letters_numbers_underscores_spaces_validator = RegexValidator(
 
 def validate_letters_numbers_underscores_spaces(value):
     return letters_numbers_underscores_spaces_validator(value)
+
+
+@deconstructible
+class DatumValidator(object):
+    """
+    Datum moet exact de lengte 8 hebben, en waarden voor 'jjjjmmdd' die geparsed kunnen worden naar
+    een date
+    """
+    def __call__(self, value):
+        try:
+            assert len(value) == 8
+            datetime.strptime(value, settings.DATUM_FORMAT)
+        except Exception:
+            raise ValidationError("Datum '{}' voldoet niet aan het formaat 'jjjjmmdd' of is geen geldige datum.".format(value))

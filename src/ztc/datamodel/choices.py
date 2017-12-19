@@ -15,6 +15,7 @@ class FormaatChoices(DjangoChoices):
     datum_tijd = ChoiceItem('datum_tijd', _('datum (jjjjmmdduummss)'))
 
 
+# TODO: waardenverzameling bevat bijv. 'ZEER GEHEIM', dus 'zeer_geheim' is een verkeerd gekozen value. Geldt ook voor andere Choices..
 class VertrouwelijkheidAanduiding(DjangoChoices):
     zeer_geheim = ChoiceItem('zeer_geheim', _('zeer geheim'))
     geheim = ChoiceItem('geheim', _('geheim'))
@@ -94,3 +95,8 @@ class ObjectTypen(DjangoChoices):
     woz_object = ChoiceItem('WOZ-OBJECT', _('woz object'))
     woz_waarde = ChoiceItem('WOZ-WAARDE', _('woz waarde'))
     zakelijk_recht = ChoiceItem('ZAKELIJK RECHT', _('zakelijk recht'))
+
+
+class InternExtern(DjangoChoices):
+    intern = ChoiceItem('Intern', _('intern'))
+    extern = ChoiceItem('Extern', _('extern'))
