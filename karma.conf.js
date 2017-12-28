@@ -46,7 +46,7 @@ var configuration = function(config) {
 
         reporters: ['spec', 'coverage-istanbul'],
 
-        browsers: ['Chrome', 'Firefox', 'PhantomJS'],
+        browsers: ['Chromium', 'Firefox', 'PhantomJS'],
 
         coverageIstanbulReporter: {
             reports: ['clover', 'text-summary'],
