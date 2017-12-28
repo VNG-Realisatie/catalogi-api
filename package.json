@@ -19,6 +19,7 @@
   "dependencies": {
     "bourbon-neat": "^1.8.0",
     "font-awesome": "^4.6.3",
+    "jshint-stylish": "^2.2.1",
     "material-design-icons": "2.2.3",
     "normalize.css": "^4.0.0"
   },
