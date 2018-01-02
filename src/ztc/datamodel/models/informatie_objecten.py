@@ -3,23 +3,22 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.datamodel.choices import VertrouwelijkheidAanduiding
-from ztc.utils.stuff_date import parse_onvolledige_datum
 from .mixins import GeldigheidMixin
+from ..choices import VertrouwelijkheidAanduiding
+from ...utils.stuff_date import parse_onvolledige_datum
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
     """
-    Algemeen binnen de overheid gehanteerde omschrijvingen van de typen
-    informatieobjecten
+    Algemeen binnen de overheid gehanteerde omschrijvingen van de typen informatieobjecten
 
-    Toelichting referentielijst
-    Deze 'lijst' bevat de benamingen van de generieke informatieobjecttypen die in de informatie-
-    uitwisseling betrokken zijn.
-    Het gaat telkens om een korte omschrijving van de aard van een informatieobject, ook wel
-    'documentnaam' genoemd, zoals deze landelijk binnen de overheid wordt toegepast op basis van de ZTC.
-    De 'lijst' betreft dus geen informatieobjecttypen voor specifieke domeinen en ook geen
-    organisatiespecifieke informatieobjecttypen.
+    **Toelichting referentielijst**
+    Deze 'lijst' bevat de benamingen van de generieke informatieobjecttypen die in de informatie-uitwisseling betrokken
+    zijn.
+
+    Het gaat telkens om een korte omschrijving van de aard van een informatieobject, ook wel 'documentnaam' genoemd,
+    zoals deze landelijk binnen de overheid wordt toegepast op basis van de ZTC. De 'lijst' betreft dus geen
+    informatieobjecttypen voor specifieke domeinen en ook geen organisatiespecifieke informatieobjecttypen.
 
     """
     informatieobjecttype_omschrijving_generiek = models.CharField(
@@ -40,6 +39,8 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
 
     class Meta:
         mnemonic = 'DOG'
+        verbose_name = _('Generieke informatieobjecttype-omschrijving')
+        verbose_name_plural = _('Generieke informatieobjecttype-omschrijvingen')
 
     def clean(self):
         """
@@ -58,11 +59,9 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
 # TODO: voor beide ArrayFields (trefwoord en model) check of de ArrayField leeg mag zijn. En mogelijk verander naar een m2m met een apart model
 class InformatieObjectType(GeldigheidMixin, models.Model):
     """
-    Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door
-    de zaakbehandelende organisatie.
+    Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
 
-    Unieke aanduiding van CATALOGUS in combinatie met Informatieobjecttype-
-    omschrijving.
+    Unieke aanduiding van CATALOGUS in combinatie met Informatieobjecttype-omschrijving.
     """
     informatieobjecttype_omschrijving = models.CharField(
         _('informatieobjecttype omschrijving'), max_length=80,
@@ -91,6 +90,8 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'DCT'
         unique_together = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving')
+        verbose_name = _('Informatieobjecttype')
+        verbose_name_plural = _('Informatieobjecttypen')
 
     def clean(self):
         """

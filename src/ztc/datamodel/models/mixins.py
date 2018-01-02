@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.utils.fields import StUFDateField
+from ...utils.fields import StUFDateField
 
 
 class GeldigheidMixin(models.Model):

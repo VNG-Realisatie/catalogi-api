@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 {% load i18n static hijack_tags %}
 
-{% block title %}{{ title }} | {{ site_title|default:_('Administration') }}{% endblock %}
+{% block title %}{{ title }} | {% trans 'Zaaktypecatalogus' %}{% endblock %}
 
 {% block extrastyle %}
     {{ block.super }}
@@ -51,7 +51,7 @@
 {% endblock %}
 
 {% block branding %}
-    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Administration') }}</a></h1>
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{% trans 'Zaaktypecatalogus' %}</a></h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

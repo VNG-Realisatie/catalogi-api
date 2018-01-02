@@ -2,20 +2,21 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.datamodel.choices import JaNee
+from ..choices import JaNee
 from .mixins import GeldigheidMixin
 
 
 class BesluitType(GeldigheidMixin, models.Model):
     """
-    Generieke aanduiding van de aard van een besluit
+    Generieke aanduiding van de aard van een besluit.
 
-    Populatie: Alle besluittypen van de besluiten die het resultaat kunnen zijn van het
-    zaakgericht werken van de behandelende organisatie(s).
+    **Populatie**
+    Alle besluittypen van de besluiten die het resultaat kunnen zijn van het zaakgericht werken van de behandelende
+    organisatie(s).
 
-    Toelichting objecttype:
-    Het betreft de indeling of groepering van besluiten naar hun aard, zoals bouwvergunning,
-    ontheffing geluidhinder en monumentensubsidie
+    **Toelichting objecttype**
+    Het betreft de indeling of groepering van besluiten naar hun aard, zoals bouwvergunning, ontheffing geluidhinder en
+    monumentensubsidie.
     """
     besluittype_omschrijving = models.CharField(
         _('besluittype omschrijving'), max_length=80, blank=True, null=True,
@@ -57,6 +58,8 @@ class BesluitType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'BST'
         unique_together = ('maakt_deel_uit_van', 'besluittype_omschrijving')
+        verbose_name = _('Besluittype')
+        verbose_name_plural = _('Besluittypen')
 
     def __str__(self):
         """

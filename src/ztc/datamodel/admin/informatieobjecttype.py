@@ -1,0 +1,64 @@
+from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
+
+from .mixins import GeldigheidAdminMixin
+from ..models import InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek
+
+
+@admin.register(InformatieObjectTypeOmschrijvingGeneriek)
+class InformatieObjectTypeOmschrijvingGeneriekAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+    # List
+    list_display = ('informatieobjecttype_omschrijving_generiek', )
+    search_fields = (
+        'informatieobjecttype_omschrijving_generiek',
+        'definitie_informatieobjecttype_omschrijving_generiek',
+        'herkomst_informatieobjecttype_omschrijving_generiek',
+        'hierarchie_informatieobjecttype_omschrijving_generiek',
+        'opmerking_informatieobjecttype_omschrijving_generiek',
+    )
+
+    # Details
+    fieldsets = (
+        (_('Algemeen'), {
+            'fields': (
+                'informatieobjecttype_omschrijving_generiek',
+                'definitie_informatieobjecttype_omschrijving_generiek',
+                'herkomst_informatieobjecttype_omschrijving_generiek',
+                'hierarchie_informatieobjecttype_omschrijving_generiek',
+                'opmerking_informatieobjecttype_omschrijving_generiek',
+            )
+        }),
+    )
+
+
+@admin.register(InformatieObjectType)
+class InformatieObjectTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+    # List
+    list_display = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving', 'informatieobjectcategorie', )
+    list_filter = ('maakt_deel_uit_van', )
+    search_fields = (
+        'informatieobjecttype_omschrijving',
+        'informatieobjectcategorie',
+        'informatieobjecttypetrefwoord',
+        'toelichting',
+    )
+
+    # Details
+    fieldsets = (
+        (_('Algemeen'), {
+            'fields': (
+                'informatieobjecttype_omschrijving',
+                'informatieobjectcategorie',
+                'informatieobjecttypetrefwoord',
+                'vertrouwelijkheidaanduiding',
+                'model',
+                'toelichting',
+            )
+        }),
+        (_('Relaties'), {
+            'fields': (
+                'maakt_deel_uit_van',
+                'informatieobjecttype_omschrijving_generiek',
+            )
+        }),
+    )
