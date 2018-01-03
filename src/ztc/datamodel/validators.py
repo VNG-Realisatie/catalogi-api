@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator, _lazy_re_compile
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
 
@@ -22,6 +23,9 @@ class KardinaliteitValidator(object):
                     _("Gebruik gehele getallen groter dan 0 of 'N' voor ongelimiteerd"))
 
 
+validate_kardinaliteit = KardinaliteitValidator()
+
+
 @deconstructible
 class OnvolledigeDatumValidator(object):
     """
@@ -30,3 +34,39 @@ class OnvolledigeDatumValidator(object):
     """
     def __call__(self, value):
         parse_onvolledige_datum(value)
+
+
+uppercase_validator = RegexValidator(
+    _lazy_re_compile('^[A-Z]*$'),
+    message=_('Voer alleen hoofdletters in.'),
+    code='invalid',
+)
+
+
+def validate_uppercase(value):
+    return uppercase_validator(value)
+
+
+letters_numbers_underscores_validator = RegexValidator(
+    _lazy_re_compile('^[A-Za-z0-9 _]*$'),
+    message=_('Voer alleen letters, cijfers en/of liggende streepjes in.'),
+    code='invalid',
+)
+
+
+def validate_letters_numbers_underscores(value):
+    """
+    Validate a value to only contain letters, numbers and/or underscores.
+    """
+    return letters_numbers_underscores_validator(value)
+
+
+letters_numbers_underscores_spaces_validator = RegexValidator(
+    _lazy_re_compile('^[A-Za-z0-9 _]*$'),
+    message=_('Voer alleen letters, cijfers, liggende streepjes en/of spaties in.'),
+    code='invalid',
+)
+
+
+def validate_letters_numbers_underscores_spaces(value):
+    return letters_numbers_underscores_spaces_validator(value)

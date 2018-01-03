@@ -2,14 +2,16 @@ from decimal import Decimal, InvalidOperation
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .mixins import GeldigheidMixin
-from ..choices import FormaatChoices
-from ..validators import KardinaliteitValidator
 from ...utils.stuff_date import parse_onvolledige_datum
+from ..choices import FormaatChoices
+from ..validators import (
+    validate_kardinaliteit, validate_letters_numbers_underscores,
+    validate_letters_numbers_underscores_spaces
+)
+from .mixins import GeldigheidMixin
 
 
 class EigenschapSpecificatie(models.Model):
@@ -20,14 +22,14 @@ class EigenschapSpecificatie(models.Model):
     """
 
     groep = models.CharField(  # waardenverzameling Letters, cijfers en liggende streepjes
-        _('groep'), max_length=32, blank=True, null=True, validators=[RegexValidator('^[A-Za-z0-9_]*$')],
+        _('groep'), max_length=32, blank=True, null=True, validators=[validate_letters_numbers_underscores],
         help_text=_('Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert.'))
     # waardenverzameling gedefinieerd als tekst, getal, datum (jjjjmmdd), datum/tijd (jjjjmmdduummss), met AN20
     formaat = models.CharField(_('formaat'), max_length=20, choices=FormaatChoices.choices, help_text=_(
         'Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.'))
     lengte = models.CharField(_('lengte'), max_length=14, help_text=_(
         'Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd.'))
-    kardinaliteit = models.CharField(_('kardinaliteit'), max_length=3, validators=[KardinaliteitValidator], help_text=_(
+    kardinaliteit = models.CharField(_('kardinaliteit'), max_length=3, validators=[validate_kardinaliteit], help_text=_(
         'Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE.'))
 
     # waardenverzameling dient beheert te worden in de admin, misschien is een apart model wenselijker dan een ArrayField?
@@ -83,11 +85,11 @@ class EigenschapReferentie(models.Model):
     informatie- als een berichtenmodel is evenwel een waarborg voor een robuuste gegevensuitwisseling.
     """
     objecttype = models.CharField(  # letters, cijfers, spaties, liggend streepje
-        _('objecttype'), max_length=40, blank=True, null=True, validators=[RegexValidator('^[A-Za-z0-9 _]*$')],
+        _('objecttype'), max_length=40, blank=True, null=True, validators=[validate_letters_numbers_underscores_spaces],
         help_text=_('De naam van het objecttype waarbij de eigenschap is gemodelleerd in het informatiemodel '
                     'waarvan het objecttype deel uit maakt.'))
     informatiemodel = models.CharField(  # letters, cijfers, liggend streepje
-        _('informatiemodel'), max_length=80, blank=True, null=True, validators=[RegexValidator('^[A-Za-z0-9_]*$')],
+        _('informatiemodel'), max_length=80, blank=True, null=True, validators=[validate_letters_numbers_underscores],
         help_text=_('De naam en de versie van het informatiemodel waarin de eigenschap is gemodelleerd.'))
     namespace = models.CharField(_('namespace'), max_length=200, help_text=_(
         'De naam van het schema waarin de eigenschap is opgenomen.'))

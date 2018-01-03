@@ -3,9 +3,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from .mixins import GeldigheidMixin
-from ..choices import VertrouwelijkheidAanduiding
 from ...utils.stuff_date import parse_onvolledige_datum
+from ..choices import VertrouwelijkheidAanduiding
+from .mixins import GeldigheidMixin
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
@@ -84,7 +84,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
 
-    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
+    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('catalogus'),
                                            help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.'))
 
     class Meta:

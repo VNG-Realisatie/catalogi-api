@@ -1,6 +1,8 @@
-from django.core.validators import RegexValidator
+from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+from ..validators import validate_uppercase
 
 
 class Catalogus(models.Model):
@@ -21,11 +23,12 @@ class Catalogus(models.Model):
     """
     # TODO [KING]: "Voor de waardenverzameling wordt door KING een waardenlijst beheerd waarin wordt bijgehouden welke afkorting welk domein betreft." ZTC 2.1, blz 42 - Waar dan?
     domein = models.CharField(  # waardenverzameling hoofdletters
-        _('domein'), max_length=5, validators=[RegexValidator('^[A-Z]*$')], help_text=_(
+        _('domein'), max_length=5, validators=[validate_uppercase], help_text=_(
             'Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt.'))
     # TODO [KING]: rsin is gespecificeerd als N9, ivm voorloopnullen gekozen voor CharField. Geen waardenverzameling gedefinieerd
     rsin = models.CharField(
-        _('rsin'), max_length=9, help_text=_('Het door een kamer toegekend uniek nummer voor de INGESCHREVEN '
+        _('rsin'), max_length=9, validators=[validate_integer],
+        help_text=_('Het door een kamer toegekend uniek nummer voor de INGESCHREVEN '
                                              'NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS.'))
     contactpersoon_beheer_naam = models.CharField(
         _('naam'), max_length=40,
