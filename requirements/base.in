@@ -3,7 +3,7 @@ Pillow
 pytz
 raven
 
-Django
+Django>=1.11,<2
 # django-admin-tools
 django-hijack
 django-hijack-admin
@@ -14,4 +14,6 @@ django-sniplates
 django-redis
 django_admin_index
 
-# djangorestframework
+djangorestframework
+djangorestframework-serializer-extensions
+drf_openapi
