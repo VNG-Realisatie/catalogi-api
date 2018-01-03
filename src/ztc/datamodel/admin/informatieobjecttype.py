@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from ..models import (
+    InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek
+)
 from .mixins import GeldigheidAdminMixin
-from ..models import InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek
 
 
 @admin.register(InformatieObjectTypeOmschrijvingGeneriek)

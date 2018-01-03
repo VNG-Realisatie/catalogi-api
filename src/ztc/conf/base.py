@@ -1,5 +1,8 @@
 import os
+
 import django.db.models.options as options
+# Django-hijack (and Django-hijack-admin)
+from django.core.urlresolvers import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 DJANGO_PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -293,8 +296,6 @@ AXES_ONLY_USER_FAILURES = False  # Default: False (you might want to block on us
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = False  # Default: False (you might want to block on username and IP)
 
 
-# Django-hijack (and Django-hijack-admin)
-from django.core.urlresolvers import reverse_lazy
 
 HIJACK_LOGIN_REDIRECT_URL = '/'
 HIJACK_LOGOUT_REDIRECT_URL = reverse_lazy('admin:accounts_user_changelist')

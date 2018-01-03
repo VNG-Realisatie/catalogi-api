@@ -57,7 +57,7 @@ class ListObjectActionsAdminMixin(ObjectActionsAdminMixin):
         return tuple(list_display) + ('_get_object_actions', )
 
 
-class EditInlineAdminMixin(ObjectActionsAdminMixin):
+class EditInlineAdminMixin(object):
     template = 'admin/edit_inline/tabular_add_and_edit.html'
     extra = 0
     can_delete = False

@@ -1,5 +1,6 @@
-from .base import *
 import raven
+
+from .base import *
 
 #
 # Standard Django settings.

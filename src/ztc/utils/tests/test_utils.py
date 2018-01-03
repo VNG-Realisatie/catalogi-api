@@ -1,10 +1,9 @@
+from datetime import date
 from unittest import TestCase
 
 from django.core.exceptions import ValidationError
 
 from ..stuff_date import parse_onvolledige_datum
-
-from datetime import date
 
 
 class UtilsTests(TestCase):
