@@ -35,14 +35,18 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
     relatieomschrijving = models.CharField(_('relatieomschrijving'), max_length=80, help_text=_(
         'Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE.'))
 
-    # TODO:
-    # is_relevant_voor = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is_relevant_voor'), help_text=_(
-    #     'Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant zijn.'))
+    status_type = models.ForeignKey(
+        'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
+        related_name='heeft_verplichte_zaakobjecttype', help_text=_(
+            'TODO: dit is de related helptext: De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van '
+            'het ZAAKTYPE voordat een STATUS van dit STATUSTYPE kan worden gezet'))
+
+    is_relevant_voor = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is_relevant_voor'), help_text=_(
+        'Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant zijn.'))
 
     class Meta:
         mnemonic = 'ZOT'
-        # TODO:
-        # unique_together = ('is_relevant_voor', 'objecttype')
+        unique_together = ('is_relevant_voor', 'objecttype')
 
     def clean(self):
         """
@@ -78,6 +82,9 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
                 raise ValidationError(_(
                     "'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
 
+    def __str__(self):
+        return '{} - {}'.format(self.is_relevant_voor, self.objecttype)
+
 
 class ProductDienst(models.Model):
     """
@@ -101,6 +108,9 @@ class ProductDienst(models.Model):
     link = models.URLField(_('link'), blank=True, null=True, help_text=_(
         'De URL naar de beschrijving van het product of de dienst.'))
 
+    def __str__(self):
+        return self.naam
+
 
 class Formulier(models.Model):
     """
@@ -123,6 +133,9 @@ class Formulier(models.Model):
     naam = models.CharField(_('naam'), max_length=80, help_text=_('De naam van het formulier.'))
     link = models.URLField(_('link'), blank=True, null=True, help_text=_('De URL naar het formulier.'))
 
+    def __str__(self):
+        return self.naam
+
 
 class ReferentieProces(models.Model):
     """
@@ -136,6 +149,9 @@ class ReferentieProces(models.Model):
     naam = models.CharField(_('naam'), max_length=80, help_text=_('De naam van het Referentieproces.'))
     link = models.URLField(_('link'), blank=True, null=True, help_text=_(
         'De URL naar de beschrijving van het Referentieproces'))
+
+    def __str__(self):
+        return self.naam
 
 
 class BronCatalogus(models.Model):
@@ -162,6 +178,9 @@ class BronCatalogus(models.Model):
     # rsin is gespecificeerd als N9, ivm voorloopnullen gekozen voor CharField. Geen waardenverzameling gedefinieerd
     rsin = models.CharField(_('rsin'), max_length=9, validators=[RegexValidator('^[0-9]*$')], help_text=_(
         'Het RSIN van de INGESCHREVEN NIET-NATUURLIJK PERSOON die beheerder is van de CATALOGUS waaraan het ZAAKTYPE is ontleend.'))
+
+    def __str__(self):
+        return '{} - {}'.format(self.rsin, self.domein)
 
 
 class BronZaakType(models.Model):
@@ -192,6 +211,9 @@ class BronZaakType(models.Model):
             'De Zaaktype-identificatie van het bronzaaktype binnen de CATALOGUS.'))
     zaaktype_omschrijving = models.CharField(_('zaaktype omschrijving'), max_length=80, help_text=_(
         'De Zaaktype-omschrijving van het bronzaaktype, zoals gehanteerd in de Broncatalogus.'))
+
+    def __str__(self):
+        return self.zaaktype_identificatie
 
 
 class ZaakType(GeldigheidMixin, models.Model):
@@ -309,10 +331,6 @@ class ZaakType(GeldigheidMixin, models.Model):
 
     maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('maakt deel uit van'), help_text=_(
         'De CATALOGUS waartoe dit ZAAKTYPE behoort.'))
-
-    # TODO: implementeer op het andere model
-    # heeft_relevant InformatieObjectType
-    # heeft_relevant besluittype
 
     class Meta:
         mnemonic = 'ZKT'

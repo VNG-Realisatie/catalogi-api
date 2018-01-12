@@ -58,6 +58,10 @@ class BesluitType(GeldigheidMixin, models.Model):
         'datamodel.ResultaatType', verbose_name=_('is resultaat van'), related_name='leidt_tot', help_text=_(
             '(inverse van:) Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE.'))
 
+    zaaktypes = models.ManyToManyField(
+        'datamodel.Zaaktype', verbose_name=_('zaaktypes'), related_name='heeft_relevant_besluittype',
+        help_text=_('ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE'))
+
     class Meta:
         mnemonic = 'BST'
         unique_together = ('maakt_deel_uit_van', 'besluittype_omschrijving')

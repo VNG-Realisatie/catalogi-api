@@ -43,15 +43,12 @@ class RolType(GeldigheidMixin, models.Model):
     soort_betrokkene = ArrayField(models.CharField(
         _('soort betrokkene'), max_length=80, help_text=_('De (soort) betrokkene die een rol van dit roltype mag uitoefenen.')))
 
-    # TODO: leg relatie zodra ZaakType is geimplementeerd
-    # is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
-    #     'De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit ZAAKTYPE.'))
-    # mag_zetten = models.ManyToMany # TODO: zet deze omgekeerd op StatusType  # TODO: er is een regel voor deze relatie
+    is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
+        'De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit ZAAKTYPE.'))
 
     class Meta:
         mnemonic = 'RLT'
-        # TODO: als is_van is gedefinieerd
-        # unique_together = ('is_van', 'roltypeomschrijving')
+        unique_together = ('is_van', 'roltypeomschrijving')
 
     def clean(self):
         """
@@ -78,3 +75,6 @@ class RolType(GeldigheidMixin, models.Model):
             if datum_einde + timedelta(days=1) != versiedatum:
                 raise ValidationError(_(
                     "'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+
+    def __str__(self):
+        return '{} - {}'.format(self.is_van, self.roltypeomschrijving)

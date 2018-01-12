@@ -66,19 +66,16 @@ class StatusType(GeldigheidMixin, models.Model):
     toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
         'Een eventuele toelichting op dit STATUSTYPE.'))
 
-    # TODO: deze 3 relaties zijn STATUSTYPE [0..1] ... [0..*], en vat ik op alsof de relatie beter andersom gelegt kan worden
-    # heeft_verplichte   optionele foreignkey op Zaak-InformatieobjectType  (related_name='heeft_verplichte_zit') ?
-    # heeft_verplichte   optionele foreignkey op Eigenschap  (related_name='heeft_verplichte_eigenschap') ?
-    # heeft_verplichte   optionele foreignkey op ZaakObjectType  (related_name='heeft_verplichte_zaakobjecttype') ?
-
-    # TODO:
-    # is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
-    #     'Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.'))
+    # TODO: er is een regel voor deze relatie
+    roltypen = models.ManyToManyField(
+        'datamodel.RolType', verbose_name=_('roltypen'), related_name='mag_zetten',
+        help_text=_('De STATUSTYPEn die een betrokkene in een rol van dit ROLTYPE mag zetten.'))
+    is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
+        'Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.'))
 
     class Meta:
         mnemonic = 'STT'
-        # TODO: als is_van relatie bestaat
-        # unique_together = ('is_van', 'statustypevolgnummer')
+        unique_together = ('is_van', 'statustypevolgnummer')
 
     def clean(self):
         """
@@ -106,3 +103,6 @@ class StatusType(GeldigheidMixin, models.Model):
             if datum_einde + timedelta(days=1) != versiedatum:
                 raise ValidationError(_(
                     "'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+
+    def __str__(self):
+        return ''.format(self.is_van, self.statustypevolgnummer)

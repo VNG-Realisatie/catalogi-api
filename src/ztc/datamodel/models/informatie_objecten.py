@@ -87,6 +87,18 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
     maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('catalogus'),
                                            help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.'))
 
+    # TODO: dit moet waarschijnlijk op Zaak-InformatieObject-Type, en die is nog niet geimplementeerd
+    # status_type = models.ForeignKey(
+    #     'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
+    #     related_name='heeft_verplichte_zit', help_text=_(
+    #         'De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het STATUSTYPE gerelateerde ZAAKTYPE '
+    #         'waarvoor geldt dat deze verplicht aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE '
+    #         'voordat de status van dit STATUSTYPE kan worden gezet bij die zaak.'))
+
+    zaaktypes = models.ManyToManyField(
+        'datamodel.Zaaktype', verbose_name=_('zaaktypes'), related_name='heeft_relevant_informatieobjecttype',
+        help_text=_('ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit INFORMATIEOBJECTTYPE'))
+
     class Meta:
         mnemonic = 'DCT'
         unique_together = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving')
@@ -112,3 +124,6 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
             if datum_einde < datum_begin:
                 raise ValidationError(_(
                     "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
+
+    def __str__(self):
+        return '{} - {}'.format(self.maakt_deel_uit_van, self.informatieobjecttype_omschrijving)

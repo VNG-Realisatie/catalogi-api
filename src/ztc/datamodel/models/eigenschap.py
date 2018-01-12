@@ -1,3 +1,4 @@
+from datetime import timedelta
 from decimal import Decimal, InvalidOperation
 
 from django.contrib.postgres.fields import ArrayField
@@ -173,14 +174,16 @@ class Eigenschap(GeldigheidMixin, models.Model):
     toelichting = models.TextField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
         'Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.'))
 
-    # TODO: implement this when ZaakType is implemented
-    # is_van = models.ForeignKey('datamodel.ZaakType', help_text=_(
-    #     'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'))
+    status_type = models.ForeignKey(
+        'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
+        related_name='heeft_verplichte_eigenschap', help_text=_(
+            'Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een STATUS van het STATUSTYPE kan worden gezet.'))
+    is_van = models.ForeignKey('datamodel.ZaakType', help_text=_(
+        'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'))
 
     class Meta:
         mnemonic = 'EIG'
-        # TODO: add unique together when is_van relation exists
-        # unique_together = ('is_van', 'eigenschapnaam')
+        unique_together = ('is_van', 'eigenschapnaam')
         verbose_name = _('Eigenschap')
         verbose_name_plural = _('Eigenschappen')
 
@@ -193,17 +196,19 @@ class Eigenschap(GeldigheidMixin, models.Model):
         if bool(self.specificatie_van_eigenschap) ^ bool(self.referentie_naar_eigenschap):  # xor
             raise ValidationError(_('Één van twee groepen attributen is verplicht: specificatie van eigenschap of referentie naar eigenschap'))
 
-        # TODO: uncomment en check nadat ZaakType is geimplementeerd
-        # if self.datum_begin_geldigheid != self.is_van.versiedatum:
-        #     raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
-        #
+        if self.datum_begin_geldigheid != self.is_van.versiedatum:
+            raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
+
         if self.datum_einde_geldigheid:
             datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
             datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
-            # versiedatum = parse_onvolledige_datum(self.is_van.versiedatum)
+            versiedatum = parse_onvolledige_datum(self.is_van.versiedatum)
 
             if datum_einde < datum_begin:
                 raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
 
-            # if datum_einde + timedelta(days=1) != versiedatum:
-            #     raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+            if datum_einde + timedelta(days=1) != versiedatum:
+                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+
+    def __str__(self):
+        return '{} - {}'.format(self.is_van, self.eigenschapnaam)

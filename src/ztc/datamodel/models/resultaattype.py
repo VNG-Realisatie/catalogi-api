@@ -67,11 +67,11 @@ class ResultaatType(GeldigheidMixin, models.Model):
     #         'Informatieobjecten van een ZAAKINFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE waarvan, op grond van '
     #         'resultaten van een RESULTAATTYPE bij dat ZAAKTYPE, de archiveringskenmerken afwijken van de '
     #         'archiveringskenmerken van het ZAAKTYPE.'))
-    # heeft_verplichte_zot = models.ManyToManyField(
-    #     'datamodel.ZaakObjectType', verbose_name=_('heeft verplichte'), blank=True, help_text=_(
-    #         'De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit ZAAKTYPE voordat een '
-    #         'resultaat van dit RESULTAATTYPE kan worden gezet.'),
-    # )
+    heeft_verplichte_zot = models.ManyToManyField(
+        'datamodel.ZaakObjectType', verbose_name=_('heeft verplichte'), blank=True, help_text=_(
+            'De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit ZAAKTYPE voordat een '
+            'resultaat van dit RESULTAATTYPE kan worden gezet.'),
+    )
     # heeft_verplichte_ziot = models.ManyToManyField(  # does not have a mnemonic, I choose 'ziot' here
     #     'datamodel.ZaakInformatieObjectType', verbose_name=_(''), blank=True, help_text=_(
     #         'De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit '
@@ -81,12 +81,12 @@ class ResultaatType(GeldigheidMixin, models.Model):
         'datamodel.Eigenschap', verbose_name=_('heeft voor brondatum archiefprocedure relevante'), blank=True, null=True,
         help_text=_('De EIGENSCHAP die bepalend is voor het moment waarop de Archiefactietermijn start voor een ZAAK '
                     'met een resultaat van dit RESULTAATTYPE.'))
-    # is_relevant_voor = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is relevant voor'), help_text=_(
-    #     'Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.'))
+    is_relevant_voor = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is relevant voor'), help_text=_(
+        'Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.'))
 
     class Meta:
         mnemonic = 'RST'
-        # TODO: unique_together = ('is_relevant_voor', 'resultaattypeomschrijving')
+        unique_together = ('is_relevant_voor', 'resultaattypeomschrijving')
 
     def clean(self):
         """
@@ -110,3 +110,6 @@ class ResultaatType(GeldigheidMixin, models.Model):
 
             if datum_einde + timedelta(days=1) != versiedatum:
                 raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+
+    def __str__(self):
+        return '{} - {}'.format(self.is_relevant_voor, self.resultaattypeomschrijving)
