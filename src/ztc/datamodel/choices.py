@@ -100,3 +100,20 @@ class ObjectTypen(DjangoChoices):
 class InternExtern(DjangoChoices):
     intern = ChoiceItem('Intern', _('intern'))
     extern = ChoiceItem('Extern', _('extern'))
+
+
+class RichtingChoices(DjangoChoices):
+    inkomend = ChoiceItem('Inkomend', _('Inkomend'))
+    intern = ChoiceItem('Intern', _('Intern'))
+    uitgaand = ChoiceItem('Uitgaand', _('Uitgaand'))
+
+
+class ArchiefNominatieChoices(DjangoChoices):
+    blijvend_bewaren = ChoiceItem('Blijvend bewaren', _('Blijvend bewaren'))
+    vernietigen = ChoiceItem('Vernietigen', _('Vernietigen'))
+
+
+class AardRelatieChoices(DjangoChoices):
+    vervolg = ChoiceItem('vervolg', _('vervolg'))  # een zaak van het ZAAKTYPE is een te plannen vervolg op een zaak van het andere ZAAKTYPE
+    bijdrage = ChoiceItem('bijdrage', _('bijdrage'))  # een zaak van het ZAAKTYPE levert een bijdrage aan het bereiken van de uitkomst van een zaak van het andere ZAAKTYPE
+    onderwerp = ChoiceItem('onderwerp', _('onderwerp'))  # een zaak van het ZAAKTYPE heeft betrekking op een zaak van het andere ZAAKTYPE of een zaak van het andere ZAAKTYPE is relevant voor of is onderwerp van een zaak van het ZAAKTYPE

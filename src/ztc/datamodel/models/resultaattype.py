@@ -43,7 +43,7 @@ class ResultaatType(GeldigheidMixin, models.Model):
     resultaattypeomschrijving_generiek = models.CharField(
         _('resultaattypeomschrijving generiek'), max_length=20,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE.'))
-    # TODO: waardeverzameling is de aanduidingen van de passages cq. klassen in de gehanteerde selectielijst.
+    # TODO [KING]: waardeverzameling is de aanduidingen van de passages cq. klassen in de gehanteerde selectielijst.
     selectielijstklasse = models.CharField(
         _('selectielijstklasse'), max_length=500, blank=True, null=True,
         help_text=_('Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, passage in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie.'))
@@ -60,23 +60,24 @@ class ResultaatType(GeldigheidMixin, models.Model):
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een Resultaat van dit RESULTAATTYPE wordt geselecteerd.'))
 
-    # TODO: relaties als de Zaak modellen er zijn
-    # bepaalt_afwijkend_archiefregime_van = models.ManyToManyField(
-    #     'datamodel.ZaakInformatieObjectType', verbose_name=_('bepaalt afwijkend archiefregime van'),
-    #     blank=True, help_text=_(
-    #         'Informatieobjecten van een ZAAKINFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE waarvan, op grond van '
-    #         'resultaten van een RESULTAATTYPE bij dat ZAAKTYPE, de archiveringskenmerken afwijken van de '
-    #         'archiveringskenmerken van het ZAAKTYPE.'))
+    bepaalt_afwijkend_archiefregime_van = models.ManyToManyField(
+        'datamodel.ZaakInformatieObjectType', verbose_name=_('bepaalt afwijkend archiefregime van'),
+        through='datamodel.ZaakInformatieobjectTypeArchiefregime', blank=True, related_name='resultaattypes',  # TODO needs a better related name
+        help_text=_(
+            'Informatieobjecten van een ZAAKINFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE waarvan, op grond van '
+            'resultaten van een RESULTAATTYPE bij dat ZAAKTYPE, de archiveringskenmerken afwijken van de '
+            'archiveringskenmerken van het ZAAKTYPE.'))
     heeft_verplichte_zot = models.ManyToManyField(
         'datamodel.ZaakObjectType', verbose_name=_('heeft verplichte'), blank=True, help_text=_(
             'De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit ZAAKTYPE voordat een '
             'resultaat van dit RESULTAATTYPE kan worden gezet.'),
     )
-    # heeft_verplichte_ziot = models.ManyToManyField(  # does not have a mnemonic, I choose 'ziot' here
-    #     'datamodel.ZaakInformatieObjectType', verbose_name=_(''), blank=True, help_text=_(
-    #         'De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit '
-    #         'ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet.')
-    # )
+    heeft_verplichte_ziot = models.ManyToManyField(  # does not have a mnemonic, I choose 'ziot' here
+        'datamodel.ZaakInformatieObjectType', verbose_name=_(''), blank=True, related_name='resultaattypen',  # TODO needs a better related name
+        help_text=_(
+            'De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit '
+            'ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet.')
+    )
     heeft_voor_brondatum_archiefprocedure_relevante = models.ForeignKey(
         'datamodel.Eigenschap', verbose_name=_('heeft voor brondatum archiefprocedure relevante'), blank=True, null=True,
         help_text=_('De EIGENSCHAP die bepalend is voor het moment waarop de Archiefactietermijn start voor een ZAAK '
