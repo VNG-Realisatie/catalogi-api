@@ -56,7 +56,6 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
                 raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
 
 
-# TODO: voor beide ArrayFields (trefwoord en model) check of de ArrayField leeg mag zijn. En mogelijk verander naar een m2m met een apart model
 class InformatieObjectType(GeldigheidMixin, models.Model):
     """
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
@@ -107,9 +106,6 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid informatieobjecttype’.
         - De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
         """
-        # TODO: Zaak heeft relevant InformatieObjectType, de inverse relatie moet hier worden gebruikt om de versie
-        # datum van de gerelateerde zaak te gebruiken. Mogelijk willen we die relatie alsnog op dit mogel zetten, zodat
-        # we afdwingen dat een InformatieObjectType altijd een ZaakType heeft.
         if self.datum_einde_geldigheid:
             datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
             datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)

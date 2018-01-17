@@ -278,7 +278,6 @@ class ZaakType(GeldigheidMixin, models.Model):
     verlengingstermijn = models.PositiveSmallIntegerField(
         _('verlengingstermijn'), validators=[MaxValueValidator(999)], help_text=_(
             'De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.'))
-    # TODO: array can be empty
     trefwoord = ArrayField(models.CharField(_('trefwoord'), max_length=30, help_text=_(
         'Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.')))
     # TODO [KING]: ?? waardenverzameling: De classificatiecode in het gehanteerde archiveringsclassificatiestelsel, gevolgd door een spatie en –
@@ -290,15 +289,16 @@ class ZaakType(GeldigheidMixin, models.Model):
     vertrouwelijkheidaanduiding = models.CharField(
         _('vertrouwelijkheidaanduiding'), max_length=20, choices=VertrouwelijkheidAanduiding.choices, help_text=_(
             'Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn.'))
-    # TODO: kan de waardenverzameling worden afgedwongen?:
+    # TODO [KING]: waardenverzameling heeft de volgende regel, momenteel valideren we hier niets, maar wellicht kan het wel:
     # Indien het om een zaaktype in een catalogus voor een specifieke organisatie gaat, dan de naam van een Organisatorische eenheid of Medewerker overeenkomstig het RGBZ.
+    # Hoe weten we of een catalogus van een specifieke organisatie is? Als we Catalogus.contactpersoon_beheer_naam gebruiken dan is dit
+    # veld overbodig want dan gebruiken we gewoon ZaakType.maakt_deel_uit_van.contactpersoon_beheer_naam
     verantwoordelijke = models.CharField(_('verantwoordelijke'), max_length=50, help_text=_(
         'De (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE.'))
     publicatie_indicatie = models.CharField(_('publicatie indicatie'), max_length=1, choices=JaNee.choices, help_text=_(
         'Aanduiding of (het starten van) een ZAAK van AN1 dit ZAAKTYPE gepubliceerd moet worden.'))
     publicatietekst = models.CharField(_('publicatietekst'), max_length=1000, blank=True, null=True, help_text=_(
         'De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.'))
-    # TODO: array field can be empty
     verantwoordingsrelatie = ArrayField(models.CharField(
         _('verantwoordingsrelatie'), max_length=40, blank=True, null=True,
         help_text=_('De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording.')))

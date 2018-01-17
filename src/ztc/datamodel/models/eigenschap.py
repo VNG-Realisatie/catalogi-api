@@ -32,9 +32,6 @@ class EigenschapSpecificatie(models.Model):
         'Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd.'))
     kardinaliteit = models.CharField(_('kardinaliteit'), max_length=3, validators=[validate_kardinaliteit], help_text=_(
         'Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE.'))
-
-    # waardenverzameling dient beheert te worden in de admin, misschien is een apart model wenselijker dan een ArrayField?
-    # TODO: check if blank=True, null=True is needed
     waardenverzameling = ArrayField(models.CharField(_('waardenverzameling'), max_length=100, help_text=_('Een waarde die deze EIGENSCHAP kan hebben.')))
 
     class Meta:

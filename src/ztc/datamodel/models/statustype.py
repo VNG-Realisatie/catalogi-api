@@ -66,7 +66,9 @@ class StatusType(GeldigheidMixin, models.Model):
     toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
         'Een eventuele toelichting op dit STATUSTYPE.'))
 
-    # TODO: er is een regel voor deze relatie
+    # TODO: deze relatie is gedefinieerd op RolType en heeft de volgende regel:
+    #  De relatiesoort ontstaat en eindigt alleen (materiële historie) op een datum die gelijk is resp. een dag
+    # ligt voor een Versiedatum van het gerelateerd zaaktype.er is een regel voor deze relatie
     roltypen = models.ManyToManyField(
         'datamodel.RolType', verbose_name=_('roltypen'), related_name='mag_zetten',
         help_text=_('De STATUSTYPEn die een betrokkene in een rol van dit ROLTYPE mag zetten.'))

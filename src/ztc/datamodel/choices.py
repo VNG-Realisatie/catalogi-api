@@ -3,6 +3,14 @@ from django.utils.translation import ugettext_lazy as _
 from djchoices import ChoiceItem, DjangoChoices
 
 
+# TODO [KING]: waardenverzameling nemen we letterlijk over. Dit betekend dat we onder andere de
+# volgende waarden verwachten (en kleine afwijking hiervan zal dus niet valideren):
+# voor Eigenschap.formaat: 'datum/tijd (jjjjmmdduummss)' dus inclusief het deel tussen haakjes
+# voor ZaakType.vertrouwelijkheidsaanduiding: 'ZEER GEHEIM' (dus geheel in hoofdletters met spatie)
+# voor ResultaatType.archiefnominatie: 'Blijvend bewaren' (alleen eerste is hoofdletter en een spatie)
+# voor ResultaatType.brondatum_archiefprocedure: 'afgehandeld' dus geheel met kleine letters
+# voor RolType.roltypeomschrijving_generiek: 'Zaakcoördinator' (met umlaut/trema)
+
 class JaNee(DjangoChoices):
     ja = ChoiceItem('J', _('Ja'))
     nee = ChoiceItem('N', _('Nee'))
@@ -11,43 +19,42 @@ class JaNee(DjangoChoices):
 class FormaatChoices(DjangoChoices):
     tekst = ChoiceItem('tekst', _('tekst'))
     getal = ChoiceItem('getal', _('getal'))
-    datum = ChoiceItem('datum', _('datum (jjjjmmdd)'))
-    datum_tijd = ChoiceItem('datum_tijd', _('datum (jjjjmmdduummss)'))
+    datum = ChoiceItem('datum (jjjjmmdd)', _('datum'))
+    datum_tijd = ChoiceItem('datum/tijd (jjjjmmdduummss)', _('datum/tijd'))
 
 
-# TODO: waardenverzameling bevat bijv. 'ZEER GEHEIM', dus 'zeer_geheim' is een verkeerd gekozen value. Geldt ook voor andere Choices..
 class VertrouwelijkheidAanduiding(DjangoChoices):
-    zeer_geheim = ChoiceItem('zeer_geheim', _('zeer geheim'))
-    geheim = ChoiceItem('geheim', _('geheim'))
-    confidentieel = ChoiceItem('confidentieel', _('confidentieel'))
-    vertrouwelijk = ChoiceItem('vertrouwelijk', _('vertrouwelijk'))
-    zaakvertrouwelijk = ChoiceItem('zaakvertrouwelijk', _('zaakvertrouwelijk'))
-    intern = ChoiceItem('intern', _('intern'))
-    beperkt_openbaar = ChoiceItem('beperkt_openbaar', _('beperkt openbaar'))
-    openbaar = ChoiceItem('openbaar', _('openbaar'))
+    zeer_geheim = ChoiceItem('ZEER GEHEIM', _('zeer geheim'))
+    geheim = ChoiceItem('GEHEIM', _('geheim'))
+    confidentieel = ChoiceItem('CONFIDENTIEEL', _('confidentieel'))
+    vertrouwelijk = ChoiceItem('VERTROUWELIJK', _('vertrouwelijk'))
+    zaakvertrouwelijk = ChoiceItem('ZAAKVERTROUWELIJK', _('zaakvertrouwelijk'))
+    intern = ChoiceItem('INTERN', _('intern'))
+    beperkt_openbaar = ChoiceItem('BEPERKT OPENBAAR', _('beperkt openbaar'))
+    openbaar = ChoiceItem('OPENBAAR', _('openbaar'))
 
 
 class ArchiefNominaties(DjangoChoices):
-    blijvend_bewaren = ChoiceItem('blijvend_bewaren', _('blijvend bewaren'))
+    blijvend_bewaren = ChoiceItem('Blijvend bewaren', _('blijvend bewaren'))
     vernietigen = ChoiceItem('vernietigen', _('vernietigen'))
 
 
 class ArchiefProcedure(DjangoChoices):
     afgehandeld = ChoiceItem('afgehandeld', _('afgehandeld'))
-    ingangsdatum_besluit = ChoiceItem('ingangsdatum_besluit', _('ingangsdatum besluit'))
-    vervaldatum_besluit = ChoiceItem('vervaldatum_besluit', _('vervaldatum besluit'))
+    ingangsdatum_besluit = ChoiceItem('ingangsdatum besluit', _('ingangsdatum besluit'))
+    vervaldatum_besluit = ChoiceItem('vervaldatum besluit', _('vervaldatum besluit'))
     eigenschap = ChoiceItem('eigenschap', _('eigenschap'))
-    ander_datumkenmerk = ChoiceItem('ander_datumkenmerk', _('ander datumkenmerk'))
+    ander_datumkenmerk = ChoiceItem('ander datumkenmerk', _('ander datumkenmerk'))
 
 
 class RolTypeOmschrijving(DjangoChoices):
-    adviseur = ChoiceItem('adviseur', _('adviseur'))  # Kennis in dienst stellen van de behandeling van (een deel van) een zaak.
-    behandelaar = ChoiceItem('behandelaar', _('behandelaar'))  # De vakinhoudelijke behandeling doen van (een deel van) een zaak.
-    belanghebbende = ChoiceItem('belanghebbende', _('belanghebbende'))  # Vanuit eigen en objectief belang rechtstreeks betrokken zijn bij de behandeling en/of de uitkomst van een zaak.
-    beslisser = ChoiceItem('beslisser', _('beslisser'))  # Nemen van besluiten die voor de uitkomst van een zaak noodzakelijk zijn.
-    initiator = ChoiceItem('initiator', _('initiator'))  # Aanleiding geven tot de start van een zaak ..
-    klantcontacter = ChoiceItem('klantcontacter', _('klantcontacter'))  # Het eerste aanspreekpunt zijn voor vragen van burgers en bedrijven ..
-    zaakcoordinator = ChoiceItem('zaakcoordinator', _('zaakcoördinator'))  # Er voor zorg dragen dat de behandeling van de zaak in samenhang uitgevoerd wordt conform de daarover gemaakte afspraken.
+    adviseur = ChoiceItem('Adviseur', _('adviseur'))  # Kennis in dienst stellen van de behandeling van (een deel van) een zaak.
+    behandelaar = ChoiceItem('Behandelaar', _('behandelaar'))  # De vakinhoudelijke behandeling doen van (een deel van) een zaak.
+    belanghebbende = ChoiceItem('Belanghebbende', _('belanghebbende'))  # Vanuit eigen en objectief belang rechtstreeks betrokken zijn bij de behandeling en/of de uitkomst van een zaak.
+    beslisser = ChoiceItem('Beslisser', _('beslisser'))  # Nemen van besluiten die voor de uitkomst van een zaak noodzakelijk zijn.
+    initiator = ChoiceItem('Initiator', _('initiator'))  # Aanleiding geven tot de start van een zaak ..
+    klantcontacter = ChoiceItem('Klantcontacter', _('klantcontacter'))  # Het eerste aanspreekpunt zijn voor vragen van burgers en bedrijven ..
+    zaakcoordinator = ChoiceItem('Zaakcoördinator', _('zaakcoördinator'))  # Er voor zorg dragen dat de behandeling van de zaak in samenhang uitgevoerd wordt conform de daarover gemaakte afspraken.
 
 
 class ObjectTypen(DjangoChoices):

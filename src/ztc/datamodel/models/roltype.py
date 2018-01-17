@@ -35,7 +35,6 @@ class RolType(GeldigheidMixin, models.Model):
     """
     roltypeomschrijving = models.CharField(_('roltypeomschrijving'), max_length=20, help_text=_(
         'Omschrijving van de aard van de ROL.'))
-    # TODO: er is een regel voor omschrijving generiek, deze is er ook voor vele andere modellen/velden
     roltypeomschrijving_generiek = models.CharField(
         _('roltypeomschrijving generiek'), max_length=20, choices=RolTypeOmschrijving.choices,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van de ROL.'))
