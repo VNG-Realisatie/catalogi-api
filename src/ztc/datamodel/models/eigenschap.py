@@ -193,6 +193,8 @@ class Eigenschap(GeldigheidMixin, models.Model):
         - specificatie van eigenschap, of
         - referentie naar eigenschap
         """
+        super().clean()
+
         if bool(self.specificatie_van_eigenschap) ^ bool(self.referentie_naar_eigenschap):  # xor
             raise ValidationError(_('Één van twee groepen attributen is verplicht: specificatie van eigenschap of referentie naar eigenschap'))
 
