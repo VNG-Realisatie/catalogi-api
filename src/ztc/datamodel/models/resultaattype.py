@@ -38,10 +38,10 @@ class ResultaatType(GeldigheidMixin, models.Model):
     deze uitzonderingsgevallen te documenteren.
     """
     resultaattypeomschrijving = models.CharField(
-        _('resultaattypeomschrijving'), max_length=20,
+        _('omschrijving'), max_length=20,
         help_text=_('Omschrijving van de aard van resultaten van het RESULTAATTYPE.'))
     resultaattypeomschrijving_generiek = models.CharField(
-        _('resultaattypeomschrijving generiek'), max_length=20,
+        _('omschrijving generiek'), max_length=20,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE.'))
     # TODO [KING]: waardeverzameling is de aanduidingen van de passages cq. klassen in de gehanteerde selectielijst.
     selectielijstklasse = models.CharField(
@@ -73,7 +73,8 @@ class ResultaatType(GeldigheidMixin, models.Model):
             'resultaat van dit RESULTAATTYPE kan worden gezet.'),
     )
     heeft_verplichte_ziot = models.ManyToManyField(  # does not have a mnemonic, I choose 'ziot' here
-        'datamodel.ZaakInformatieObjectType', verbose_name=_(''), blank=True, related_name='resultaattypen',  # TODO needs a better related name
+        'datamodel.ZaakInformatieObjectType', verbose_name=_('heeft verplichte zaakinformatie objecttype'),
+        blank=True, related_name='resultaattypen',  # TODO needs a better related name
         help_text=_(
             'De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit '
             'ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet.')

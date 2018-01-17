@@ -237,13 +237,13 @@ class ZaakType(GeldigheidMixin, models.Model):
     respectievelijk gerelateerde zaken.
     """
     zaaktype_identificatie = models.PositiveIntegerField(  # N5, integer with max_length of 5
-        _('zaaktype identificatie'), validators=[MaxValueValidator(99999)], help_text=_(
+        _('identificatie'), validators=[MaxValueValidator(99999)], help_text=_(
             'Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.'))
-    zaaktype_omschrijving = models.CharField(_('zaaktype omschrijving'), max_length=80, help_text=_(
+    zaaktype_omschrijving = models.CharField(_('omschrijving'), max_length=80, help_text=_(
         'Omschrijving van de aard van ZAAKen van het ZAAKTYPE.'))
     # TODO [KING]: waardenverzameling zoals vastgelegt in CATALOGUS, wat is deze waardeverzameling dan?
     zaaktype_omschrijving_generiek = models.CharField(
-        _('zaaktype omschrijving generiek'), max_length=80, blank=True, null=True, help_text=_(
+        _('omschrijving generiek'), max_length=80, blank=True, null=True, help_text=_(
             'Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE'))
     # TODO [KING]: waardenverzameling zie Zaaktypecatalogus, is dat de catalogus die bij dit zaaktype hoort? Wat is de categorie dan?
     zaakcategorie = models.CharField(_('zaakcategorie'), max_length=40, blank=True, null=True, help_text=_(

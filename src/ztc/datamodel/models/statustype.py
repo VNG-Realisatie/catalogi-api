@@ -43,10 +43,10 @@ class StatusType(GeldigheidMixin, models.Model):
     individuele zaak de statussen te plannen maar om geïnteresseerden informatie te verschaffen
     over de termijn waarop normaliter een volgende status bereikt wordt.
     """
-    statustype_omschrijving = models.CharField(_('statustype omschrijving'), max_length=80, help_text=_(
+    statustype_omschrijving = models.CharField(_('omschrijving'), max_length=80, help_text=_(
         'Een korte, voor de initiator van de zaak relevante, omschrijving van de aard van de STATUS van zaken van een ZAAKTYPE.'))
     statustype_omschrijving_generiek = models.CharField(
-        _('statustype omschrijving generiek'), max_length=80, blank=True, null=True,
+        _('omschrijving generiek'), max_length=80, blank=True, null=True,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van STATUSsen van het STATUSTYPE'))
     # waardenverzameling is 0001 - 9999, omdat int('0001') == 1 als PositiveSmallIntegerField
     statustypevolgnummer = models.PositiveSmallIntegerField(

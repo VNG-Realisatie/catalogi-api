@@ -33,10 +33,10 @@ class RolType(GeldigheidMixin, models.Model):
     specifieke benamingen. Waar gesproken wordt van ‘zaak’ bedoelen we zowel ‘hoofdzaak’ als
     ‘deelzaak’.
     """
-    roltypeomschrijving = models.CharField(_('roltypeomschrijving'), max_length=20, help_text=_(
+    roltypeomschrijving = models.CharField(_('omschrijving'), max_length=20, help_text=_(
         'Omschrijving van de aard van de ROL.'))
     roltypeomschrijving_generiek = models.CharField(
-        _('roltypeomschrijving generiek'), max_length=20, choices=RolTypeOmschrijving.choices,
+        _('omschrijving generiek'), max_length=20, choices=RolTypeOmschrijving.choices,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van de ROL.'))
     # TODO: soort_betrokkene heeft kardinaliteit 1 - N, dus de ArrayField moet minsten 1 item afwdingen
     soort_betrokkene = ArrayField(models.CharField(

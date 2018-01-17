@@ -175,7 +175,7 @@ class Eigenschap(GeldigheidMixin, models.Model):
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
         related_name='heeft_verplichte_eigenschap', help_text=_(
             'Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een STATUS van het STATUSTYPE kan worden gezet.'))
-    is_van = models.ForeignKey('datamodel.ZaakType', help_text=_(
+    is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
         'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'))
 
     class Meta:

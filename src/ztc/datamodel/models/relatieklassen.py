@@ -18,8 +18,9 @@ class ZaakInformatieobjectType(models.Model):
         'Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE '
         'bij zaken van het gerelateerde ZAAKTYPE.'))
 
-    informatie_object_type = models.ForeignKey('datamodel.InformatieObjectType')
-    zaaktype = models.ForeignKey('datamodel.Zaaktype')
+    informatie_object_type = models.ForeignKey('datamodel.InformatieObjectType',
+                                               verbose_name=_('informatie object type'))
+    zaaktype = models.ForeignKey('datamodel.Zaaktype', verbose_name=_('zaaktype'))
 
     status_type = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
@@ -54,8 +55,9 @@ class ZaakInformatieobjectTypeArchiefregime(models.Model):
             'met een resultaat van het RESULTAATTYPE, vernietigd of overgebracht (naar een archiefbewaarplaats) '
             'moeten worden.'))
 
-    zaak_informatieobject_type = models.ForeignKey('datamodel.ZaakInformatieobjectType')
-    resultaattype = models.ForeignKey('datamodel.ResultaatType')
+    zaak_informatieobject_type = models.ForeignKey('datamodel.ZaakInformatieobjectType',
+                                                   verbose_name=_('zaakinformatie object type'))
+    resultaattype = models.ForeignKey('datamodel.ResultaatType', verbose_name=_('resultaattype'))
 
     class Meta:
         mnemonic = 'ZIA'
@@ -72,5 +74,5 @@ class ZaakTypenRelatie(models.Model):
     toelichting = models.CharField(_('toelichting'), max_length=255, blank=True, null=True, help_text=_(
         'Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN.'))
 
-    zaaktype = models.ForeignKey('datamodel.ZaakType', related_name='zaaktype_relatie_van')
-    zaaktype = models.ForeignKey('datamodel.ZaakType', related_name='zaaktype_relatie_naar')
+    zaaktype_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('zaaktype van'), related_name='zaaktypenrelatie_van')
+    zaaktype_naar = models.ForeignKey('datamodel.ZaakType', verbose_name=_('zaaktype naar'), related_name='zaaktypenrelatie_naar')

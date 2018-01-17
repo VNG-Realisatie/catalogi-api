@@ -23,10 +23,10 @@ class BesluitType(GeldigheidMixin, models.Model):
     monumentensubsidie.
     """
     besluittype_omschrijving = models.CharField(
-        _('besluittype omschrijving'), max_length=80, blank=True, null=True,
+        _('omschrijving'), max_length=80, blank=True, null=True,
         help_text=_('Omschrijving van de aard van BESLUITen van het BESLUITTYPE.'))
     besluittype_omschrijving_generiek = models.CharField(
-        _('besluittype omschrijving generiek'), max_length=80, blank=True, null=True,
+        _('omschrijving generiek'), max_length=80, blank=True, null=True,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van BESLUITen van het BESLUITTYPE'))
     # TODO [KING]: waardenverzameling gebaseerd op de AWB, wat betekend dat?
     besluitcategorie = models.CharField(

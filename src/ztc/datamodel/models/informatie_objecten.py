@@ -25,16 +25,16 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         _('informatieobjecttype omschrijving generiek'), max_length=80,
         help_text=_('Algemeen gehanteerde omschrijving van het type informatieobject.'))
     definitie_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('definitie informatieobjecttype omschrijving generiek'), max_length=255,
+        _('definitie'), max_length=255,
         help_text=_('Nauwkeurige beschrijving van het generieke type informatieobject'))
     herkomst_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('herkomst informatieobjecttype omschrijving generiek'), max_length=12,
+        _('herkomst'), max_length=12,
         help_text=_('De naam van de waardenverzameling, of van de beherende organisatie daarvan, waaruit de waarde is overgenomen.'))
     hierarchie_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('hierarchie informatieobjecttype omschrijving generiek'), max_length=80,
+        _('hierarchie'), max_length=80,
         help_text=_('De plaats in de rangorde van het informatieobjecttype.'))
     opmerking_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('opmerking informatieobjecttype omschrijving generiek'), max_length=255, blank=True, null=True,
+        _('opmerking'), max_length=255, blank=True, null=True,
         help_text=_('Zinvolle toelichting bij het informatieobjecttype'))
 
     class Meta:
@@ -63,16 +63,16 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
     Unieke aanduiding van CATALOGUS in combinatie met Informatieobjecttype-omschrijving.
     """
     informatieobjecttype_omschrijving = models.CharField(
-        _('informatieobjecttype omschrijving'), max_length=80,
+        _('omschrijving'), max_length=80,
         help_text=_('Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
     informatieobjecttype_omschrijving_generiek = models.ForeignKey(
-        'datamodel.InformatieObjectTypeOmschrijvingGeneriek', verbose_name=_('informatieobjecttype omschrijving generiek'),
+        'datamodel.InformatieObjectTypeOmschrijvingGeneriek', verbose_name=_('omschrijving generiek'),
         blank=True, null=True, help_text=_('Algemeen gehanteerde omschrijving van het INFORMATIEOBJECTTYPE.'))
     informatieobjectcategorie = models.CharField(
-        _('informatieobjectcategorie'), max_length=80,
+        _('categorie'), max_length=80,
         help_text=_('Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
     informatieobjecttypetrefwoord = ArrayField(models.CharField(
-        _('informatieobjecttypetrefwoord'), max_length=30,
+        _('trefwoord'), max_length=30,
         help_text=_('Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden gekarakteriseerd.')))
     vertrouwelijkheidaanduiding = models.CharField(
         _('vertrouwelijkheidaanduiding'), max_length=20, blank=True, null=True, choices=VertrouwelijkheidAanduiding.choices,
@@ -83,7 +83,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
 
-    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('catalogus'),
+    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
                                            help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.'))
 
     zaaktypes = models.ManyToManyField(
