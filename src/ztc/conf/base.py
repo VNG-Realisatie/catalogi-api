@@ -41,12 +41,6 @@ INSTALLED_APPS = [
     # 'django.contrib.humanize',
     # 'django.contrib.sitemaps',
 
-    # django-admin-tools
-    # 'admin_tools',
-    # 'admin_tools.theming',
-    # 'admin_tools.menu',
-    # 'admin_tools.dashboard',
-
     # External applications.
     'axes',
     'sniplates',
@@ -54,8 +48,10 @@ INSTALLED_APPS = [
     'compat',  # Part of hijack
     'hijack_admin',
 
+    'oauth2_provider',
+    'corsheaders',
     'rest_framework',
-    'rest_framework_serializer_extensions',
+    'rest_framework_swagger',
     'drf_openapi',
 
     # Project applications.
@@ -74,6 +70,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    'ztc.api.middleware.APIVersionHeaderMiddleware'
 ]
 
 ROOT_URLCONF = 'ztc.urls'
@@ -300,8 +299,7 @@ AXES_BEHIND_REVERSE_PROXY = True  # Default: False (we are typically using Nginx
 AXES_ONLY_USER_FAILURES = False  # Default: False (you might want to block on username rather than IP)
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = False  # Default: False (you might want to block on username and IP)
 
-
-
+# Django-Hijack
 HIJACK_LOGIN_REDIRECT_URL = '/'
 HIJACK_LOGOUT_REDIRECT_URL = reverse_lazy('admin:accounts_user_changelist')
 HIJACK_REGISTER_ADMIN = False
@@ -311,7 +309,16 @@ HIJACK_ALLOW_GET_REQUESTS = True
 
 DATUM_FORMAT = "%Y%m%d"  # Datum (jjjjmmdd)
 
+# Django-OAuth-Toolkit
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+    }
+}
 
+# Django REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -322,21 +329,28 @@ REST_FRAMEWORK = {
         # 'rest_framework.parsers.FormParser',
         # 'rest_framework.parsers.MultiPartParser'
     ),
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework.authentication.SessionAuthentication',
-    #     'rest_framework.authentication.BasicAuthentication'
-    # ),
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.AllowAny',
-    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication'
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
+        # 'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.AllowAny',
+    ),
     # 'DEFAULT_THROTTLE_CLASSES': (),
     # 'DEFAULT_CONTENT_NEGOTIATION_CLASS': 'rest_framework.negotiation.DefaultContentNegotiation',
     # 'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     #
     # # Generic view behavior
-    # 'DEFAULT_PAGINATION_CLASS': None,
-    # 'DEFAULT_FILTER_BACKENDS': (),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
     #
     # # Schema
     # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
@@ -349,11 +363,11 @@ REST_FRAMEWORK = {
     # 'NUM_PROXIES': None,
     #
     # # Pagination
-    # 'PAGE_SIZE': None,
+    'PAGE_SIZE': 100,
     #
     # # Filtering
-    # 'SEARCH_PARAM': 'search',
-    # 'ORDERING_PARAM': 'ordering',
+    'SEARCH_PARAM': 'zoek', # 'search',
+    'ORDERING_PARAM': 'sorteer', # 'ordering',
     #
     # Versioning
     'DEFAULT_VERSION': '1',
@@ -412,3 +426,7 @@ REST_FRAMEWORK = {
     #     'destroy': 'delete'
     # },
 }
+
+
+# Django-CORS-middleware
+CORS_ORIGIN_ALLOW_ALL = True

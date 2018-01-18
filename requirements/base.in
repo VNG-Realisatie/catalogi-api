@@ -15,5 +15,10 @@ django-redis
 django_admin_index
 
 djangorestframework
-djangorestframework-serializer-extensions
 drf_openapi
+django-filter
+drf-nested-routers
+drf-flex-fields
+django-oauth-toolkit
+django-cors-middleware
+requests-oauthlib
