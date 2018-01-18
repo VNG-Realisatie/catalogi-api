@@ -2,7 +2,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from djchoices import ChoiceItem, DjangoChoices
 
-
 # TODO [KING]: waardenverzameling nemen we letterlijk over. Dit betekend dat we onder andere de
 # volgende waarden verwachten (en kleine afwijking hiervan zal dus niet valideren):
 # voor Eigenschap.formaat: 'datum/tijd (jjjjmmdduummss)' dus inclusief het deel tussen haakjes

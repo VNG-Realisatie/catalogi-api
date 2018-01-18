@@ -6,7 +6,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ...utils.stuff_date import parse_onvolledige_datum
 from ..choices import FormaatChoices
 from ..validators import (
     validate_kardinaliteit, validate_letters_numbers_underscores,
@@ -195,13 +194,13 @@ class Eigenschap(GeldigheidMixin, models.Model):
         if bool(self.specificatie_van_eigenschap) ^ bool(self.referentie_naar_eigenschap):  # xor
             raise ValidationError(_('Één van twee groepen attributen is verplicht: specificatie van eigenschap of referentie naar eigenschap'))
 
-        if self.datum_begin_geldigheid != self.is_van.versiedatum:
+        if self.datum_begin_geldigheid_date != self.is_van.versiedatum_date:
             raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
 
         if self.datum_einde_geldigheid:
-            datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
-            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
-            versiedatum = parse_onvolledige_datum(self.is_van.versiedatum)
+            datum_begin = self.datum_begin_geldigheid_date
+            datum_einde = self.datum_einde_geldigheid_date
+            versiedatum = self.is_van.versiedatum_date
 
             if datum_einde < datum_begin:
                 raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))

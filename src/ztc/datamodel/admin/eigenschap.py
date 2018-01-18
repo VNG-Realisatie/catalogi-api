@@ -8,8 +8,8 @@ from .mixins import GeldigheidAdminMixin
 @admin.register(Eigenschap)
 class EigenschapAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
     # List
-    list_display = ('eigenschapnaam', )  # Add is_van
-    # list_filter = ('rsin', )  # Add is_van
+    list_display = ('eigenschapnaam', 'is_van')
+    list_filter = ('eigenschapnaam',)
     search_fields = (
         'eigenschapnaam',
         'definitie',
@@ -27,6 +27,7 @@ class EigenschapAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
         }),
         (_('Relaties'), {
             'fields': (
+                'is_van',
                 'specificatie_van_eigenschap',
                 'referentie_naar_eigenschap',
             )

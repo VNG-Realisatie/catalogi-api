@@ -2,7 +2,9 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.datamodel.choices import AardRelatieChoices, ArchiefNominatieChoices, RichtingChoices
+from ztc.datamodel.choices import (
+    AardRelatieChoices, ArchiefNominatieChoices, RichtingChoices
+)
 
 
 class ZaakInformatieobjectType(models.Model):
