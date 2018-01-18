@@ -106,4 +106,4 @@ class StatusType(GeldigheidMixin, models.Model):
                     "'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
 
     def __str__(self):
-        return ''.format(self.is_van, self.statustypevolgnummer)
+        return '{} - {}'.format(self.is_van, self.statustypevolgnummer)

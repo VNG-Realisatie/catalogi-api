@@ -1,8 +1,13 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from ..models import ResultaatType
+from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
 from .mixins import GeldigheidAdminMixin
+
+
+class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):
+    model = ZaakInformatieobjectTypeArchiefregime
+    extra = 1
 
 
 @admin.register(ResultaatType)
@@ -28,10 +33,9 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
         }),
         (_('Relaties'), {
             'fields': (
-                # TODO: m2m with through model
-                # 'bepaalt_afwijkend_archiefregime_van',
                 'heeft_verplichte_zot',
                 'heeft_verplichte_ziot'
             )
         }),
     )
+    inlines = (ZaakInformatieobjectTypeArchiefregimeInline,)  # 'bepaalt_afwijkend_archiefregime_van',

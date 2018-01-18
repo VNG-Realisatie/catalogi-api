@@ -6,7 +6,7 @@ from ztc.utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 from ..models import (
     BronCatalogus, BronZaakType, Eigenschap, Formulier, ProductDienst,
     ReferentieProces, ResultaatType, RolType, StatusType, ZaakObjectType,
-    ZaakType
+    ZaakType, ZaakTypenRelatie
 )
 from .eigenschap import EigenschapAdmin
 from .mixins import GeldigheidAdminMixin
@@ -73,6 +73,12 @@ class ResultaatTypeInline(EditInlineAdminMixin, admin.TabularInline):
     fk_name = 'is_relevant_voor'
 
 
+class ZaakTypenRelatieInline(admin.TabularInline):
+    model = ZaakTypenRelatie
+    fk_name = 'zaaktype_van'
+    extra = 1
+
+
 @admin.register(ZaakType)
 class ZaakTypeAdmin(ListObjectActionsAdminMixin,GeldigheidAdminMixin, admin.ModelAdmin):
     list_display = ('zaaktype_omschrijving', 'zaakcategorie', 'maakt_deel_uit_van')
@@ -133,12 +139,11 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin,GeldigheidAdminMixin, admin.Mode
 
                 # m2m:
                 'is_deelzaaktype_van',
-                # TODO: has through model
-                # 'heeft_gerelateerd',
             )
         }),
     )
     inlines = (
+        ZaakTypenRelatieInline,  # heeft_gerelateerd
         StatusTypeInline, ZaakObjectTypeInline, RolTypeInline, EigenschapInline, ResultaatTypeInline,
     )
 
