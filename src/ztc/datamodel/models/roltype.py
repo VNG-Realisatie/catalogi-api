@@ -37,10 +37,10 @@ class RolType(GeldigheidMixin, models.Model):
     roltypeomschrijving_generiek = models.CharField(
         _('omschrijving generiek'), max_length=20, choices=RolTypeOmschrijving.choices,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van de ROL.'))
-    # TODO: soort_betrokkene heeft kardinaliteit 1 - N, dus de ArrayField moet minsten 1 item afwdingen
-    soort_betrokkene = ArrayField(models.CharField(
-        _('soort betrokkene'), max_length=80, help_text=_('De (soort) betrokkene die een rol van dit roltype mag uitoefenen.')))
-
+    soort_betrokkene = ArrayField(
+        models.CharField(_('soort betrokkene'), max_length=80),
+        help_text=_('De (soort) betrokkene die een rol van dit roltype mag uitoefenen. '
+                    '(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
     is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
         'De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit ZAAKTYPE.'))
 

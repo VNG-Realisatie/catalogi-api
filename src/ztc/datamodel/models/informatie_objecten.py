@@ -70,14 +70,20 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
     informatieobjectcategorie = models.CharField(
         _('categorie'), max_length=80,
         help_text=_('Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
-    informatieobjecttypetrefwoord = ArrayField(models.CharField(
-        _('trefwoord'), max_length=30,
-        help_text=_('Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden gekarakteriseerd.')))
+    informatieobjecttypetrefwoord = ArrayField(
+        models.CharField(_('trefwoord'), max_length=30),
+        blank=True, help_text=_('Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden '
+                                'gekarakteriseerd. (Gebruik een komma om waarden van elkaar te onderscheiden.)'))
     vertrouwelijkheidaanduiding = models.CharField(
-        _('vertrouwelijkheidaanduiding'), max_length=20, blank=True, null=True, choices=VertrouwelijkheidAanduiding.choices,
-        help_text=_('Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn.'))
-    model = ArrayField(models.URLField(_('model'), help_text=_(
-        'De URL naar het model / sjabloon dat wordt gebruikt voor de creatie van informatieobjecten van dit INFORMATIEOBJECTTYPE.')))
+        _('vertrouwelijkheidaanduiding'), max_length=20, blank=True, null=True,
+        choices=VertrouwelijkheidAanduiding.choices, help_text=_(
+            'Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de '
+            'openbaarheid bestemd zijn.'))
+    model = ArrayField(
+        models.URLField(_('model')),
+        blank=True, help_text=_(
+            'De URL naar het model / sjabloon dat wordt gebruikt voor de creatie van informatieobjecten '
+            'van dit INFORMATIEOBJECTTYPE. (Gebruik een komma om waarden van elkaar te onderscheiden.)'))
     toelichting = models.TextField(
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
