@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.relations import HyperlinkedIdentityField
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 
 from ...datamodel.models import Catalogus
@@ -9,6 +10,7 @@ from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 class CatalogusSerializer(FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer):
     # Example mapping to a different API field.
     # naam = serializers.ModelField(Catalogus._meta.get_field('contactpersoon_beheer_naam'))
+    url = HyperlinkedIdentityField(view_name='api:catalogus-detail')
 
     besluittypen = NestedHyperlinkedRelatedField(
         many=True,
@@ -21,7 +23,7 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, serializers.HyperlinkedMode
     class Meta:
         model = Catalogus
         fields = (
-            'id',
+            'url',
             'domein',
             'rsin',
             'contactpersoon_beheer_naam',

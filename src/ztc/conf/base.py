@@ -345,7 +345,7 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     #
     # # Generic view behavior
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
@@ -427,6 +427,9 @@ REST_FRAMEWORK = {
     # },
 }
 
+REST_FRAMEWORK_EXT = {
+    'PAGE_PARAM': 'pagina',
+}
 
 # Django-CORS-middleware
 CORS_ORIGIN_ALLOW_ALL = True

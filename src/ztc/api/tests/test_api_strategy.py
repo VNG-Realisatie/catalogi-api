@@ -543,3 +543,61 @@ class FilterSortSearchTests(APITestCase):
 
         self.assertTrue('results' in data)
         self.assertEqual(len(data['results']), 1)
+
+
+class PaginationTests(APITestCase):
+    """Section 2.6.8 of the DSO: API strategy"""
+
+    # TODO: This section of the DSO is very minimal and unclear.
+    # TODO: Implicit, the word "pagina" is used to indicate the page.
+    def setUp(self):
+        super().setUp()
+
+        # There will be 5 catalogs now.
+        catalogus_2 = Catalogus.objects.create(
+            domein=self.catalogus.domein, rsin='222222222')
+        catalogus_3 = Catalogus.objects.create(
+            domein=self.catalogus.domein, rsin='333333333')
+        catalogus_4 = Catalogus.objects.create(
+            domein=self.catalogus.domein, rsin='444444444')
+        catalogus_5 = Catalogus.objects.create(
+            domein=self.catalogus.domein, rsin='555555555')
+
+    def test_pagination_using_json_hal(self):
+        """DSO: API-46 (pagination using JSON+HAL)"""
+        from ztc.api.utils.pagination import HALPagination
+        HALPagination.page_size = 2
+
+        response = self.api_client.get('{}?pagina=2'.format(self.list_url))
+        self.assertEqual(response.status_code, 200)
+
+        expected_headers = {
+            'X-Total-Count': '5',
+            'X-Pagination-Count': '3',
+            'X-Pagination-Page': '2',
+            'X-Pagination-Limit': '2',
+        }
+
+        for header, value in expected_headers.items():
+            self.assertTrue(header in response)
+            self.assertEqual(response[header], value, header)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 2)
+
+        self.assertTrue('_links' in data)
+
+        expected_links = {
+            'self': 'http://testserver/api/v1/catalogussen/?pagina=2',
+            'first': 'http://testserver/api/v1/catalogussen/',
+            'prev': 'http://testserver/api/v1/catalogussen/',
+            'next': 'http://testserver/api/v1/catalogussen/?pagina=3',
+            'last': 'http://testserver/api/v1/catalogussen/?pagina=3',
+        }
+
+        links = data['_links']
+        for key, url in expected_links.items():
+            self.assertTrue(key in links)
+            self.assertEqual(links[key]['href'], url, key)
