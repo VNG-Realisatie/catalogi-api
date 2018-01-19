@@ -26,7 +26,7 @@ class CatalogusAPITestMixin(object):
     def setUp(self):
         super().setUp()
 
-        self.catalogus = Catalogus.objects.create(domein='ABCDE', rsin='000012345')
+        self.catalogus = Catalogus.objects.create(domein='ABCDE', rsin='000000001')
 
         self.list_url = reverse('api:catalogus-list', kwargs={'version': '1'})
         self.detail_url = reverse('api:catalogus-detail', kwargs={'version': '1', 'pk': self.catalogus.pk})

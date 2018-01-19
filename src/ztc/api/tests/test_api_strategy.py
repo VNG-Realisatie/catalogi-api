@@ -10,6 +10,7 @@ from rest_framework.settings import api_settings
 
 from oauth2_provider.models import AccessToken, Application
 
+from ...datamodel.models import Catalogus
 from .base import APITestCase, CatalogusAPITestMixin, ClientAPITestMixin
 
 
@@ -284,3 +285,261 @@ class VersioningAPITests(APITestCase):
     def test_deprecated_api_version_warning(self):
         """DSO: API-25 (deprecated API version warning)"""
         pass
+
+
+class UseJSONTests(APITestCase):
+    """Section 2.6.5 of the DSO: API strategy"""
+
+    def test_accept_and_return_json(self):
+        """DSO: API-26 (accept and return JSON)"""
+        response = self.api_client.get(self.list_url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response['content-type'], 'application/json')
+
+    @skip('Optional and currently not supported.')
+    def test_json_schema_support(self):
+        """DSO: API-27 (JSON-schema support)"""
+        pass
+
+    @skip('Optional and currently not supported.')
+    def test_content_negotiation_xml(self):
+        """DSO: API-28 (content negotiation XML)"""
+        pass
+
+    def test_content_negotiation_unsupported_format(self):
+        """DSO: API-28 (content negotiation unsupported format)"""
+        response = self.api_client.get(self.list_url, HTTP_ACCEPT='text/html')
+        self.assertEqual(response.status_code, 406)
+
+    @skip('This API is currently read-only.')
+    def test_content_type_header_is_required(self):
+        """DSO: API-29 (content type header is required)
+
+        Typically, this header is passed on POST/PUT/PATCH requests to indicate the body content type.
+        """
+        response = self.api_client.put(self.detail_url, '{}', content_type='text/html')
+        self.assertEqual(response.status_code, 415)
+
+    @expectedFailure
+    def test_camelcase_field_names(self):
+        """DSO: API-30 (camelCase field names)"""
+        # TODO: We deviate from this guideline and use snake case.
+        response = self.api_client.get(self.detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('contactpersoonBeheerNaam' in data)
+
+    def test_no_pretty_print(self):
+        """DSO: API-31 (no pretty print)"""
+        response = self.api_client.get(self.detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        raw_data = response.content.decode('utf-8')
+
+        self.assertFalse(' ' in raw_data)
+        self.assertFalse('\n' in raw_data)
+
+    def test_no_envelope(self):
+        """DSO: API-32 (no envelope)"""
+        # TODO: List resources do have envelopes, even suggested by DSO.
+        response = self.api_client.get(self.detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('contactpersoon_beheer_naam' in data)
+
+    @skip('This API is currently read-only.')
+    def test_content_type_json_is_supported(self):
+        """DSO: API-33 (content type application/json is supported)"""
+        response = self.api_client.patch(self.detail_url, '{}')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.api_client.put(self.detail_url, '{}')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.api_client.post(self.list_url, '{}')
+        self.assertEqual(response.status_code, 201)
+
+    @skip('This API is currently read-only.')
+    def test_content_type_x_is_not_supported(self):
+        """DSO: API-33 (content type application/x-www-form-urlencoded is not supported)"""
+        # TODO: This guideline contradicts OAuth2 standards...
+        response = self.api_client.patch(self.detail_url, '{}', content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 415)
+
+        response = self.api_client.put(self.detail_url, '{}', content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 415)
+
+        response = self.api_client.post(self.list_url, '{}', content_type='application/x-www-form-urlencoded')
+        self.assertEqual(response.status_code, 415)
+
+
+class FilterSortSearchTests(APITestCase):
+    """Section 2.6.6 of the DSO: API strategy"""
+    def setUp(self):
+        super().setUp()
+
+        self.other_catalogus = Catalogus.objects.create(
+            domein=self.catalogus.domein, rsin='999999999', contactpersoon_beheer_naam='John Doe')
+
+    def test_filter_on_single_field(self):
+        """DSO: API-34 (filter on single field)"""
+        # Filter on rsin
+        response = self.api_client.get('{}?rsin={}'.format(self.list_url, self.catalogus.rsin))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['rsin'], self.catalogus.rsin)
+
+        # Filter on domain
+        response = self.api_client.get('{}?domein={}'.format(self.list_url, self.catalogus.domein))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 2)
+
+    def test_filter_on_multiple_fields(self):
+        """DSO: API-34 (filter on multiple fields)"""
+
+        # Create an extra catalog to make sure it gets filtered out because of the different domain.
+        Catalogus.objects.create(domein='XXXXX', rsin=self.catalogus.rsin)
+
+        response = self.api_client.get('{}?rsin={}&domein={}'.format(self.list_url, self.catalogus.rsin, self.catalogus.domein))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['rsin'], self.catalogus.rsin)
+
+    def test_sort_query_param_is_called_sorteer(self):
+        """DSO: API-35 (sort query param is called sorteer)"""
+        # TODO: But why? expand is English...
+        self.assertEqual(api_settings.ORDERING_PARAM, 'sorteer')
+
+    def test_sort_ascending(self):
+        """DSO: API-35 (sort ascending)"""
+        response = self.api_client.get('{}?sorteer=rsin'.format(self.list_url))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 2)
+        self.assertEqual(data['results'][0]['rsin'], self.catalogus.rsin)
+        self.assertEqual(data['results'][1]['rsin'], self.other_catalogus.rsin)
+
+    def test_sort_descending(self):
+        """DSO: API-35 (sort descending)"""
+        response = self.api_client.get('{}?sorteer=-rsin'.format(self.list_url))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 2)
+        self.assertEqual(data['results'][0]['rsin'], self.other_catalogus.rsin)
+        self.assertEqual(data['results'][1]['rsin'], self.catalogus.rsin)
+
+    def test_search_query_param_is_called_zoek(self):
+        """DSO: API-36 (search query param is called zoek)"""
+        # TODO: But why? expand is English...
+        self.assertEqual(api_settings.SEARCH_PARAM, 'zoek')
+
+    def test_search_single_value(self):
+        """DSO: API-36 (search single value)"""
+        response = self.api_client.get('{}?zoek={}'.format(self.list_url, self.catalogus.rsin))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['rsin'], self.catalogus.rsin)
+
+    def test_search_partial_value(self):
+        """DSO: API-36 (search partial value)"""
+        # TODO: This should probably not work but should only work when using wildcards.
+
+        response = self.api_client.get('{}?zoek={}'.format(self.list_url, 'Jo'))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['rsin'], self.other_catalogus.rsin)
+
+    def test_search_multiple_values(self):
+        """DSO: API-36 (search multiple values)"""
+        response = self.api_client.get('{}?zoek={} {}'.format(self.list_url, 'John', self.other_catalogus.rsin))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(data['results'][0]['rsin'], self.other_catalogus.rsin)
+
+        # Another test to check whether it searching multiple values matches ALL search terms, and not just one.
+        response = self.api_client.get('{}?zoek={} {}'.format(self.list_url, 'Jane', self.other_catalogus.rsin))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 0)
+
+
+    def test_search_filter_and_sorting_combined(self):
+        """Combination of DSO: API-34, API-35, API-36"""
+
+        # There will be 4 catalogs now.
+        catalogus_3 = Catalogus.objects.create(
+            domein=self.catalogus.domein, rsin='111111111', contactpersoon_beheer_naam='Jane Doe')
+        catalogus_4 = Catalogus.objects.create(
+            domein=self.catalogus.domein, rsin='222222222', contactpersoon_beheer_naam='Jane Doe')
+
+        # All query parameters will filter it down to 2, that are ordered.
+        response = self.api_client.get('{}?domein={}&zoek={}&sorteer={}'.format(
+            self.list_url, self.catalogus.domein, 'Jane', 'rsin'))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 2)
+        self.assertEqual(data['results'][0]['rsin'], catalogus_3.rsin)
+        self.assertEqual(data['results'][1]['rsin'], catalogus_4.rsin)
+
+    @expectedFailure
+    def test_search_wildcard_star(self):
+        """DSO: API-37 (search wildcard star)"""
+        response = self.api_client.get('{}?zoek={}*'.format(self.list_url, self.other_catalogus.rsin[0:4]))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
+
+    @expectedFailure
+    def test_search_wildcard_question_mark(self):
+        """DSO: API-37 (search wildcard question mark)"""
+        response = self.api_client.get('{}?zoek={}??????'.format(self.list_url, self.other_catalogus.rsin[0:4]))
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
