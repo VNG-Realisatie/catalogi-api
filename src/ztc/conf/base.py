@@ -384,6 +384,7 @@ REST_FRAMEWORK = {
     #
     # # Exception handling
     # 'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+    'EXCEPTION_HANDLER': 'ztc.api.utils.exceptions.exception_handler',
     # 'NON_FIELD_ERRORS_KEY': 'non_field_errors',
     #
     # # Testing

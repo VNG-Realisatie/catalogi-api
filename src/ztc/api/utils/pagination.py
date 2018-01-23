@@ -1,9 +1,10 @@
 from collections import OrderedDict
 
 from django.conf import settings
+
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.utils.urls import replace_query_param, remove_query_param
+from rest_framework.utils.urls import remove_query_param, replace_query_param
 
 
 class HALPagination(PageNumberPagination):

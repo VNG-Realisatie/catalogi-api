@@ -6,9 +6,10 @@ from unittest import expectedFailure, skip, skipIf
 from django.test import LiveServerTestCase, TransactionTestCase
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.settings import api_settings
+from django.utils.translation import ugettext_lazy as _
 
 from oauth2_provider.models import AccessToken, Application
+from rest_framework.settings import api_settings
 
 from ...datamodel.models import Catalogus
 from .base import APITestCase, CatalogusAPITestMixin, ClientAPITestMixin
@@ -500,7 +501,6 @@ class FilterSortSearchTests(APITestCase):
         self.assertTrue('results' in data)
         self.assertEqual(len(data['results']), 0)
 
-
     def test_search_filter_and_sorting_combined(self):
         """Combination of DSO: API-34, API-35, API-36"""
 
@@ -545,11 +545,17 @@ class FilterSortSearchTests(APITestCase):
         self.assertEqual(len(data['results']), 1)
 
 
+class GeoTests(APITestCase):
+    """Section 2.6.7 of the DSO: API strategy"""
+    pass
+
+
 class PaginationTests(APITestCase):
     """Section 2.6.8 of the DSO: API strategy"""
 
     # TODO: This section of the DSO is very minimal and unclear.
-    # TODO: Implicit, the word "pagina" is used to indicate the page.
+    # TODO: Implicit, the word "pagina" is used to indicate the page but in contrast to "zoek", "expand", etc. it's
+    # not specified.
     def setUp(self):
         super().setUp()
 
@@ -563,11 +569,17 @@ class PaginationTests(APITestCase):
         catalogus_5 = Catalogus.objects.create(
             domein=self.catalogus.domein, rsin='555555555')
 
-    def test_pagination_using_json_hal(self):
-        """DSO: API-46 (pagination using JSON+HAL)"""
+        # Set page size to 2 items per page.
         from ztc.api.utils.pagination import HALPagination
+        self._old_page_size = HALPagination.page_size
         HALPagination.page_size = 2
 
+    def tearDown(self):
+        from ztc.api.utils.pagination import HALPagination
+        HALPagination.page_size = self._old_page_size
+
+    def test_pagination_using_json_hal(self):
+        """DSO: API-46 (pagination using JSON+HAL)"""
         response = self.api_client.get('{}?pagina=2'.format(self.list_url))
         self.assertEqual(response.status_code, 200)
 
@@ -601,3 +613,74 @@ class PaginationTests(APITestCase):
         for key, url in expected_links.items():
             self.assertTrue(key in links)
             self.assertEqual(links[key]['href'], url, key)
+
+
+class CachingTests(APITestCase):
+    """Section 2.6.9 of the DSO: API strategy"""
+
+    @skip('This API does not implement caching yet.')
+    def test_last_modified_response_header(self):
+        """DSO: API-47 (last modified response header)"""
+        pass
+
+    @skip('This API does not implement caching yet.')
+    def test_is_modified_since_request_header(self):
+        """DSO: API-47 (is modified since request header)"""
+        pass
+
+
+class RateLimitTests(APITestCase):
+    """Section 2.6.10 of the DSO: API strategy"""
+
+    @skip('This API does not implement rate limits yet.')
+    def test_rate_limit_response_header(self):
+        """DSO: API-49 (rate limit response header)"""
+        pass
+
+    @skip('This API does not implement rate limits yet.')
+    def test_limit_reached_status_code(self):
+        """DSO: API-49 (limit reached status code)"""
+        pass
+
+
+class ErrorHandlingTests(APITestCase):
+    """Section 2.6.11 of the DSO: API strategy"""
+
+    @skip('This API is currently read-only.')
+    def test_standard_json_error_response_400(self):
+        """DSO: API-50 (standard JSON error response 400)"""
+        response = self.api_client.patch(
+            self.detail_url, data=json.dumps({'domein': 'ABCDEFGH'}), content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_standard_json_error_response_401(self):
+        """DSO: API-50 (standard JSON error response 401)"""
+        response = self.client.get(self.detail_url)
+        self.assertEqual(response.status_code, 401)
+
+        data = response.json()
+
+        self.assertDictEqual(data, {
+            'type': 'NotAuthenticated',
+            'title': 'Unauthorized',
+            'status': 401,
+            'detail': _('Authentication credentials were not provided.'),
+            'instance': self.detail_url,
+        })
+
+    def test_standard_json_error_response_404(self):
+        """DSO: API-50 (standard JSON error response 404)"""
+        non_existing_detail_url = reverse('api:catalogus-detail', kwargs={'version': '1', 'pk': 0})
+
+        response = self.api_client.get(non_existing_detail_url)
+        self.assertEqual(response.status_code, 404)
+
+        data = response.json()
+
+        self.assertDictEqual(data, {
+            'type': 'Http404',
+            'title': 'Not Found',
+            'status': 404,
+            'detail': _('Not found.'),
+            'instance': non_existing_detail_url
+        })

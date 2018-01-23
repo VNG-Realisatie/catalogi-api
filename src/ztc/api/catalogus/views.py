@@ -1,5 +1,4 @@
 import coreapi
-
 from rest_flex_fields.views import FlexFieldsMixin
 from rest_framework import viewsets
 from rest_framework.schemas import AutoSchema
