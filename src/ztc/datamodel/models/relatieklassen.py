@@ -14,12 +14,8 @@ class ZaakInformatieobjectType(models.Model):
     Kenmerken van de relatie ZAAKTYPE heeft relevante INFORMATIEOBJECTTYPEn.
     """
     zaaktype = models.ForeignKey('datamodel.Zaaktype', verbose_name=_('zaaktype'))
-    status_type = models.ForeignKey(
-        'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
-        related_name='heeft_verplichte_zit', help_text=_(
-            'De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het STATUSTYPE gerelateerde ZAAKTYPE '
-            'waarvoor geldt dat deze verplicht aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE '
-            'voordat de status van dit STATUSTYPE kan worden gezet bij die zaak.'))
+    informatie_object_type = models.ForeignKey('datamodel.InformatieObjectType',
+                                               verbose_name=_('informatie object type'))
 
     volgnummer = models.IntegerField(
         _('volgnummer'), validators=[MaxValueValidator(999)], help_text=_(
@@ -28,8 +24,13 @@ class ZaakInformatieobjectType(models.Model):
         'Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE '
         'bij zaken van het gerelateerde ZAAKTYPE.'))
 
-    informatie_object_type = models.ForeignKey('datamodel.InformatieObjectType',
-                                               verbose_name=_('informatie object type'))
+    # this is the relation that is described on StatusType in the specification
+    status_type = models.ForeignKey(
+        'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
+        related_name='heeft_verplichte_zit', help_text=_(
+            'De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het STATUSTYPE gerelateerde ZAAKTYPE '
+            'waarvoor geldt dat deze verplicht aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE '
+            'voordat de status van dit STATUSTYPE kan worden gezet bij die zaak.'))
 
 
 class ZaakInformatieobjectTypeArchiefregime(models.Model):

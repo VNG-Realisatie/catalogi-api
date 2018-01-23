@@ -7,10 +7,4 @@ from .roltype import *  # noqa
 from .statustype import *  # noqa
 from .zaken import *  # noqa
 
-
-# TODO: through models moeten nog
-# ZaakInformatieobjectType
-# ZaakInformatieobjectTypeArchiefregime
-# ZaakTypenRelatie
-
 # TODO: datum begin geldigheid ALTIJD overnemen van het andere model in subfactories etc.

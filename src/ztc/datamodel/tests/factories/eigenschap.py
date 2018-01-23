@@ -1,6 +1,6 @@
 import factory
 
-from ...models import Eigenschap, EigenschapSpecificatie, EigenschapReferentie
+from ...models import Eigenschap, EigenschapReferentie, EigenschapSpecificatie
 from .zaken import ZaakTypeFactory
 
 

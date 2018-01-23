@@ -1,7 +1,10 @@
 import factory
 
-from ...models import InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek
+from ...models import (
+    InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek
+)
 from .catalogus import CatalogusFactory
+from .relatieklassen import ZaakInformatieobjectTypeFactory
 
 
 class InformatieObjectTypeOmschrijvingGeneriekFactory(factory.django.DjangoModelFactory):
@@ -21,11 +24,7 @@ class InformatieObjectTypeFactory(factory.django.DjangoModelFactory):
     maakt_deel_uit_van = factory.SubFactory(CatalogusFactory,
                                             # datum_begin_geldigheid=factory.SelfAttribute('.datum_begin_geldigheid')
                                             )
+    zaaktypes = factory.RelatedFactory(ZaakInformatieobjectTypeFactory, 'informatie_object_type')
 
     class Meta:
         model = InformatieObjectType
-
-    # TODO: this one is required and has a through model
-    # @factory.post_generation
-    # def zaaktypes(self, create, extracted, **kwargs):
-    #     ZaakTypeFactory()

@@ -1,8 +1,12 @@
 import factory
 
-from ztc.datamodel.models import ProductDienst, Formulier, ReferentieProces, BronCatalogus, BronZaakType, ZaakObjectType, ZaakType
-from .catalogus import CatalogusFactory
+from ztc.datamodel.models import (
+    BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
+    ZaakObjectType, ZaakType
+)
 
+from .catalogus import CatalogusFactory
+from .relatieklassen import ZaakTypenRelatieFactory
 
 ZAAKTYPEN = [
     'Melding behandelen',
@@ -60,19 +64,11 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     maakt_deel_uit_van = factory.SubFactory(CatalogusFactory)
     referentieproces = factory.SubFactory(ReferentieProcesFactory)
 
+    # this one is optional, if its added as below, it will keep adding related ZaakTypes (and reach max recursion depth)
+    # heeft_gerelateerd = factory.RelatedFactory(ZaakTypenRelatieFactory, 'zaaktype_van')
+
     class Meta:
         model = ZaakType
-
-    @factory.post_generation
-    def heeft_gerelateerd(self, create, extracted, **kwargs):
-        # optional M2M, do nothing when no arguments are passed
-        # TODO: through ZaakTypenRelatie
-        if not create:
-            return
-
-        if extracted:
-            for zaaktype in extracted:
-                self.heeft_gerelateerd.add(zaaktype)
 
     @factory.post_generation
     def is_deelzaaktype_van(self, create, extracted, **kwargs):

@@ -1,8 +1,8 @@
 import factory
 
 from ...models import CheckListItem, StatusType
-from .zaken import ZaakTypeFactory
 from .roltype import RolTypeFactory
+from .zaken import ZaakTypeFactory
 
 
 class CheckListItemFactory(factory.django.DjangoModelFactory):

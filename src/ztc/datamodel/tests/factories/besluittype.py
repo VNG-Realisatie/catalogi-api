@@ -1,9 +1,9 @@
 import factory
 
-from .catalogus import CatalogusFactory
-from .zaken import ZaakTypeFactory
-from .resultaattype import ResultaatTypeFactory
 from ...models import BesluitType
+from .catalogus import CatalogusFactory
+from .resultaattype import ResultaatTypeFactory
+from .zaken import ZaakTypeFactory
 
 
 class BesluitTypeFactory(factory.django.DjangoModelFactory):
