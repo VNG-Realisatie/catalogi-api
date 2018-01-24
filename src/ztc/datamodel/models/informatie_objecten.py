@@ -25,16 +25,16 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         _('informatieobjecttype omschrijving generiek'), max_length=80,
         help_text=_('Algemeen gehanteerde omschrijving van het type informatieobject.'))
     definitie_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('definitie informatieobjecttype omschrijving generiek'), max_length=255,
+        _('definitie'), max_length=255,
         help_text=_('Nauwkeurige beschrijving van het generieke type informatieobject'))
     herkomst_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('herkomst informatieobjecttype omschrijving generiek'), max_length=12,
+        _('herkomst'), max_length=12,
         help_text=_('De naam van de waardenverzameling, of van de beherende organisatie daarvan, waaruit de waarde is overgenomen.'))
     hierarchie_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('hierarchie informatieobjecttype omschrijving generiek'), max_length=80,
+        _('hierarchie'), max_length=80,
         help_text=_('De plaats in de rangorde van het informatieobjecttype.'))
     opmerking_informatieobjecttype_omschrijving_generiek = models.CharField(
-        _('opmerking informatieobjecttype omschrijving generiek'), max_length=255, blank=True, null=True,
+        _('opmerking'), max_length=255, blank=True, null=True,
         help_text=_('Zinvolle toelichting bij het informatieobjecttype'))
 
     class Meta:
@@ -56,7 +56,6 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
                 raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
 
 
-# TODO: voor beide ArrayFields (trefwoord en model) check of de ArrayField leeg mag zijn. En mogelijk verander naar een m2m met een apart model
 class InformatieObjectType(GeldigheidMixin, models.Model):
     """
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
@@ -64,16 +63,16 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
     Unieke aanduiding van CATALOGUS in combinatie met Informatieobjecttype-omschrijving.
     """
     informatieobjecttype_omschrijving = models.CharField(
-        _('informatieobjecttype omschrijving'), max_length=80,
+        _('omschrijving'), max_length=80,
         help_text=_('Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
     informatieobjecttype_omschrijving_generiek = models.ForeignKey(
-        'datamodel.InformatieObjectTypeOmschrijvingGeneriek', verbose_name=_('informatieobjecttype omschrijving generiek'),
+        'datamodel.InformatieObjectTypeOmschrijvingGeneriek', verbose_name=_('omschrijving generiek'),
         blank=True, null=True, help_text=_('Algemeen gehanteerde omschrijving van het INFORMATIEOBJECTTYPE.'))
     informatieobjectcategorie = models.CharField(
-        _('informatieobjectcategorie'), max_length=80,
+        _('categorie'), max_length=80,
         help_text=_('Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
     informatieobjecttypetrefwoord = ArrayField(models.CharField(
-        _('informatieobjecttypetrefwoord'), max_length=30,
+        _('trefwoord'), max_length=30,
         help_text=_('Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden gekarakteriseerd.')))
     vertrouwelijkheidaanduiding = models.CharField(
         _('vertrouwelijkheidaanduiding'), max_length=20, blank=True, null=True, choices=VertrouwelijkheidAanduiding.choices,
@@ -84,8 +83,13 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
 
-    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('catalogus'),
+    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
                                            help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.'))
+
+    zaaktypes = models.ManyToManyField(
+        'datamodel.Zaaktype', verbose_name=_('zaaktypes'), related_name='heeft_relevant_informatieobjecttype',
+        through='datamodel.ZaakInformatieobjectType', help_text=_(
+            'ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit INFORMATIEOBJECTTYPE'))
 
     class Meta:
         mnemonic = 'DCT'
@@ -102,9 +106,6 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid informatieobjecttype’.
         - De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
         """
-        # TODO: Zaak heeft relevant InformatieObjectType, de inverse relatie moet hier worden gebruikt om de versie
-        # datum van de gerelateerde zaak te gebruiken. Mogelijk willen we die relatie alsnog op dit mogel zetten, zodat
-        # we afdwingen dat een InformatieObjectType altijd een ZaakType heeft.
         if self.datum_einde_geldigheid:
             datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
             datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
@@ -112,3 +113,6 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
             if datum_einde < datum_begin:
                 raise ValidationError(_(
                     "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
+
+    def __str__(self):
+        return '{} - {}'.format(self.maakt_deel_uit_van, self.informatieobjecttype_omschrijving)

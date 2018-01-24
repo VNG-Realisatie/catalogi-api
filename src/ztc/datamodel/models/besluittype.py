@@ -1,7 +1,11 @@
+from datetime import timedelta
+
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from ztc.utils.stuff_date import parse_onvolledige_datum
 from ..choices import JaNee
 from .mixins import GeldigheidMixin
 
@@ -19,10 +23,10 @@ class BesluitType(GeldigheidMixin, models.Model):
     monumentensubsidie.
     """
     besluittype_omschrijving = models.CharField(
-        _('besluittype omschrijving'), max_length=80, blank=True, null=True,
+        _('omschrijving'), max_length=80, blank=True, null=True,
         help_text=_('Omschrijving van de aard van BESLUITen van het BESLUITTYPE.'))
     besluittype_omschrijving_generiek = models.CharField(
-        _('besluittype omschrijving generiek'), max_length=80, blank=True, null=True,
+        _('omschrijving generiek'), max_length=80, blank=True, null=True,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van BESLUITen van het BESLUITTYPE'))
     # TODO [KING]: waardenverzameling gebaseerd op de AWB, wat betekend dat?
     besluitcategorie = models.CharField(
@@ -54,6 +58,13 @@ class BesluitType(GeldigheidMixin, models.Model):
     wordt_vastgelegd_in = models.ManyToManyField(
         'datamodel.InformatieObjectType', verbose_name=_('informatieobjecttype'), blank=True,
         help_text=_('Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.'))
+    is_resultaat_van = models.ManyToManyField(
+        'datamodel.ResultaatType', verbose_name=_('is resultaat van'), related_name='leidt_tot', help_text=_(
+            '(inverse van:) Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE.'))
+
+    zaaktypes = models.ManyToManyField(
+        'datamodel.Zaaktype', verbose_name=_('zaaktypes'), related_name='heeft_relevant_besluittype',
+        help_text=_('ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE'))
 
     class Meta:
         mnemonic = 'BST'
@@ -68,5 +79,25 @@ class BesluitType(GeldigheidMixin, models.Model):
         return '{} - {}'.format(self.maakt_deel_uit_van, self.besluittype_omschrijving)
 
     def clean(self):
-        # TODO: validatie voor datum geldigheid. Deze gaat via de relatie vanaf ZaakType.heeft_relevant (de inverse dus)
-        pass
+        """
+        datum_begin_geldigheid is gelijk aan een Versiedatum van een gerelateerd zaaktype.
+
+        datum_einde_geldigheid is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
+        """
+        super().clean()
+        # TODO: review this, see GeldigheidsMixin.clean
+
+        if self.datum_begin_geldigheid:
+            # it is required, if it was not filled in, validation error from the field will be raised
+            zaaktype_versiedatums = list(set(self.zaaktypes.values_list('versiedatum', flat=True)))
+            # use the 'onvolledige datums', do not convert to python datetime.date for this comparision
+            if self.datum_begin_geldigheid not in zaaktype_versiedatums:
+                raise ValidationError(_('Datum_begin_geldigheid is niet gelijk aan een Versiedatum van een gerelateerd zaaktype.'))
+
+        if self.datum_einde_geldigheid:
+            zaaktype_versiedatums = list(set(self.zaaktypes.values_list('versiedatum', flat=True)))
+
+            day_before_zaaktype_versie_datums = [parse_onvolledige_datum(_date) - timedelta(days=1) for _date in zaaktype_versiedatums]
+            if self.datum_begin_geldigheid not in day_before_zaaktype_versie_datums:
+                raise ValidationError(
+                    _('Datum_einde_geldigheid is niet gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.'))

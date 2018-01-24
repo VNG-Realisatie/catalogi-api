@@ -303,3 +303,5 @@ HIJACK_REGISTER_ADMIN = False
 # This is a CSRF-security risk.
 # See: http://django-hijack.readthedocs.io/en/latest/configuration/#allowing-get-method-for-hijack-views
 HIJACK_ALLOW_GET_REQUESTS = True
+
+DATUM_FORMAT = "%Y%m%d"  # Datum (jjjjmmdd)
