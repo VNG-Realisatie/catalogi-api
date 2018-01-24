@@ -6,27 +6,46 @@
 #
 certifi==2017.11.5        # via requests
 chardet==3.0.4            # via requests
-django-admin-index==0.9.1
+click==6.7                # via drf-openapi
+coreapi==2.3.3            # via django-rest-swagger, openapi-codec
+coreschema==0.0.4         # via coreapi
+django-admin-index==1.0.0
 django-appconf==1.0.2     # via django-axes
-django-axes==3.0.3
+django-axes==4.0.1
 django-choices==1.6.0
-django-compat==1.0.14     # via django-hijack, django-hijack-admin
-django-hijack-admin==2.1.4
-django-hijack==2.1.4
+django-compat==1.0.15     # via django-hijack, django-hijack-admin
+django-cors-middleware==1.3.1
+django-filter==1.1.0
+django-hijack-admin==2.1.6
+django-hijack==2.1.6
+django-ipware==1.1.6      # via django-axes
+django-oauth-toolkit==1.0.0
 django-ordered-model==1.4.3  # via django-admin-index
 django-redis==4.8.0
-django-rosetta==0.7.13
+django-rest-swagger==2.1.2  # via drf-openapi
+django-rosetta==0.7.14
 django-sniplates==0.5.0
-django==1.11.7
+django==1.11.9
+djangorestframework==3.7.7
+drf-flex-fields==0.2.2
+drf-nested-routers==0.90.0
+-e git+https://github.com/maykinmedia/drf_openapi@master#egg=drf-openapi
 idna==2.6                 # via requests
+itypes==1.1.0             # via coreapi
+jinja2==2.10              # via coreschema
+markupsafe==1.0           # via jinja2
 microsofttranslator==0.8  # via django-rosetta
-olefile==0.44             # via pillow
-pillow==4.3.0
-polib==1.0.8              # via django-rosetta
+oauthlib==2.0.6           # via django-oauth-toolkit, requests-oauthlib
+openapi-codec==1.3.2      # via django-rest-swagger
+pillow==5.0.0
+polib==1.1.0              # via django-rosetta
 psycopg2==2.7.3.2
 pytz==2017.3
-raven==6.3.0
+raven==6.4.0
 redis==2.10.6             # via django-redis
-requests==2.18.4          # via django-rosetta, microsofttranslator
+requests-oauthlib==0.8.0
+requests==2.18.4          # via coreapi, django-oauth-toolkit, django-rosetta, microsofttranslator, requests-oauthlib
+simplejson==3.13.2        # via django-rest-swagger
 six==1.11.0               # via django-compat, django-rosetta, microsofttranslator
+uritemplate==3.0.0        # via coreapi
 urllib3==1.22             # via requests
