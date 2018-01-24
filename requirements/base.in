@@ -15,7 +15,8 @@ django-redis
 django_admin_index
 
 djangorestframework
-drf_openapi
+-e git+https://github.com/maykinmedia/drf_openapi@master#egg=drf-openapi
+# drf_openapi
 django-filter
 drf-nested-routers
 drf-flex-fields
