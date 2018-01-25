@@ -348,7 +348,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
+        # 'rest_framework.filters.SearchFilter',
+        'ztc.api.utils.search.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ),
     #
@@ -430,6 +431,19 @@ REST_FRAMEWORK = {
 
 REST_FRAMEWORK_EXT = {
     'PAGE_PARAM': 'pagina',
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'oauth2': {
+            'flow': 'application',
+            'tokenUrl': '/oauth2/token/',
+            'scopes': {
+                'write': 'Schrijftoegang tot de catalogus en gerelateerde objecten.',
+                'read': 'Leestoegang tot de catalogus en gerelateerde objecten.'
+            }
+        }
+    },
 }
 
 # Django-CORS-middleware

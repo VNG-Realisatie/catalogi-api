@@ -1,5 +1,23 @@
 import importlib
 
+import coreapi
+from rest_flex_fields.views import FlexFieldsMixin as _FlexFieldsMixin
+from rest_framework.schemas import AutoSchema
+
+
+class FlexFieldsMixin(_FlexFieldsMixin):
+    """
+    Extended the original mixin to insert the `expand` and `fields` parameters to the documentation.
+    """
+    # These are not picked up by `drf_openapi` version 1.3. Hence, we our own fork.
+    # See: https://github.com/limdauto/drf_openapi/issues/116
+    schema = AutoSchema(
+        manual_fields=[
+            coreapi.Field('expand', description='Which field(s) to expand. Multiple fields can be separated with a comma.'),
+            coreapi.Field('fields', description='Which field(s) to show. Multiple fields can be separated with a comma.'),
+        ]
+    )
+
 
 class FlexFieldsSerializerMixin(object):
     """

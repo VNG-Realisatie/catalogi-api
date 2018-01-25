@@ -10,8 +10,11 @@ from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 class CatalogusSerializer(FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer):
     # Example mapping to a different API field.
     # naam = serializers.ModelField(Catalogus._meta.get_field('contactpersoon_beheer_naam'))
+
+    # Instead of the ID, the URL is used.
     url = HyperlinkedIdentityField(view_name='api:catalogus-detail')
 
+    # Nested serializers are shown as URLs, but should be expandable (see below).
     besluittypen = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -22,6 +25,7 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, serializers.HyperlinkedMode
 
     class Meta:
         model = Catalogus
+        # All fields should be included. Meta data that is not part of the ZTC information model can be left out.
         fields = (
             'url',
             'domein',
