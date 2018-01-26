@@ -1,9 +1,9 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.relations import HyperlinkedIdentityField
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 
 from ...datamodel.models import Catalogus
-from ..besluittype.serializers import BesluitTypeSerializer
+from ..serializers import BesluitTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 
 

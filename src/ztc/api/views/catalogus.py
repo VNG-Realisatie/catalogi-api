@@ -2,7 +2,7 @@ from rest_framework import viewsets
 
 from ...datamodel.models import Catalogus
 from ..utils.rest_flex_fields import FlexFieldsMixin
-from .serializers import CatalogusSerializer
+from ..serializers import CatalogusSerializer
 
 
 class CatalogusViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):

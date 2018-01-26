@@ -2,8 +2,7 @@ from django.conf.urls import include, url
 
 from rest_framework_nested import routers
 
-from .besluittype.views import BesluitTypeViewSet
-from .catalogus.views import CatalogusViewSet
+from .views import BesluitTypeViewSet, CatalogusViewSet
 from .schema import OpenAPISchemaView
 
 root_router = routers.SimpleRouter()
