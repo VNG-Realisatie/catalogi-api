@@ -2,8 +2,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.utils.stuff_date import parse_onvolledige_datum
 from ztc.utils.fields import StUFDateField
+from ztc.utils.stuff_date import parse_onvolledige_datum
 
 
 class GeldigheidMixin(models.Model):
@@ -14,6 +14,26 @@ class GeldigheidMixin(models.Model):
 
     class Meta:
         abstract = True
+
+    @property
+    def datum_begin_geldigheid_date(self):
+        """
+        :return: datetime.date or None when the value is not ok
+        """
+        try:
+            return parse_onvolledige_datum(self.datum_begin_geldigheid)
+        except ValidationError:
+            return None
+
+    @property
+    def datum_einde_geldigheid_date(self):
+        """
+        :return: datetime.date or None when the value is not ok
+        """
+        try:
+            return parse_onvolledige_datum(self.datum_einde_geldigheid)
+        except ValidationError:
+            return None
 
     def clean(self):
         """
@@ -66,6 +86,6 @@ class GeldigheidMixin(models.Model):
 
         """
         if self.datum_begin_geldigheid and self.datum_einde_geldigheid:
-            if parse_onvolledige_datum(self.datum_begin_geldigheid) > parse_onvolledige_datum(self.datum_begin_geldigheid):
+            if self.datum_begin_geldigheid_date > self.datum_begin_geldigheid_date:
                 raise ValidationError(_('Datum einde geldigheid is gelijk aan of gelegen na de datum zoals opgenomen '
                                         'onder Datum begin geldigheid.'))

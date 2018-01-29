@@ -3,7 +3,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ...utils.stuff_date import parse_onvolledige_datum
 from ..choices import VertrouwelijkheidAanduiding
 from .mixins import GeldigheidMixin
 
@@ -49,8 +48,8 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         begin geldigheid’ kan in de registratie worden opgenomen.
         """
         if self.datum_einde_geldigheid:
-            datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
-            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+            datum_begin = self.datum_begin_geldigheid_date
+            datum_einde = self.datum_einde_geldigheid_date
 
             if datum_einde < datum_begin:
                 raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
@@ -107,8 +106,8 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         - De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
         """
         if self.datum_einde_geldigheid:
-            datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
-            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+            datum_begin = self.datum_begin_geldigheid_date
+            datum_einde = self.datum_einde_geldigheid_date
 
             if datum_einde < datum_begin:
                 raise ValidationError(_(

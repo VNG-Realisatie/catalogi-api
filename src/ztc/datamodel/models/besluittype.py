@@ -5,7 +5,6 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.utils.stuff_date import parse_onvolledige_datum
 from ..choices import JaNee
 from .mixins import GeldigheidMixin
 
@@ -86,18 +85,18 @@ class BesluitType(GeldigheidMixin, models.Model):
         """
         super().clean()
         # TODO: review this, see GeldigheidsMixin.clean
-
-        if self.datum_begin_geldigheid:
-            # it is required, if it was not filled in, validation error from the field will be raised
-            zaaktype_versiedatums = list(set(self.zaaktypes.values_list('versiedatum', flat=True)))
-            # use the 'onvolledige datums', do not convert to python datetime.date for this comparision
-            if self.datum_begin_geldigheid not in zaaktype_versiedatums:
-                raise ValidationError(_('Datum_begin_geldigheid is niet gelijk aan een Versiedatum van een gerelateerd zaaktype.'))
-
-        if self.datum_einde_geldigheid:
-            zaaktype_versiedatums = list(set(self.zaaktypes.values_list('versiedatum', flat=True)))
-
-            day_before_zaaktype_versie_datums = [parse_onvolledige_datum(_date) - timedelta(days=1) for _date in zaaktype_versiedatums]
-            if self.datum_begin_geldigheid not in day_before_zaaktype_versie_datums:
-                raise ValidationError(
-                    _('Datum_einde_geldigheid is niet gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.'))
+        # TODO: many to many can not be validated in model.clean, we need to use a form (self.zaaktypes)
+        # if self.datum_begin_geldigheid:
+        #     # it is required, if it was not filled in, validation error from the field will be raised
+        #     zaaktype_versiedatums = list(set(self.zaaktypes.values_list('versiedatum', flat=True)))
+        #     # use the 'onvolledige datums', do not convert to python datetime.date for this comparision
+        #     if self.datum_begin_geldigheid not in zaaktype_versiedatums:
+        #         raise ValidationError(_('Datum_begin_geldigheid is niet gelijk aan een Versiedatum van een gerelateerd zaaktype.'))
+        #
+        # if self.datum_einde_geldigheid:
+        #     zaaktype_versiedatums = list(set(self.zaaktypes.values_list('versiedatum', flat=True)))
+        #
+        #     day_before_zaaktype_versie_datums = [parse_onvolledige_datum(_date) - timedelta(days=1) for _date in zaaktype_versiedatums]
+        #     if self.datum_begin_geldigheid not in day_before_zaaktype_versie_datums:
+        #         raise ValidationError(
+        #             _('Datum_einde_geldigheid is niet gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.'))

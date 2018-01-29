@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.utils.stuff_date import parse_onvolledige_datum
 from ..choices import RolTypeOmschrijving
 from .mixins import GeldigheidMixin
 
@@ -57,15 +56,15 @@ class RolType(GeldigheidMixin, models.Model):
         De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid roltype’.
         De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
         """
-        datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
-        versiedatum = parse_onvolledige_datum(self.is_van.versiedatum)
+        datum_begin = self.datum_begin_geldigheid_date
+        versiedatum = self.is_van.versiedatum_date
 
         if datum_begin != versiedatum:
             raise ValidationError(
                 _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
 
         if self.datum_einde_geldigheid:
-            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+            datum_einde = self.datum_einde_geldigheid_date
 
             if datum_einde < datum_begin:
                 raise ValidationError(_(

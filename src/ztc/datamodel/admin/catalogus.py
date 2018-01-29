@@ -2,9 +2,16 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ...utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
-from ..models import BesluitType, Catalogus, InformatieObjectType
+from ..models import BesluitType, Catalogus, InformatieObjectType, ZaakType
 from .besluittype import BesluitTypeAdmin
 from .informatieobjecttype import InformatieObjectTypeAdmin
+from .zaken import ZaakTypeAdmin
+
+
+class ZaakTypeInline(EditInlineAdminMixin, admin.TabularInline):
+    model = ZaakType
+    fields = ZaakTypeAdmin.list_display
+    fk_name = 'maakt_deel_uit_van'
 
 
 class BesluitTypeInline(EditInlineAdminMixin, admin.TabularInline):
@@ -47,11 +54,15 @@ class CatalogusAdmin(ListObjectActionsAdminMixin, admin.ModelAdmin):
         }),
     )
     inlines = (
-        BesluitTypeInline, InformatieObjectTypeInline,
+        ZaakTypeInline, BesluitTypeInline, InformatieObjectTypeInline,
     )
 
     def get_object_actions(self, obj):
         return (
+            (
+                _('Toon {}').format(ZaakType._meta.verbose_name_plural),
+                self._build_changelist_url(ZaakType, query={'maakt_deel_uit_van': obj.pk})
+            ),
             (
                 _('Toon {}').format(BesluitType._meta.verbose_name_plural),
                 self._build_changelist_url(BesluitType, query={'maakt_deel_uit_van': obj.pk})

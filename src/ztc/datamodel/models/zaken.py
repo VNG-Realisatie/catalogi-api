@@ -3,13 +3,17 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
+from django.core.validators import (
+    MaxValueValidator, MinValueValidator, RegexValidator
+)
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ztc.utils.fields import DatumField
-from ztc.utils.stuff_date import parse_onvolledige_datum
-from ..choices import JaNee, ObjectTypen, InternExtern, VertrouwelijkheidAanduiding
+
+from ..choices import (
+    InternExtern, JaNee, ObjectTypen, VertrouwelijkheidAanduiding
+)
 from .mixins import GeldigheidMixin
 
 
@@ -64,8 +68,8 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
         if self.ander_objecttype == JaNee.nee and self.objecttype not in ObjectTypen.values.keys():
             raise ValidationError("Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit het RSGB of het RGBZ")
 
-        datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
-        versiedatum = parse_onvolledige_datum(self.is_relevant_voor.versiedatum)
+        datum_begin = self.datum_begin_geldigheid_date
+        versiedatum = self.is_relevant_voor.versiedatum_date
 
         if datum_begin != versiedatum:
             raise ValidationError(
@@ -111,6 +115,9 @@ class ProductDienst(models.Model):
     def __str__(self):
         return self.naam
 
+    class Meta:
+        verbose_name_plural = _('Product / Diensten')
+
 
 class Formulier(models.Model):
     """
@@ -136,6 +143,9 @@ class Formulier(models.Model):
     def __str__(self):
         return self.naam
 
+    class Meta:
+        verbose_name_plural = _('Formulieren')
+
 
 class ReferentieProces(models.Model):
     """
@@ -152,6 +162,9 @@ class ReferentieProces(models.Model):
 
     def __str__(self):
         return self.naam
+
+    class Meta:
+        verbose_name_plural = _('Referentieprocessen')
 
 
 class BronCatalogus(models.Model):
@@ -181,6 +194,9 @@ class BronCatalogus(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.rsin, self.domein)
+
+    class Meta:
+        verbose_name_plural = _('Bron Catalogussen')
 
 
 class BronZaakType(models.Model):
@@ -213,7 +229,7 @@ class BronZaakType(models.Model):
         'De Zaaktype-omschrijving van het bronzaaktype, zoals gehanteerd in de Broncatalogus.'))
 
     def __str__(self):
-        return self.zaaktype_identificatie
+        return '{} - {}'.format(self.zaaktype_identificatie, self.zaaktype_omschrijving)
 
 
 class ZaakType(GeldigheidMixin, models.Model):
@@ -336,25 +352,39 @@ class ZaakType(GeldigheidMixin, models.Model):
         mnemonic = 'ZKT'
         unique_together = ('maakt_deel_uit_van', 'zaaktype_identificatie')
 
+    @property
+    def versiedatum_date(self):
+        """
+        The 'versiedatum' is saved as 'jjjjmmdd', so when we want to compare it as a
+        python datetime.date we call this property
+
+        Validation should happen in the forms, this propery return a valid datetime.date or None
+        """
+        try:
+            return datetime.strptime(self.versiedatum, settings.DATUM_FORMAT).date()
+        except Exception:
+            return None
+
     def __str__(self):
         return '{}-{}'.format(self.maakt_deel_uit_van, self.zaaktype_identificatie)
 
     def clean(self):
-        if self.servicenorm_behandeling > self.doorlooptijd_behandeling:
+        if self.servicenorm_behandeling and self.servicenorm_behandeling > self.doorlooptijd_behandeling:
             raise ValidationError("'Servicenorm behandeling' periode mag niet langer zijn dan de periode van 'Doorlooptijd behandeling'.")
 
-        # regel voor zaaktype omschrijving
-        if ZaakType.objects.filter(
-            maakt_deel_uit_van=self.maakt_deel_uit_van,
-            zaaktype_omschrijving=self.zaaktype_omschrijving
-        ).exclude(pk=self.pk).exists():
-            raise ValidationError("Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS.")
+        if self.maakt_deel_uit_van_id:
+            # regel voor zaaktype omschrijving
+            if ZaakType.objects.filter(
+                maakt_deel_uit_van=self.maakt_deel_uit_van,
+                zaaktype_omschrijving=self.zaaktype_omschrijving
+            ).exclude(pk=self.pk).exists():
+                raise ValidationError("Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS.")
 
         #
         # datums
         #
-        datum_begin = parse_onvolledige_datum(self.datum_begin_geldigheid)
-        versiedatum = datetime.strptime(self.versiedatum, settings.DATUM_FORMAT)
+        datum_begin = self.datum_begin_geldigheid_date
+        versiedatum = self.versiedatum_date
 
         # TODO: De datum is gelijk aan de vroegste Versiedatum van het zaaktype. Maar er is maar een versie datum?
         if datum_begin != versiedatum:
@@ -362,7 +392,7 @@ class ZaakType(GeldigheidMixin, models.Model):
                 _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
 
         if self.datum_einde_geldigheid:
-            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+            datum_einde = self.datum_einde_geldigheid_date
 
             if not(datum_begin <= versiedatum <= datum_einde):
                 raise ValidationError(_('De Versiedatum moet gelijk zijn aan of liggen na de Datum begin geldigheid '

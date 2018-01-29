@@ -2,9 +2,14 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import (
-    InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek
+    InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek, ZaakInformatieobjectType
 )
 from .mixins import GeldigheidAdminMixin
+
+
+class ZaakInformatieobjectTypeInline(admin.TabularInline):
+    model = ZaakInformatieobjectType
+    extra = 1
 
 
 @admin.register(InformatieObjectTypeOmschrijvingGeneriek)
@@ -64,3 +69,4 @@ class InformatieObjectTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
             )
         }),
     )
+    inlines = (ZaakInformatieobjectTypeInline, )  # zaaktypes
