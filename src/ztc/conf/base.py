@@ -288,7 +288,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('mnemonic',)
 # Library settings
 #
 
-ADMIN_INDEX_SHOW_REMAINING_APPS = True
+ADMIN_INDEX_SHOW_REMAINING_APPS = False
 
 # Django-axes
 AXES_LOGIN_FAILURE_LIMIT = 30  # Default: 3
@@ -300,7 +300,7 @@ AXES_ONLY_USER_FAILURES = False  # Default: False (you might want to block on us
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = False  # Default: False (you might want to block on username and IP)
 
 # Django-Hijack
-HIJACK_LOGIN_REDIRECT_URL = '/'
+HIJACK_LOGIN_REDIRECT_URL = reverse_lazy('admin:index')
 HIJACK_LOGOUT_REDIRECT_URL = reverse_lazy('admin:accounts_user_changelist')
 HIJACK_REGISTER_ADMIN = False
 # This is a CSRF-security risk.
