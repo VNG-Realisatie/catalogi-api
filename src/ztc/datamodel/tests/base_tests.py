@@ -5,8 +5,8 @@ from ztc.datamodel.choices import (
 from .factories import (
     BesluitTypeFactory, EigenschapFactory, InformatieObjectTypeFactory,
     ProductDienstFactory, RolTypeFactory, StatusTypeFactory,
-    ZaakObjectTypeFactory, ZaakTypeFactory
-)
+    ZaakObjectTypeFactory, ZaakTypeFactory,
+    CatalogusFactory, ResultaatTypeFactory)
 
 # TODO: Catalogus and ResultaatTypeFacory are not used yet. Currently all other factories will indirectly create
 # things that we dont want, like random Catalogus, more ZaakTypes etc etc
@@ -27,16 +27,20 @@ class HaaglandenBaseTest(object):
         #
         # kerngegevens
         #
+        self.catalogus = CatalogusFactory.create(
+            domein='DEMO',
+            rsin='123456789',
+        )
+
         self.product_dienst_vergunning_milieu = ProductDienstFactory.create(
             naam='Vergunning voor milieu'
         )
         self.zaaktype = ZaakTypeFactory.create(
-            doel='''
-                Een besluit nemen op een aanvraag voor een vergunning, ontheffing of
+            zaaktype_omschrijving='Vergunningaanvraag regulier behandelen',
+            doel='''Een besluit nemen op een aanvraag voor een vergunning, ontheffing of
                 vergelijkbare beschikking op basis van een gedegen beoordeling van die
                 aanvraag in een reguliere procedure.''',
-            aanleiding='''
-                De gemeente als bevoegd gezag heeft een aanvraag voor een
+            aanleiding='''De gemeente als bevoegd gezag heeft een aanvraag voor een
                 omgevingsvergunning of milieuwetgeving-gerelateerde vergunning
                 ontvangen.
                 De gemeente heeft geconstateerd dat het een enkelvoudige aanvraag
@@ -68,8 +72,7 @@ class HaaglandenBaseTest(object):
             # TODO: behandeling door OD
             # TODO: generieke_aanduiding='',
             # TODO: bronzaaktype is FK on the model, doc has two Bronnen..
-            toelichting='''
-                Bij dit zaaktype draagt het bevoegd gezag de behandeling van de
+            toelichting='''Bij dit zaaktype draagt het bevoegd gezag de behandeling van de
                 vergunningaanvraag op aan de ODH. De start van de zaakbehandeling
                 verschilt naar gelang de aanvraag ontvangen is door de gemeente dan
                 wel de provincie als bevoegd gezag. Aangezien de gemeente de front-
@@ -121,6 +124,8 @@ class HaaglandenBaseTest(object):
             #
             verlenging_mogelijk=JaNee.ja,
             # toelichting: TODO: is in Haaglanden doc, not in the datamodel
+
+            maakt_deel_uit_van=self.catalogus,
         )
 
         #
@@ -185,8 +190,7 @@ class HaaglandenBaseTest(object):
             statustypevolgnummer=1,
             doorlooptijd_status=2,  # werkdagen
             informeren=JaNee.ja,
-            toelichting='''
-                Er wordt beoordeeld of de
+            toelichting='''Er wordt beoordeeld of de
                 ontvangen aanvraag inderdaad in een reguliere
                 procedure behandeld kan worden en of de
                 aanvraag volledig is. Zo ja, dan wordt de zaak
@@ -214,14 +218,14 @@ class HaaglandenBaseTest(object):
                 self.rol_type_documentair_ondersteuner,
                 self.rol_type_procesondersteuner,
             ],
+            is_van=self.zaaktype,
         )
         self.status_type_getoetst = StatusTypeFactory.create(
             statustype_omschrijving='Getoetst op indieningsvereisten',
             statustypevolgnummer=2,
             doorlooptijd_status=4,  # werkdagen
             informeren=JaNee.ja,
-            toelichting='''
-                De aanvraag wordt beoordeeld
+            toelichting='''De aanvraag wordt beoordeeld
                 op de kwaliteit (aanvaardbaarheid) van de
                 ontvangen documenten. Als de aanvraag niet
                 kwalitatief voldoende wordt bevonden, wordt de
@@ -245,14 +249,14 @@ class HaaglandenBaseTest(object):
                 self.rol_type_juridisch_adviseur,
                 self.rol_type_procesondersteuner,
             ],
+            is_van=self.zaaktype,
         )
         self.status_type_inhoudelijk_behandeld = StatusTypeFactory.create(
             statustype_omschrijving='Inhoudelijk behandeld',
             statustypevolgnummer=3,
             doorlooptijd_status=21,  # 3 weken
             informeren=JaNee.ja,
-            toelichting='''
-                De aanvraag wordt allereerst
+            toelichting='''De aanvraag wordt allereerst
                 beoordeeld op de relevante wetgeving en
                 informatie over de milieu-inrichting of -locatie.
                 Waar nodig wordt in- en/of extern om een
@@ -271,14 +275,14 @@ class HaaglandenBaseTest(object):
                 self.rol_type_juridisch_adviseur,
                 self.rol_type_procesondersteuner,
             ],
+            is_van=self.zaaktype,
         )
         self.status_type_besluit_genomen = StatusTypeFactory.create(
             statustype_omschrijving='Besluit genomen',
             statustypevolgnummer=4,
             doorlooptijd_status=2,  # werkdagen
             informeren=JaNee.nee,
-            toelichting='''
-                Op basis van de aanvraag en het advies met betrekking tot de 
+            toelichting='''Op basis van de aanvraag en het advies met betrekking tot de 
                 vergunning wordt het definitieve besluit op- en vastgesteld.''',
             roltypen=[
                 self.rol_type_bevoegd_gezag,
@@ -287,14 +291,14 @@ class HaaglandenBaseTest(object):
                 self.rol_type_juridisch_adviseur,
                 self.rol_type_procesondersteuner,
             ],
+            is_van=self.zaaktype,
         )
         self.status_type_producten_geleverd = StatusTypeFactory.create(
             statustype_omschrijving='Producten geleverd',
             statustypevolgnummer=6,  # NOTE: also refered to as '5' in de haaglanden doc
             doorlooptijd_status=3,  # werkdagen
             informeren=JaNee.nee,
-            toelichting='''
-                Het besluit wordt verzonden en gepubliceerd en het zaakdossier wordt afgesloten 
+            toelichting='''Het besluit wordt verzonden en gepubliceerd en het zaakdossier wordt afgesloten 
                 en gearchiveerd (indien de provincie het bevoegd gezag is) dan wel ter archivering 
                 overgedragen aan het bevoegd gezag (indien dat de gemeente is).''',
             roltypen=[
@@ -304,6 +308,7 @@ class HaaglandenBaseTest(object):
                 self.rol_type_documentair_ondersteuner,
                 self.rol_type_procesondersteuner,
             ],
+            is_van=self.zaaktype,
         )
 
         #
@@ -372,6 +377,7 @@ class HaaglandenBaseTest(object):
             # bron=ontvangen
             # verplicht=ja
             # TODO: link with Status 1
+            maakt_deel_uit_van=self.catalogus,
         )
         self.document_ontvangstbevestiging = InformatieObjectTypeFactory.create(
             informatieobjecttype_omschrijving='Ontvangstbevestiging',
@@ -387,12 +393,39 @@ class HaaglandenBaseTest(object):
             # bron=ontvangen of uitgaand
             # verplicht=ja
             # TODO: link with Status 1
+            maakt_deel_uit_van=self.catalogus,
         )
         # there are 10+ more
 
         #
         # Besluiten
         #
+        self.resultaattype_verleend = ResultaatTypeFactory.create(
+            resultaattypeomschrijving='Verleend',
+            is_relevant_voor=self.zaaktype,
+            bepaalt_afwijkend_archiefregime_van=None,
+        )
+        self.resultaattype_geweigerd = ResultaatTypeFactory.create(
+            resultaattypeomschrijving='Geweigerd',
+            is_relevant_voor=self.zaaktype,
+            bepaalt_afwijkend_archiefregime_van=None,
+        )
+        self.resultaattype_niet_ontvankelijk = ResultaatTypeFactory.create(
+            resultaattypeomschrijving='Niet ontvankelijk',
+            is_relevant_voor=self.zaaktype,
+            bepaalt_afwijkend_archiefregime_van=None,
+        )
+        self.resultaattype_niet_nodig = ResultaatTypeFactory.create(
+            resultaattypeomschrijving='Niet nodig',
+            is_relevant_voor=self.zaaktype,
+            bepaalt_afwijkend_archiefregime_van=None,
+        )
+        self.resultaattype_ingetrokken = ResultaatTypeFactory.create(
+            resultaattypeomschrijving='Ingetrokken',
+            is_relevant_voor=self.zaaktype,
+            bepaalt_afwijkend_archiefregime_van=None,
+        )
+
         self.besluittype_niet_ontvankelijk = BesluitTypeFactory.create(
             besluittype_omschrijving='Niet-ontvankelijk-besluit',
             besluittype_omschrijving_generiek='Ontvankelijkheidsbesluit',
@@ -403,9 +436,9 @@ class HaaglandenBaseTest(object):
             # publicatietermijn=-99
             toelichting='Besluit over het niet ontvankelijk verklaren (bijvoorbeeld omdat de aanvrager niet'
                         'gemachtigd is) van de aanvraag als ook het buiten behandeling stellen van de aanvraag',
-            # maakt_deel_uit_van=models.ForeignKey('datamodel.Catalogus'
+            maakt_deel_uit_van=self.catalogus,
             # wordt_vastgelegd_in=models.ManyToManyField('datamodel.InformatieObjectType'
-            # is_resultaat_van = models.ManyToManyField('datamodel.ResultaatType'
+            is_resultaat_van=[self.resultaattype_niet_ontvankelijk, ],
             zaaktypes=[self.zaaktype],
         )
         self.besluittype_verlenging = BesluitTypeFactory.create(
@@ -414,6 +447,9 @@ class HaaglandenBaseTest(object):
             reactietermijn=42,  # 6 weken (of 15 weken)
             publicatie_indicatie=JaNee.ja,
             toelichting='De beslissing dat meer tijd genomen wordt voor de behandeling van de aanvraag.',
+            maakt_deel_uit_van=self.catalogus,
+            # Guess:
+            is_resultaat_van=[self.resultaattype_verleend, ],
             zaaktypes=[self.zaaktype],
         )
         self.besluittype_op_aanvraag = BesluitTypeFactory.create(
@@ -421,6 +457,9 @@ class HaaglandenBaseTest(object):
             besluittype_omschrijving_generiek='Vergunning',
             reactietermijn=42,  # 6 weken (+1 dag voor Raad van State)
             publicatie_indicatie=JaNee.nee,  # required, but not in haaglanden
+            maakt_deel_uit_van=self.catalogus,
+            # Guess:
+            is_resultaat_van=[self.resultaattype_verleend, ],
             zaaktypes=[self.zaaktype],
         )
         self.besluittype_aanhoudingsbesluit = BesluitTypeFactory.create(
@@ -429,6 +468,9 @@ class HaaglandenBaseTest(object):
             reactietermijn=42,  # 6 weken
             publicatie_indicatie=JaNee.nee,
             toelichting='',
+            maakt_deel_uit_van=self.catalogus,
+            # Guess:
+            is_resultaat_van=[self.resultaattype_verleend, ],
             zaaktypes=[self.zaaktype],
         )
 

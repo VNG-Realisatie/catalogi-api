@@ -81,7 +81,7 @@ class ZaakTypenRelatieInline(admin.TabularInline):
 
 @admin.register(ZaakType)
 class ZaakTypeAdmin(ListObjectActionsAdminMixin,GeldigheidAdminMixin, admin.ModelAdmin):
-    list_display = ('zaaktype_omschrijving', 'zaakcategorie', 'maakt_deel_uit_van')
+    list_display = ('zaaktype_identificatie', 'zaaktype_omschrijving', 'zaakcategorie', 'maakt_deel_uit_van')
     list_filter = ('maakt_deel_uit_van', )
     search_fields = (
         'zaaktype_omschrijving',

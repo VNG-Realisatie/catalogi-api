@@ -29,27 +29,36 @@ ZAAKTYPEN = [
 
 
 class ProductDienstFactory(factory.django.DjangoModelFactory):
+    naam = factory.Sequence(lambda n: 'ProductDienst {}'.format(n))
+
     class Meta:
         model = ProductDienst
 
 
 class FormulierFactory(factory.django.DjangoModelFactory):
+    naam = factory.Sequence(lambda n: 'Formulier {}'.format(n))
+
     class Meta:
         model = Formulier
 
 
 class ReferentieProcesFactory(factory.django.DjangoModelFactory):
+    naam = factory.Sequence(lambda n: 'ReferentieProces {}'.format(n))
+
     class Meta:
         model = ReferentieProces
 
 
 class BronCatalogusFactory(factory.django.DjangoModelFactory):
+    domein = factory.Sequence(lambda n: chr((n % 26) + 65) * 5)  # AAAAA, BBBBB, etc. Repeat after ZZZZZ
+    rsin = factory.Sequence(lambda n: '{}'.format(n + 100000000))  # charfield, that is 9 digit number
+
     class Meta:
         model = BronCatalogus
 
 
 class BronZaakTypeFactory(factory.django.DjangoModelFactory):
-    zaaktype_identificatie = factory.sequence(lambda n: n)
+    zaaktype_identificatie = factory.Sequence(lambda n: n)
 
     class Meta:
         model = BronZaakType
