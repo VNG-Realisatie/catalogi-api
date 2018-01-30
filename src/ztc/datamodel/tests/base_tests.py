@@ -1,6 +1,7 @@
 from ztc.datamodel.choices import (
     JaNee, ObjectTypen, RolTypeOmschrijving, VertrouwelijkheidAanduiding
 )
+from ztc.utils.stuff_date import make_onvolledige_datum
 
 from .factories import (
     BesluitTypeFactory, CatalogusFactory, EigenschapFactory,
@@ -33,6 +34,7 @@ class HaaglandenMixin(object):
             naam='Vergunning voor milieu'
         )
         self.zaaktype = ZaakTypeFactory.create(
+            datum_begin_geldigheid=make_onvolledige_datum(),
             zaaktype_omschrijving='Vergunningaanvraag regulier behandelen',
             doel='''Een besluit nemen op een aanvraag voor een vergunning, ontheffing of
                 vergelijkbare beschikking op basis van een gedegen beoordeling van die

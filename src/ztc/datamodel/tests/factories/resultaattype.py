@@ -17,5 +17,7 @@ class ResultaatTypeFactory(factory.django.DjangoModelFactory):
     bepaalt_afwijkend_archiefregime_van = factory.RelatedFactory(
         ZaakInformatieobjectTypeArchiefregimeFactory, 'resultaattype')
 
+    datum_begin_geldigheid = factory.SelfAttribute('is_relevant_voor.datum_begin_geldigheid')
+
     class Meta:
         model = ResultaatType

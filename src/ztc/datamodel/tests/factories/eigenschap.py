@@ -18,6 +18,7 @@ class EigenschapReferentieFactory(factory.django.DjangoModelFactory):
 
 class EigenschapFactory(factory.django.DjangoModelFactory):
     is_van = factory.SubFactory(ZaakTypeFactory)
+    datum_begin_geldigheid = factory.SelfAttribute('is_van.datum_begin_geldigheid')
 
     class Meta:
         model = Eigenschap

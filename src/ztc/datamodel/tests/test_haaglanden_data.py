@@ -1,5 +1,7 @@
 from django.test import TestCase
 
+from freezegun import freeze_time
+
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
 
 from ..models import (
@@ -11,6 +13,7 @@ from ..models import (
 )
 
 
+@freeze_time('2018-01-30')
 class FactoryTests(HaaglandenMixin, TestCase):
 
     def test_haaglanden_data_setup(self):
@@ -41,3 +44,18 @@ class FactoryTests(HaaglandenMixin, TestCase):
         self.assertEqual(EigenschapReferentie.objects.all().count(), 0)
         self.assertEqual(EigenschapSpecificatie.objects.all().count(), 0)
         self.assertEqual(Formulier.objects.all().count(), 0)
+
+        #
+        # now test the datum_begin_geldigheid on all instances, duplicate code so the default error msg makes sense
+        #
+        expected_dates = ['V20180130']  # since the freeze time is used, that date should appear
+        self.assertEqual(list(set(RolType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+        self.assertEqual(list(set(StatusType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+        self.assertEqual(list(set(BesluitType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+        self.assertEqual(list(set(Eigenschap.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+        self.assertEqual(list(set(ResultaatType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+        self.assertEqual(list(set(ZaakObjectType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+
+        # TODO, following factories do not set the begin_datum yet, they will be empty ('') now..
+        # self.assertEqual(list(set(InformatieObjectTypeOmschrijvingGeneriek.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+        # self.assertEqual(list(set(InformatieObjectType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)

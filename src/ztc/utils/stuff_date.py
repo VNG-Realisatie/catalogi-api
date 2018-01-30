@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from djchoices import ChoiceItem, DjangoChoices
@@ -30,3 +31,15 @@ def parse_onvolledige_datum(onvolledige_datum):
         return datetime.strptime(onvolledige_datum, format).date()
     except Exception:
         raise ValidationError(_("Onvolledige datum '{}' heeft een onbekend formaat.".format(onvolledige_datum)))
+
+
+def make_onvolledige_datum(python_datetime=None):
+    """
+
+    :param python_datetime: default will be today
+    :return: a string in the format of the 'onvolledige datum'
+    """
+    if python_datetime is None:
+        python_datetime = timezone.now().date()
+
+    return python_datetime.strftime('V%Y%m%d')

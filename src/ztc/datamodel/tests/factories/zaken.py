@@ -101,6 +101,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
 
 class ZaakObjectTypeFactory(factory.django.DjangoModelFactory):
     is_relevant_voor = factory.SubFactory(ZaakTypeFactory)
+    datum_begin_geldigheid = factory.SelfAttribute('is_relevant_voor.datum_begin_geldigheid')
 
     class Meta:
         model = ZaakObjectType
