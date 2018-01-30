@@ -8,9 +8,6 @@ from .factories import (
     RolTypeFactory, StatusTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory
 )
 
-# TODO: Catalogus and ResultaatTypeFacory are not used yet. Currently all other factories will indirectly create
-# things that we dont want, like random Catalogus, more ZaakTypes etc etc
-
 # TODO: for several fields the input from Haaglanden is too long. There are no To Do's on every line
 # search for '[:' in this file, since I kept the original string but used string indexing to cut it of[:100]
 
