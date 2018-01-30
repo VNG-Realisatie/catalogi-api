@@ -187,6 +187,62 @@ class Eigenschap(GeldigheidMixin, models.Model):
         verbose_name = _('Eigenschap')
         verbose_name_plural = _('Eigenschappen')
 
+    def get_specificatie_attribuut(self, field_name):
+        if self.specificatie_van_eigenschap:
+            return getattr(self.specificatie_van_eigenschap, field_name)
+        else:
+            return ''
+
+    def get_referentie_attribuut(self, field_name):
+        if self.referentie_naar_eigenschap:
+            return getattr(self.referentie_naar_eigenschap, field_name)
+        else:
+            return ''
+
+    @property
+    def groep(self):
+        return self.get_specificatie_attribuut('groep')
+
+    @property
+    def formaat(self):
+        return self.get_specificatie_attribuut('formaat')
+
+    @property
+    def lengte(self):
+        return self.get_specificatie_attribuut('lengte')
+
+    @property
+    def kardinaliteit(self):
+        return self.get_specificatie_attribuut('kardinaliteit')
+
+    @property
+    def waardenverzameling(self):
+        return self.get_specificatie_attribuut('waardenverzameling')
+
+    @property
+    def objecttype(self):
+        return self.get_referentie_attribuut('objecttype')
+
+    @property
+    def informatiemodel(self):
+        return self.get_referentie_attribuut('informatiemodel')
+
+    @property
+    def namespace(self):
+        return self.get_referentie_attribuut('namespace')
+
+    @property
+    def schemalocatie(self):
+        return self.get_referentie_attribuut('schemalocatie')
+
+    @property
+    def x_path_element(self):
+        return self.get_referentie_attribuut('x_path_element')
+
+    @property
+    def entiteittype(self):
+        return self.get_referentie_attribuut('entiteittype')
+
     def clean(self):
         """
         De eigenschap wordt gegevenstechnisch gespecificeerd met één van twee groepen attributen:

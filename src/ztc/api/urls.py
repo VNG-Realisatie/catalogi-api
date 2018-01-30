@@ -4,7 +4,7 @@ from rest_framework_nested import routers
 
 from .schema import OpenAPISchemaView
 from .views import (
-    BesluitTypeViewSet, CatalogusViewSet, InformatieObjectTypeViewSet
+    BesluitTypeViewSet, CatalogusViewSet, EigenschapViewSet, InformatieObjectTypeViewSet
 )
 
 root_router = routers.SimpleRouter()
@@ -14,6 +14,7 @@ catalogus_router = routers.NestedSimpleRouter(root_router, r'catalogussen', look
 catalogus_router.register(r'besluittypen', BesluitTypeViewSet)
 catalogus_router.register(r'informatieobjecttypen', InformatieObjectTypeViewSet)
 
+catalogus_router.register(r'eigenschappen', EigenschapViewSet)
 
 API_PREFIX = r'^v(?P<version>\d+)'
 
