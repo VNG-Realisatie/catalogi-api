@@ -3,10 +3,10 @@ from ztc.datamodel.choices import (
 )
 
 from .factories import (
-    BesluitTypeFactory, EigenschapFactory, InformatieObjectTypeFactory,
-    ProductDienstFactory, RolTypeFactory, StatusTypeFactory,
-    ZaakObjectTypeFactory, ZaakTypeFactory,
-    CatalogusFactory, ResultaatTypeFactory)
+    BesluitTypeFactory, CatalogusFactory, EigenschapFactory,
+    InformatieObjectTypeFactory, ProductDienstFactory, ResultaatTypeFactory,
+    RolTypeFactory, StatusTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory
+)
 
 # TODO: Catalogus and ResultaatTypeFacory are not used yet. Currently all other factories will indirectly create
 # things that we dont want, like random Catalogus, more ZaakTypes etc etc
@@ -15,12 +15,12 @@ from .factories import (
 # search for '[:' in this file, since I kept the original string but used string indexing to cut it of[:100]
 
 
-class HaaglandenBaseTest(object):
+class HaaglandenMixin(object):
     """
     Create instances for all models with realistic data.
 
     Use OD_Haaglanden_-Zaaktypecatalogus_v1.0-_20120210
-    The case for 'Vergunningaanvraag regulier behandelen'(starting at page 95)
+    The case for 'Vergunningaanvraag regulier behandelen' (starting at page 95)
     """
 
     def setUp(self):
@@ -63,7 +63,7 @@ class HaaglandenBaseTest(object):
                 de mandatering) het initiatief neemt voor het wijzigen of intrekken van
                 een vergunning, veelal naar aanleiding van een constatering tijdens de
                 uitvoering van een zaak van het type ‘Toezicht uitvoeren’.
-                Zie ook bovenstaande figuren.'''[:999],
+                Zie ook bovenstaande figuren.'''[:1000],
             product_dienst=[self.product_dienst_vergunning_milieu],  # there are many more
             # TODO: is_deelzaaktype_van, Hoofdzaak (voor de ODH); deelzaak van de hoofdzaak ‘Behandelen
             # aanvraag vergunning’ bij de gemeente als bevoegd gezag
@@ -98,7 +98,7 @@ class HaaglandenBaseTest(object):
                 draagt deze taak geheel over aan de ODH. Bij de behandeling van
                 dergelijke aanvragen en ook bij de behandeling van BRIKS-onderdelen in
                 meervoudige vergunningaanvragen (door de ODH) vraagt de ODH de
-                gemeente om toetsing op de betreffende BRIKS-onderdelen.'''[:999],
+                gemeente om toetsing op de betreffende BRIKS-onderdelen.'''[:1000],
 
             #
             # Planning
@@ -398,7 +398,7 @@ class HaaglandenBaseTest(object):
         # there are 10+ more
 
         #
-        # Besluiten
+        # Resultaten en bewaartermijnen
         #
         self.resultaattype_verleend = ResultaatTypeFactory.create(
             resultaattypeomschrijving='Verleend',
@@ -426,6 +426,9 @@ class HaaglandenBaseTest(object):
             bepaalt_afwijkend_archiefregime_van=None,
         )
 
+        #
+        # Besluiten
+        #
         self.besluittype_niet_ontvankelijk = BesluitTypeFactory.create(
             besluittype_omschrijving='Niet-ontvankelijk-besluit',
             besluittype_omschrijving_generiek='Ontvankelijkheidsbesluit',
@@ -485,11 +488,6 @@ class HaaglandenBaseTest(object):
         # TODO: 1 deelzaak
 
         #
-        # Resultaten en bewaartermijnen
-        #
-        # TODO: ResultaatTypeFacory
-
-        #
         # Vervolgzaken
         #
         # TODO: 3 more zaaktypes
@@ -501,4 +499,4 @@ def create_haaglanden_test_data():
 
     Works on an empty database. If there is data already, there is a chance on duplicate key constraints
     """
-    HaaglandenBaseTest().setUp()
+    HaaglandenMixin().setUp()

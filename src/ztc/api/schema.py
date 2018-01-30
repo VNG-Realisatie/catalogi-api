@@ -1,9 +1,11 @@
-import coreapi
-import coreschema
 from django.utils.translation import ugettext_lazy as _
 
+import coreapi
+import coreschema
 from drf_openapi import codec as openapi_renderers
-from drf_openapi.entities import OpenApiSchemaGenerator as _OpenApiSchemaGenerator
+from drf_openapi.entities import (
+    OpenApiSchemaGenerator as _OpenApiSchemaGenerator
+)
 from rest_framework import exceptions, permissions, renderers, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
