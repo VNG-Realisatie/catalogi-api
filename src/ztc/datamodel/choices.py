@@ -2,13 +2,15 @@ from django.utils.translation import ugettext_lazy as _
 
 from djchoices import ChoiceItem, DjangoChoices
 
-# TODO [KING]: waardenverzameling nemen we letterlijk over. Dit betekend dat we onder andere de
-# volgende waarden verwachten (en kleine afwijking hiervan zal dus niet valideren):
-# voor Eigenschap.formaat: 'datum/tijd (jjjjmmdduummss)' dus inclusief het deel tussen haakjes
-# voor ZaakType.vertrouwelijkheidsaanduiding: 'ZEER GEHEIM' (dus geheel in hoofdletters met spatie)
-# voor ResultaatType.archiefnominatie: 'Blijvend bewaren' (alleen eerste is hoofdletter en een spatie)
-# voor ResultaatType.brondatum_archiefprocedure: 'afgehandeld' dus geheel met kleine letters
-# voor RolType.roltypeomschrijving_generiek: 'Zaakcoördinator' (met umlaut/trema)
+# Waardenverzameling nemen we letterlijk over. Dit betekend dat we onder
+# andere de volgende waarden verwachten (en kleine afwijking hiervan zal dus
+# niet valideren):
+#
+# Eigenschap.formaat: 'datum/tijd (jjjjmmdduummss)' dus inclusief het deel tussen haakjes
+# ZaakType.vertrouwelijkheidsaanduiding: 'ZEER GEHEIM' (dus geheel in hoofdletters met spatie)
+# ResultaatType.archiefnominatie: 'Blijvend bewaren' (alleen eerste is hoofdletter en een spatie)
+# ResultaatType.brondatum_archiefprocedure: 'afgehandeld' dus geheel met kleine letters
+# RolType.roltypeomschrijving_generiek: 'Zaakcoördinator' (met umlaut/trema)
 
 class JaNee(DjangoChoices):
     ja = ChoiceItem('J', _('Ja'))

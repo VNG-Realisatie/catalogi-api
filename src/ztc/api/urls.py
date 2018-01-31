@@ -3,13 +3,15 @@ from django.conf.urls import include, url
 from rest_framework_nested import routers
 
 from .schema import OpenAPISchemaView
-from .views import BesluitTypeViewSet, CatalogusViewSet
+from .views import BesluitTypeViewSet, CatalogusViewSet, InformatieObjectTypeViewSet
 
 root_router = routers.SimpleRouter()
 root_router.register(r'catalogussen', CatalogusViewSet)
 
 catalogus_router = routers.NestedSimpleRouter(root_router, r'catalogussen', lookup='catalogus')
 catalogus_router.register(r'besluittypen', BesluitTypeViewSet)
+catalogus_router.register(r'informatieobjecttypen', InformatieObjectTypeViewSet)
+
 
 API_PREFIX = r'^v(?P<version>\d+)'
 
