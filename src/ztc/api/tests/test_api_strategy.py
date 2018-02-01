@@ -12,11 +12,21 @@ from oauth2_provider.models import AccessToken, Application
 from rest_framework.settings import api_settings
 
 from ...datamodel.models import Catalogus
+from ...datamodel.tests.factories import (
+    BesluitTypeFactory, InformatieObjectTypeFactory
+)
 from .base import APITestCase, CatalogusAPITestMixin, ClientAPITestMixin
 
 
 class RestfulPrinciplesAPITests(APITestCase):
     """Section 2.6.1 of the DSO: API strategy"""
+    def setUp(self):
+        super().setUp()
+
+        self.besluittype = BesluitTypeFactory.create(
+            maakt_deel_uit_van=self.catalogus, publicatie_indicatie='J')
+        self.informatieobjecttype = InformatieObjectTypeFactory.create(
+            maakt_deel_uit_van=self.catalogus)
 
     def test_nested_resources(self):
         """DSO: API-09 (nested resources)
@@ -29,10 +39,10 @@ class RestfulPrinciplesAPITests(APITestCase):
             'catalogus_pk': self.catalogus.pk,
             'pk': self.besluittype.pk
         }
-        besluittype_list_url = reverse('api:besluittype-detail', kwargs=kwargs)
+        besluittype_detail_url = reverse('api:besluittype-detail', kwargs=kwargs)
 
         self.assertEqual(
-            besluittype_list_url,
+            besluittype_detail_url,
             '/api/v{version}/catalogussen/{catalogus_pk}/besluittypen/{pk}/'.format(**kwargs)
         )
 
@@ -42,34 +52,34 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing `/api/v1/catalogussen/1/?expand=true` expands all (1st level) expandable resources.
         """
         # TODO: Why is this an English term, while search and ordering are Dutch?
-        response = self.api_client.get('{}?expand=true'.format(self.detail_url))
+        response = self.api_client.get('{}?expand=true'.format(self.catalogus_detail_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         # TODO: Extend with other resources.
-        expected_expanded_resources = ['besluittypen', ]
+        expected_expanded_resources = ['bestaatuitBesluittype', 'bestaatuitInformatieobjecttype']
         for resource in expected_expanded_resources:
-            self.assertGreater(len(data[resource]), 0)
+            self.assertGreater(len(data[resource]), 0, data[resource])
             self.assertIsInstance(data[resource][0], dict)
 
     def test_expand_single_resource(self):
         """DSO: API-11 (expand single resource)
 
-        Passing `/api/v1/catalogussen/1/?expand=besluittypen` expands only the resource referenced by the field
+        Passing `/api/v1/catalogussen/1/?expand=bestaatuitBesluittype` expands only the resource referenced by the field
         "besluittypen".
         """
-        response = self.api_client.get('{}?expand=besluittypen'.format(self.detail_url))
+        response = self.api_client.get('{}?expand=bestaatuitBesluittype'.format(self.catalogus_detail_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
-        expected_expanded_resource = 'besluittypen'
+        expected_expanded_resource = 'bestaatuitBesluittype'
         self.assertGreater(len(data[expected_expanded_resource]), 0)
         self.assertIsInstance(data[expected_expanded_resource][0], dict)
 
         # TODO: Extend with other resources.
-        expected_closed_resources = []
+        expected_closed_resources = ['bestaatuitInformatieobjecttype', ]
         for resource in expected_closed_resources:
             self.assertGreater(len(data[resource]), 0)
             self.assertIsInstance(data[resource][0], str)
@@ -78,16 +88,16 @@ class RestfulPrinciplesAPITests(APITestCase):
     def test_expand_multiple_resources(self):
         """DSO: API-11 (expand multiple resources)
 
-        Passing `/api/v1/catalogussen/1/?expand=besluittypen,informatieobjecttypen` expands only the two resources
+        Passing `/api/v1/catalogussen/1/?expand=bestaatuitBesluittype,bestaatuitInformatieobjecttype` expands only the two resources
         referenced by the field "besluittypen" and "informatieobjecttypen".
         """
-        response = self.api_client.get('{}?expand=besluittypen,informatieobjecttypen'.format(self.detail_url))
+        response = self.api_client.get('{}?expand=bestaatuitBesluittype,bestaatuitInformatieobjecttype'.format(self.catalogus_detail_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         # TODO: Extend with other resources.
-        expected_expanded_resources = ['besluittypen', ] # 'informatieobjecttypen']
+        expected_expanded_resources = ['bestaatuitBesluittype', 'bestaatuitInformatieobjecttype', ]
         for resource in expected_expanded_resources:
             self.assertGreater(len(data[resource]), 0)
             self.assertIsInstance(data[resource][0], dict)
@@ -102,19 +112,19 @@ class RestfulPrinciplesAPITests(APITestCase):
     def test_expand_resource_with_specific_field(self):
         """DSO: API-11 (expand resource with specific field)
 
-        Passing `/api/v1/catalogussen/1/?expand=besluittypen.besluittype_omschrijving` expands only the resource
+        Passing `/api/v1/catalogussen/1/?expand=bestaatuitBesluittype.omschrijving` expands only the resource
         referenced by the field "besluittypen" and only shows the field "omschrijving" of that resource.
         """
-        response = self.api_client.get('{}?expand=besluittypen.besluittype_omschrijving'.format(self.detail_url))
+        response = self.api_client.get('{}?expand=bestaatuitBesluittype.omschrijving'.format(self.catalogus_detail_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
-        expected_expanded_resource = 'besluittypen'
+        expected_expanded_resource = 'bestaatuitBesluittype'
         self.assertGreater(len(data[expected_expanded_resource]), 0)
         self.assertIsInstance(data[expected_expanded_resource][0], dict)
         self.assertEqual(len(data[expected_expanded_resource][0]), 1)
-        self.assertTrue('besluittype_omschrijving' in data[expected_expanded_resource][0])
+        self.assertTrue('omschrijving' in data[expected_expanded_resource][0])
 
         # TODO: Extend with other resources.
         expected_closed_resources = []
@@ -129,7 +139,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing `/api/v1/catalogussen/1/?fields=domein` should only show the resource with the field "domein".
         """
         # TODO: Why is this an English term, while search and ordering are Dutch?
-        response = self.api_client.get('{}?fields=domein'.format(self.detail_url))
+        response = self.api_client.get('{}?fields=domein'.format(self.catalogus_detail_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -143,7 +153,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing `/api/v1/catalogussen/1/?fields=domein,rsin` should only show the resource with the 2 fields "domein"
         and "rsin".
         """
-        response = self.api_client.get('{}?fields=domein,rsin'.format(self.detail_url))
+        response = self.api_client.get('{}?fields=domein,rsin'.format(self.catalogus_detail_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -159,7 +169,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing `/api/v1/catalogussen/1/?fields=foobar` should return a HTTP 400 because the field "foobar" does not
         exist on the catalog resource.
         """
-        response = self.api_client.get('{}?fields=foobar'.format(self.detail_url))
+        response = self.api_client.get('{}?fields=foobar'.format(self.catalogus_detail_url))
         self.assertEqual(response.status_code, 400)
 
 
@@ -177,7 +187,7 @@ class SecurityAPITests(CatalogusAPITestMixin, LiveServerTestCase):
 
         A valid API key is required to access any resource.
         """
-        response = self.api_client.get(self.list_url)
+        response = self.api_client.get(self.catalogus_list_url)
         self.assertEqual(response.status_code, 401)
 
     @expectedFailure
@@ -190,10 +200,10 @@ class SecurityAPITests(CatalogusAPITestMixin, LiveServerTestCase):
         token = AccessToken.objects.create(
             token='12345', expires=timezone.now() + timedelta(days=1), scope='write read')
 
-        response = self.api_client.get('{}?bearer={}'.format(self.list_url, token.token))
+        response = self.api_client.get('{}?bearer={}'.format(self.catalogus_list_url, token.token))
         self.assertEqual(response.status_code, 400)
 
-        response = self.api_client.get('{}?token={}'.format(self.list_url, token.token))
+        response = self.api_client.get('{}?token={}'.format(self.catalogus_list_url, token.token))
         self.assertEqual(response.status_code, 400)
 
     def test_oauth2_authentication(self):
@@ -224,7 +234,7 @@ class SecurityAPITests(CatalogusAPITestMixin, LiveServerTestCase):
         )
 
         # We use the live test server rather than the shortcut client.
-        list_url = '{}{}'.format(self.live_server_url, self.list_url)
+        list_url = '{}{}'.format(self.live_server_url, self.catalogus_list_url)
 
         # Make request using requests_oauthlib
         response = oauth.get(list_url)
@@ -272,11 +282,11 @@ class VersioningAPITests(APITestCase):
 
     def test_major_api_version_in_url(self):
         """DSO: API-24 (major API version in URL)"""
-        self.assertTrue('/v{}/'.format(api_settings.DEFAULT_VERSION) in self.list_url)
+        self.assertTrue('/v{}/'.format(api_settings.DEFAULT_VERSION) in self.catalogus_list_url)
 
     def test_full_api_version_in_response_header(self):
         """DSO: API-24 (full API version in response header)"""
-        response = self.api_client.get(self.list_url)
+        response = self.api_client.get(self.catalogus_list_url)
         self.assertEqual(response.status_code, 200)
 
         self.assertTrue('API-Version' in response)
@@ -293,7 +303,7 @@ class UseJSONTests(APITestCase):
 
     def test_accept_and_return_json(self):
         """DSO: API-26 (accept and return JSON)"""
-        response = self.api_client.get(self.list_url)
+        response = self.api_client.get(self.catalogus_list_url)
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(response['content-type'], 'application/json')
@@ -310,7 +320,7 @@ class UseJSONTests(APITestCase):
 
     def test_content_negotiation_unsupported_format(self):
         """DSO: API-28 (content negotiation unsupported format)"""
-        response = self.api_client.get(self.list_url, HTTP_ACCEPT='text/html')
+        response = self.api_client.get(self.catalogus_list_url, HTTP_ACCEPT='text/html')
         self.assertEqual(response.status_code, 406)
 
     @skip('This API is currently read-only.')
@@ -319,14 +329,12 @@ class UseJSONTests(APITestCase):
 
         Typically, this header is passed on POST/PUT/PATCH requests to indicate the body content type.
         """
-        response = self.api_client.put(self.detail_url, '{}', content_type='text/html')
+        response = self.api_client.put(self.catalogus_detail_url, '{}', content_type='text/html')
         self.assertEqual(response.status_code, 415)
 
-    @expectedFailure
     def test_camelcase_field_names(self):
         """DSO: API-30 (camelCase field names)"""
-        # TODO: We deviate from this guideline and use snake case.
-        response = self.api_client.get(self.detail_url)
+        response = self.api_client.get(self.catalogus_detail_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -335,7 +343,7 @@ class UseJSONTests(APITestCase):
 
     def test_no_pretty_print(self):
         """DSO: API-31 (no pretty print)"""
-        response = self.api_client.get(self.detail_url)
+        response = self.api_client.get(self.catalogus_detail_url)
         self.assertEqual(response.status_code, 200)
 
         raw_data = response.content.decode('utf-8')
@@ -346,36 +354,36 @@ class UseJSONTests(APITestCase):
     def test_no_envelope(self):
         """DSO: API-32 (no envelope)"""
         # TODO: List resources do have envelopes, even suggested by DSO.
-        response = self.api_client.get(self.detail_url)
+        response = self.api_client.get(self.catalogus_detail_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
-        self.assertTrue('contactpersoon_beheer_naam' in data)
+        self.assertTrue('contactpersoonBeheerNaam' in data)
 
     @skip('This API is currently read-only.')
     def test_content_type_json_is_supported(self):
         """DSO: API-33 (content type application/json is supported)"""
-        response = self.api_client.patch(self.detail_url, '{}')
+        response = self.api_client.patch(self.catalogus_detail_url, '{}')
         self.assertEqual(response.status_code, 200)
 
-        response = self.api_client.put(self.detail_url, '{}')
+        response = self.api_client.put(self.catalogus_detail_url, '{}')
         self.assertEqual(response.status_code, 200)
 
-        response = self.api_client.post(self.list_url, '{}')
+        response = self.api_client.post(self.catalogus_list_url, '{}')
         self.assertEqual(response.status_code, 201)
 
     @skip('This API is currently read-only.')
     def test_content_type_x_is_not_supported(self):
         """DSO: API-33 (content type application/x-www-form-urlencoded is not supported)"""
         # TODO: This guideline contradicts OAuth2 standards...
-        response = self.api_client.patch(self.detail_url, '{}', content_type='application/x-www-form-urlencoded')
+        response = self.api_client.patch(self.catalogus_detail_url, '{}', content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 415)
 
-        response = self.api_client.put(self.detail_url, '{}', content_type='application/x-www-form-urlencoded')
+        response = self.api_client.put(self.catalogus_detail_url, '{}', content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 415)
 
-        response = self.api_client.post(self.list_url, '{}', content_type='application/x-www-form-urlencoded')
+        response = self.api_client.post(self.catalogus_list_url, '{}', content_type='application/x-www-form-urlencoded')
         self.assertEqual(response.status_code, 415)
 
 
@@ -390,7 +398,7 @@ class FilterSortSearchTests(APITestCase):
     def test_filter_on_single_field(self):
         """DSO: API-34 (filter on single field)"""
         # Filter on rsin
-        response = self.api_client.get('{}?rsin={}'.format(self.list_url, self.catalogus.rsin))
+        response = self.api_client.get('{}?rsin={}'.format(self.catalogus_list_url, self.catalogus.rsin))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -400,7 +408,7 @@ class FilterSortSearchTests(APITestCase):
         self.assertEqual(data['results'][0]['rsin'], self.catalogus.rsin)
 
         # Filter on domain
-        response = self.api_client.get('{}?domein={}'.format(self.list_url, self.catalogus.domein))
+        response = self.api_client.get('{}?domein={}'.format(self.catalogus_list_url, self.catalogus.domein))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -414,7 +422,7 @@ class FilterSortSearchTests(APITestCase):
         # Create an extra catalog to make sure it gets filtered out because of the different domain.
         Catalogus.objects.create(domein='XXXXX', rsin=self.catalogus.rsin)
 
-        response = self.api_client.get('{}?rsin={}&domein={}'.format(self.list_url, self.catalogus.rsin, self.catalogus.domein))
+        response = self.api_client.get('{}?rsin={}&domein={}'.format(self.catalogus_list_url, self.catalogus.rsin, self.catalogus.domein))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -430,7 +438,7 @@ class FilterSortSearchTests(APITestCase):
 
     def test_sort_ascending(self):
         """DSO: API-35 (sort ascending)"""
-        response = self.api_client.get('{}?sorteer=rsin'.format(self.list_url))
+        response = self.api_client.get('{}?sorteer=rsin'.format(self.catalogus_list_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -442,7 +450,7 @@ class FilterSortSearchTests(APITestCase):
 
     def test_sort_descending(self):
         """DSO: API-35 (sort descending)"""
-        response = self.api_client.get('{}?sorteer=-rsin'.format(self.list_url))
+        response = self.api_client.get('{}?sorteer=-rsin'.format(self.catalogus_list_url))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -459,7 +467,7 @@ class FilterSortSearchTests(APITestCase):
 
     def test_search_single_value(self):
         """DSO: API-36 (search single value)"""
-        response = self.api_client.get('{}?zoek={}'.format(self.list_url, self.catalogus.rsin))
+        response = self.api_client.get('{}?zoek={}'.format(self.catalogus_list_url, self.catalogus.rsin))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -472,7 +480,7 @@ class FilterSortSearchTests(APITestCase):
         """DSO: API-36 (search partial value)"""
         # TODO: This should probably not work but should only work when using wildcards.
 
-        response = self.api_client.get('{}?zoek={}'.format(self.list_url, 'Jo'))
+        response = self.api_client.get('{}?zoek={}'.format(self.catalogus_list_url, 'Jo'))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -483,7 +491,7 @@ class FilterSortSearchTests(APITestCase):
 
     def test_search_multiple_values(self):
         """DSO: API-36 (search multiple values)"""
-        response = self.api_client.get('{}?zoek={} {}'.format(self.list_url, 'John', self.other_catalogus.rsin))
+        response = self.api_client.get('{}?zoek={} {}'.format(self.catalogus_list_url, 'John', self.other_catalogus.rsin))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -493,7 +501,7 @@ class FilterSortSearchTests(APITestCase):
         self.assertEqual(data['results'][0]['rsin'], self.other_catalogus.rsin)
 
         # Another test to check whether it searching multiple values matches ALL search terms, and not just one.
-        response = self.api_client.get('{}?zoek={} {}'.format(self.list_url, 'Jane', self.other_catalogus.rsin))
+        response = self.api_client.get('{}?zoek={} {}'.format(self.catalogus_list_url, 'Jane', self.other_catalogus.rsin))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -512,7 +520,7 @@ class FilterSortSearchTests(APITestCase):
 
         # All query parameters will filter it down to 2, that are ordered.
         response = self.api_client.get('{}?domein={}&zoek={}&sorteer={}'.format(
-            self.list_url, self.catalogus.domein, 'Jane', 'rsin'))
+            self.catalogus_list_url, self.catalogus.domein, 'Jane', 'rsin'))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -525,7 +533,7 @@ class FilterSortSearchTests(APITestCase):
     @expectedFailure
     def test_search_wildcard_star(self):
         """DSO: API-37 (search wildcard star)"""
-        response = self.api_client.get('{}?zoek={}*'.format(self.list_url, self.other_catalogus.rsin[0:4]))
+        response = self.api_client.get('{}?zoek={}*'.format(self.catalogus_list_url, self.other_catalogus.rsin[0:4]))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -536,7 +544,7 @@ class FilterSortSearchTests(APITestCase):
     @expectedFailure
     def test_search_wildcard_question_mark(self):
         """DSO: API-37 (search wildcard question mark)"""
-        response = self.api_client.get('{}?zoek={}??????'.format(self.list_url, self.other_catalogus.rsin[0:4]))
+        response = self.api_client.get('{}?zoek={}??????'.format(self.catalogus_list_url, self.other_catalogus.rsin[0:4]))
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -580,7 +588,7 @@ class PaginationTests(APITestCase):
 
     def test_pagination_using_json_hal(self):
         """DSO: API-46 (pagination using JSON+HAL)"""
-        response = self.api_client.get('{}?pagina=2'.format(self.list_url))
+        response = self.api_client.get('{}?pagina=2'.format(self.catalogus_list_url))
         self.assertEqual(response.status_code, 200)
 
         expected_headers = {
@@ -650,12 +658,12 @@ class ErrorHandlingTests(APITestCase):
     def test_standard_json_error_response_400(self):
         """DSO: API-50 (standard JSON error response 400)"""
         response = self.api_client.patch(
-            self.detail_url, data=json.dumps({'domein': 'ABCDEFGH'}), content_type='application/json')
+            self.catalogus_detail_url, data=json.dumps({'domein': 'ABCDEFGH'}), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
     def test_standard_json_error_response_401(self):
         """DSO: API-50 (standard JSON error response 401)"""
-        response = self.client.get(self.detail_url)
+        response = self.client.get(self.catalogus_detail_url)
         self.assertEqual(response.status_code, 401)
 
         data = response.json()
@@ -665,7 +673,7 @@ class ErrorHandlingTests(APITestCase):
             'title': 'Unauthorized',
             'status': 401,
             'detail': _('Authentication credentials were not provided.'),
-            'instance': self.detail_url,
+            'instance': self.catalogus_detail_url,
         })
 
     def test_standard_json_error_response_404(self):
