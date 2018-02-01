@@ -1,13 +1,26 @@
-from rest_framework import serializers
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import BesluitType
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
-class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, serializers.HyperlinkedModelSerializer):
+
+class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     """
     Serializer based on ``BST-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
+    parent_lookup_kwargs = {
+        'catalogus_pk': 'maakt_deel_uit_van__pk'
+    }
+
+    wordtVastgelegdIn = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='wordt_vastgelegd_in',
+        view_name='api:informatieobjecttype-detail',
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van_id'}
+    )
 
     class Meta:
         model = BesluitType
@@ -22,17 +35,14 @@ class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMi
             'einddatumObject': 'datum_einde_geldigheid',
 
             'maaktDeeluitVan': 'maakt_deel_uit_van',
-            'wordtVastgelegdIn': 'wordt_vastgelegd_in',
-
-            # 'isRelevantVoor': '',
-            # 'isResultaatVan': '',
         }
         extra_kwargs = {
-            'url': {'view_name': 'api:informatieobjecttype-detail'},
+            'url': {'view_name': 'api:besluittype-detail'},
             'maaktDeeluitVan': {'view_name': 'api:catalogus-detail'},
-            'wordtVastgelegdIn': {'view_name': 'api:informatieobjecttype-detail'},
         }
         fields = (
+            'url',
+
             'omschrijving',
             'omschrijvingGeneriek',
             'categorie',
@@ -48,3 +58,8 @@ class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMi
             # 'isRelevantVoor',
             # 'isResultaatVan',
         )
+
+    expandable_fields = {
+        'maaktDeeluitVan': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
+        'wordtVastgelegdIn': ('ztc.api.serializers.InformatieObjectTypeSerializer', {'source': 'wordt_vastgelegd_in', 'many': True})
+    }

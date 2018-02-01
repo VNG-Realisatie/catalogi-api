@@ -69,10 +69,6 @@ class FlexFieldsSerializerMixin(object):
         import copy
         field_options = self.expandable_fields[name]
         serializer_class = field_options[0]
-
-        if isinstance(serializer_class, str):
-            serializer_class = importlib.import_module(serializer_class)
-
         serializer_settings = copy.deepcopy(field_options[1])
 
         if name in nested_expands:

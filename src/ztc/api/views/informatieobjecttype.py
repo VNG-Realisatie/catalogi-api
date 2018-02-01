@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 
 from ...datamodel.models import InformatieObjectType
-from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..serializers import InformatieObjectTypeSerializer
+from ..utils.rest_flex_fields import FlexFieldsMixin
 
 
 class InformatieObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):

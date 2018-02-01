@@ -1,16 +1,21 @@
 from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
-from ..serializers import BesluitTypeSerializer, CatalogusSerializer
 from ...datamodel.models import InformatieObjectType
+from ..serializers import BesluitTypeSerializer, CatalogusSerializer
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
 
-class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, serializers.HyperlinkedModelSerializer):
+class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     """
     Serializer based on ``IOT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
+    parent_lookup_kwargs = {
+        'catalogus_pk': 'maakt_deel_uit_van__pk'
+    }
+
     omschrijvingGeneriek = serializers.CharField(
         source='informatieobjecttype_omschrijving_generiek.informatieobjecttype_omschrijving_generiek')
 
@@ -19,7 +24,7 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
         read_only=True,
         source='besluittype_set',
         view_name='api:besluittype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'word_vastgelegd_in__catalogus'}
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van_id'}
     )
 
     class Meta:
@@ -35,7 +40,7 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
             'maaktDeeluitVan': 'maakt_deel_uit_van',
         }
         extra_kwargs = {
-            # 'url': {'view_name': 'api:informatieobjecttype-detail'},
+            'url': {'view_name': 'api:informatieobjecttype-detail'},
             'maaktDeeluitVan': {'view_name': 'api:catalogus-detail'},
         }
         fields = (
@@ -70,7 +75,7 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
         )
 
     expandable_fields = {
-        'maaktDeeluitVan': (CatalogusSerializer, {'source': 'maakt_deel_uit_van'}),
+        'maaktDeeluitVan': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
         # 'isRelevantVoor',
-        'isVastleggingVoor': (BesluitTypeSerializer, {'source': 'besluittype_set', 'many': True})
+        'isVastleggingVoor': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'besluittype_set', 'many': True})
     }

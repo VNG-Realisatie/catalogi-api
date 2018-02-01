@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from oauth2_provider.models import AccessToken
 
-from ...datamodel.models import BesluitType, Catalogus
+from ...datamodel.models import Catalogus
 
 
 class ClientAPITestMixin(object):
@@ -28,11 +28,8 @@ class CatalogusAPITestMixin(object):
 
         self.catalogus = Catalogus.objects.create(domein='ABCDE', rsin='000000001')
 
-        self.list_url = reverse('api:catalogus-list', kwargs={'version': '1'})
-        self.detail_url = reverse('api:catalogus-detail', kwargs={'version': '1', 'pk': self.catalogus.pk})
-
-        self.besluittype = BesluitType.objects.create(
-            maakt_deel_uit_van=self.catalogus, reactietermijn=14, publicatie_indicatie='J')
+        self.catalogus_list_url = reverse('api:catalogus-list', kwargs={'version': '1'})
+        self.catalogus_detail_url = reverse('api:catalogus-detail', kwargs={'version': '1', 'pk': self.catalogus.pk})
 
 
 class APITestCase(ClientAPITestMixin, CatalogusAPITestMixin, TestCase):

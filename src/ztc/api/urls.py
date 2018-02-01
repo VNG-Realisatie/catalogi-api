@@ -3,7 +3,9 @@ from django.conf.urls import include, url
 from rest_framework_nested import routers
 
 from .schema import OpenAPISchemaView
-from .views import BesluitTypeViewSet, CatalogusViewSet, InformatieObjectTypeViewSet
+from .views import (
+    BesluitTypeViewSet, CatalogusViewSet, InformatieObjectTypeViewSet
+)
 
 root_router = routers.SimpleRouter()
 root_router.register(r'catalogussen', CatalogusViewSet)
