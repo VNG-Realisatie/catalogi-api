@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import (
-    InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek, ZaakInformatieobjectType
+    InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek,
+    ZaakInformatieobjectType
 )
 from .mixins import GeldigheidAdminMixin
 

@@ -1,8 +1,8 @@
-import coreapi
-import coreschema
-
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext
+
+import coreapi
+import coreschema
 from rest_framework.filters import SearchFilter as _SearchFilter
 
 

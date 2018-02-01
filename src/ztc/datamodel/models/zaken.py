@@ -294,8 +294,10 @@ class ZaakType(GeldigheidMixin, models.Model):
     verlengingstermijn = models.PositiveSmallIntegerField(
         _('verlengingstermijn'), validators=[MaxValueValidator(999)], help_text=_(
             'De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.'))
-    trefwoord = ArrayField(models.CharField(_('trefwoord'), max_length=30, help_text=_(
-        'Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.')))
+    trefwoord = ArrayField(
+        models.CharField(_('trefwoord'), max_length=30),
+        blank=True, help_text=_('Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden '
+                                'gekarakteriseerd.(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
     # TODO [KING]: ?? waardenverzameling: De classificatiecode in het gehanteerde archiveringsclassificatiestelsel, gevolgd door een spatie en –
     # tussen haakjes - de gebruikelijke afkorting van de naam van het gehanteerde classificatiestelsel.
     archiefclassificatiecode = models.CharField(
@@ -315,9 +317,11 @@ class ZaakType(GeldigheidMixin, models.Model):
         'Aanduiding of (het starten van) een ZAAK van AN1 dit ZAAKTYPE gepubliceerd moet worden.'))
     publicatietekst = models.CharField(_('publicatietekst'), max_length=1000, blank=True, null=True, help_text=_(
         'De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.'))
-    verantwoordingsrelatie = ArrayField(models.CharField(
-        _('verantwoordingsrelatie'), max_length=40, blank=True, null=True,
-        help_text=_('De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording.')))
+    verantwoordingsrelatie = ArrayField(
+        models.CharField(_('verantwoordingsrelatie'), max_length=40),
+        blank=True, help_text=_(
+            'De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording. '
+            '(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
     versiedatum = DatumField(_('versiedatum'), help_text=_(
         'De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden'))
 

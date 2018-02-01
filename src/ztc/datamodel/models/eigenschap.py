@@ -31,7 +31,11 @@ class EigenschapSpecificatie(models.Model):
         'Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd.'))
     kardinaliteit = models.CharField(_('kardinaliteit'), max_length=3, validators=[validate_kardinaliteit], help_text=_(
         'Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE.'))
-    waardenverzameling = ArrayField(models.CharField(_('waardenverzameling'), max_length=100, help_text=_('Een waarde die deze EIGENSCHAP kan hebben.')))
+
+    waardenverzameling = ArrayField(
+        models.CharField(_('waardenverzameling'), max_length=100),
+        blank=True, help_text=_('Waarden die deze EIGENSCHAP kan hebben '
+                                '(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
 
     class Meta:
         verbose_name = _('Eigenschap specificatie')
