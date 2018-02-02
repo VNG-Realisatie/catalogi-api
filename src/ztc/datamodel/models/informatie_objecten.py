@@ -101,6 +101,19 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         unique_together = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving')
         verbose_name = _('Informatieobjecttype')
         verbose_name_plural = _('Informatieobjecttypen')
+        ordering = unique_together
+
+        filter_fields = (
+            'maakt_deel_uit_van',
+            'informatieobjectcategorie',
+        )
+        search_fields = (
+            'informatieobjecttype_omschrijving',
+            'informatieobjectcategorie',
+            'informatieobjecttypetrefwoord',
+            'toelichting',
+        )
+
 
     def clean(self):
         """

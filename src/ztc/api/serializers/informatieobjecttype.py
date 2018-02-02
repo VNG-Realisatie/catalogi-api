@@ -3,7 +3,6 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import InformatieObjectType
-from ..serializers import BesluitTypeSerializer, CatalogusSerializer
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
@@ -58,20 +57,6 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
             'maaktDeeluitVan',
             # 'isRelevantVoor',
             'isVastleggingVoor',
-
-            # Direct model names
-            # 'informatieobjecttype_omschrijving',
-            # 'informatieobjecttype_omschrijving_generiek__informatieobjecttype_omschrijving_generiek',
-            # 'informatieobjectcategorie',
-            # 'informatieobjecttypetrefwoord',
-            # 'vertrouwelijkheidaanduiding',
-            # 'model',
-            # 'toelichting',
-            # 'datum_begin_geldigheid',
-            # 'datum_eind_geldigheid',
-            # 'maakt_deel_uit_van',
-            # 'zaaktypes',
-            # 'besluittype_set',
         )
 
     expandable_fields = {

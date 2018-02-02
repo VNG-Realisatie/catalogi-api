@@ -5,6 +5,7 @@ from ...utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 from ..models import BesluitType, Catalogus, InformatieObjectType, ZaakType
 from .besluittype import BesluitTypeAdmin
 from .informatieobjecttype import InformatieObjectTypeAdmin
+from .mixins import FilterSearchOrderingAdminMixin
 from .zaken import ZaakTypeAdmin
 
 
@@ -27,15 +28,11 @@ class InformatieObjectTypeInline(EditInlineAdminMixin, admin.TabularInline):
 
 
 @admin.register(Catalogus)
-class CatalogusAdmin(ListObjectActionsAdminMixin, admin.ModelAdmin):
+class CatalogusAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+    model = Catalogus
+
     # List
     list_display = ('domein', 'rsin', )
-    list_filter = ('rsin', )
-    search_fields = (
-        'domein',
-        'rsin',
-        'contactpersoon_beheer_naam',
-    )
 
     # Details
     fieldsets = (

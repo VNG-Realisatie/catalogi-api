@@ -282,7 +282,14 @@ AUTHENTICATION_BACKENDS = [
 PROJECT_NAME = 'ztc'
 ENVIRONMENT = None
 SHOW_ALERT = True
-options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('mnemonic',)
+
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
+    'mnemonic',
+
+    'filter_fields',
+    'ordering_fields',
+    'search_fields',
+)
 
 #
 # Library settings
