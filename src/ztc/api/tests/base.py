@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from oauth2_provider.models import AccessToken
 
-from ...datamodel.models import Catalogus
+from ...datamodel.tests.factories import CatalogusFactory
 
 
 class ClientAPITestMixin(object):
@@ -26,7 +26,7 @@ class CatalogusAPITestMixin(object):
     def setUp(self):
         super().setUp()
 
-        self.catalogus = Catalogus.objects.create(domein='ABCDE', rsin='000000001')
+        self.catalogus = CatalogusFactory.create(domein='ABCDE', rsin='000000001')
 
         self.catalogus_list_url = reverse('api:catalogus-list', kwargs={'version': '1'})
         self.catalogus_detail_url = reverse('api:catalogus-detail', kwargs={'version': '1', 'pk': self.catalogus.pk})

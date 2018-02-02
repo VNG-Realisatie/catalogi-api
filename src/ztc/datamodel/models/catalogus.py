@@ -45,6 +45,11 @@ class Catalogus(models.Model):
         unique_together = ('domein', 'rsin')
         verbose_name = _('Catalogus')
         verbose_name_plural = _('Catalogussen')
+        ordering = unique_together
+
+        filter_fields = ('domein', 'rsin', )
+        ordering_fields = filter_fields
+        search_fields = filter_fields + ('contactpersoon_beheer_naam', )
 
     def __str__(self):
         return '{} - {}'.format(self.domein, self.rsin)

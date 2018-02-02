@@ -3,16 +3,16 @@ from rest_framework import viewsets
 from ...datamodel.models import InformatieObjectType
 from ..serializers import InformatieObjectTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
+from ..utils.viewsets import FilterSearchOrderingViewSetMixin
 
 
-class InformatieObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class InformatieObjectTypeViewSet(FlexFieldsMixin, FilterSearchOrderingViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor een Domein die als één geheel beheerd
-    wordt.
+    Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
 
     list:
-    Een verzameling van CATALOGUSsen.
+    Een verzameling van INFORMATIEOBJECTen.
     """
     queryset = InformatieObjectType.objects.all()
     serializer_class = InformatieObjectTypeSerializer

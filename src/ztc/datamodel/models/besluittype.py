@@ -70,6 +70,16 @@ class BesluitType(GeldigheidMixin, models.Model):
         unique_together = ('maakt_deel_uit_van', 'besluittype_omschrijving')
         verbose_name = _('Besluittype')
         verbose_name_plural = _('Besluittypen')
+        ordering = unique_together
+
+        filter_fields = ('maakt_deel_uit_van', )
+        search_fields = (
+            'besluittype_omschrijving',
+            'besluittype_omschrijving_generiek',
+            'besluitcategorie',
+            'toelichting',
+            'publicatietekst',
+        )
 
     def __str__(self):
         """

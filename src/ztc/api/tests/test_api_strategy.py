@@ -348,7 +348,7 @@ class UseJSONTests(APITestCase):
 
         raw_data = response.content.decode('utf-8')
 
-        self.assertFalse(' ' in raw_data)
+        self.assertFalse('  ' in raw_data, raw_data)
         self.assertFalse('\n' in raw_data)
 
     def test_no_envelope(self):
