@@ -28,6 +28,14 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
         parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
     )
 
+    zaaktypen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='zaaktype_set',
+        view_name='api:zaaktype-detail',
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
+    )
+
     class Meta:
         model = Catalogus
         source_mapping = {
@@ -50,6 +58,7 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
             # 'bestaatuitZaaktype',
             'bestaatuitInformatieobjecttype',
             'bestaatuitBesluittype',
+            'zaaktypen',
         )
 
     expandable_fields = {
