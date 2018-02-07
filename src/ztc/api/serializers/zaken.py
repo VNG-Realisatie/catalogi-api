@@ -77,8 +77,6 @@ class BronZaakTypeSerializer(ModelSerializer):
 
 
 class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
-    # url = HyperlinkedIdentityField(view_name='api:zaaktype-detail')
-
     product_dienst = ProductDienstSerializer(many=True, read_only=True)
     formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(read_only=True)
@@ -88,22 +86,24 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         read_only=True,
         source='heeft_relevant_besluittype',
         view_name='api:besluittype-detail',
-        parent_lookup_kwargs={'zaaktype_pk': 'zaaktypes'}
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
     )
-    # heeftGerelateerd = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_gerelateerd',
-    #     view_name='api:zaaktype-detail',
-    #     parent_lookup_kwargs={'zaaktype_pk': 'zaak_typen_heeft_gerelateerd'}
-    # )
-    # isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='is_deelzaaktype_van',
-    #     view_name='api:zaaktype-detail',
-    #     parent_lookup_kwargs={'zaaktype_pk': 'zaak_typen_is_deelzaaktype_van'}
-    # )
+    heeftGerelateerd = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='heeft_gerelateerd',
+        view_name='api:zaaktype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
+        }
+    )
+    isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='is_deelzaaktype_van',
+        view_name='api:zaaktype-detail',
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'},
+    )
 
     class Meta:
         model = ZaakType
@@ -138,9 +138,6 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         extra_kwargs = {
             'url': {'view_name': 'api:zaaktype-detail'},
             'maaktDeelUitVan': {'view_name': 'api:catalogus-detail'},
-            # 'isDeelzaaktypeVan': {'view_name': 'api:zaaktype-detail'},
-            # 'heeftGerelateerd': {'view_name': 'api:zaaktype-detail'},
-            'heeftRelevantBesluittype': {'view_name': 'api:besluittype-detail'},
         }
         fields = (
             # 'url',
@@ -182,7 +179,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'heeftGerelateerd',  # m2m ZaakType
             'isDeelzaaktypeVan',  # m2m ZaakType
             'maaktDeelUitVan',  # FK catalogus
-            # 'heeftRelevantBesluittype',  # TODO: something goes wrong
+            'heeftRelevantBesluittype',
         )
 
         expandable_fields = {
