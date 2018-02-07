@@ -64,23 +64,23 @@ class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                         'naam': EIGENSCHAP_ONE_NAAM,
                         'definitie': '',
                         'toelichting': '',
-                        'specificatie_van_eigenschap': {
+                        'specificatie': {
                             'formaat': '',
                             'groep': 'groep',
                             'kardinaliteit': '1',
                             'lengte': '1',
                             'waardeverzameling': []
                         },
-                        'referentie_naar_eigenschap': None,
+                        'referentie': None,
                     },
                     {
                         'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
                         'status_type': None,
                         'naam': EIGENSCHAP_TWO_NAAM,
                         'definitie': '',
-                        'specificatie_van_eigenschap': None,
+                        'specificatie': None,
                         'toelichting': 'Nieuw / Verandering / Ambtshalve wijziging / Ontheffing / Intrekking',
-                        'referentie_naar_eigenschap': {
+                        'referentie': {
                             'pathElement': 'x_path_element',
                             'informatiemodel': None,
                             'namespace': 'namespace',

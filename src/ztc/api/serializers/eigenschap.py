@@ -1,4 +1,3 @@
-
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, ModelSerializer
 )
@@ -43,8 +42,8 @@ class EigenschapSpecificatieSerializer(SourceMappingSerializerMixin, ModelSerial
 
 
 class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, HyperlinkedModelSerializer):
-    specificatie_van_eigenschap = EigenschapSpecificatieSerializer(read_only=True)
-    referentie_naar_eigenschap = EigenschapReferentieSerializer(read_only=True)
+    specificatie = EigenschapSpecificatieSerializer(read_only=True, source='specificatie_van_eigenschap')
+    referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
 
     isVan = NestedHyperlinkedIdentityField(
         view_name='api:zaaktype-detail',
@@ -61,16 +60,13 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'ingangsdatumObject': 'datum_begin_geldigheid',
             'einddatumObject': 'datum_einde_geldigheid',
             'naam': 'eigenschapnaam',
-            # TODO: uncomment and add to the fields. Does not work currently..
-            # 'specificatie': 'specificatie_van_eigenschap',
-            # 'referentie': 'referentie_naar_eigenschap',
         }
         fields = (
             'naam',
             'definitie',
             'toelichting',
             'status_type',
-            'specificatie_van_eigenschap',
-            'referentie_naar_eigenschap',
+            'specificatie',
+            'referentie',
             'isVan',
         )
