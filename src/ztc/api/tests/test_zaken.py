@@ -10,6 +10,8 @@ from .base import ClientAPITestMixin
 
 
 class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
+    maxDiff = None
+
     def setUp(self):
         super().setUp()
 
@@ -97,6 +99,12 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         for besluittype in heeftRelevantBesluittype:
             self.assertTrue(besluittype.startswith('http://testserver/api/v1/catalogussen/{}/besluittypen/'.format(self.catalogus.pk)))
 
+        # for example http://testserver/api/v1/catalogussen/2/zaaktypen/2/eigenschappen/3/
+        heeftEigenschap = result.pop('heeftEigenschap')
+        self.assertEqual(len(heeftEigenschap), 2)
+        for eigenschap in heeftEigenschap:
+            self.assertTrue(eigenschap.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/'.format(self.catalogus.pk, self.zaaktype.pk)))
+
         expected_result = {
             'versiedatum': '',
             'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.catalogus.pk),
@@ -144,6 +152,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.zaaktype.toelichting = 'toelichting'
         self.zaaktype.doel = 'doel'
         self.zaaktype.heeft_relevant_besluittype = []
+        self.zaaktype.eigenschap_set.all().delete()
         self.zaaktype.save()
 
         response = self.api_client.get(self.zaaktype_list_url)
@@ -165,7 +174,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'aanleiding': 'aanleiding',
                     'verlengingstermijn': 30,
                     'opschortingAanhouding': 'J',
-                    'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.zaaktype.maakt_deel_uit_van.pk),
+                    'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.catalogus.pk),
                     'indicatieInternOfExtern': '',
                     'verlengingmogelijk': 'J',
                     'handelingBehandelaar': '',
@@ -184,11 +193,12 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'heeftRelevantBesluittype': [],
                     'doorlooptijd': 8,
                     'verantwoordelijke': '',
-                    'omschrijving': 'Vergunningaanvraag regulier behandelen'
+                    'omschrijving': 'Vergunningaanvraag regulier behandelen',
+                    'heeftEigenschap': [],
                 }
             ],
             '_links': {
-                'self': {'href': 'http://testserver/api/v1/catalogussen/3/zaaktypen/'}
+                'self': {'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/'.format(self.catalogus.pk)}
             }
         }
         self.assertEqual(response.json(), expected)

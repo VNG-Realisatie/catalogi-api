@@ -1,12 +1,12 @@
-from rest_framework import serializers, status
-from rest_framework.relations import HyperlinkedIdentityField
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from rest_framework import serializers
 
+from .zaken import ZaakTypeSerializer
 from ...datamodel.models import Eigenschap
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 
 
 class EigenschapSerializer(FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer):
+    is_van = ZaakTypeSerializer(read_only=True)
 
     class Meta:
         model = Eigenschap
@@ -16,22 +16,22 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, serializers.HyperlinkedMod
             'definitie',
             'toelichting',
             'status_type',
-            # 'is_van',  # TODO: works after 'zaaktype-detail' exists
+            # 'is_van',  # TODO: currently returns all the fields from ZaakType, probably add it as a link
 
 
             # TODO: look at xsd, use nested serializers instead of the properties
             # 'attribuutsets' are a foreignkey, but made available as properties
-            'groep',
-            'formaat',
-            'lengte',
-            'kardinaliteit',
-            'waardenverzameling',
-            'objecttype',
-            'informatiemodel',
-            'namespace',
-            'schemalocatie',
-            'x_path_element',
-            'entiteittype',
+            # 'groep',
+            # 'formaat',
+            # 'lengte',
+            # 'kardinaliteit',
+            # 'waardenverzameling',
+            # 'objecttype',
+            # 'informatiemodel',
+            # 'namespace',
+            # 'schemalocatie',
+            # 'x_path_element',
+            # 'entiteittype',
         )
 
     extra_kwargs = {
@@ -39,10 +39,3 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, serializers.HyperlinkedMod
             'view_name': 'api:zaaktype-detail'
         }
     }
-
-    #  On BesluitType, also remove the line on the serializer
-    # extra_kwargs = {
-    #     'maakt_deel_uit_van': {
-    #         'view_name': 'api:catalogus-detail'
-    #     }
-    # }

@@ -103,6 +103,14 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'},
     )
+    heeftEigenschap = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='eigenschap_set',
+        view_name='api:eigenschap-detail',
+        parent_lookup_kwargs={'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+                              'zaaktype_pk': 'is_van__pk'},
+    )
 
     class Meta:
         model = ZaakType
@@ -179,6 +187,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'isDeelzaaktypeVan',  # m2m ZaakType
             'maaktDeelUitVan',  # FK catalogus
             'heeftRelevantBesluittype',
+            'heeftEigenschap',
         )
 
         expandable_fields = {
