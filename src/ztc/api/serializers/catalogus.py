@@ -28,7 +28,7 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
         parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
     )
 
-    zaaktypen = NestedHyperlinkedRelatedField(
+    bestaatuitZaaktype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='zaaktype_set',
@@ -55,10 +55,9 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
             'contactpersoonBeheerNaam',
             'contactpersoonBeheerTelefoonnummer',
             'contactpersoonBeheerEmailadres',
-            # 'bestaatuitZaaktype',
+            'bestaatuitZaaktype',
             'bestaatuitInformatieobjecttype',
             'bestaatuitBesluittype',
-            'zaaktypen',
         )
 
     expandable_fields = {

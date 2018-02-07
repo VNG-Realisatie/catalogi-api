@@ -1,3 +1,6 @@
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, ModelSerializer
 )
@@ -63,15 +66,44 @@ class BronCatalogusSerializer(ModelSerializer):
 class BronZaakTypeSerializer(ModelSerializer):
     class Meta:
         model = BronZaakType
-        fields = ('zaaktype_identificatie', 'zaaktype_omschrijving')
+        source_mapping = {
+            'identificatie': 'zaaktype_identificatie',
+            'omschrijving': 'zaaktype_omschrijving',
+        }
+        fields = (
+            'identificatie',
+            'omschrijving'
+        )
 
 
-class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, HyperlinkedModelSerializer):
+class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     # url = HyperlinkedIdentityField(view_name='api:zaaktype-detail')
 
     product_dienst = ProductDienstSerializer(many=True, read_only=True)
     formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(read_only=True)
+
+    heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='heeft_relevant_besluittype',
+        view_name='api:besluittype-detail',
+        parent_lookup_kwargs={'zaaktype_pk': 'zaaktypes'}
+    )
+    # heeftGerelateerd = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='heeft_gerelateerd',
+    #     view_name='api:zaaktype-detail',
+    #     parent_lookup_kwargs={'zaaktype_pk': 'zaak_typen_heeft_gerelateerd'}
+    # )
+    # isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='is_deelzaaktype_van',
+    #     view_name='api:zaaktype-detail',
+    #     parent_lookup_kwargs={'zaaktype_pk': 'zaak_typen_is_deelzaaktype_van'}
+    # )
 
     class Meta:
         model = ZaakType
@@ -96,20 +128,19 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'maaktDeelUitVan': 'maakt_deel_uit_van',
 
             # unused:
-            # 'historieMaterieel',
-            # 'heeftRelevantInformatieobjecttype',
-            # 'heeftRelevantBesluittype',
-            # 'heeftEigenschap',
-            # 'heeftRelevantZaakObjecttype',
-            # 'heeftRelevantResultaattype',
-            # 'heeftStatustype',
-            # 'heeftRoltype',
+            # 'heeftRelevantInformatieobjecttype': 'heeft_relevant_informatieobjecttype',
+            # 'heeftEigenschap': 'eigenschap_set',
+            # 'heeftRelevantZaakObjecttype': 'zaakobjecttype_set',
+            # 'heeftRelevantResultaattype': 'resultaattype_set',
+            # 'heeftStatustype': 'statustype_set',
+            # 'heeftRoltype': 'roltype_set',
         }
         extra_kwargs = {
             'url': {'view_name': 'api:zaaktype-detail'},
             'maaktDeelUitVan': {'view_name': 'api:catalogus-detail'},
-            'isDeelzaaktypeVan': {'view_name': 'api:zaaktype-detail'},
-            'heeftGerelateerd': {'view_name': 'api:zaaktype-detail'},
+            # 'isDeelzaaktypeVan': {'view_name': 'api:zaaktype-detail'},
+            # 'heeftGerelateerd': {'view_name': 'api:zaaktype-detail'},
+            'heeftRelevantBesluittype': {'view_name': 'api:besluittype-detail'},
         }
         fields = (
             # 'url',
@@ -151,6 +182,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'heeftGerelateerd',  # m2m ZaakType
             'isDeelzaaktypeVan',  # m2m ZaakType
             'maaktDeelUitVan',  # FK catalogus
+            # 'heeftRelevantBesluittype',  # TODO: something goes wrong
         )
 
         expandable_fields = {

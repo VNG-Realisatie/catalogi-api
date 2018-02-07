@@ -15,7 +15,10 @@ catalogus_router = routers.NestedSimpleRouter(root_router, r'catalogussen', look
 catalogus_router.register(r'besluittypen', BesluitTypeViewSet)
 catalogus_router.register(r'informatieobjecttypen', InformatieObjectTypeViewSet)
 catalogus_router.register(r'zaaktypen', ZaakTypeViewSet)
-# catalogus_router.register(r'eigenschappen', EigenschapViewSet)  # should get a different pattern
+
+# zaaktype_router = routers.NestedSimpleRouter(catalogus_router, r'zaaktypen', lookup='zaaktype')
+# zaaktype_router.register(r'eigenschappen', EigenschapViewSet)
+
 
 API_PREFIX = r'^v(?P<version>\d+)'
 
