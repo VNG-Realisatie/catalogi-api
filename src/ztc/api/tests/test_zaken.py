@@ -146,6 +146,29 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'opschortingAanhouding': 'J',
             'publicatietekst': 'N.t.b.',
             'onderwerp': 'Milieu-gerelateerde vergunning',
+            'heeftRelevantZaakObjecttype': [
+                {'relatieOmschrijving': 'Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) waarin het d',
+                 'status_type': None,
+                 'anderObject': 'N',
+                 'ingangsdatumObject': 'V20180207',
+                 'objecttype': 'VERBLIJFSOBJECT',
+                 'einddatumObject': None,
+                 'isRelevantVoor': self.zaaktype.pk},
+                {'relatieOmschrijving': 'Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting gevestigd',
+                 'status_type': None,
+                 'anderObject': 'N',
+                 'ingangsdatumObject': 'V20180207',
+                 'objecttype': 'PAND',
+                 'einddatumObject': None,
+                 'isRelevantVoor': self.zaaktype.pk},
+                {'relatieOmschrijving': 'De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
+                 'status_type': None,
+                 'anderObject': 'J',
+                 'ingangsdatumObject': 'V20180207',
+                 'objecttype': 'Milieu-inrichting of -locatie',
+                 'einddatumObject': None,
+                 'isRelevantVoor': self.zaaktype.pk},
+            ]
         }
         self.assertEqual(expected_result, result)
 
@@ -155,6 +178,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.zaaktype.doel = 'doel'
         self.zaaktype.heeft_relevant_besluittype = []
         self.zaaktype.eigenschap_set.all().delete()
+        self.zaaktype.zaakobjecttype_set.all().delete()
         self.zaaktype.save()
 
         response = self.api_client.get(self.zaaktype_list_url)
@@ -199,6 +223,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'verantwoordelijke': '',
                     'omschrijving': 'Vergunningaanvraag regulier behandelen',
                     'heeftEigenschap': [],
+                    'heeftRelevantZaakObjecttype': [],
                 }
             ],
             '_links': {

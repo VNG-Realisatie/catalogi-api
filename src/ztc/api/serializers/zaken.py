@@ -12,7 +12,7 @@ from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
 
-class ZaakObjectTypeSerializer(FlexFieldsSerializerMixin, HyperlinkedModelSerializer):
+class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
 
     class Meta:
         model = ZaakObjectType
@@ -31,10 +31,6 @@ class ZaakObjectTypeSerializer(FlexFieldsSerializerMixin, HyperlinkedModelSerial
             'relatieOmschrijving',
             'isRelevantVoor',
             'status_type',  # NOTE: this field is not in the xsd
-
-            # TODO:
-            # Not in our datamodel..
-            # 'historieMaterieel'  # " type="ztc:ZOT-historieMaterieel" minOccurs="0"
         )
 
 
@@ -79,6 +75,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
     product_dienst = ProductDienstSerializer(many=True, read_only=True)
     formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(read_only=True)
+    heeftRelevantZaakObjecttype = ZaakObjectTypeSerializer(many=True, read_only=True, source='zaakobjecttype_set')
 
     heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
         many=True,
@@ -136,8 +133,6 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
 
             # unused:
             # 'heeftRelevantInformatieobjecttype': 'heeft_relevant_informatieobjecttype',
-            # 'heeftEigenschap': 'eigenschap_set',
-            # 'heeftRelevantZaakObjecttype': 'zaakobjecttype_set',
             # 'heeftRelevantResultaattype': 'resultaattype_set',
             # 'heeftStatustype': 'statustype_set',
             # 'heeftRoltype': 'roltype_set',
@@ -188,6 +183,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'maaktDeelUitVan',  # FK catalogus
             'heeftRelevantBesluittype',
             'heeftEigenschap',
+            'heeftRelevantZaakObjecttype',
         )
 
         expandable_fields = {
