@@ -107,6 +107,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
 
         expected_result = {
             'versiedatum': '',
+            'ingangsdatumObject': 'V20180207',
+            'einddatumObject': None,
             'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.catalogus.pk),
             'omschrijving': 'Vergunningaanvraag regulier behandelen',
             'heeftGerelateerd': ['http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype2.pk)],  # TODO: check the through model ??
@@ -161,6 +163,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         expected = {
             'results': [
                 {
+                    'ingangsdatumObject': 'V20180207',
+                    'einddatumObject': None,
                     'vertrouwelijkheidAanduiding': 'OPENBAAR',
                     'identificatie': self.zaaktype.zaaktype_identificatie,
                     'product_dienst': [{'naam': 'Vergunning voor milieu', 'link': None}],

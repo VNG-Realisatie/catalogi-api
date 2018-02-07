@@ -24,8 +24,8 @@ class ZaakObjectTypeSerializer(FlexFieldsSerializerMixin, HyperlinkedModelSerial
             'isRelevantVoor': 'is_relevant_voor',
         }
         fields = (
-            # 'ingangsdatumObject',
-            # 'einddatumObject',
+            'ingangsdatumObject',
+            'einddatumObject',
             'objecttype',
             'anderObject',
             'relatieOmschrijving',
@@ -115,8 +115,8 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
     class Meta:
         model = ZaakType
         source_mapping = {
-            # "ingangsdatumObject": 'datum_begin_geldigheid',
-            # "einddatumObject": 'datum_einde_geldigheid',
+            "ingangsdatumObject": 'datum_begin_geldigheid',
+            "einddatumObject": 'datum_einde_geldigheid',
 
             'identificatie': 'zaaktype_identificatie',
             'omschrijving': 'zaaktype_omschrijving',
@@ -148,8 +148,8 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         }
         fields = (
             # 'url',
-            # 'ingangsdatumObject',
-            # 'einddatumObject',
+            'ingangsdatumObject',
+            'einddatumObject',
             'identificatie',
             'omschrijving',
             'omschrijvingGeneriek',

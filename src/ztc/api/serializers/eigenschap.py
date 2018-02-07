@@ -62,6 +62,8 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'naam': 'eigenschapnaam',
         }
         fields = (
+            'ingangsdatumObject',
+            'einddatumObject',
             'naam',
             'definitie',
             'toelichting',

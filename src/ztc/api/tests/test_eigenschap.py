@@ -59,6 +59,8 @@ class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'results':
                 [
                     {
+                        'ingangsdatumObject': 'V20180207',
+                        'einddatumObject': None,
                         'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
                         'status_type': None,
                         'naam': EIGENSCHAP_ONE_NAAM,
@@ -74,6 +76,8 @@ class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                         'referentie': None,
                     },
                     {
+                        'ingangsdatumObject': 'V20180207',
+                        'einddatumObject': None,
                         'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
                         'status_type': None,
                         'naam': EIGENSCHAP_TWO_NAAM,
