@@ -1,17 +1,12 @@
+from django.test import TestCase
 from django.urls import reverse
 
-from ...datamodel.tests.factories import BesluitTypeFactory
-from .base import APITestCase, ClientAPITestMixin
-from django.test import TestCase
-
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
-
 from ztc.datamodel.tests.factories import (
-    # BesluitTypeFactory, CatalogusFactory, EigenschapFactory,
-    # InformatieObjectTypeFactory, ProductDienstFactory, ResultaatTypeFactory,
-    # RolTypeFactory, StatusTypeFactory, ZaakObjectTypeFactory,
-    ZaakTypeFactory, ZaakTypenRelatieFactory, FormulierFactory
+    FormulierFactory, ZaakTypeFactory, ZaakTypenRelatieFactory
 )
+
+from .base import ClientAPITestMixin
 
 
 class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
@@ -23,6 +18,14 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'catalogus_pk': self.catalogus.pk,
         })
 
+    def test_get_list(self):
+        response = self.api_client.get(self.zaaktype_list_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_list_response(self):
+        """
+        Test the actual content of the response.
+        """
         self.zaaktype2 = ZaakTypeFactory.create(
             datum_begin_geldigheid=self.zaaktype.datum_begin_geldigheid,
             maakt_deel_uit_van=self.catalogus,
@@ -32,6 +35,11 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             maakt_deel_uit_van=self.catalogus,
         )
         self.zaaktype4 = ZaakTypeFactory.create(
+            datum_begin_geldigheid=self.zaaktype.datum_begin_geldigheid,
+            maakt_deel_uit_van=self.catalogus,
+        )
+        # ghost zaaktype, not related to the one we test
+        self.zaaktype5 = ZaakTypeFactory.create(
             datum_begin_geldigheid=self.zaaktype.datum_begin_geldigheid,
             maakt_deel_uit_van=self.catalogus,
         )
@@ -47,23 +55,21 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.zaaktype.trefwoord = ['trefwoord 1', 'trefwoord 2']
         self.zaaktype.verantwoordingsrelatie = ['verantwoordingsrelatie']
 
-        # heeftGerelateerd.. TODO: test that only the gerelateerde from this item are returned
+        # heeftGerelateerd..
         ZaakTypenRelatieFactory.create(
             zaaktype_van=self.zaaktype,
             zaaktype_naar=self.zaaktype2,
             aard_relatie='aard relatie',
         )
+        # also create a relation between 4 and 5, to test that this one will not show up under self.zaaktype
+        ZaakTypenRelatieFactory.create(
+            zaaktype_van=self.zaaktype4,
+            zaaktype_naar=self.zaaktype5,
+        )
+
         self.zaaktype.is_deelzaaktype_van.add(self.zaaktype3)
         self.zaaktype.save()
 
-    def test_get_list(self):
-        response = self.api_client.get(self.zaaktype_list_url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_get_list_response(self):
-        """
-        Test the actual content of the response.
-        """
         response = self.api_client.get(self.zaaktype_list_url)
         self.assertEqual(response.status_code, 200)
 
@@ -82,8 +88,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         #
         # check results
         #
-        self.assertEqual(len(results), 4)
-        result = results[3]  # only check the last one (since we did the .save()), from haaglanden data
+        self.assertEqual(len(results), 5)
+        result = results[4]  # only check the last one (since we did the .save()), from haaglanden data
 
         heeftRelevantBesluittype = result.pop('heeftRelevantBesluittype')
         # it is http://testserver/api/v1/catalogussen/1/besluittypen/8/
@@ -132,3 +138,57 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'onderwerp': 'Milieu-gerelateerde vergunning',
         }
         self.assertEqual(expected_result, result)
+
+    def test_get_list_response_minimum_data(self):
+        self.zaaktype.aanleiding = 'aanleiding'
+        self.zaaktype.toelichting = 'toelichting'
+        self.zaaktype.doel = 'doel'
+        self.zaaktype.heeft_relevant_besluittype = []
+        self.zaaktype.save()
+
+        response = self.api_client.get(self.zaaktype_list_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            'results': [
+                {
+                    'vertrouwelijkheidAanduiding': 'OPENBAAR',
+                    'identificatie': self.zaaktype.zaaktype_identificatie,
+                    'product_dienst': [{'naam': 'Vergunning voor milieu', 'link': None}],
+                    'broncatalogus': None,
+                    'publicatieIndicatie': 'J',
+                    'trefwoord': [],
+                    'zaakcategorie': None,
+                    'toelichting': 'toelichting',
+                    'handelingInitiator': 'Aanvragen',
+                    'bronzaaktype': None,
+                    'aanleiding': 'aanleiding',
+                    'verlengingstermijn': 30,
+                    'opschortingAanhouding': 'J',
+                    'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.zaaktype.maakt_deel_uit_van.pk),
+                    'indicatieInternOfExtern': '',
+                    'verlengingmogelijk': 'J',
+                    'handelingBehandelaar': '',
+                    'heeftGerelateerd': [],
+                    'doel': 'doel',
+                    'versiedatum': '',
+                    'formulier': [],
+                    'onderwerp': 'Milieu-gerelateerde vergunning',
+                    'publicatietekst': 'N.t.b.',
+                    'omschrijvingGeneriek': None,
+                    'verantwoordingsrelatie': [],
+                    'isDeelzaaktypeVan': [],
+                    'servicenorm': None,
+                    'archiefclassificatiecode': None,
+                    'referentieproces': {'naam': str(self.zaaktype.referentieproces.naam), 'link': None},
+                    'heeftRelevantBesluittype': [],
+                    'doorlooptijd': 8,
+                    'verantwoordelijke': '',
+                    'omschrijving': 'Vergunningaanvraag regulier behandelen'
+                }
+            ],
+            '_links': {
+                'self': {'href': 'http://testserver/api/v1/catalogussen/3/zaaktypen/'}
+            }
+        }
+        self.assertEqual(response.json(), expected)

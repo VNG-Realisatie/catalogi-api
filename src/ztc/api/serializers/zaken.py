@@ -1,9 +1,8 @@
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, ModelSerializer
 )
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
