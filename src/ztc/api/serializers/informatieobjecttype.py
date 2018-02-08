@@ -28,6 +28,7 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
 
     class Meta:
         model = InformatieObjectType
+        ref_name = model.__name__
         source_mapping = {
             'omschrijving': 'informatieobjecttype_omschrijving',
             'categorie': 'informatieobjectcategorie',

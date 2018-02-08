@@ -51,8 +51,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'corsheaders',
     'rest_framework',
-    'rest_framework_swagger',
-    'drf_openapi',
+    'drf_yasg',
 
     # Project applications.
     'ztc.accounts',
@@ -355,8 +354,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
-        # 'rest_framework.filters.SearchFilter',
-        'ztc.api.utils.search.SearchFilter',
+        'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ),
     #
@@ -438,19 +436,30 @@ REST_FRAMEWORK = {
 
 REST_FRAMEWORK_EXT = {
     'PAGE_PARAM': 'pagina',
+    'EXPAND_PARAM': 'expand',
+    'EXPAND_ALL_VALUE': 'true',
+    'FIELDS_PARAM': 'fields',
 }
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
-        'oauth2': {
+        'OAuth2': {
+            'type': 'oauth2',
             'flow': 'application',
             'tokenUrl': '/oauth2/token/',
             'scopes': {
                 'write': 'Schrijftoegang tot de catalogus en gerelateerde objecten.',
                 'read': 'Leestoegang tot de catalogus en gerelateerde objecten.'
             }
-        }
+        },
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        },
     },
+    # drf_yasg.inspectors.SwaggerAutoSchema
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'ztc.api.schema.AutoSchema',
 }
 
 # Django-CORS-middleware

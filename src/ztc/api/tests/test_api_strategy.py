@@ -253,7 +253,7 @@ class DocumentationAPITests(ClientAPITestMixin, TransactionTestCase):
     def setUp(self):
         super().setUp()
 
-        self.schema_url = reverse('api:api_schema', kwargs={'version': '1'})
+        self.schema_url = reverse('api:api-schema', kwargs={'version': '1'})
 
     def test_documentation_is_oas_2(self):
         """DSO: API-19 (documentation is OAS 2)"""

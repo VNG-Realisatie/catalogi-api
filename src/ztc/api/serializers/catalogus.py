@@ -30,6 +30,7 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
 
     class Meta:
         model = Catalogus
+        ref_name = model.__name__
         source_mapping = {
             'contactpersoonBeheerNaam': 'contactpersoon_beheer_naam',
             'contactpersoonBeheerTelefoonnummer': 'contactpersoon_beheer_telefoonnummer',

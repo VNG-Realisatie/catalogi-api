@@ -4,7 +4,6 @@ pytz
 raven
 
 Django>=1.11,<2
-# django-admin-tools
 django-hijack
 django-hijack-admin
 django-axes
@@ -15,11 +14,10 @@ django-redis
 django_admin_index
 
 djangorestframework
--e git+https://github.com/maykinmedia/drf_openapi@master#egg=drf-openapi
-# drf_openapi
 django-filter
 drf-nested-routers
 drf-flex-fields
 django-oauth-toolkit
 django-cors-middleware
 requests-oauthlib
+drf-yasg
