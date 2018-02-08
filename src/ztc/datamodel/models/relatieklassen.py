@@ -25,6 +25,7 @@ class ZaakInformatieobjectType(models.Model):
         'bij zaken van het gerelateerde ZAAKTYPE.'))
 
     # this is the relation that is described on StatusType in the specification
+    # TODO
     status_type = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
         related_name='heeft_verplichte_zit', help_text=_(

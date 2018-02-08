@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from freezegun import freeze_time
+
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
 from ztc.datamodel.tests.factories import (
     FormulierFactory, ZaakTypeFactory, ZaakTypenRelatieFactory
@@ -9,6 +11,7 @@ from ztc.datamodel.tests.factories import (
 from .base import ClientAPITestMixin
 
 
+@freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
 class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
     maxDiff = None
 

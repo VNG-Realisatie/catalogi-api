@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from freezegun import freeze_time
+
 from ztc.datamodel.models import Eigenschap
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
 from ztc.datamodel.tests.factories import (
@@ -13,6 +15,7 @@ EIGENSCHAP_ONE_NAAM = 'Beoogd(e) product(en'
 EIGENSCHAP_TWO_NAAM = 'Aard product'
 
 
+@freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
 class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
     maxDiff = None
 
