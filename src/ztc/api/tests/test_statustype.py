@@ -32,6 +32,10 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.new_eigenschap.status_type = self.status_type_besluit_genomen
         self.new_eigenschap.save()
 
+        # use Besluit genomen as status_type for ZOT milieu
+        self.zaaktypeobject_milieu.status_type = self.status_type_besluit_genomen
+        self.zaaktypeobject_milieu.save()
+
     def test_get_list(self):
         response = self.api_client.get(self.statustype_list_url)
         self.assertEqual(response.status_code, 200)
@@ -51,6 +55,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
+                    'heeftVerplichteZaakObjecttype': [],
                 }, {
                     'volgnummer': 2,
                     'omschrijving': 'Getoetst op indieningsvereisten',
@@ -64,6 +69,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
+                    'heeftVerplichteZaakObjecttype': [],
                 }, {
                     'volgnummer': 3,
                     'omschrijving': 'Inhoudelijk behandeld',
@@ -77,6 +83,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
+                    'heeftVerplichteZaakObjecttype': [],
                 }, {
                     'volgnummer': 4,
                     'omschrijving': 'Besluit genomen',
@@ -92,6 +99,9 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'heeftVerplichteEigenschap': [
                         'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(self.catalogus.pk, self.zaaktype.pk, self.new_eigenschap.pk)
                     ],
+                    'heeftVerplichteZaakObjecttype': [
+                        'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(self.catalogus.pk, self.zaaktypeobject_milieu.pk)
+                    ],
                 }, {
                     'volgnummer': 6,
                     'omschrijving': 'Producten geleverd',
@@ -105,6 +115,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
+                    'heeftVerplichteZaakObjecttype': [],
                 }
             ],
             '_links': {

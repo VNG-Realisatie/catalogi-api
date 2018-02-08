@@ -1,6 +1,4 @@
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer, ModelSerializer
-)
+from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
@@ -12,7 +10,15 @@ from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
 
-class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
+class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    isRelevantVoor = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='*',
+        view_name='api:zaaktype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+            'pk': 'is_relevant_voor__pk'}
+    )
 
     class Meta:
         model = ZaakObjectType
@@ -32,6 +38,9 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
             'isRelevantVoor',
             'status_type',  # NOTE: this field is not in the xsd
         )
+        extra_kwargs = {
+            'url': {'view_name': 'api:zaakobjecttype-detail'},
+        }
 
 
 class ProductDienstSerializer(ModelSerializer):
@@ -77,6 +86,15 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
     referentieproces = ReferentieProcesSerializer(read_only=True)
     heeftRelevantZaakObjecttype = ZaakObjectTypeSerializer(many=True, read_only=True, source='zaakobjecttype_set')
 
+    heeftRelevantZaakObjecttype = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='zaakobjecttype_set',
+        view_name='api:zaakobjecttype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+        }
+    )
     heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,

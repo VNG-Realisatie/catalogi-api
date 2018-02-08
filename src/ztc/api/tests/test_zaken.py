@@ -94,7 +94,12 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         # check results
         #
         self.assertEqual(len(results), 5)
-        result = results[4]  # only check the last one (since we did the .save()), from haaglanden data
+        OMSCHRIJVING = 'Vergunningaanvraag regulier behandelen'
+        # get the result that we want to check. It does not always have the same index..
+        result = None
+        for _result in results:
+            if _result.get('omschrijving') == OMSCHRIJVING:
+                result = _result
 
         heeftRelevantBesluittype = result.pop('heeftRelevantBesluittype')
         # it is http://testserver/api/v1/catalogussen/1/besluittypen/8/
@@ -108,12 +113,17 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         for eigenschap in heeftEigenschap:
             self.assertTrue(eigenschap.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/'.format(self.catalogus.pk, self.zaaktype.pk)))
 
+        heeftRelevantZaakObjecttype = result.pop('heeftRelevantZaakObjecttype')
+        self.assertEqual(len(heeftRelevantZaakObjecttype), 3)
+        for zot in heeftRelevantZaakObjecttype:
+            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(self.catalogus.pk)))
+
         expected_result = {
             'versiedatum': '',
             'ingangsdatumObject': 'V20180207',
             'einddatumObject': None,
             'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.catalogus.pk),
-            'omschrijving': 'Vergunningaanvraag regulier behandelen',
+            'omschrijving': OMSCHRIJVING,
             'heeftGerelateerd': ['http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype2.pk)],  # TODO: check the through model ??
             'verlengingmogelijk': 'J',
             'doorlooptijd': 8,
@@ -149,29 +159,6 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'opschortingAanhouding': 'J',
             'publicatietekst': 'N.t.b.',
             'onderwerp': 'Milieu-gerelateerde vergunning',
-            'heeftRelevantZaakObjecttype': [
-                {'relatieOmschrijving': 'Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) waarin het d',
-                 'status_type': None,
-                 'anderObject': 'N',
-                 'ingangsdatumObject': 'V20180207',
-                 'objecttype': 'VERBLIJFSOBJECT',
-                 'einddatumObject': None,
-                 'isRelevantVoor': self.zaaktype.pk},
-                {'relatieOmschrijving': 'Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting gevestigd',
-                 'status_type': None,
-                 'anderObject': 'N',
-                 'ingangsdatumObject': 'V20180207',
-                 'objecttype': 'PAND',
-                 'einddatumObject': None,
-                 'isRelevantVoor': self.zaaktype.pk},
-                {'relatieOmschrijving': 'De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
-                 'status_type': None,
-                 'anderObject': 'J',
-                 'ingangsdatumObject': 'V20180207',
-                 'objecttype': 'Milieu-inrichting of -locatie',
-                 'einddatumObject': None,
-                 'isRelevantVoor': self.zaaktype.pk},
-            ]
         }
         self.assertEqual(expected_result, result)
 
@@ -232,5 +219,62 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             '_links': {
                 'self': {'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/'.format(self.catalogus.pk)}
             }
+        }
+        self.assertEqual(response.json(), expected)
+
+
+@freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
+class ZaakObjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
+    maxDiff = None
+
+    def setUp(self):
+        super().setUp()
+
+        self.zaakobjecttype_list_url = reverse('api:zaakobjecttype-list', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+        })
+
+    def test_get_list(self):
+        response = self.api_client.get(self.zaakobjecttype_list_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_list_response(self):
+        response = self.api_client.get(self.zaakobjecttype_list_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            '_links': {
+                'self': {
+                    'href': 'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(self.catalogus.pk)
+                }
+            },
+            'results': [
+                {
+                    'relatieOmschrijving': 'De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
+                    'ingangsdatumObject': 'V20180207',
+                    'objecttype': 'Milieu-inrichting of -locatie',
+                    'anderObject': 'J',
+                    'status_type': None,
+                    'einddatumObject': None,
+                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                }, {
+                    'relatieOmschrijving': 'Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting gevestigd',
+                    'ingangsdatumObject': 'V20180207',
+                    'objecttype': 'PAND',
+                    'anderObject': 'N',
+                    'status_type': None,
+                    'einddatumObject': None,
+                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                }, {
+                    'relatieOmschrijving': 'Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) waarin het d',
+                    'ingangsdatumObject': 'V20180207',
+                    'objecttype': 'VERBLIJFSOBJECT',
+                    'anderObject': 'N',
+                    'status_type': None,
+                    'einddatumObject': None,
+                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                }
+            ]
         }
         self.assertEqual(response.json(), expected)
