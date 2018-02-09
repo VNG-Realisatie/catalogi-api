@@ -112,15 +112,15 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         view_name='api:besluittype-detail',
         parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
     )
-
-    # FIXME: change to through model
+    # TODO: currently only show one side of the relations for a ZaakType.
     heeftGerelateerd = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        source='heeft_gerelateerd',
-        view_name='api:zaaktype-detail',
+        source='zaaktypenrelatie_van',
+        view_name='api:zaaktypenrelatie-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_pk': 'zaaktype_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'zaaktype_van__pk',
         }
     )
     isDeelzaaktypeVan = NestedHyperlinkedRelatedField(

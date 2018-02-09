@@ -66,7 +66,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.zaaktype.verantwoordingsrelatie = ['verantwoordingsrelatie']
 
         # heeftGerelateerd..
-        ZaakTypenRelatieFactory.create(
+        self.relatie = ZaakTypenRelatieFactory.create(
             zaaktype_van=self.zaaktype,
             zaaktype_naar=self.zaaktype2,
             aard_relatie='aard relatie',
@@ -132,8 +132,10 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
                 self.catalogus.pk),
             'omschrijving': OMSCHRIJVING,
-            'heeftGerelateerd': ['http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype2.pk)],  # TODO: check the through model ??
+            'heeftGerelateerd': [
+                'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/heeft_gerelateerd/{}/'.format(
+                    self.catalogus.pk, self.zaaktype.pk, self.relatie.pk)
+            ],
             'verlengingmogelijk': 'J',
             'doorlooptijd': 8,
             'aanleiding': 'De gemeente als bevoegd gezag heeft een aanvraag voor een\n                omgevingsvergunning of milieuwetgeving-gerelateerde vergunning\n                ontvangen.\n                De gemeente heeft geconstateerd dat het een enkelvoudige aanvraag\n                betreft met alleen een milieu-component of dat het een meervoudige\n                aanvraag betreft met betrekking tot een milieuvergunningplichtige\n                inrichting of -locatie en met een milieu-component (milieu-aspect is\n                ‘zwaartepunt’) .\n                De gemeente heeft de ODH gemandateerd om dergelijke aanvragen te\n                behandelen. Zij draagt de ODH op om de ontvangen aanvraag te\n                behandelen. De ODH heeft vastgesteld dat de aanvraag in een reguliere\n                procedure behandeld kan worden.\n                of:\n                De provincie als bevoegd gezag heeft een aanvraag voor een\n                omgevingsvergunning of milieuwetgevinggerelateerde vergunning\n      ',
