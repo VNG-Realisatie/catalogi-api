@@ -38,6 +38,8 @@ class BesluitTypeAPITests(APITestCase):
             },
             'results': [
                 {
+                    'einddatumObject': None,
+                    'ingangsdatumObject': '',
                     'omschrijvingGeneriek': None,
                     'wordtVastgelegdIn': [],
                     'publicatieTermijn': None,
@@ -62,6 +64,8 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         expected = {
+            'einddatumObject': None,
+            'ingangsdatumObject': '',
             'categorie': None,
             'maaktDeeluitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
                 self.catalogus.pk),

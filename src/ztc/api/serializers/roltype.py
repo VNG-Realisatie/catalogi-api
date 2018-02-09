@@ -18,20 +18,36 @@ class RolTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
             'pk': 'is_van__pk'
         },
     )
+    magZetten = NestedHyperlinkedIdentityField(
+        many=True,
+        view_name='api:statustype-detail',
+        source='mag_zetten',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_van__pk',
+        },
+    )
 
     class Meta:
         model = RolType
 
-        # source_mapping = {
-        #
-        # }
+        source_mapping = {
+            'ingangsdatumObject': 'datum_begin_geldigheid',
+            'einddatumObject': 'datum_einde_geldigheid',
+            'omschrijving': 'roltypeomschrijving',
+            'omschrijvingGeneriek': 'roltypeomschrijving_generiek',
+            'soortBetrokkene': 'soort_betrokkene',
+        }
         extra_kwargs = {
             'url': {'view_name': 'api:roltype-detail'},
         }
         fields = (
             'url',
-            'roltypeomschrijving',
-            'roltypeomschrijving_generiek',
-            'soort_betrokkene',
+            'ingangsdatumObject',
+            'einddatumObject',
+            'omschrijving',
+            'omschrijvingGeneriek',
+            'soortBetrokkene',
             'isVan',
+            'magZetten',
         )
