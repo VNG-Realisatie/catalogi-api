@@ -22,6 +22,11 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'version': '1',
             'catalogus_pk': self.catalogus.pk,
         })
+        self.zaaktype_detail_url = reverse('api:zaaktype-detail', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'pk': self.zaaktype.pk,
+        })
 
     def test_get_list(self):
         response = self.api_client.get(self.zaaktype_list_url)
@@ -119,12 +124,16 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(self.catalogus.pk)))
 
         expected_result = {
+            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk),
             'versiedatum': '',
             'ingangsdatumObject': 'V20180207',
             'einddatumObject': None,
-            'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.catalogus.pk),
+            'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
+                self.catalogus.pk),
             'omschrijving': OMSCHRIJVING,
-            'heeftGerelateerd': ['http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype2.pk)],  # TODO: check the through model ??
+            'heeftGerelateerd': ['http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype2.pk)],  # TODO: check the through model ??
             'verlengingmogelijk': 'J',
             'doorlooptijd': 8,
             'aanleiding': 'De gemeente als bevoegd gezag heeft een aanvraag voor een\n                omgevingsvergunning of milieuwetgeving-gerelateerde vergunning\n                ontvangen.\n                De gemeente heeft geconstateerd dat het een enkelvoudige aanvraag\n                betreft met alleen een milieu-component of dat het een meervoudige\n                aanvraag betreft met betrekking tot een milieuvergunningplichtige\n                inrichting of -locatie en met een milieu-component (milieu-aspect is\n                ‘zwaartepunt’) .\n                De gemeente heeft de ODH gemandateerd om dergelijke aanvragen te\n                behandelen. Zij draagt de ODH op om de ontvangen aanvraag te\n                behandelen. De ODH heeft vastgesteld dat de aanvraag in een reguliere\n                procedure behandeld kan worden.\n                of:\n                De provincie als bevoegd gezag heeft een aanvraag voor een\n                omgevingsvergunning of milieuwetgevinggerelateerde vergunning\n      ',
@@ -137,7 +146,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'identificatie': self.zaaktype.zaaktype_identificatie,
             'broncatalogus': None,
             'doel': 'Een besluit nemen op een aanvraag voor een vergunning, ontheffing of\n                vergelijkbare beschikking op basis van een gedegen beoordeling van die\n                aanvraag in een reguliere procedure.',
-            'isDeelzaaktypeVan': ['http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype3.pk)],
+            'isDeelzaaktypeVan': ['http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype3.pk)],
             'omschrijvingGeneriek': None,
             'verlengingstermijn': 30,
             'archiefclassificatiecode': None,
@@ -177,6 +187,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         expected = {
             'results': [
                 {
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                     'ingangsdatumObject': 'V20180207',
                     'einddatumObject': None,
                     'vertrouwelijkheidAanduiding': 'OPENBAAR',
@@ -192,7 +204,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'aanleiding': 'aanleiding',
                     'verlengingstermijn': 30,
                     'opschortingAanhouding': 'J',
-                    'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(self.catalogus.pk),
+                    'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
+                        self.catalogus.pk),
                     'indicatieInternOfExtern': '',
                     'verlengingmogelijk': 'J',
                     'handelingBehandelaar': '',
@@ -217,10 +230,78 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                 }
             ],
             '_links': {
-                'self': {'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/'.format(self.catalogus.pk)}
+                'self': {'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/'.format(
+                    self.catalogus.pk)}
             }
         }
         self.assertEqual(response.json(), expected)
+
+    def test_get_detail(self):
+        response = self.api_client.get(self.zaaktype_detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        result = response.json()
+
+        heeftRelevantBesluittype = result.pop('heeftRelevantBesluittype')
+        # it is http://testserver/api/v1/catalogussen/1/besluittypen/8/
+        self.assertEqual(len(heeftRelevantBesluittype), 4)
+        for besluittype in heeftRelevantBesluittype:
+            self.assertTrue(besluittype.startswith(
+                'http://testserver/api/v1/catalogussen/{}/besluittypen/'.format(
+                    self.catalogus.pk)))
+
+        heeftEigenschap = result.pop('heeftEigenschap')
+        self.assertEqual(len(heeftEigenschap), 2)
+        for eigenschap in heeftEigenschap:
+            self.assertTrue(eigenschap.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/'.format(
+                self.catalogus.pk, self.zaaktype.pk)))
+
+        heeftRelevantZaakObjecttype = result.pop('heeftRelevantZaakObjecttype')
+        self.assertEqual(len(heeftRelevantZaakObjecttype), 3)
+        for zot in heeftRelevantZaakObjecttype:
+            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(
+                self.catalogus.pk)))
+
+        expected = {
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
+                    'ingangsdatumObject': 'V20180207',
+                    'einddatumObject': None,
+                    'vertrouwelijkheidAanduiding': 'OPENBAAR',
+                    'identificatie': self.zaaktype.zaaktype_identificatie,
+                    'product_dienst': [{'naam': 'Vergunning voor milieu', 'link': None}],
+                    'broncatalogus': None,
+                    'publicatieIndicatie': 'J',
+                    'trefwoord': [],
+                    'zaakcategorie': None,
+                    'toelichting': self.zaaktype.toelichting,
+                    'handelingInitiator': 'Aanvragen',
+                    'bronzaaktype': None,
+                    'aanleiding': self.zaaktype.aanleiding,
+                    'verlengingstermijn': 30,
+                    'opschortingAanhouding': 'J',
+                    'maaktDeelUitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
+                        self.catalogus.pk),
+                    'indicatieInternOfExtern': '',
+                    'verlengingmogelijk': 'J',
+                    'handelingBehandelaar': '',
+                    'doel': self.zaaktype.doel,
+                    'versiedatum': '',
+                    'formulier': [],
+                    'onderwerp': 'Milieu-gerelateerde vergunning',
+                    'publicatietekst': 'N.t.b.',
+                    'omschrijvingGeneriek': None,
+                    'verantwoordingsrelatie': [],
+                    'isDeelzaaktypeVan': [],
+                    'servicenorm': None,
+                    'archiefclassificatiecode': None,
+                    'referentieproces': {'naam': str(self.zaaktype.referentieproces.naam), 'link': None},
+                    'doorlooptijd': 8,
+                    'verantwoordelijke': '',
+                    'omschrijving': 'Vergunningaanvraag regulier behandelen',
+                    'heeftGerelateerd': [],
+                }
+        self.assertEqual(expected, result)
 
 
 @freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
@@ -234,6 +315,11 @@ class ZaakObjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'version': '1',
             'catalogus_pk': self.catalogus.pk,
         })
+        self.zaakobjecttype_milieu_detail_url = reverse('api:zaakobjecttype-detail', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'pk': self.zaakobjecttype_milieu.pk,
+        })
 
     def test_get_list(self):
         response = self.api_client.get(self.zaakobjecttype_list_url)
@@ -246,35 +332,62 @@ class ZaakObjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         expected = {
             '_links': {
                 'self': {
-                    'href': 'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(self.catalogus.pk)
+                    'href': 'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(
+                        self.catalogus.pk)
                 }
             },
             'results': [
                 {
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
+                        self.catalogus.pk, self.zaakobjecttype_milieu.pk),
                     'relatieOmschrijving': 'De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
                     'ingangsdatumObject': 'V20180207',
                     'objecttype': 'Milieu-inrichting of -locatie',
                     'anderObject': 'J',
                     'status_type': None,
                     'einddatumObject': None,
-                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                 }, {
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
+                        self.catalogus.pk, self.zaakobjecttype_pand.pk),
                     'relatieOmschrijving': 'Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting gevestigd',
                     'ingangsdatumObject': 'V20180207',
                     'objecttype': 'PAND',
                     'anderObject': 'N',
                     'status_type': None,
                     'einddatumObject': None,
-                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                 }, {
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
+                        self.catalogus.pk, self.zaakobjecttype_verblijfsobject.pk),
                     'relatieOmschrijving': 'Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) waarin het d',
                     'ingangsdatumObject': 'V20180207',
                     'objecttype': 'VERBLIJFSOBJECT',
                     'anderObject': 'N',
                     'status_type': None,
                     'einddatumObject': None,
-                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                 }
             ]
         }
         self.assertEqual(response.json(), expected)
+
+    def test_get_detail(self):
+        response = self.api_client.get(self.zaakobjecttype_milieu_detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            'anderObject': 'J',
+            'einddatumObject': None,
+            'ingangsdatumObject': 'V20180207',
+            'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk),
+            'objecttype': 'Milieu-inrichting of -locatie',
+            'relatieOmschrijving': 'De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
+            'status_type': None,
+            'url': 'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
+                self.catalogus.pk, self.zaakobjecttype_milieu.pk)}
+        self.assertEqual(expected, response.json())

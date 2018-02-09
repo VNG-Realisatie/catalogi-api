@@ -1,7 +1,6 @@
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer, ModelSerializer
-)
+from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedIdentityField
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import CheckListItem, StatusType
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
@@ -22,7 +21,12 @@ class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
         )
 
 
-class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, HyperlinkedModelSerializer):
+class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    parent_lookup_kwargs = {
+        'zaaktype_pk': 'is_van__pk',
+        'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+    }
+
     isVan = NestedHyperlinkedIdentityField(
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
@@ -48,6 +52,9 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         source='heeft_verplichte_zaakobjecttype',
     )
 
+    # heeftVerplichteInformatieobjecttype = 1
+
+
     class Meta:
         model = StatusType
 
@@ -60,7 +67,11 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'omschrijving': 'statustype_omschrijving',
             # 'heeftVerplichteEigenschap': 'heeft_verplichte_eigenschap',
         }
+        extra_kwargs = {
+            'url': {'view_name': 'api:statustype-detail'},
+        }
         fields = (
+            'url',
             'ingangsdatumObject',
             'einddatumObject',
             'omschrijving',
@@ -75,8 +86,8 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'isVan',
             'heeftVerplichteEigenschap',
             'heeftVerplichteZaakObjecttype',
+            # 'heeftVerplichteInformatieobjecttype',
 
             # TODO:
             # 'roltypen',  deze relatie is gedefinieerd op RolType, niet in xsd, dus Toevoegen aan RolTypeSerializer
-            # < element name="heeftVerplichteInformatieobjecttype" type="ztc:STTIOT-antwoord" nillable="true"
         )

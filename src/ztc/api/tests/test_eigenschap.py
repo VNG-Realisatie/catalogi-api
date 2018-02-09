@@ -27,6 +27,12 @@ class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'catalogus_pk': self.catalogus.pk,
             'zaaktype_pk': self.zaaktype.pk
         })
+        self.eigenschap_beoogde_producten_detail_url = reverse('api:eigenschap-detail', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'zaaktype_pk': self.zaaktype.pk,
+            'pk': self.eigenschap_beoogde_producten.pk
+        })
 
         #
         # make a referentie for one Eigenschap, and a specificatie for the other one
@@ -57,14 +63,16 @@ class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         expected = {
             '_links': {
                 'self': {
-                    'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/'.format(self.catalogus.pk, self.zaaktype.pk)}
+                    'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/'.format(
+                        self.catalogus.pk, self.zaaktype.pk)}
             },
             'results':
                 [
                     {
                         'ingangsdatumObject': 'V20180207',
                         'einddatumObject': None,
-                        'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                        'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                            self.catalogus.pk, self.zaaktype.pk),
                         'status_type': None,
                         'naam': EIGENSCHAP_ONE_NAAM,
                         'definitie': '',
@@ -77,11 +85,14 @@ class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                             'waardeverzameling': []
                         },
                         'referentie': None,
+                        'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(
+                            self.catalogus.pk, self.zaaktype.pk, self.eigenschap_one.pk),
                     },
                     {
                         'ingangsdatumObject': 'V20180207',
                         'einddatumObject': None,
-                        'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                        'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                            self.catalogus.pk, self.zaaktype.pk),
                         'status_type': None,
                         'naam': EIGENSCHAP_TWO_NAAM,
                         'definitie': '',
@@ -95,7 +106,33 @@ class EigenschapAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                             'schemalocatie': '',
                             'objecttype': None
                         },
+                        'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(
+                            self.catalogus.pk, self.zaaktype.pk, self.eigenschap_two.pk),
                     }
                 ]
         }
         self.assertEqual(response.json(), expected)
+
+    def test_get_detail(self):
+        response = self.api_client.get(self.eigenschap_beoogde_producten_detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            'definitie': '',
+            'einddatumObject': None,
+            'ingangsdatumObject': 'V20180207',
+            'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk),
+            'naam': 'Beoogd(e) product(en',
+            'referentie': None,
+            'specificatie': {'formaat': '',
+                             'groep': 'groep',
+                             'kardinaliteit': '1',
+                             'lengte': '1',
+                             'waardeverzameling': []},
+            'status_type': None,
+            'toelichting': '',
+            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk, self.eigenschap_beoogde_producten.pk)
+        }
+        self.assertEqual(expected, response.json())

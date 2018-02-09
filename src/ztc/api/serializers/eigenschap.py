@@ -1,7 +1,6 @@
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer, ModelSerializer
-)
+from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedIdentityField
+from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
     Eigenschap, EigenschapReferentie, EigenschapSpecificatie
@@ -41,7 +40,12 @@ class EigenschapSpecificatieSerializer(SourceMappingSerializerMixin, ModelSerial
         )
 
 
-class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, HyperlinkedModelSerializer):
+class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    parent_lookup_kwargs = {
+        'zaaktype_pk': 'is_van__pk',
+        'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+    }
+
     specificatie = EigenschapSpecificatieSerializer(read_only=True, source='specificatie_van_eigenschap')
     referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
 
@@ -61,7 +65,11 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'einddatumObject': 'datum_einde_geldigheid',
             'naam': 'eigenschapnaam',
         }
+        extra_kwargs = {
+            'url': {'view_name': 'api:eigenschap-detail'},
+        }
         fields = (
+            'url',
             'ingangsdatumObject',
             'einddatumObject',
             'naam',

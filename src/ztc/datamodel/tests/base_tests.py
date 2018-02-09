@@ -317,14 +317,14 @@ class HaaglandenMixin(object):
         # Objecten
         #
         # TODO: link these with StatusType.. but which one?
-        self.zaaktypeobject_milieu = ZaakObjectTypeFactory.create(
+        self.zaakobjecttype_milieu = ZaakObjectTypeFactory.create(
             objecttype='Milieu-inrichting of -locatie',  # it's one that is not in the choices
             ander_objecttype=JaNee.ja,
             relatieomschrijving='De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
             # status_type=foreign key StatusType
             is_relevant_voor=self.zaaktype
         )
-        self.zaaktypeobject_pand = ZaakObjectTypeFactory.create(
+        self.zaakobjecttype_pand = ZaakObjectTypeFactory.create(
             objecttype=ObjectTypen.pand,
             ander_objecttype=JaNee.nee,
             relatieomschrijving='Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting '
@@ -332,7 +332,7 @@ class HaaglandenMixin(object):
             # status_type=foreign key StatusType
             is_relevant_voor=self.zaaktype
         )
-        self.zaaktypeobject_verblijfsobject = ZaakObjectTypeFactory.create(
+        self.zaakobjecttype_verblijfsobject = ZaakObjectTypeFactory.create(
             objecttype=ObjectTypen.verblijfsobject,
             ander_objecttype=JaNee.nee,
             relatieomschrijving='Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) '

@@ -22,6 +22,12 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'catalogus_pk': self.catalogus.pk,
             'zaaktype_pk': self.zaaktype.pk
         })
+        self.statustype_besluit_genomen_detail_url = reverse('api:statustype-detail', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'zaaktype_pk': self.zaaktype.pk,
+            'pk': self.status_type_besluit_genomen.pk,
+        })
 
         # create an 'eigenschap' and attach it to StatusType 'besluit genomen'
         self.new_eigenschap = EigenschapFactory.create(
@@ -33,8 +39,8 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.new_eigenschap.save()
 
         # use Besluit genomen as status_type for ZOT milieu
-        self.zaaktypeobject_milieu.status_type = self.status_type_besluit_genomen
-        self.zaaktypeobject_milieu.save()
+        self.zaakobjecttype_milieu.status_type = self.status_type_besluit_genomen
+        self.zaakobjecttype_milieu.save()
 
     def test_get_list(self):
         response = self.api_client.get(self.statustype_list_url)
@@ -52,10 +58,13 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'ingangsdatumObject': 'V20180207',
                     'toelichting': 'Er wordt beoordeeld of de\n                ontvangen aanvraag inderdaad in een reguliere\n                procedure behandeld kan worden en of de\n                aanvraag volledig is. Zo ja, dan wordt de zaak\n                aangemaakt met daarbij de ontvangen\n                documenten (aanvraag met bijlagen, opdracht tot\n                behandeling van bevoegd gezag en eventueel\n                ontvangstbevestiging) en wordt de\n                zaakbehandelaar (medewerker of organisatie-\n                onderdeel) bepaald (de startdatum is de datum\n                van ontvangst door het bevoegd gezag, indien van\n                toepassing). Als het bevoegd gezag de gemeente is,\n                wordt zij geïnformeerd dat de intake heeft\n                plaatsgevonden (d.m.v. een digitaal bericht). Als\n                het bevoegd gezag de provincie is, wordt de\n                ontvangstbevestiging aan de aanvrager gezonden,\n                cc. naar provincie.\n                Als de aanvr',
                     'checklistitem': [],
-                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk, self.status_type_intake_afgerond.pk),
                 }, {
                     'volgnummer': 2,
                     'omschrijving': 'Getoetst op indieningsvereisten',
@@ -66,10 +75,13 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'ingangsdatumObject': 'V20180207',
                     'toelichting': 'De aanvraag wordt beoordeeld\n                op de kwaliteit (aanvaardbaarheid) van de\n                ontvangen documenten. Als de aanvraag niet\n                kwalitatief voldoende wordt bevonden, wordt de\n                aanvrager om aanvullende gegevens verzocht. De\n                procedure wordt dan tijdelijk opgeschort. Als de\n                kwaliteit onvoldoende blijft, wordt deze buiten\n                behandeling gesteld cq. niet-ontvankelijk\n                verklaard. Ook kan de aanvraag niet-ontvankelijk\n                worden verklaard als bijvoorbeeld de aanvrager\n                niet gemachtigd is.\n                Tijdens de toets kan alsnog blijken dat de aanvraag\n                in een uitgebreide procedure behandeld moet\n                worden. Daartoe wordt overgegaan naar een zaak\n                van het type ‘Aanvraag vergunning uitgebreid\n                behandelen’.',
                     'checklistitem': [],
-                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk, self.status_type_getoetst.pk),
                 }, {
                     'volgnummer': 3,
                     'omschrijving': 'Inhoudelijk behandeld',
@@ -80,10 +92,13 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'ingangsdatumObject': 'V20180207',
                     'toelichting': 'De aanvraag wordt allereerst\n                beoordeeld op de relevante wetgeving en\n                informatie over de milieu-inrichting of -locatie.\n                Waar nodig wordt in- en/of extern om een\n                beoordeling (toetsing) gevraagd (bijvoorbeeld als\n                er sprake is van BRIKS-onderdelen of van milieu-\n                aspecten die binnen de provincie ondergebracht\n                zijn bij één RUD). Dat kan leiden tot in- en/of\n                externe deelzaken (‘Toetsing uitvoeren’). De status\n                is bereikt met een eenduidig advies over het al dan\n                niet verlenen van de vergunning.',
                     'checklistitem': [],
-                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk, self.status_type_inhoudelijk_behandeld.pk),
                 }, {
                     'volgnummer': 4,
                     'omschrijving': 'Besluit genomen',
@@ -94,14 +109,19 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'ingangsdatumObject': 'V20180207',
                     'toelichting': 'Op basis van de aanvraag en het advies met betrekking tot de \n                vergunning wordt het definitieve besluit op- en vastgesteld.',
                     'checklistitem': [],
-                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [
-                        'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(self.catalogus.pk, self.zaaktype.pk, self.new_eigenschap.pk)
+                        'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(
+                            self.catalogus.pk, self.zaaktype.pk, self.new_eigenschap.pk)
                     ],
                     'heeftVerplichteZaakObjecttype': [
-                        'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(self.catalogus.pk, self.zaaktypeobject_milieu.pk)
+                        'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
+                            self.catalogus.pk, self.zaakobjecttype_milieu.pk)
                     ],
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk, self.status_type_besluit_genomen.pk),
                 }, {
                     'volgnummer': 6,
                     'omschrijving': 'Producten geleverd',
@@ -112,16 +132,50 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'ingangsdatumObject': 'V20180207',
                     'toelichting': 'Het besluit wordt verzonden en gepubliceerd en het zaakdossier wordt afgesloten \n                en gearchiveerd (indien de provincie het bevoegd gezag is) dan wel ter archivering \n                overgedragen aan het bevoegd gezag (indien dat de gemeente is).',
                     'checklistitem': [],
-                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(self.catalogus.pk, self.zaaktype.pk),
+                    'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk),
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                        self.catalogus.pk, self.zaaktype.pk, self.status_type_producten_geleverd.pk),
                 }
             ],
             '_links': {
                 'self': {
-                    'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/'.format(self.catalogus.pk, self.zaaktype.pk)
+                    'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/'.format(
+                        self.catalogus.pk, self.zaaktype.pk)
                 }
             }
         }
         self.assertEqual(response.json(), expected)
+
+    def test_get_detail(self):
+        response = self.api_client.get(self.statustype_besluit_genomen_detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            'doorlooptijd': 2,
+            'informeren': 'N',
+            'toelichting': 'Op basis van de aanvraag en het advies met betrekking tot de \n                vergunning wordt het definitieve besluit op- en vastgesteld.',
+            'omschrijving': 'Besluit genomen',
+            'volgnummer': 4,
+            'checklistitem': [],
+            'ingangsdatumObject': 'V20180207',
+            'einddatumObject': None,
+            'heeftVerplichteEigenschap': [
+                'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(
+                    self.catalogus.pk, self.zaaktype.pk, self.new_eigenschap.pk)
+            ],
+            'heeftVerplichteZaakObjecttype': [
+                'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
+                    self.catalogus.pk, self.zaakobjecttype_milieu.pk)
+            ],
+            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk, self.status_type_besluit_genomen.pk),
+            'statustekst': None,
+            'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk),
+            'omschrijvingGeneriek': None
+        }
+        self.assertEqual(expected, response.json())

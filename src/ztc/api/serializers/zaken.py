@@ -11,6 +11,11 @@ from ..utils.serializers import SourceMappingSerializerMixin
 
 
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    parent_lookup_kwargs = {
+        'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+        # 'zaaktype_pk': 'is_relevant_voor__pk', ??
+    }
+
     isRelevantVoor = NestedHyperlinkedRelatedField(
         read_only=True,
         source='*',
@@ -30,6 +35,7 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
             'isRelevantVoor': 'is_relevant_voor',
         }
         fields = (
+            'url',
             'ingangsdatumObject',
             'einddatumObject',
             'objecttype',
@@ -81,6 +87,10 @@ class BronZaakTypeSerializer(ModelSerializer):
 
 
 class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    parent_lookup_kwargs = {
+        'catalogus_pk': 'maakt_deel_uit_van__pk',
+    }
+
     product_dienst = ProductDienstSerializer(many=True, read_only=True)
     formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(read_only=True)
@@ -102,6 +112,8 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         view_name='api:besluittype-detail',
         parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
     )
+
+    # FIXME: change to through model
     heeftGerelateerd = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -160,7 +172,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'maaktDeelUitVan': {'view_name': 'api:catalogus-detail'},
         }
         fields = (
-            # 'url',
+            'url',
             'ingangsdatumObject',
             'einddatumObject',
             'identificatie',
