@@ -94,7 +94,6 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
     product_dienst = ProductDienstSerializer(many=True, read_only=True)
     formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(read_only=True)
-    heeftRelevantZaakObjecttype = ZaakObjectTypeSerializer(many=True, read_only=True, source='zaakobjecttype_set')
 
     heeftRelevantZaakObjecttype = NestedHyperlinkedRelatedField(
         many=True,
@@ -138,6 +137,14 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         parent_lookup_kwargs={'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
                               'zaaktype_pk': 'is_van__pk'},
     )
+    heeftRoltype = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='roltype_set',
+        view_name='api:roltype-detail',
+        parent_lookup_kwargs={'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+                              'zaaktype_pk': 'is_van__pk'},
+    )
 
     class Meta:
         model = ZaakType
@@ -165,7 +172,6 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             # 'heeftRelevantInformatieobjecttype': 'heeft_relevant_informatieobjecttype',
             # 'heeftRelevantResultaattype': 'resultaattype_set',
             # 'heeftStatustype': 'statustype_set',
-            # 'heeftRoltype': 'roltype_set',
         }
         extra_kwargs = {
             'url': {'view_name': 'api:zaaktype-detail'},
@@ -214,6 +220,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'heeftRelevantBesluittype',
             'heeftEigenschap',
             'heeftRelevantZaakObjecttype',
+            'heeftRoltype'
         )
 
         expandable_fields = {

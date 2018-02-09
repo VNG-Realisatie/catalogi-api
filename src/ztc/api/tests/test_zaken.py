@@ -110,18 +110,27 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         # it is http://testserver/api/v1/catalogussen/1/besluittypen/8/
         self.assertEqual(len(heeftRelevantBesluittype), 4)
         for besluittype in heeftRelevantBesluittype:
-            self.assertTrue(besluittype.startswith('http://testserver/api/v1/catalogussen/{}/besluittypen/'.format(self.catalogus.pk)))
+            self.assertTrue(besluittype.startswith('http://testserver/api/v1/catalogussen/{}/besluittypen/'.format(
+                self.catalogus.pk)))
 
         # for example http://testserver/api/v1/catalogussen/2/zaaktypen/2/eigenschappen/3/
         heeftEigenschap = result.pop('heeftEigenschap')
         self.assertEqual(len(heeftEigenschap), 2)
         for eigenschap in heeftEigenschap:
-            self.assertTrue(eigenschap.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/'.format(self.catalogus.pk, self.zaaktype.pk)))
+            self.assertTrue(eigenschap.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/'.format(
+                self.catalogus.pk, self.zaaktype.pk)))
 
         heeftRelevantZaakObjecttype = result.pop('heeftRelevantZaakObjecttype')
         self.assertEqual(len(heeftRelevantZaakObjecttype), 3)
         for zot in heeftRelevantZaakObjecttype:
-            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(self.catalogus.pk)))
+            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(
+                self.catalogus.pk)))
+
+        heeftRoltype = result.pop('heeftRoltype')
+        self.assertEqual(len(heeftRoltype), 7)
+        for roltype in heeftRoltype:
+            self.assertTrue(roltype.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/roltypen/'.format(
+                self.catalogus.pk, self.zaaktype.pk)))
 
         expected_result = {
             'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
@@ -180,6 +189,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.zaaktype.doel = 'doel'
         self.zaaktype.heeft_relevant_besluittype = []
         self.zaaktype.eigenschap_set.all().delete()
+        self.zaaktype.roltype_set.all().delete()
         self.zaaktype.zaakobjecttype_set.all().delete()
         self.zaaktype.save()
 
@@ -229,6 +239,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'omschrijving': 'Vergunningaanvraag regulier behandelen',
                     'heeftEigenschap': [],
                     'heeftRelevantZaakObjecttype': [],
+                    'heeftRoltype': [],
                 }
             ],
             '_links': {
@@ -263,6 +274,12 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         for zot in heeftRelevantZaakObjecttype:
             self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(
                 self.catalogus.pk)))
+
+        heeftRoltype = result.pop('heeftRoltype')
+        self.assertEqual(len(heeftRoltype), 7)
+        for roltype in heeftRoltype:
+            self.assertTrue(roltype.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/roltypen/'.format(
+                self.catalogus.pk, self.zaaktype.pk)))
 
         expected = {
                     'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
