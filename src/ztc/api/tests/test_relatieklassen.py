@@ -3,14 +3,19 @@ from django.urls import reverse
 
 from freezegun import freeze_time
 
+from ztc.datamodel.models import (
+    Catalogus, InformatieObjectType, ZaakInformatieobjectType, ZaakType
+)
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
-from ztc.datamodel.tests.factories import ZaakTypenRelatieFactory, ZaakTypeFactory
+from ztc.datamodel.tests.factories import (
+    ZaakInformatieobjectTypeFactory, ZaakTypeFactory, ZaakTypenRelatieFactory
+)
 
 from .base import ClientAPITestMixin
 
 
 @freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
-class RelatieklassenAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
+class ZaakTypeRelatieAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
     maxDiff = None
 
     def setUp(self):
@@ -93,5 +98,82 @@ class RelatieklassenAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                 self.catalogus.pk, self.zaaktype2.pk),
             'zaaktype_van': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
                 self.catalogus.pk, self.zaaktype.pk)
+        }
+        self.assertEqual(response.json(), expected)
+
+
+@freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
+class ZaakInformatieobjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
+    maxDiff = None
+
+    def setUp(self):
+        super().setUp()
+
+        self.list_url = reverse('api:zaakinformatieobjecttype-list', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'zaaktype_pk': self.zaaktype.pk
+        })
+
+        self.iot = InformatieObjectType.objects.first()
+
+        # Create a relation between StatusType inhoudelijk behandeld and self.zaaktype
+        self.ziot = ZaakInformatieobjectTypeFactory.create(
+            status_type=self.status_type_inhoudelijk_behandeld,
+            zaaktype=self.zaaktype,
+            informatie_object_type=self.iot,
+            volgnummer=1,
+            richting='richting',
+        )
+
+        self.detail_url = reverse('api:zaakinformatieobjecttype-detail', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'zaaktype_pk': self.zaaktype.pk,
+            'pk': self.ziot.pk,
+        })
+
+    def test_get_list(self):
+        response = self.api_client.get(self.list_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            '_links': {
+                'self': {
+                    'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/heeft_relevant/'.format(
+                        self.catalogus.pk, self.zaaktype.pk)
+                }
+            },
+            'results': [
+                {'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/heeft_relevant/{}/'.format(
+                    self.catalogus.pk, self.zaaktype.pk, self.ziot.pk),
+                 'zdt.volgnummer': 1,
+                 'zdt.richting': 'richting',
+                 'zaaktype': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                     self.catalogus.pk, self.zaaktype.pk),
+                 'status_type': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                     self.catalogus.pk, self.zaaktype.pk, self.status_type_inhoudelijk_behandeld.pk),
+                 'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
+                     self.catalogus.pk, self.iot.pk)
+                 }
+            ]
+        }
+        self.assertEqual(response.json(), expected)
+
+    def test_get_detail(self):
+        response = self.api_client.get(self.detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/heeft_relevant/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk, self.ziot.pk),
+            'zdt.volgnummer': 1,
+            'zdt.richting': 'richting',
+            'zaaktype': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk),
+            'status_type': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
+                self.catalogus.pk, self.zaaktype.pk, self.status_type_inhoudelijk_behandeld.pk),
+            'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
+                self.catalogus.pk, self.iot.pk)
         }
         self.assertEqual(response.json(), expected)

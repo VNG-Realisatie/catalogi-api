@@ -51,9 +51,15 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         },
         source='heeft_verplichte_zaakobjecttype',
     )
-
-    # heeftVerplichteInformatieobjecttype = 1
-
+    heeftVerplichteInformatieobjecttype = NestedHyperlinkedIdentityField(
+        view_name='api:zaakinformatieobjecttype-detail',
+        many=True,
+        parent_lookup_kwargs={
+            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'zaaktype__pk',
+        },
+        source='heeft_verplichte_zit',
+    )
 
     class Meta:
         model = StatusType
@@ -86,7 +92,7 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'isVan',
             'heeftVerplichteEigenschap',
             'heeftVerplichteZaakObjecttype',
-            # 'heeftVerplichteInformatieobjecttype',
+            'heeftVerplichteInformatieobjecttype',
 
             # TODO:
             # 'roltypen',  deze relatie is gedefinieerd op RolType, niet in xsd, dus Toevoegen aan RolTypeSerializer

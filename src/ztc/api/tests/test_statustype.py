@@ -4,10 +4,11 @@ from django.urls import reverse
 from freezegun import freeze_time
 
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
+from ztc.datamodel.tests.factories import (
+    EigenschapFactory, ZaakInformatieobjectTypeFactory
+)
 
 from .base import ClientAPITestMixin
-
-from ztc.datamodel.tests.factories import EigenschapFactory
 
 
 @freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
@@ -42,6 +43,15 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.zaakobjecttype_milieu.status_type = self.status_type_besluit_genomen
         self.zaakobjecttype_milieu.save()
 
+        # Create a relation between StatusType inhoudelijk behandeld and self.zaaktype
+        self.relatie = ZaakInformatieobjectTypeFactory.create(
+            status_type=self.status_type_inhoudelijk_behandeld,
+            zaaktype=self.zaaktype,
+            # informatie_object_type=  # let the factory create a new one
+            volgnummer=1,
+            richting='richting',
+        )
+
     def test_get_list(self):
         response = self.api_client.get(self.statustype_list_url)
         self.assertEqual(response.status_code, 200)
@@ -63,6 +73,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'heeftVerplichteInformatieobjecttype': [],
                     'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
                         self.catalogus.pk, self.zaaktype.pk, self.status_type_intake_afgerond.pk),
                 }, {
@@ -80,6 +91,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'heeftVerplichteInformatieobjecttype': [],
                     'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
                         self.catalogus.pk, self.zaaktype.pk, self.status_type_getoetst.pk),
                 }, {
@@ -97,6 +109,10 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'heeftVerplichteInformatieobjecttype': [
+                        'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/heeft_relevant/{}/'.format(
+                            self.catalogus.pk, self.zaaktype.pk, self.relatie.pk)
+                    ],
                     'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
                         self.catalogus.pk, self.zaaktype.pk, self.status_type_inhoudelijk_behandeld.pk),
                 }, {
@@ -120,6 +136,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                         'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
                             self.catalogus.pk, self.zaakobjecttype_milieu.pk)
                     ],
+                    'heeftVerplichteInformatieobjecttype': [],
                     'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
                         self.catalogus.pk, self.zaaktype.pk, self.status_type_besluit_genomen.pk),
                 }, {
@@ -137,6 +154,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'statustekst': None,
                     'heeftVerplichteEigenschap': [],
                     'heeftVerplichteZaakObjecttype': [],
+                    'heeftVerplichteInformatieobjecttype': [],
                     'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
                         self.catalogus.pk, self.zaaktype.pk, self.status_type_producten_geleverd.pk),
                 }
@@ -176,6 +194,7 @@ class StatusTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'statustekst': None,
             'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
                 self.catalogus.pk, self.zaaktype.pk),
-            'omschrijvingGeneriek': None
+            'omschrijvingGeneriek': None,
+            'heeftVerplichteInformatieobjecttype': [],
         }
         self.assertEqual(expected, response.json())
