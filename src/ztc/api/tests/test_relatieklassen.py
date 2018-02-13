@@ -149,12 +149,10 @@ class ZaakInformatieobjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, Test
                     self.catalogus.pk, self.zaaktype.pk, self.ziot.pk),
                  'zdt.volgnummer': 1,
                  'zdt.richting': 'richting',
-                 'zaaktype': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                 'gerelateerde': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
                      self.catalogus.pk, self.zaaktype.pk),
-                 'status_type': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
-                     self.catalogus.pk, self.zaaktype.pk, self.status_type_inhoudelijk_behandeld.pk),
-                 'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
-                     self.catalogus.pk, self.iot.pk)
+                 # 'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
+                 #     self.catalogus.pk, self.iot.pk)
                  }
             ]
         }
@@ -169,11 +167,9 @@ class ZaakInformatieobjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, Test
                 self.catalogus.pk, self.zaaktype.pk, self.ziot.pk),
             'zdt.volgnummer': 1,
             'zdt.richting': 'richting',
-            'zaaktype': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+            'gerelateerde': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
                 self.catalogus.pk, self.zaaktype.pk),
-            'status_type': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk, self.status_type_inhoudelijk_behandeld.pk),
-            'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
-                self.catalogus.pk, self.iot.pk)
+            # 'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
+            #     self.catalogus.pk, self.iot.pk)
         }
         self.assertEqual(response.json(), expected)

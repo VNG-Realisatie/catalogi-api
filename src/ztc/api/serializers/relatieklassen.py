@@ -38,31 +38,20 @@ class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSeriali
 
 
 class ZaakInformatieobjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    """
+    IOTZKT-basis
+    De relatie naar het zaaktype waarvoor het informatieobjecttype relevant is
+    """
     parent_lookup_kwargs = {
         'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
         'zaaktype_pk': 'zaaktype__pk',
     }
 
-    zaaktype = NestedHyperlinkedIdentityField(
+    gerelateerde = NestedHyperlinkedIdentityField(
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
             'pk': 'zaaktype__pk',
-        },
-    )
-    informatie_object_type = NestedHyperlinkedIdentityField(
-        view_name='api:informatieobjecttype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'pk': 'informatie_object_type__pk',
-        },
-    )
-    status_type = NestedHyperlinkedIdentityField(
-        view_name='api:statustype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'zaaktype__pk',
-            'pk': 'status_type__pk',
         },
     )
 
@@ -70,22 +59,58 @@ class ZaakInformatieobjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappin
         model = ZaakInformatieobjectType
 
         source_mapping = {
-            # TODO zaaktype is not in xsd, but its nested after a zaaktype so not needed ??
-            # 'gerelateerde': 'informatie_object_type',
             'zdt.volgnummer': 'volgnummer',
             'zdt.richting': 'richting',
         }
 
         fields = (
             'url',
-            'zaaktype',
-            'informatie_object_type',
+            'gerelateerde',
             'zdt.volgnummer',
             'zdt.richting',
-
-            # this is the relation that is described on StatusType in the specification
-            'status_type',  # TODO: this field is not in the xsd, therefor should be removed here ?
         )
         extra_kwargs = {
             'url': {'view_name': 'api:zaakinformatieobjecttype-detail'},
+        }
+
+
+
+# TODO: in urls:
+# iot_router = routers.NestedSimpleRouter(zaaktype_router, r'informatieobjecttypen', lookup='informatieobjecttype')
+# iot_router.register(r'is_relevant_voor', ZaakInformatieobjectTypeZKTIOTSerializerViewSet)
+class ZaakInformatieobjectTypeZKTIOTSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    """
+    ZKTIOT-basis
+
+    Relatie met informatieobjecttype dat relevant is voor zaaktype.
+    """
+    parent_lookup_kwargs = {
+        'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+        'zaaktype_pk': 'zaaktype__pk',
+    }
+
+    gerelateerde = NestedHyperlinkedIdentityField(
+        view_name='api:informatieobjecttype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+            'pk': 'informatie_object_type__pk',
+        },
+    )
+
+    class Meta:
+        model = ZaakInformatieobjectType
+
+        source_mapping = {
+            'zdt.volgnummer': 'volgnummer',
+            'zdt.richting': 'richting',
+        }
+
+        fields = (
+            'url',
+            'gerelateerde',
+            'zdt.volgnummer',
+            'zdt.richting',
+        )
+        extra_kwargs = {
+            'url': {'view_name': 'api:zaakinformatieobjecttype-zktiot-detail'},
         }

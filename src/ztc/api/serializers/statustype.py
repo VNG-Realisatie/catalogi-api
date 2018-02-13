@@ -51,6 +51,7 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         },
         source='heeft_verplichte_zaakobjecttype',
     )
+    # TODO: check if this one should go via the through model
     heeftVerplichteInformatieobjecttype = NestedHyperlinkedIdentityField(
         view_name='api:zaakinformatieobjecttype-detail',
         many=True,
