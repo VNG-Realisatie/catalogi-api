@@ -6,7 +6,9 @@ from .schema import OpenAPISchemaView
 from .views import (
     BesluitTypeViewSet, CatalogusViewSet, EigenschapViewSet,
     InformatieObjectTypeViewSet, ResultaatTypeViewSet, RolTypeViewSet, StatusTypeViewSet,
-    ZaakInformatieobjectTypeSerializerViewSet, ZaakObjectTypeViewSet,
+    InformatieObjectTypeZaakTypeSerializerViewSet,
+    ZaakTypeInformatieObjectTypeViewSet,
+    ZaakObjectTypeViewSet,
     ZaakTypenRelatieViewSet, ZaakTypeViewSet
 )
 
@@ -26,7 +28,10 @@ zaaktype_router.register(r'resultaattypen', ResultaatTypeViewSet)
 zaaktype_router.register(r'roltypen', RolTypeViewSet)
 zaaktype_router.register(r'statustypen', StatusTypeViewSet)
 zaaktype_router.register(r'heeft_gerelateerd', ZaakTypenRelatieViewSet)
-zaaktype_router.register(r'heeft_relevant', ZaakInformatieobjectTypeSerializerViewSet)
+zaaktype_router.register(r'heeft_relevant', ZaakTypeInformatieObjectTypeViewSet, base_name='zktiot')
+
+iot_router = routers.NestedSimpleRouter(catalogus_router, r'informatieobjecttypen', lookup='informatieobjecttype')
+iot_router.register(r'is_relevant_voor', InformatieObjectTypeZaakTypeSerializerViewSet, base_name='iotzkt')
 
 
 API_PREFIX = r'^v(?P<version>\d+)'
@@ -37,4 +42,5 @@ urlpatterns = [
     url('{}/'.format(API_PREFIX), include(root_router.urls)),
     url('{}/'.format(API_PREFIX), include(catalogus_router.urls)),
     url('{}/'.format(API_PREFIX), include(zaaktype_router.urls)),
+    url('{}/'.format(API_PREFIX), include(iot_router.urls)),
 ]

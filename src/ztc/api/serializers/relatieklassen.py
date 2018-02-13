@@ -37,14 +37,14 @@ class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSeriali
         }
 
 
-class ZaakInformatieobjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class InformatieObjectTypeZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     """
     IOTZKT-basis
     De relatie naar het zaaktype waarvoor het informatieobjecttype relevant is
     """
     parent_lookup_kwargs = {
-        'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-        'zaaktype_pk': 'zaaktype__pk',
+        'catalogus_pk': 'informatie_object_type__maakt_deel_uit_van__pk',
+        'informatieobjecttype_pk': 'informatie_object_type__pk',
     }
 
     gerelateerde = NestedHyperlinkedIdentityField(
@@ -70,15 +70,11 @@ class ZaakInformatieobjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappin
             'zdt.richting',
         )
         extra_kwargs = {
-            'url': {'view_name': 'api:zaakinformatieobjecttype-detail'},
+            'url': {'view_name': 'api:iotzkt-detail'},
         }
 
 
-
-# TODO: in urls:
-# iot_router = routers.NestedSimpleRouter(zaaktype_router, r'informatieobjecttypen', lookup='informatieobjecttype')
-# iot_router.register(r'is_relevant_voor', ZaakInformatieobjectTypeZKTIOTSerializerViewSet)
-class ZaakInformatieobjectTypeZKTIOTSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     """
     ZKTIOT-basis
 
@@ -112,5 +108,5 @@ class ZaakInformatieobjectTypeZKTIOTSerializer(FlexFieldsSerializerMixin, Source
             'zdt.richting',
         )
         extra_kwargs = {
-            'url': {'view_name': 'api:zaakinformatieobjecttype-zktiot-detail'},
+            'url': {'view_name': 'api:zktiot-detail'},
         }

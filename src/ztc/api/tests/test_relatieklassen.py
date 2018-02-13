@@ -3,9 +3,7 @@ from django.urls import reverse
 
 from freezegun import freeze_time
 
-from ztc.datamodel.models import (
-    Catalogus, InformatieObjectType, ZaakInformatieobjectType, ZaakType
-)
+from ztc.datamodel.models import InformatieObjectType
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
 from ztc.datamodel.tests.factories import (
     ZaakInformatieobjectTypeFactory, ZaakTypeFactory, ZaakTypenRelatieFactory
@@ -109,12 +107,6 @@ class ZaakInformatieobjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, Test
     def setUp(self):
         super().setUp()
 
-        self.list_url = reverse('api:zaakinformatieobjecttype-list', kwargs={
-            'version': '1',
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk
-        })
-
         self.iot = InformatieObjectType.objects.first()
 
         # Create a relation between StatusType inhoudelijk behandeld and self.zaaktype
@@ -126,15 +118,32 @@ class ZaakInformatieobjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, Test
             richting='richting',
         )
 
-        self.detail_url = reverse('api:zaakinformatieobjecttype-detail', kwargs={
+        self.list_url_zktiot = reverse('api:zktiot-list', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'zaaktype_pk': self.zaaktype.pk
+        })
+        self.list_url_iotzkt = reverse('api:iotzkt-list', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'informatieobjecttype_pk': self.iot.pk
+        })
+
+        self.detail_url_zktiot = reverse('api:zktiot-detail', kwargs={
             'version': '1',
             'catalogus_pk': self.catalogus.pk,
             'zaaktype_pk': self.zaaktype.pk,
             'pk': self.ziot.pk,
         })
+        self.detail_url_iotzkt = reverse('api:iotzkt-detail', kwargs={
+            'version': '1',
+            'catalogus_pk': self.catalogus.pk,
+            'informatieobjecttype_pk': self.iot.pk,
+            'pk': self.ziot.pk,
+        })
 
-    def test_get_list(self):
-        response = self.api_client.get(self.list_url)
+    def test_get_list_zktiot(self):
+        response = self.api_client.get(self.list_url_zktiot)
         self.assertEqual(response.status_code, 200)
 
         expected = {
@@ -149,17 +158,38 @@ class ZaakInformatieobjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, Test
                     self.catalogus.pk, self.zaaktype.pk, self.ziot.pk),
                  'zdt.volgnummer': 1,
                  'zdt.richting': 'richting',
-                 'gerelateerde': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
-                     self.catalogus.pk, self.zaaktype.pk),
-                 # 'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
-                 #     self.catalogus.pk, self.iot.pk)
+                 'gerelateerde': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
+                     self.catalogus.pk, self.iot.pk),
                  }
             ]
         }
         self.assertEqual(response.json(), expected)
 
-    def test_get_detail(self):
-        response = self.api_client.get(self.detail_url)
+    def test_get_list_iotzkt(self):
+        response = self.api_client.get(self.list_url_iotzkt)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            '_links': {
+                'self': {
+                    'href': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/is_relevant_voor/'.format(
+                        self.catalogus.pk, self.iot.pk)
+                }
+            },
+            'results': [
+                {'url': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/is_relevant_voor/{}/'.format(
+                    self.catalogus.pk, self.iot.pk, self.ziot.pk),
+                 'zdt.volgnummer': 1,
+                 'zdt.richting': 'richting',
+                 'gerelateerde': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
+                     self.catalogus.pk, self.zaaktype.pk),
+                 }
+            ]
+        }
+        self.assertEqual(response.json(), expected)
+
+    def test_get_detail_zktiot(self):
+        response = self.api_client.get(self.detail_url_zktiot)
         self.assertEqual(response.status_code, 200)
 
         expected = {
@@ -167,9 +197,21 @@ class ZaakInformatieobjectTypeAPITests(ClientAPITestMixin, HaaglandenMixin, Test
                 self.catalogus.pk, self.zaaktype.pk, self.ziot.pk),
             'zdt.volgnummer': 1,
             'zdt.richting': 'richting',
+            'gerelateerde': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
+                self.catalogus.pk, self.iot.pk),
+        }
+        self.assertEqual(response.json(), expected)
+
+    def test_get_detail_iotzkt(self):
+        response = self.api_client.get(self.detail_url_iotzkt)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            'url': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/is_relevant_voor/{}/'.format(
+                self.catalogus.pk, self.iot.pk, self.ziot.pk),
+            'zdt.volgnummer': 1,
+            'zdt.richting': 'richting',
             'gerelateerde': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
                 self.catalogus.pk, self.zaaktype.pk),
-            # 'informatie_object_type': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
-            #     self.catalogus.pk, self.iot.pk)
         }
         self.assertEqual(response.json(), expected)

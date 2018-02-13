@@ -5,8 +5,8 @@ from freezegun import freeze_time
 
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
 from ztc.datamodel.tests.factories import (
-    FormulierFactory, ZaakTypeFactory, ZaakTypenRelatieFactory
-)
+    FormulierFactory, ZaakTypeFactory, ZaakTypenRelatieFactory,
+    InformatieObjectType, ZaakInformatieobjectTypeFactory)
 
 from .base import ClientAPITestMixin
 
@@ -79,6 +79,16 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
 
         self.zaaktype.is_deelzaaktype_van.add(self.zaaktype3)
         self.zaaktype.save()
+
+        # Create a relation between StatusType inhoudelijk behandeld and self.zaaktype
+        self.iot = InformatieObjectType.objects.first()
+        self.ziot = ZaakInformatieobjectTypeFactory.create(
+            status_type=self.status_type_inhoudelijk_behandeld,
+            zaaktype=self.zaaktype,
+            informatie_object_type=self.iot,
+            volgnummer=1,
+            richting='richting',
+        )
 
         response = self.api_client.get(self.zaaktype_list_url)
         self.assertEqual(response.status_code, 200)
@@ -180,6 +190,10 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
             'opschortingAanhouding': 'J',
             'publicatietekst': 'N.t.b.',
             'onderwerp': 'Milieu-gerelateerde vergunning',
+            'heeftRelevantInformatieobjecttype': [
+                'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/heeft_relevant/{}/'.format(
+                    self.catalogus.pk, self.zaaktype.pk, self.ziot.pk
+                )],
         }
         self.assertEqual(expected_result, result)
 
@@ -240,6 +254,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'heeftEigenschap': [],
                     'heeftRelevantZaakObjecttype': [],
                     'heeftRoltype': [],
+                    'heeftRelevantInformatieobjecttype': [],
                 }
             ],
             '_links': {
@@ -319,6 +334,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'verantwoordelijke': '',
                     'omschrijving': 'Vergunningaanvraag regulier behandelen',
                     'heeftGerelateerd': [],
+                    'heeftRelevantInformatieobjecttype': [],
                 }
         self.assertEqual(expected, result)
 
