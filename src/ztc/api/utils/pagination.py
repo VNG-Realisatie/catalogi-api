@@ -2,6 +2,8 @@ from collections import OrderedDict
 
 from django.conf import settings
 
+from drf_yasg import openapi
+from drf_yasg.inspectors import PaginatorInspector
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.utils.urls import remove_query_param, replace_query_param
@@ -9,6 +11,11 @@ from rest_framework.utils.urls import remove_query_param, replace_query_param
 
 class HALPagination(PageNumberPagination):
     page_query_param = settings.REST_FRAMEWORK_EXT.get('PAGE_PARAM', 'page')
+
+    header_total_count = 'X-Total-Count'
+    header_pagination_count = 'X-Pagination-Count'
+    header_pagination_page = 'X-Pagination-Page'
+    header_pagination_limit = 'X-Pagination-Limit'
 
     def get_first_link(self):
         url = self.request.build_absolute_uri()
@@ -47,8 +54,78 @@ class HALPagination(PageNumberPagination):
             ('_links', OrderedDict(links_data)),
             ('results', data)
         ]), headers={
-            'X-Total-Count': self.page.paginator.count,
-            'X-Pagination-Count': self.page.paginator.num_pages,
-            'X-Pagination-Page': self.page.number,
-            'X-Pagination-Limit': self.get_page_size(self.request),
+            self.header_total_count: self.page.paginator.count,
+            self.header_pagination_count: self.page.paginator.num_pages,
+            self.header_pagination_page: self.page.number,
+            self.header_pagination_limit: self.get_page_size(self.request),
         })
+
+
+class HALPaginationInspector(PaginatorInspector):
+    """
+    Provides response schema pagination warpping for `HALPagination`.
+
+    Hook for `drf-yasg`.
+    """
+    def get_paginated_response(self, paginator, response_schema):
+        assert response_schema.type == openapi.TYPE_ARRAY, "array return expected for paged response"
+        paged_schema = None
+        if isinstance(paginator, HALPagination):
+            paged_schema = openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties=OrderedDict((
+                    ('_links', openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        properties=OrderedDict((
+                            ('self', openapi.Schema(
+                                type=openapi.TYPE_STRING,
+                                format=openapi.FORMAT_URI,
+                                description='URL to the current page in the result set.'
+                            )),
+                            ('first', openapi.Schema(
+                                type=openapi.TYPE_STRING,
+                                format=openapi.FORMAT_URI,
+                                description='URL to the first page in the result set.',
+                            )),
+                            ('prev', openapi.Schema(
+                                type=openapi.TYPE_STRING,
+                                format=openapi.FORMAT_URI,
+                                description='URL to the previous page in the result set.',
+                            )),
+                            ('next', openapi.Schema(
+                                type=openapi.TYPE_STRING,
+                                format=openapi.FORMAT_URI,
+                                description='URL to the next page in the result set.',
+                            )),
+                            ('last', openapi.Schema(
+                                type=openapi.TYPE_STRING,
+                                format=openapi.FORMAT_URI,
+                                description='URL to the last page in the result set.',
+                            )),
+                        )),
+                        required=['self'],
+                        description='Pagination meta data about the result set.'
+                    )),
+                    ('results', response_schema),
+                )),
+                required=['_links', 'results'],
+            )
+
+        # Typically, you return a `openapi.Schema` instance. However, returning a `openapi.Response` allows us to pass
+        # headers to the specification.
+        # See: http://drf-yasg.readthedocs.io/en/stable/openapi.html?highlight=header#default-behavior
+        return openapi.Response(
+            description='',
+            schema=paged_schema,
+            headers=OrderedDict([
+                (HALPagination.header_total_count, {
+                    'type': openapi.TYPE_INTEGER, 'description': 'Total number of results.'}),
+                (HALPagination.header_pagination_count, {
+                    'type': openapi.TYPE_INTEGER, 'description': 'Total number of pages.'}),
+                (HALPagination.header_pagination_page, {
+                    'type': openapi.TYPE_INTEGER, 'description': 'Current page number.'}),
+                (HALPagination.header_pagination_limit, {
+                    'type': openapi.TYPE_INTEGER, 'description': 'Number of results per page.'}),
+            ]),
+        )
+        # return paged_schema

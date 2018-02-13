@@ -1,77 +1,134 @@
-from django.utils.translation import ugettext_lazy as _
+import logging
+import os
 
-import coreapi
-import coreschema
-from drf_openapi import codec as openapi_renderers
-from drf_openapi.entities import (
-    OpenApiSchemaGenerator as _OpenApiSchemaGenerator
+from django.conf import settings
+
+from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg import openapi
+from drf_yasg.app_settings import swagger_settings
+from drf_yasg.inspectors import (
+    CoreAPICompatInspector, NotHandled, SwaggerAutoSchema
 )
-from rest_framework import exceptions, permissions, renderers, serializers
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework_swagger import renderers as swagger_renderers
+from drf_yasg.utils import is_list_view
+from drf_yasg.views import get_schema_view
+from rest_framework import filters, permissions, status
+from rest_framework.settings import api_settings
+
+from .utils.pagination import HALPaginationInspector
+
+logger = logging.getLogger(__name__)
 
 
-class RedocUIRenderer(swagger_renderers.SwaggerUIRenderer):
-    template = 'redoc/index.html'
+try:
+    file_path = os.path.join(settings.BASE_DIR, 'docs', 'api', '_description.md')
+    with open(file_path, 'r', encoding='utf-8') as f:
+        description = f.read()
+except FileNotFoundError as e:
+    logger.warning('Could not load API documentation description: %s', e)
+    description = None
 
 
-class OpenApiSchemaGenerator(_OpenApiSchemaGenerator):
-    def get_paginator_serializer(self, view, child_serializer_class):
+schema_view = get_schema_view(
+    openapi.Info(
+        title='Zaaktypecatalogus (ZTC) API documentatie',
+        default_version='v{}'.format(api_settings.DEFAULT_VERSION),
+        description=description,
+        # terms_of_service='',
+        contact=openapi.Contact(email='support@maykinmedia.nl'),
+        license=openapi.License(name='EUPL 1.2'),
+    ),
+    #validators=['flex', 'ssv'],
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
+
+class DjangoFilterDescriptionInspector(CoreAPICompatInspector):
+    """
+    Simple filter inspector to set an appropriate description for filter fields.
+    """
+    def get_filter_parameters(self, filter_backend):
+        if isinstance(filter_backend, DjangoFilterBackend):
+            result = super().get_filter_parameters(filter_backend)
+            for param in result:
+                if not param.get('description', ''):
+                    param.description = "Filter the returned list by {field_name}.".format(field_name=param.name)
+            return result
+
+        return NotHandled
+
+
+class SearchDescriptionInspector(CoreAPICompatInspector):
+    """
+    Simple filter inspector to set an appropriate description for search fields.
+    """
+    def get_filter_parameters(self, filter_backend):
+        if isinstance(filter_backend, filters.SearchFilter):
+            search_fields = getattr(self.view, 'search_fields', [])
+            result = super().get_filter_parameters(filter_backend)
+            for param in result:
+                param.description = "One or more search terms, separated by a space, to search the returned list. " \
+                                    "The following fields will be searched: {}.".format(', '.join(search_fields))
+            return result
+
+        return NotHandled
+
+
+class OrderingDescriptionInspector(CoreAPICompatInspector):
+    """
+    Simple filter inspector to set an appropriate description for ordering fields.
+    """
+    def get_filter_parameters(self, filter_backend):
+        if isinstance(filter_backend, filters.OrderingFilter):
+            ordering_fields = getattr(self.view, 'ordering_fields', [])
+            result = super().get_filter_parameters(filter_backend)
+            for param in result:
+                param.description = "A field name to sort the returned list, ascending by default. " \
+                                    "Prefix with a minus to sort descending. " \
+                                    "Valid values: {}.".format(', '.join(ordering_fields))
+            return result
+
+        return NotHandled
+
+
+class AutoSchema(SwaggerAutoSchema):
+    field_inspectors = [
+    ] + swagger_settings.DEFAULT_FIELD_INSPECTORS
+    filter_inspectors = [
+        DjangoFilterDescriptionInspector,
+        SearchDescriptionInspector,
+        OrderingDescriptionInspector,
+    ] + swagger_settings.DEFAULT_FILTER_INSPECTORS
+    paginator_inspectors = [
+       HALPaginationInspector,
+    ] + swagger_settings.DEFAULT_PAGINATOR_INSPECTORS
+
+    def get_default_responses(self):
+        """Get the default responses determined for this view from the request serializer and request method.
+
+        :type: dict[str, openapi.Schema]
         """
-        Overridden to use the `HALPagination` format.
-        """
-        class HALPaginationSerializer(serializers.Serializer):
-            """
-            This serializer is not needed for the pagination but for the DRF OpenAPI documentation. It's based on
-            `drf_openapi.entities.OpenApiSchemaGenerator.get_paginator_serializer` that defines protected serializer
-            classes that do not allow for much customization.
-            """
-            class LinksSerializer(serializers.Serializer):
-                self = serializers.URLField(required=True, help_text=_('URL naar de huidige pagina van de resultaten set.'))
-                first = serializers.URLField(required=False, help_text=_('URL naar de eerste pagina van de resultaten set.'))
-                prev = serializers.URLField(required=False, help_text=_('URL naar de vorige pagina van de resultaten set.'))
-                next = serializers.URLField(required=False, help_text=_('URL naar de volgende pagina van de resultaten set.'))
-                last = serializers.URLField(required=False, help_text=_('URL naar de laatste pagina van de resultaten set.'))
+        ret = super().get_default_responses()
 
-            _links = LinksSerializer(required=True, help_text='Meta data over de resultaten set.')
-            results = child_serializer_class(many=True)
+        # Figure out object (or model) name.
+        queryset = getattr(self.view, 'queryset', None)
+        if queryset:
+            model = queryset.model
+            if hasattr(model._meta, 'verbose_name'):
+                object_name = model._meta.verbose_name
+            else:
+                object_name = model.__name__
+        else:
+            object_name = 'Object'
 
-        return HALPaginationSerializer
+        # Add additional response HTTP status codes.
+        if self.view.permission_classes:
+            if permissions.AllowAny not in self.view.permission_classes:
+                ret[status.HTTP_403_FORBIDDEN] = 'Forbidden'
+                if self.view.authentication_classes:
+                    ret[status.HTTP_401_UNAUTHORIZED] = 'Unauthorized'
 
+        if not is_list_view(self.path, self.method, self.view) and self.method.lower() in ('get', 'put', 'patch'):
+            ret[status.HTTP_404_NOT_FOUND] = '{} not found'.format(object_name)
 
-class OpenAPISchemaView(APIView):
-    _ignore_model_permissions = True
-    exclude_from_schema = True
-    permission_classes = (permissions.AllowAny, )
-
-    renderer_classes = (
-        renderers.CoreJSONRenderer,
-        openapi_renderers.OpenAPIRenderer,
-        # Swagger alternative:
-        # swagger_renderers.OpenAPIRenderer,
-        RedocUIRenderer,
-        # Classic Swagger UI:
-        # swagger_renderers.SwaggerUIRenderer,
-    )
-    url = ''
-    title = 'Zaaktypecatalogus API Documentatie'
-
-    def get(self, request, version):
-        generator = OpenApiSchemaGenerator(
-            version=version,
-            url=self.url,
-            title=self.title
-        )
-        # Swagger alternative:
-        # from rest_framework.schemas import SchemaGenerator
-        # generator = SchemaGenerator()
-
-        schema = generator.get_schema(request=request, public=True)
-
-        if not schema:
-            raise exceptions.ValidationError(
-                'The schema generator did not return a schema Document'
-            )
-
-        return Response(schema)
+        return ret

@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 
 from rest_framework_nested import routers
 
-from .schema import OpenAPISchemaView
+from .schema import schema_view
 from .views import (
     BesluitTypeViewSet, CatalogusViewSet, EigenschapViewSet,
     InformatieObjectTypeViewSet, InformatieObjectTypeZaakTypeSerializerViewSet,
@@ -37,7 +37,9 @@ API_PREFIX = r'^v(?P<version>\d+)'
 
 
 urlpatterns = [
-    url('{}/schema/'.format(API_PREFIX), OpenAPISchemaView.as_view(), name='api_schema'),
+    url(r'{}/schema(?P<format>.json|.yaml)$'.format(API_PREFIX), schema_view.without_ui(cache_timeout=None), name='api-schema-json'),
+    url(r'{}/schema/$'.format(API_PREFIX), schema_view.with_ui('redoc', cache_timeout=None), name='api-schema'),
+
     url('{}/'.format(API_PREFIX), include(root_router.urls)),
     url('{}/'.format(API_PREFIX), include(catalogus_router.urls)),
     url('{}/'.format(API_PREFIX), include(zaaktype_router.urls)),

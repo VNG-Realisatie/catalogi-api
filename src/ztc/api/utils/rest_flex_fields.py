@@ -1,22 +1,60 @@
 import importlib
 
-import coreapi
+from django.conf import settings
+
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_flex_fields.views import FlexFieldsMixin as _FlexFieldsMixin
-from rest_framework.schemas import AutoSchema
+
+EXPAND_PARAM = settings.REST_FRAMEWORK_EXT.get('EXPAND_PARAM', 'expand')
+FIELDS_PARAM = settings.REST_FRAMEWORK_EXT.get('FIELDS_PARAM', 'fields')
+EXPAND_ALL_VALUE = settings.REST_FRAMEWORK_EXT.get('EXPAND_ALL_VALUE', '~all')
 
 
 class FlexFieldsMixin(_FlexFieldsMixin):
     """
-    Extended the original mixin to insert the `expand` and `fields` parameters to the documentation.
+    Extended the original mixin.
+
+    Other changes:
+
+        * Added settings to get params.
+        * Add `expand` and `fields` parameters to the documentation.
+
     """
-    # These are not picked up by `drf_openapi` version 1.3. Hence, we our own fork.
-    # See: https://github.com/limdauto/drf_openapi/issues/116
-    schema = AutoSchema(
-        manual_fields=[
-            coreapi.Field('expand', description='Which field(s) to expand. Multiple fields can be separated with a comma.'),
-            coreapi.Field('fields', description='Which field(s) to show. Multiple fields can be separated with a comma.'),
+
+    @swagger_auto_schema(manual_parameters=[
+            openapi.Parameter(
+                'expand',
+                openapi.IN_QUERY,
+                description='One or more field names, that link to resources, to expand. '
+                            'Multiple fields can be separated with a comma.',
+                type=openapi.TYPE_STRING
+            ),
+            openapi.Parameter(
+                'fields',
+                openapi.IN_QUERY,
+                description='One or more field names to show in the response. All other fields will be excluded. '
+                            'Multiple fields can be separated with a comma.',
+                type=openapi.TYPE_STRING
+            ),
         ]
     )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        self._expandable = False
+        expand = request.query_params.get(EXPAND_PARAM)
+
+        if len(self.permit_list_expands) > 0 and expand:
+            if expand == EXPAND_ALL_VALUE:
+                self._force_expand = self.permit_list_expands
+            else:
+                self._force_expand = list(
+                    set(expand.split(',')) & set(self.permit_list_expands)
+                )
+
+        return super().list(request, *args, **kwargs)
 
 
 class FlexFieldsSerializerMixin(object):
@@ -25,22 +63,22 @@ class FlexFieldsSerializerMixin(object):
 
     Other changes:
 
-        * Changed `?expand=~all` to `?expand=true`.
+        * Added settings to get params.
         * Added feature to add the name to the inclusion fields, if its not expandable.
 
     """
     expandable_fields = {}
 
     def __init__(self, *args, **kwargs):
-        expand_field_names = self._get_dynamic_setting(kwargs, 'expand')
-        include_field_names = self._get_dynamic_setting(kwargs, {'class_property': 'include_fields', 'kwargs': 'fields'})
+        expand_field_names = self._get_dynamic_setting(kwargs, EXPAND_PARAM)
+        include_field_names = self._get_dynamic_setting(kwargs, {'class_property': 'include_fields', 'kwargs': FIELDS_PARAM})
         expand_field_names, next_expand_field_names = self._split_levels(expand_field_names)
         include_field_names, next_include_field_names = self._split_levels(include_field_names)
         self._expandable = self.expandable_fields.keys()
         self.expanded_fields = []
 
         # Instantiate the superclass normally
-        super(FlexFieldsSerializerMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # Added feature to add the name to the inclusion fields, if its not expandable.
         for name in expand_field_names:
@@ -49,8 +87,7 @@ class FlexFieldsSerializerMixin(object):
 
         self._clean_fields(include_field_names)
 
-        # Changed `?expand=~all` to `?expand=true`.
-        if 'true' in expand_field_names:
+        if EXPAND_ALL_VALUE in expand_field_names:
             expand_field_names = self.expandable_fields.keys()
 
         for name in expand_field_names:
@@ -72,10 +109,10 @@ class FlexFieldsSerializerMixin(object):
         serializer_settings = copy.deepcopy(field_options[1])
 
         if name in nested_expands:
-            serializer_settings['expand'] = nested_expands[name]
+            serializer_settings[EXPAND_PARAM] = nested_expands[name]
 
         if name in nested_includes:
-            serializer_settings['fields'] = nested_includes[name]
+            serializer_settings[FIELDS_PARAM] = nested_includes[name]
 
         if serializer_settings.get('source') == name:
             del serializer_settings['source']

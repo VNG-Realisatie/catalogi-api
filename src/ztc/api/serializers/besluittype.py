@@ -24,6 +24,7 @@ class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMi
 
     class Meta:
         model = BesluitType
+        ref_name = model.__name__
         source_mapping = {
             'omschrijving': 'besluittype_omschrijving',
             'omschrijvingGeneriek': 'besluittype_omschrijving_generiek',
