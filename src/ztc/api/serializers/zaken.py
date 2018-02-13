@@ -145,6 +145,16 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         parent_lookup_kwargs={'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
                               'zaaktype_pk': 'is_van__pk'},
     )
+    heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='zaakinformatieobjecttype_set',
+        view_name='api:zktiot-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'zaaktype__pk',
+        }
+    )
 
     class Meta:
         model = ZaakType
@@ -169,7 +179,6 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'maaktDeelUitVan': 'maakt_deel_uit_van',
 
             # unused:
-            # 'heeftRelevantInformatieobjecttype': 'heeft_relevant_informatieobjecttype',
             # 'heeftRelevantResultaattype': 'resultaattype_set',
             # 'heeftStatustype': 'statustype_set',
         }
@@ -220,7 +229,8 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'heeftRelevantBesluittype',
             'heeftEigenschap',
             'heeftRelevantZaakObjecttype',
-            'heeftRoltype'
+            'heeftRoltype',
+            'heeftRelevantInformatieobjecttype',
         )
 
         expandable_fields = {

@@ -1,14 +1,30 @@
 from django.urls import reverse
 
-from ...datamodel.tests.factories import InformatieObjectTypeFactory
+from ...datamodel.tests.factories import (
+    InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
+    ZaakTypeFactory
+)
 from .base import APITestCase
 
 
 class InformatieObjectTypeAPITests(APITestCase):
+    maxDiff = None
+
     def setUp(self):
         super().setUp()
 
-        self.informatieobjecttype = InformatieObjectTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        self.informatieobjecttype = InformatieObjectTypeFactory.create(maakt_deel_uit_van=self.catalogus,
+                                                                       zaaktypes=None)
+        self.zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        # self.informatieobjecttype.zaaktypes.add(self.zaaktype)
+        # self.informatieobjecttype.zaaktypes.save()
+
+        self.ziot = ZaakInformatieobjectTypeFactory.create(
+            zaaktype=self.zaaktype,
+            informatie_object_type=self.informatieobjecttype,
+            volgnummer=1,
+            richting='richting',
+        )
 
         self.informatieobjecttype_list_url = reverse('api:informatieobjecttype-list', kwargs={
             'version': '1',
@@ -48,7 +64,13 @@ class InformatieObjectTypeAPITests(APITestCase):
                     'omschrijving': self.informatieobjecttype.informatieobjecttype_omschrijving,
                     'ingangsdatumObject': '',
                     'url': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
-                        self.catalogus.pk, self.informatieobjecttype.pk)
+                        self.catalogus.pk, self.informatieobjecttype.pk),
+                    'isRelevantVoor': [
+                        'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/is_relevant_voor/{}/'.format(
+                            self.catalogus.pk, self.informatieobjecttype.pk, self.ziot.pk,
+                        )
+                    ],
+
                 }
             ]
         }
@@ -73,6 +95,11 @@ class InformatieObjectTypeAPITests(APITestCase):
             'trefwoord': [],
             'url': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
                 self.catalogus.pk, self.informatieobjecttype.pk),
-            'vertrouwelijkAanduiding': None
+            'vertrouwelijkAanduiding': None,
+            'isRelevantVoor': [
+                'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/is_relevant_voor/{}/'.format(
+                    self.catalogus.pk, self.informatieobjecttype.pk, self.ziot.pk,
+                )
+            ],
         }
         self.assertEqual(expected, response.json())

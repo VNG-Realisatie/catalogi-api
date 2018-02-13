@@ -25,6 +25,16 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
         view_name='api:besluittype-detail',
         parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van_id'}
     )
+    isRelevantVoor = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='zaakinformatieobjecttype_set',
+        view_name='api:iotzkt-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+            'informatieobjecttype_pk': 'informatie_object_type__pk',
+        }
+    )
 
     class Meta:
         model = InformatieObjectType
@@ -55,12 +65,12 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
             'ingangsdatumObject',
             'einddatumObject',
             'maaktDeeluitVan',
-            # 'isRelevantVoor',
+            'isRelevantVoor',
             'isVastleggingVoor',
         )
 
     expandable_fields = {
         'maaktDeeluitVan': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
-        # 'isRelevantVoor',
+        'isRelevantVoor': ('ztc.api.serializers.InformatieObjectTypeZaakTypeSerializer', {'source': 'zaakinformatieobjecttype_set'}),
         'isVastleggingVoor': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'besluittype_set', 'many': True})
     }

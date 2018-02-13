@@ -12,14 +12,7 @@ class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSeriali
         'zaaktype_pk': 'zaaktype_van__pk',
     }
 
-    zaaktype_van = NestedHyperlinkedIdentityField(
-        view_name='api:zaaktype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype_van__maakt_deel_uit_van__pk',
-            'pk': 'zaaktype_van__pk',
-        },
-    )
-    zaaktype_naar = NestedHyperlinkedIdentityField(
+    gerelateerde = NestedHyperlinkedIdentityField(
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype_naar__maakt_deel_uit_van__pk',
@@ -27,65 +20,38 @@ class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSeriali
         },
     )
 
-    # TODO: we don't want 'zaaktype_van' and 'zaaktype_naar' in the response. The fields have to be combined
-    # in a list: 'gerelateerden': ['url_zaaktype_van', 'url_zaaktype_naar']
-    # gerelateerden = SerializerMethodField()
-    #
-    # def get_the_url(self, zaaktype):
-    #     from rest_framework.reverse import reverse
-    #     return reverse('api:zaaktype-detail', kwargs={
-    #         'version': 1,  # fix this
-    #         'catalogus_pk': zaaktype.maakt_deel_uit_van.pk,
-    #         'pk': zaaktype.pk,
-    #     })
-    # #
-    # def get_gerelateerden(self, obj):
-    #     return [
-    #         self.get_the_url(obj.zaaktype_van),
-    #         self.get_the_url(obj.zaaktype_naar),
-    #     ]
-
     class Meta:
         model = ZaakTypenRelatie
+        source_mapping = {
+            'aardRelatie': 'aard_relatie',
+
+        }
         fields = (
             'url',
-            'zaaktype_van',
-            'zaaktype_naar',
-            'aard_relatie',
+            'aardRelatie',
             'toelichting',
-            # 'gerelateerden',
+            'gerelateerde',
         )
         extra_kwargs = {
             'url': {'view_name': 'api:zaaktypenrelatie-detail'},
         }
 
 
-class ZaakInformatieobjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class InformatieObjectTypeZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    """
+    IOTZKT-basis
+    De relatie naar het zaaktype waarvoor het informatieobjecttype relevant is
+    """
     parent_lookup_kwargs = {
-        'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-        'zaaktype_pk': 'zaaktype__pk',
+        'catalogus_pk': 'informatie_object_type__maakt_deel_uit_van__pk',
+        'informatieobjecttype_pk': 'informatie_object_type__pk',
     }
 
-    zaaktype = NestedHyperlinkedIdentityField(
+    gerelateerde = NestedHyperlinkedIdentityField(
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
             'pk': 'zaaktype__pk',
-        },
-    )
-    informatie_object_type = NestedHyperlinkedIdentityField(
-        view_name='api:informatieobjecttype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'pk': 'informatie_object_type__pk',
-        },
-    )
-    status_type = NestedHyperlinkedIdentityField(
-        view_name='api:statustype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'zaaktype__pk',
-            'pk': 'status_type__pk',
         },
     )
 
@@ -93,22 +59,54 @@ class ZaakInformatieobjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappin
         model = ZaakInformatieobjectType
 
         source_mapping = {
-            # TODO zaaktype is not in xsd, but its nested after a zaaktype so not needed ??
-            # 'gerelateerde': 'informatie_object_type',
             'zdt.volgnummer': 'volgnummer',
             'zdt.richting': 'richting',
         }
 
         fields = (
             'url',
-            'zaaktype',
-            'informatie_object_type',
+            'gerelateerde',
             'zdt.volgnummer',
             'zdt.richting',
-
-            # this is the relation that is described on StatusType in the specification
-            'status_type',
         )
         extra_kwargs = {
-            'url': {'view_name': 'api:zaakinformatieobjecttype-detail'},
+            'url': {'view_name': 'api:iotzkt-detail'},
+        }
+
+
+class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+    """
+    ZKTIOT-basis
+
+    Relatie met informatieobjecttype dat relevant is voor zaaktype.
+    """
+    parent_lookup_kwargs = {
+        'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+        'zaaktype_pk': 'zaaktype__pk',
+    }
+
+    gerelateerde = NestedHyperlinkedIdentityField(
+        view_name='api:informatieobjecttype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+            'pk': 'informatie_object_type__pk',
+        },
+    )
+
+    class Meta:
+        model = ZaakInformatieobjectType
+
+        source_mapping = {
+            'zdt.volgnummer': 'volgnummer',
+            'zdt.richting': 'richting',
+        }
+
+        fields = (
+            'url',
+            'gerelateerde',
+            'zdt.volgnummer',
+            'zdt.richting',
+        )
+        extra_kwargs = {
+            'url': {'view_name': 'api:zktiot-detail'},
         }
