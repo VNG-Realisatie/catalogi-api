@@ -5,8 +5,9 @@ from freezegun import freeze_time
 
 from ztc.datamodel.tests.base_tests import HaaglandenMixin
 from ztc.datamodel.tests.factories import (
-    FormulierFactory, ZaakTypeFactory, ZaakTypenRelatieFactory,
-    InformatieObjectType, ZaakInformatieobjectTypeFactory)
+    FormulierFactory, InformatieObjectType, ZaakInformatieobjectTypeFactory,
+    ZaakTypeFactory, ZaakTypenRelatieFactory
+)
 
 from .base import ClientAPITestMixin
 

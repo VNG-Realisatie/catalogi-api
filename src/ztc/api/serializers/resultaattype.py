@@ -20,21 +20,21 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
             'pk': 'is_relevant_voor__pk',
         },
     )
-    heeftVerplichtDocumentype = NestedHyperlinkedIdentityField(
-        many=True,
-        view_name='api:zaakinformatieobjecttype-detail',
-        source='heeft_verplichte_ziot',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'zaaktype__pk',
-        },
-    )
+    # heeftVerplichtDocumentype = NestedHyperlinkedIdentityField(
+    #     many=True,
+    #     view_name='api:zaakinformatieobjecttype-detail',
+    #     source='heeft_verplichte_ziot',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'zaaktype__pk',
+    #     },
+    # )
     # TODO: implement relatieklasse serializer first
-    # # models.ManyToManyField('datamodel.ZaakInformatieObjectType', through='datamodel.ZaakInformatieobjectTypeArchiefregime'
+    # models.ManyToManyField('datamodel.ZaakInformatieObjectType', through='datamodel.ZaakInformatieobjectTypeArchiefregime'
     # bepaaltAfwijkendArchiefRegimeVan = NestedHyperlinkedIdentityField(
     #     many=True,
     #     view_name='api:zaakinformatieobjecttype-detail',
-    #     # source='heeft_verplichte_ziot',
+    #     source='heeft_verplichte_ziot',
     #     parent_lookup_kwargs={
     #         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
     #     },
@@ -55,15 +55,19 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
             'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
         },
     )
-    heeftVoorBrondatumArchiefprocedureRelevante = NestedHyperlinkedIdentityField(
-        view_name='api:eigenschap-detail',
-        source='heeft_voor_brondatum_archiefprocedure_relevante',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_relevant_voor__pk',
-            'pk': 'heeft_voor_brondatum_archiefprocedure_relevante__pk'
-        },
-    )
+    # FIXME: dit is een foreign key die niet verplicht is. Als hij er niet is
+    # krijg je een error in get_url op de heeft_voor_...._relevante.pk want die is None
+    # heeftVoorBrondatumArchiefprocedureRelevante = NestedHyperlinkedIdentityField(
+    #     view_name='api:eigenschap-detail',
+    #     source='*',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'is_relevant_voor__pk',
+    #         'pk': 'heeft_voor_brondatum_archiefprocedure_relevante__pk'
+    #     },
+    #     read_only=True,
+    #     required=False,
+    # )
 
     class Meta:
         model = ResultaatType
@@ -95,9 +99,9 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
             'brondatumProcedure',
             'toelichting',
             'isRelevantVoor',
-            'heeftVerplichtDocumentype',
-            # 'bepaaltAfwijkendArchiefRegimeVan',
             'leidtTot',
             'heeftVerplichteZaakobjecttype',
-            'heeftVoorBrondatumArchiefprocedureRelevante',
+            # 'heeftVoorBrondatumArchiefprocedureRelevante',
+            # 'heeftVerplichtDocumentype',
+            # 'bepaaltAfwijkendArchiefRegimeVan',
         )

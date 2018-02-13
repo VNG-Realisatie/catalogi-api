@@ -5,10 +5,9 @@ from rest_framework_nested import routers
 from .schema import OpenAPISchemaView
 from .views import (
     BesluitTypeViewSet, CatalogusViewSet, EigenschapViewSet,
-    InformatieObjectTypeViewSet, ResultaatTypeViewSet, RolTypeViewSet, StatusTypeViewSet,
-    InformatieObjectTypeZaakTypeSerializerViewSet,
-    ZaakTypeInformatieObjectTypeViewSet,
-    ZaakObjectTypeViewSet,
+    InformatieObjectTypeViewSet, InformatieObjectTypeZaakTypeSerializerViewSet,
+    ResultaatTypeViewSet, RolTypeViewSet, StatusTypeViewSet,
+    ZaakObjectTypeViewSet, ZaakTypeInformatieObjectTypeViewSet,
     ZaakTypenRelatieViewSet, ZaakTypeViewSet
 )
 

@@ -1,6 +1,9 @@
 from django.urls import reverse
 
-from ...datamodel.tests.factories import InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory, ZaakTypeFactory
+from ...datamodel.tests.factories import (
+    InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
+    ZaakTypeFactory
+)
 from .base import APITestCase
 
 

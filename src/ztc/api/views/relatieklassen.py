@@ -2,8 +2,8 @@ from rest_framework import viewsets
 
 from ...datamodel.models import ZaakInformatieobjectType, ZaakTypenRelatie
 from ..serializers import (
-    InformatieObjectTypeZaakTypeSerializer, ZaakTypeInformatieObjectTypeSerializer,
-    ZaakTypenRelatieSerializer
+    InformatieObjectTypeZaakTypeSerializer,
+    ZaakTypeInformatieObjectTypeSerializer, ZaakTypenRelatieSerializer
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
 
