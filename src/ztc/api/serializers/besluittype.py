@@ -55,6 +55,8 @@ class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMi
 
             'maaktDeeluitVan',
             'wordtVastgelegdIn',
+            'ingangsdatumObject',
+            'einddatumObject',
 
             # 'isRelevantVoor',
             # 'isResultaatVan',

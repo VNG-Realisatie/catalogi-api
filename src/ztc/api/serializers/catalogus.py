@@ -28,6 +28,14 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
         parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
     )
 
+    bestaatuitZaaktype = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='zaaktype_set',
+        view_name='api:zaaktype-detail',
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
+    )
+
     class Meta:
         model = Catalogus
         ref_name = model.__name__
@@ -48,7 +56,7 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
             'contactpersoonBeheerNaam',
             'contactpersoonBeheerTelefoonnummer',
             'contactpersoonBeheerEmailadres',
-            # 'bestaatuitZaaktype',
+            'bestaatuitZaaktype',
             'bestaatuitInformatieobjecttype',
             'bestaatuitBesluittype',
         )
@@ -56,4 +64,5 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
     expandable_fields = {
         'bestaatuitInformatieobjecttype': ('ztc.api.serializers.InformatieObjectTypeSerializer', {'source': 'informatieobjecttype_set', 'many': True}),
         'bestaatuitBesluittype': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'besluittype_set', 'many': True}),
+        'bestaatuitZaaktype': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'zaaktype_set', 'many': True})
     }
