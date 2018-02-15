@@ -132,3 +132,20 @@ class AutoSchema(SwaggerAutoSchema):
             ret[status.HTTP_404_NOT_FOUND] = '{} not found'.format(object_name)
 
         return ret
+
+    def get_operation_id(self, operation_keys):
+        keys = operation_keys[:]
+
+        # Remove the catalog from the operation ID if the operation is not directly about the catalog.
+        if len(keys) > 2:
+            keys = keys[1:]
+        return super().get_operation_id(keys)
+
+    def get_tags(self, operation_keys):
+        keys = operation_keys[:]
+
+        # Similar to the operation ID, we want to group by one level deeper than catalog. Otherwise everything will be
+        # under the Catalog group.
+        if len(keys) > 2:
+            keys = keys[1:]
+        return super().get_tags(keys)
