@@ -12,6 +12,7 @@ from ..utils.serializers import SourceMappingSerializerMixin
 class EigenschapReferentieSerializer(SourceMappingSerializerMixin, ModelSerializer):
     class Meta:
         model = EigenschapReferentie
+        ref_name = None  # Inline
         source_mapping = {
             'pathElement': 'x_path_element',
         }
@@ -28,6 +29,7 @@ class EigenschapReferentieSerializer(SourceMappingSerializerMixin, ModelSerializ
 class EigenschapSpecificatieSerializer(SourceMappingSerializerMixin, ModelSerializer):
     class Meta:
         model = EigenschapSpecificatie
+        ref_name = None  # Inline
         source_mapping = {
             'waardeverzameling': 'waardenverzameling',
         }
@@ -59,7 +61,7 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
 
     class Meta:
         model = Eigenschap
-
+        ref_name = model.__name__
         source_mapping = {
             'ingangsdatumObject': 'datum_begin_geldigheid',
             'einddatumObject': 'datum_einde_geldigheid',

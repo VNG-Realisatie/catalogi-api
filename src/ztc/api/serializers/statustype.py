@@ -10,6 +10,7 @@ from ..utils.serializers import SourceMappingSerializerMixin
 class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
     class Meta:
         model = CheckListItem
+        ref_name = None  # Inline
         source_mapping = {
             'naam': 'itemnaam'
         }
@@ -63,7 +64,7 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
 
     class Meta:
         model = StatusType
-
+        ref_name = model.__name__
         source_mapping = {
             'ingangsdatumObject': 'datum_begin_geldigheid',
             'einddatumObject': 'datum_einde_geldigheid',

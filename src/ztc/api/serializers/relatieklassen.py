@@ -22,6 +22,7 @@ class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSeriali
 
     class Meta:
         model = ZaakTypenRelatie
+        ref_name = model.__name__
         source_mapping = {
             'aardRelatie': 'aard_relatie',
 
@@ -57,7 +58,7 @@ class InformatieObjectTypeZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMa
 
     class Meta:
         model = ZaakInformatieobjectType
-
+        ref_name = model.__name__
         source_mapping = {
             'zdt.volgnummer': 'volgnummer',
             'zdt.richting': 'richting',
@@ -95,7 +96,7 @@ class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMa
 
     class Meta:
         model = ZaakInformatieobjectType
-
+        ref_name = model.__name__
         source_mapping = {
             'zdt.volgnummer': 'volgnummer',
             'zdt.richting': 'richting',

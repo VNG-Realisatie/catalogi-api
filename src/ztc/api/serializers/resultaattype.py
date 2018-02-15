@@ -71,7 +71,7 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
 
     class Meta:
         model = ResultaatType
-
+        ref_name = model.__name__
         source_mapping = {
             'ingangsdatumObject': 'datum_begin_geldigheid',
             'einddatumObject': 'datum_einde_geldigheid',

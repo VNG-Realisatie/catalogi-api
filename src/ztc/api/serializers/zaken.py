@@ -27,6 +27,7 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
 
     class Meta:
         model = ZaakObjectType
+        ref_name = model.__name__
         source_mapping = {
             'ingangsdatumObject': 'datum_begin_geldigheid',
             'einddatumObject': 'datum_einde_geldigheid',
@@ -52,30 +53,35 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
 class ProductDienstSerializer(ModelSerializer):
     class Meta:
         model = ProductDienst
+        ref_name = None  # Inline
         fields = ('naam', 'link')
 
 
 class FormulierSerializer(ModelSerializer):
     class Meta:
         model = Formulier
+        ref_name = None  # Inline
         fields = ('naam', 'link')
 
 
 class ReferentieProcesSerializer(ModelSerializer):
     class Meta:
         model = ReferentieProces
+        ref_name = None  # Inline
         fields = ('naam', 'link')
 
 
 class BronCatalogusSerializer(ModelSerializer):
     class Meta:
         model = BronCatalogus
+        ref_name = None  # Inline
         fields = ('domein', 'rsin')
 
 
 class BronZaakTypeSerializer(ModelSerializer):
     class Meta:
         model = BronZaakType
+        ref_name = None  # Inline
         source_mapping = {
             'identificatie': 'zaaktype_identificatie',
             'omschrijving': 'zaaktype_omschrijving',
@@ -158,6 +164,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
 
     class Meta:
         model = ZaakType
+        ref_name = model.__name__
         source_mapping = {
             "ingangsdatumObject": 'datum_begin_geldigheid',
             "einddatumObject": 'datum_einde_geldigheid',
