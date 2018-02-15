@@ -9,6 +9,13 @@ from ..utils.rest_flex_fields import FlexFieldsMixin
 
 
 class ZaakTypenRelatieViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+    """
+    retrieve:
+    Relatie met zaaktype dat gerelateerd is aan het zaaktype.
+
+    list:
+    Een verzameling van ZAAKTYPENRELATIEs.
+    """
     queryset = ZaakTypenRelatie.objects.all()
     serializer_class = ZaakTypenRelatieSerializer
 
@@ -18,6 +25,13 @@ class ZaakTypenRelatieViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class ZaakTypeInformatieObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+    """
+    retrieve:
+    Relatie met informatieobjecttype dat relevant is voor zaaktype.
+
+    list:
+    Een verzameling van ZAAKTYPENRELATIEs.
+    """
     queryset = ZaakInformatieobjectType.objects.all()
     serializer_class = ZaakTypeInformatieObjectTypeSerializer
 

@@ -8,8 +8,8 @@ from ..utils.rest_flex_fields import FlexFieldsMixin
 class ResultaatTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    De verzameling van RESULTAATTYPEn.
-    wordt.
+    Het betreft de indeling of groepering van resultaten van zaken van hetzelfde ZAAKTYPE naar hun aard, zoals
+    'verleend', 'geweigerd', 'verwerkt', etc.
 
     list:
     Een verzameling van RESULTAATTYPEn.

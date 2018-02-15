@@ -8,8 +8,7 @@ from ..utils.rest_flex_fields import FlexFieldsMixin
 class StatusTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    De verzameling van STATUSTYPEn.
-    wordt.
+    Generieke aanduiding van de aard van een status.
 
     list:
     Een verzameling van STATUSTYPEn.
