@@ -134,8 +134,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         heeftRelevantZaakObjecttype = result.pop('heeftRelevantZaakObjecttype')
         self.assertEqual(len(heeftRelevantZaakObjecttype), 3)
         for zot in heeftRelevantZaakObjecttype:
-            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(
-                self.catalogus.pk)))
+            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/zaakobjecttypen/'.format(
+                self.catalogus.pk, self.zaaktype.pk)))
 
         heeftRoltype = result.pop('heeftRoltype')
         self.assertEqual(len(heeftRoltype), 7)
@@ -206,6 +206,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         self.zaaktype.eigenschap_set.all().delete()
         self.zaaktype.roltype_set.all().delete()
         self.zaaktype.zaakobjecttype_set.all().delete()
+        self.zaaktype.statustype_set.all().delete()
+        self.zaaktype.resultaattype_set.all().delete()
         self.zaaktype.save()
 
         response = self.api_client.get(self.zaaktype_list_url)
@@ -238,7 +240,7 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'handelingBehandelaar': '',
                     'heeftGerelateerd': [],
                     'doel': 'doel',
-                    'versiedatum': '',
+                    'versiedatum': '20180207',
                     'formulier': [],
                     'onderwerp': 'Milieu-gerelateerde vergunning',
                     'publicatietekst': 'N.t.b.',
@@ -256,6 +258,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
                     'heeftRelevantZaakObjecttype': [],
                     'heeftRoltype': [],
                     'heeftRelevantInformatieobjecttype': [],
+                    'heeftStatustype': [],
+                    'heeftRelevantResultaattype': [],
                 }
             ],
             '_links': {
@@ -288,8 +292,8 @@ class ZaakTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         heeftRelevantZaakObjecttype = result.pop('heeftRelevantZaakObjecttype')
         self.assertEqual(len(heeftRelevantZaakObjecttype), 3)
         for zot in heeftRelevantZaakObjecttype:
-            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/'.format(
-                self.catalogus.pk)))
+            self.assertTrue(zot.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/zaakobjecttypen/'.format(
+                self.catalogus.pk, self.zaaktype.pk)))
 
         heeftRoltype = result.pop('heeftRoltype')
         self.assertEqual(len(heeftRoltype), 7)

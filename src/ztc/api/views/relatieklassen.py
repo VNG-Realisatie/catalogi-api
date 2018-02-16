@@ -1,8 +1,11 @@
 from rest_framework import viewsets
 
-from ...datamodel.models import ZaakInformatieobjectType, ZaakTypenRelatie
+from ...datamodel.models import (
+    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime,
+    ZaakTypenRelatie
+)
 from ..serializers import (
-    InformatieObjectTypeZaakTypeSerializer,
+    ZaakInformatieobjectTypeArchiefregimeSerializer,
     ZaakTypeInformatieObjectTypeSerializer, ZaakTypenRelatieSerializer
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
@@ -30,7 +33,7 @@ class ZaakTypeInformatieObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyMode
     Relatie met informatieobjecttype dat relevant is voor zaaktype.
 
     list:
-    Een verzameling van ZAAKTYPENRELATIEs.
+    Een verzameling van ZAAKINFORMATIEOBJECTTYPEn.
     """
     queryset = ZaakInformatieobjectType.objects.all()
     serializer_class = ZaakTypeInformatieObjectTypeSerializer
@@ -40,10 +43,18 @@ class ZaakTypeInformatieObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyMode
     search_fields = filter_fields
 
 
-class InformatieObjectTypeZaakTypeSerializerViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
-    queryset = ZaakInformatieobjectType.objects.all()
-    serializer_class = InformatieObjectTypeZaakTypeSerializer
+class ZaakInformatieobjectTypeArchiefregimeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+    """
+    retrieve:
+    Afwijkende archiveringskenmerken van informatieobjecten van een INFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE op
+    grond van resultaten van een RESULTAATTYPE bij dat ZAAKTYPE.
 
-    filter_fields = ('zaaktype', 'informatie_object_type')
+    list:
+    Een verzameling van ZAAKINFORMATIEOBJECTTYPEARCHIEFREGIMEs.
+    """
+    queryset = ZaakInformatieobjectTypeArchiefregime.objects.all()
+    serializer_class = ZaakInformatieobjectTypeArchiefregimeSerializer
+
+    filter_fields = ('zaak_informatieobject_type', 'resultaattype')
     ordering_fields = filter_fields
     search_fields = filter_fields

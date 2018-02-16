@@ -76,7 +76,7 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
                 _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
 
         if self.datum_einde_geldigheid:
-            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+            datum_einde = self.datum_einde_geldigheid_date
 
             if datum_einde < datum_begin:
                 raise ValidationError(_(

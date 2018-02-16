@@ -36,30 +36,33 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         },
     )
     heeftVerplichteEigenschap = NestedHyperlinkedIdentityField(
-        view_name='api:eigenschap-detail',
         many=True,
+        read_only=True,
+        view_name='api:eigenschap-detail',
+        source='heeft_verplichte_eigenschap',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'is_van__pk'
         },
-        source='heeft_verplichte_eigenschap',
     )
     heeftVerplichteZaakObjecttype = NestedHyperlinkedIdentityField(
-        view_name='api:zaakobjecttype-detail',
         many=True,
+        read_only=True,
+        view_name='api:zaakobjecttype-detail',
+        source='heeft_verplichte_zaakobjecttype',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
         },
-        source='heeft_verplichte_zaakobjecttype',
     )
     heeftVerplichteInformatieobjecttype = NestedHyperlinkedIdentityField(
-        view_name='api:zktiot-detail',
         many=True,
+        read_only=True,
+        view_name='api:zktiot-detail',
+        source='heeft_verplichte_zit',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'zaaktype__pk',
         },
-        source='heeft_verplichte_zit',
     )
 
     class Meta:
@@ -79,8 +82,6 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         }
         fields = (
             'url',
-            'ingangsdatumObject',
-            'einddatumObject',
             'omschrijving',
             'omschrijvingGeneriek',
             'volgnummer',
@@ -90,11 +91,11 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'statustekst',
             'toelichting',
 
+            'ingangsdatumObject',
+            'einddatumObject',
+
             'isVan',
+            'heeftVerplichteInformatieobjecttype',
             'heeftVerplichteEigenschap',
             'heeftVerplichteZaakObjecttype',
-            'heeftVerplichteInformatieobjecttype',
-
-            # TODO:
-            # 'roltypen',  deze relatie is gedefinieerd op RolType, niet in xsd, dus Toevoegen aan RolTypeSerializer
         )

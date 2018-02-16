@@ -1,5 +1,7 @@
 from rest_framework.serializers import ModelSerializer
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from rest_framework_nested.relations import (
+    NestedHyperlinkedIdentityField, NestedHyperlinkedRelatedField
+)
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
@@ -13,16 +15,15 @@ from ..utils.serializers import SourceMappingSerializerMixin
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-        # 'zaaktype_pk': 'is_relevant_voor__pk', ??
+        'zaaktype_pk': 'is_relevant_voor__pk',
     }
 
-    isRelevantVoor = NestedHyperlinkedRelatedField(
-        read_only=True,
-        source='*',
+    isRelevantVoor = NestedHyperlinkedIdentityField(
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-            'pk': 'is_relevant_voor__pk'}
+            'pk': 'is_relevant_voor__pk',
+        }
     )
 
     class Meta:
@@ -33,17 +34,17 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
             'einddatumObject': 'datum_einde_geldigheid',
             'anderObject': 'ander_objecttype',
             'relatieOmschrijving': 'relatieomschrijving',
-            'isRelevantVoor': 'is_relevant_voor',
         }
         fields = (
             'url',
-            'ingangsdatumObject',
-            'einddatumObject',
             'objecttype',
             'anderObject',
             'relatieOmschrijving',
+            'ingangsdatumObject',
+            'einddatumObject',
             'isRelevantVoor',
-            'status_type',  # NOTE: this field is not in the xsd
+            # NOTE: this field is not in the xsd
+            # 'status_type',
         )
         extra_kwargs = {
             'url': {'view_name': 'api:zaakobjecttype-detail'},
@@ -78,7 +79,7 @@ class BronCatalogusSerializer(ModelSerializer):
         fields = ('domein', 'rsin')
 
 
-class BronZaakTypeSerializer(ModelSerializer):
+class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
     class Meta:
         model = BronZaakType
         ref_name = None  # Inline
@@ -100,6 +101,8 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
     product_dienst = ProductDienstSerializer(many=True, read_only=True)
     formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(read_only=True)
+    broncatalogus = BronCatalogusSerializer(read_only=True)
+    bronzaaktype = BronZaakTypeSerializer(read_only=True)
 
     heeftRelevantZaakObjecttype = NestedHyperlinkedRelatedField(
         many=True,
@@ -108,6 +111,7 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         view_name='api:zaakobjecttype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_relevant_voor__pk',
         }
     )
     heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
@@ -115,7 +119,9 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         read_only=True,
         source='heeft_relevant_besluittype',
         view_name='api:besluittype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
+        parent_lookup_kwargs={
+            'catalogus_pk': 'maakt_deel_uit_van__pk'
+        }
     )
     # TODO: currently only show one side of the relations for a ZaakType.
     heeftGerelateerd = NestedHyperlinkedRelatedField(
@@ -133,23 +139,29 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         read_only=True,
         source='is_deelzaaktype_van',
         view_name='api:zaaktype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'},
+        parent_lookup_kwargs={
+            'catalogus_pk': 'maakt_deel_uit_van__pk'
+        },
     )
     heeftEigenschap = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='eigenschap_set',
         view_name='api:eigenschap-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-                              'zaaktype_pk': 'is_van__pk'},
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_van__pk'
+        },
     )
     heeftRoltype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='roltype_set',
         view_name='api:roltype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-                              'zaaktype_pk': 'is_van__pk'},
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_van__pk'
+        },
     )
     heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
         many=True,
@@ -159,6 +171,26 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'zaaktype__pk',
+        }
+    )
+    heeftRelevantResultaattype = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='resultaattype_set',
+        view_name='api:resultaattype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_relevant_voor__pk',
+        }
+    )
+    heeftStatustype = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='statustype_set',
+        view_name='api:statustype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_van__pk',
         }
     )
 
@@ -184,10 +216,6 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'heeftGerelateerd': 'heeft_gerelateerd',
             'isDeelzaaktypeVan': 'is_deelzaaktype_van',
             'maaktDeelUitVan': 'maakt_deel_uit_van',
-
-            # unused:
-            # 'heeftRelevantResultaattype': 'resultaattype_set',
-            # 'heeftStatustype': 'statustype_set',
         }
         extra_kwargs = {
             'url': {'view_name': 'api:zaaktype-detail'},
@@ -195,8 +223,6 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
         }
         fields = (
             'url',
-            'ingangsdatumObject',
-            'einddatumObject',
             'identificatie',
             'omschrijving',
             'omschrijvingGeneriek',
@@ -219,25 +245,30 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'verantwoordelijke',
             'publicatieIndicatie',
             'publicatietekst',
-            'verantwoordingsrelatie',  # type='ztc:Verantwoordingsrelatie-e' nillable='true' minOccurs='0' maxOccurs='unbounded'/>
-            'versiedatum',
 
             # groepsattribuutsoorten
             'product_dienst',  # m2m ProductDienst  type='ztc:Product_DienstGrp' nillable='true' minOccurs='0' maxOccurs='unbounded'/>
             'formulier',  # m2m Formulier type='ztc:FormulierGrp' nillable='true' minOccurs='0' maxOccurs='unbounded'/>
             'referentieproces',  # FK ReferentieProces type='ztc:ReferentieprocesGrp' nillable='true' minOccurs='0'/>
+            'verantwoordingsrelatie',  # type='ztc:Verantwoordingsrelatie-e' nillable='true' minOccurs='0' maxOccurs='unbounded'/>
             'broncatalogus',  # FK  BronCatalogus type='ztc:BroncatalogusGrp' nillable='true' minOccurs='0'/>
             'bronzaaktype',  # FK BronZaakType type='ztc:BronzaaktypeGrp' nillable='true' minOccurs='0'/>
 
+            'ingangsdatumObject',
+            'versiedatum',
+            'einddatumObject',
+
             # relaties
-            'heeftGerelateerd',  # m2m ZaakType
-            'isDeelzaaktypeVan',  # m2m ZaakType
             'maaktDeelUitVan',  # FK catalogus
+            'heeftRelevantInformatieobjecttype',
             'heeftRelevantBesluittype',
             'heeftEigenschap',
             'heeftRelevantZaakObjecttype',
+            'heeftRelevantResultaattype',  # TODO!
+            'heeftStatustype', # TODO!
             'heeftRoltype',
-            'heeftRelevantInformatieobjecttype',
+            'isDeelzaaktypeVan',  # m2m ZaakType
+            'heeftGerelateerd',  # m2m ZaakType
         )
 
         expandable_fields = {

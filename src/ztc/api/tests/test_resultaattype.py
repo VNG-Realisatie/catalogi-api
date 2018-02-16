@@ -104,12 +104,16 @@ class ResultaatTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
         expected = {
             'archiefactietermijn': 14,
             'archiefnominatie': '',
+            'bepaaltAfwijkendArchiefRegimeVan': [],
             'brondatumProcedure': 'eigenschap',
             'einddatumObject': None,
             'heeftVerplichteZaakobjecttype': [
-                'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
-                    self.catalogus.pk, self.zaakobjecttype_milieu.pk)
+                'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/zaakobjecttypen/{}/'.format(
+                    self.catalogus.pk, self.zaaktype.pk, self.zaakobjecttype_milieu.pk)
             ],
+            'heeftVoorBrondatumArchiefprocedureRelevante':
+                'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(
+                    self.catalogus.pk, self.zaaktype.pk, self.eigenschap_aard_product),
             'ingangsdatumObject': 'V20180207',
             'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
                 self.catalogus.pk, self.zaaktype.pk),

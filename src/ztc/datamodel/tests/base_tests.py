@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from ztc.datamodel.choices import (
     JaNee, ObjectTypen, RolTypeOmschrijving, VertrouwelijkheidAanduiding
 )
@@ -128,6 +130,8 @@ class HaaglandenMixin(object):
             # toelichting: TODO: is in Haaglanden doc, not in the datamodel
 
             maakt_deel_uit_van=self.catalogus,
+
+            versiedatum=timezone.now().date().strftime('%Y%m%d')
         )
 
         #

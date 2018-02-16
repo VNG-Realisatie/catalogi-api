@@ -43,11 +43,11 @@ class RolTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
         }
         fields = (
             'url',
-            'ingangsdatumObject',
-            'einddatumObject',
             'omschrijving',
             'omschrijvingGeneriek',
             'soortBetrokkene',
+            'ingangsdatumObject',
+            'einddatumObject',
             'isVan',
             'magZetten',
         )

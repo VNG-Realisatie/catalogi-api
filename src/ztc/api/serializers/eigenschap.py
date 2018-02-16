@@ -72,13 +72,14 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         }
         fields = (
             'url',
-            'ingangsdatumObject',
-            'einddatumObject',
             'naam',
             'definitie',
-            'toelichting',
-            'status_type',
             'specificatie',
             'referentie',
+            'toelichting',
+            'ingangsdatumObject',
+            'einddatumObject',
+            # This field is unused in the SOAP services.
+            # 'status_type',
             'isVan',
         )

@@ -2,16 +2,17 @@ import logging
 import os
 
 from django.conf import settings
+from django.utils.functional import empty
 
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.app_settings import swagger_settings
 from drf_yasg.inspectors import (
-    CoreAPICompatInspector, NotHandled, SwaggerAutoSchema
+    CoreAPICompatInspector, FieldInspector, NotHandled, SwaggerAutoSchema
 )
 from drf_yasg.utils import is_list_view
 from drf_yasg.views import get_schema_view
-from rest_framework import filters, permissions, status
+from rest_framework import filters, permissions, serializers, status
 from rest_framework.settings import api_settings
 
 from .utils.pagination import HALPaginationInspector
@@ -91,8 +92,41 @@ class OrderingDescriptionInspector(CoreAPICompatInspector):
         return NotHandled
 
 
+class RelatedFieldDescriptionHelperInspector(FieldInspector):
+    """
+    This helper adds a description to the n-to serializers. Typically, the (``Nested``)``HyperlinkedRelatedField``
+    where ``many=True``, but also the ``ManyToManyField``.
+
+    The description indicates to which resource the URI's point.
+    """
+
+    # TODO: Probably does not yet take through-models into account.
+    # TODO: Should take 1-to-n serializers into account as well.
+
+    def process_result(self, result, method_name, obj, **kwargs):
+        if isinstance(obj, serializers.ManyRelatedField):
+            description = getattr(result, 'description', empty)
+            if description is empty:
+                field = getattr(self.view.queryset.model, obj.source)
+                if getattr(field, 'reverse', True):
+                    related_model_name = field.rel.related_model.__name__.upper()
+                else:
+                    related_model_name = field.rel.model.__name__.upper()
+                result.description = 'Zero or more URI\'s to a {}'.format(related_model_name)
+        elif isinstance(obj, serializers.RelatedField):
+            description = getattr(result, 'description', empty)
+            if description is empty:
+                if obj.source != '*':
+                    model = getattr(self.view.queryset.model, obj.source).rel.related_model
+                    related_model_name = model.__name__.upper()
+                    result.description = 'URI to a {}'.format(related_model_name)
+        return super().process_result(result, method_name, obj, **kwargs)
+
+
+
 class AutoSchema(SwaggerAutoSchema):
     field_inspectors = [
+        RelatedFieldDescriptionHelperInspector,
     ] + swagger_settings.DEFAULT_FIELD_INSPECTORS
     filter_inspectors = [
         DjangoFilterDescriptionInspector,
