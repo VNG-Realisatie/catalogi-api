@@ -99,10 +99,6 @@ class RelatedFieldDescriptionHelperInspector(FieldInspector):
 
     The description indicates to which resource the URI's point.
     """
-
-    # TODO: Probably does not yet take through-models into account.
-    # TODO: Should take 1-to-n serializers into account as well.
-
     def process_result(self, result, method_name, obj, **kwargs):
         if isinstance(obj, serializers.ManyRelatedField):
             description = getattr(result, 'description', empty)
@@ -117,8 +113,12 @@ class RelatedFieldDescriptionHelperInspector(FieldInspector):
             description = getattr(result, 'description', empty)
             if description is empty:
                 if obj.source != '*':
-                    model = getattr(self.view.queryset.model, obj.source).rel.related_model
-                    related_model_name = model.__name__.upper()
+                    model = getattr(self.view.queryset.model, obj.source)
+                    if hasattr(model, 'rel'):
+                        related_model = model.rel.related_model
+                    else:
+                        related_model = model.field.related_model
+                    related_model_name = related_model.__name__.upper()
                     result.description = 'URI to a {}'.format(related_model_name)
         return super().process_result(result, method_name, obj, **kwargs)
 
