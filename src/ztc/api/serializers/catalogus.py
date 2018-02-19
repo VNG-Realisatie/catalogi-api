@@ -10,8 +10,6 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
     """
     Serializer based on ``CAT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
-
-    # Nested serializers are shown as URLs, but should be expandable (see below).
     bestaatuitInformatieobjecttype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -47,7 +45,6 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
         extra_kwargs = {
             'url': {'view_name': 'api:catalogus-detail'},
         }
-        # All fields should be included. Meta data that is not part of the ZTC information model can be left out.
         fields = (
             'url',
 

@@ -1,4 +1,4 @@
-from rest_framework_nested.relations import NestedHyperlinkedIdentityField
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
@@ -15,11 +15,12 @@ class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSeriali
         'zaaktype_pk': 'zaaktype_van__pk',
     }
 
-    gerelateerde = NestedHyperlinkedIdentityField(
+    gerelateerde = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='zaaktype_naar',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype_naar__maakt_deel_uit_van__pk',
-            'pk': 'zaaktype_naar__pk',
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
         },
     )
 
@@ -52,11 +53,12 @@ class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMa
         'zaaktype_pk': 'zaaktype__pk',
     }
 
-    gerelateerde = NestedHyperlinkedIdentityField(
+    gerelateerde = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='informatie_object_type',
         view_name='api:informatieobjecttype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'pk': 'informatie_object_type__pk',
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
         },
     )
 
@@ -91,11 +93,13 @@ class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin,
         'zaaktype_pk': 'zaak_informatieobject_type__zaaktype__pk',
     }
 
-    gerelateerde = NestedHyperlinkedIdentityField(
+    gerelateerde = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='zaak_informatieobject_type',
         view_name='api:informatieobjecttype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'zaak_informatieobject_type__informatie_object_type__maakt_deel_uit_van__pk',
-            'pk': 'zaak_informatieobject_type__informatie_object_type__pk'
+            'catalogus_pk': 'informatie_object_type__maakt_deel_uit_van__pk',
+            'pk': 'informatie_object_type__pk'
         },
     )
 

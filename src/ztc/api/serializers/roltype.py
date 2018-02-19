@@ -1,4 +1,4 @@
-from rest_framework_nested.relations import NestedHyperlinkedIdentityField
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import RolType
@@ -11,17 +11,19 @@ class RolTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
         'zaaktype_pk': 'is_van__pk',
         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
     }
-    isVan = NestedHyperlinkedIdentityField(
+    isVan = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='is_van',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'pk': 'is_van__pk'
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
         },
     )
-    magZetten = NestedHyperlinkedIdentityField(
+    magZetten = NestedHyperlinkedRelatedField(
         many=True,
-        view_name='api:statustype-detail',
+        read_only=True,
         source='mag_zetten',
+        view_name='api:statustype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'is_van__pk',

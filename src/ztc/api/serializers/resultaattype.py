@@ -1,6 +1,4 @@
-from rest_framework_nested.relations import (
-    NestedHyperlinkedIdentityField, NestedHyperlinkedRelatedField
-)
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import ResultaatType
@@ -14,19 +12,19 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
     }
 
-    isRelevantVoor = NestedHyperlinkedIdentityField(
+    isRelevantVoor = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source= 'is_relevant_voor',
         view_name='api:zaaktype-detail',
-        source= '*',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-            'pk': 'is_relevant_voor__pk',
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
         },
     )
     heeftVerplichtDocumentype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='api:zktiot-detail',
         source='heeft_verplichte_ziot',
+        view_name='api:zktiot-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'zaaktype__pk',
@@ -35,8 +33,8 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
     bepaaltAfwijkendArchiefRegimeVan = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='api:rstiotarc-detail',
         source='zaakinformatieobjecttypearchiefregime_set',
+        view_name='api:rstiotarc-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaak_informatieobject_type__zaaktype__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'zaak_informatieobject_type__zaaktype__pk',
@@ -45,8 +43,8 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
     leidtTot = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='api:besluittype-detail',
         source='leidt_tot',
+        view_name='api:besluittype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'maakt_deel_uit_van__pk',
         },
@@ -54,22 +52,21 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
     heeftVerplichteZaakobjecttype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='api:zaakobjecttype-detail',
         source='heeft_verplichte_zot',
+        view_name='api:zaakobjecttype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'is_relevant_voor__pk'
         },
     )
 
-    # FIXME: dit is een foreign key die niet verplicht is. Als hij er niet is
-    # krijg je een error in get_url op de heeft_voor_...._relevante.pk want die is None
-    heeftVoorBrondatumArchiefprocedureRelevante = NestedHyperlinkedIdentityField(
+    heeftVoorBrondatumArchiefprocedureRelevante = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='heeft_voor_brondatum_archiefprocedure_relevante',
         view_name='api:eigenschap-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'heeft_voor_brondatum_archiefprocedure_relevante__is_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'heeft_voor_brondatum_archiefprocedure_relevante__is_van__pk',
-            'pk': 'heeft_voor_brondatum_archiefprocedure_relevante__pk',
+            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_van__pk',
         },
     )
 
@@ -83,12 +80,9 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
             'omschrijving': 'resultaattypeomschrijving',
             'omschrijvingGeneriek': 'resultaattypeomschrijving_generiek',
             'brondatumProcedure': 'brondatum_archiefprocedure',
-
-            # 'heeftVoorBrondatumArchiefprocedureRelevante': 'heeft_voor_brondatum_archiefprocedure_relevante',
         }
         extra_kwargs = {
             'url': {'view_name': 'api:resultaattype-detail'},
-            # 'heeftVoorBrondatumArchiefprocedureRelevante': {'view_name': 'api:eigenschap-detail'},
         }
         fields = (
             'url',

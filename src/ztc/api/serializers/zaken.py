@@ -1,7 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from rest_framework_nested.relations import (
-    NestedHyperlinkedIdentityField, NestedHyperlinkedRelatedField
-)
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
@@ -18,11 +16,12 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
         'zaaktype_pk': 'is_relevant_voor__pk',
     }
 
-    isRelevantVoor = NestedHyperlinkedIdentityField(
+    isRelevantVoor = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='is_relevant_voor',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-            'pk': 'is_relevant_voor__pk',
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
         }
     )
 
@@ -247,28 +246,28 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'publicatietekst',
 
             # groepsattribuutsoorten
-            'product_dienst',  # m2m ProductDienst  type='ztc:Product_DienstGrp' nillable='true' minOccurs='0' maxOccurs='unbounded'/>
-            'formulier',  # m2m Formulier type='ztc:FormulierGrp' nillable='true' minOccurs='0' maxOccurs='unbounded'/>
-            'referentieproces',  # FK ReferentieProces type='ztc:ReferentieprocesGrp' nillable='true' minOccurs='0'/>
-            'verantwoordingsrelatie',  # type='ztc:Verantwoordingsrelatie-e' nillable='true' minOccurs='0' maxOccurs='unbounded'/>
-            'broncatalogus',  # FK  BronCatalogus type='ztc:BroncatalogusGrp' nillable='true' minOccurs='0'/>
-            'bronzaaktype',  # FK BronZaakType type='ztc:BronzaaktypeGrp' nillable='true' minOccurs='0'/>
+            'product_dienst',
+            'formulier',
+            'referentieproces',
+            'verantwoordingsrelatie',
+            'broncatalogus',
+            'bronzaaktype',
 
             'ingangsdatumObject',
             'versiedatum',
             'einddatumObject',
 
             # relaties
-            'maaktDeelUitVan',  # FK catalogus
+            'maaktDeelUitVan',
             'heeftRelevantInformatieobjecttype',
             'heeftRelevantBesluittype',
             'heeftEigenschap',
             'heeftRelevantZaakObjecttype',
-            'heeftRelevantResultaattype',  # TODO!
-            'heeftStatustype', # TODO!
+            'heeftRelevantResultaattype',
+            'heeftStatustype',
             'heeftRoltype',
-            'isDeelzaaktypeVan',  # m2m ZaakType
-            'heeftGerelateerd',  # m2m ZaakType
+            'isDeelzaaktypeVan',
+            'heeftGerelateerd',
         )
 
         expandable_fields = {

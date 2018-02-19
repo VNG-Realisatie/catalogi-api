@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from rest_framework_nested.relations import NestedHyperlinkedIdentityField
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
@@ -51,11 +51,12 @@ class EigenschapSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
     specificatie = EigenschapSpecificatieSerializer(read_only=True, source='specificatie_van_eigenschap')
     referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
 
-    isVan = NestedHyperlinkedIdentityField(
+    isVan = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='is_van',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'pk': 'is_van__pk'
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
         },
     )
 

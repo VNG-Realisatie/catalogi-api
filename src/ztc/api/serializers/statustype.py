@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from rest_framework_nested.relations import NestedHyperlinkedIdentityField
+from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import CheckListItem, StatusType
@@ -28,37 +28,38 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
     }
 
-    isVan = NestedHyperlinkedIdentityField(
+    isVan = NestedHyperlinkedRelatedField(
+        read_only=True,
+        source='is_van',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'pk': 'is_van__pk'
+            'catalogus_pk': 'maakt_deel_uit_van__pk',
         },
     )
-    heeftVerplichteEigenschap = NestedHyperlinkedIdentityField(
+    heeftVerplichteEigenschap = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='api:eigenschap-detail',
         source='heeft_verplichte_eigenschap',
+        view_name='api:eigenschap-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'is_van__pk'
         },
     )
-    heeftVerplichteZaakObjecttype = NestedHyperlinkedIdentityField(
+    heeftVerplichteZaakObjecttype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='api:zaakobjecttype-detail',
         source='heeft_verplichte_zaakobjecttype',
+        view_name='api:zaakobjecttype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
         },
     )
-    heeftVerplichteInformatieobjecttype = NestedHyperlinkedIdentityField(
+    heeftVerplichteInformatieobjecttype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='api:zktiot-detail',
         source='heeft_verplichte_zit',
+        view_name='api:zktiot-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'zaaktype__pk',
@@ -75,7 +76,6 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
             'volgnummer': 'statustypevolgnummer',
             'omschrijvingGeneriek': 'statustype_omschrijving_generiek',
             'omschrijving': 'statustype_omschrijving',
-            # 'heeftVerplichteEigenschap': 'heeft_verplichte_eigenschap',
         }
         extra_kwargs = {
             'url': {'view_name': 'api:statustype-detail'},
