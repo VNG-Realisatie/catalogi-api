@@ -61,5 +61,5 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
     expandable_fields = {
         'bestaatuitInformatieobjecttype': ('ztc.api.serializers.InformatieObjectTypeSerializer', {'source': 'informatieobjecttype_set', 'many': True}),
         'bestaatuitBesluittype': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'besluittype_set', 'many': True}),
-        'bestaatuitZaaktype': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'zaaktype_set', 'many': True})
+        'bestaatuitZaaktype': ('ztc.api.serializers.ZaakTypeSerializer', {'source': 'zaaktype_set', 'many': True})
     }

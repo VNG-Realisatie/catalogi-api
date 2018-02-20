@@ -11,15 +11,20 @@ class BesluitTypeAPITests(APITestCase):
         super().setUp()
 
         self.besluittype = BesluitTypeFactory.create(
-            maakt_deel_uit_van=self.catalogus, publicatie_indicatie='J')
+            maakt_deel_uit_van=self.catalogus,
+            publicatie_indicatie='J'
+        )
+
+        self.is_relevant_voor = self.besluittype.zaaktypes.get()
+        self.is_resultaat_van = self.besluittype.is_resultaat_van.get()
 
         self.besluittype_list_url = reverse('api:besluittype-list', kwargs={
-            'version': '1',
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
         })
 
         self.besluittype_detail_url = reverse('api:besluittype-detail', kwargs={
-            'version': '1',
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'pk': self.besluittype.pk
         })
@@ -29,34 +34,10 @@ class BesluitTypeAPITests(APITestCase):
         response = self.api_client.get(self.besluittype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        expected = {
-            '_links': {
-                'self': {
-                    'href': 'http://testserver/api/v1/catalogussen/{}/besluittypen/'.format(
-                        self.catalogus.pk)
-                }
-            },
-            'results': [
-                {
-                    'einddatumObject': None,
-                    'ingangsdatumObject': '',
-                    'omschrijvingGeneriek': None,
-                    'wordtVastgelegdIn': [],
-                    'publicatieTermijn': None,
-                    'publicatieIndicatie': 'J',
-                    'url': 'http://testserver/api/v1/catalogussen/{}/besluittypen/{}/'.format(
-                        self.catalogus.pk, self.besluittype.pk),
-                    'omschrijving': 'Besluittype',
-                    'publicatieTekst': None,
-                    'categorie': None,
-                    'toelichting': None,
-                    'reactietermijn': 14,
-                    'maaktDeeluitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
-                        self.catalogus.pk)
-                }
-            ]
-        }
-        self.assertEqual(response.json(), expected)
+        data = response.json()
+
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
 
     def test_get_detail(self):
         """Retrieve the details of a single `BesluitType` object."""
@@ -66,9 +47,21 @@ class BesluitTypeAPITests(APITestCase):
         expected = {
             'einddatumObject': None,
             'ingangsdatumObject': '',
+            'isRelevantVoor': [
+                'http://testserver{}'.format(
+                    reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.is_relevant_voor.pk])
+                )
+            ],
+            'isResultaatVan': [
+                'http://testserver{}'.format(
+                    reverse('api:resultaattype-detail', args=[
+                        self.API_VERSION, self.catalogus.pk,
+                        self.is_resultaat_van.is_relevant_voor.pk, self.is_resultaat_van.pk
+                    ])
+                )
+            ],
             'categorie': None,
-            'maaktDeeluitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
-                self.catalogus.pk),
+            'maaktDeeluitVan': 'http://testserver{}'.format(self.catalogus_detail_url),
             'omschrijving': 'Besluittype',
             'omschrijvingGeneriek': None,
             'publicatieIndicatie': 'J',
@@ -76,8 +69,10 @@ class BesluitTypeAPITests(APITestCase):
             'publicatieTermijn': None,
             'reactietermijn': 14,
             'toelichting': None,
-            'url': 'http://testserver/api/v1/catalogussen/{}/besluittypen/{}/'.format(
-                self.catalogus.pk, self.besluittype.pk),
+            'url': 'http://testserver{}'.format(self.besluittype_detail_url),
             'wordtVastgelegdIn': []
         }
         self.assertEqual(response.json(), expected)
+
+    def test_wordt_vastgelegd_in(self):
+        pass

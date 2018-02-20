@@ -23,13 +23,16 @@ class ClientAPITestMixin(object):
 
 
 class CatalogusAPITestMixin(object):
+    API_VERSION = '1'
+
     def setUp(self):
         super().setUp()
 
         self.catalogus = CatalogusFactory.create(domein='ABCDE', rsin='000000001')
 
-        self.catalogus_list_url = reverse('api:catalogus-list', kwargs={'version': '1'})
-        self.catalogus_detail_url = reverse('api:catalogus-detail', kwargs={'version': '1', 'pk': self.catalogus.pk})
+        self.catalogus_list_url = reverse('api:catalogus-list', kwargs={'version': self.API_VERSION})
+        self.catalogus_detail_url = reverse('api:catalogus-detail', kwargs={
+            'version': self.API_VERSION, 'pk': self.catalogus.pk})
 
 
 class APITestCase(ClientAPITestMixin, CatalogusAPITestMixin, TestCase):

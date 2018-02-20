@@ -28,7 +28,7 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
     def zaaktypes(self, create, extracted, **kwargs):
         # required M2M, if it is not passed in, create one
         if not extracted:
-            extracted = [ZaakTypeFactory.create()]
+            extracted = [ZaakTypeFactory.create(maakt_deel_uit_van=self.maakt_deel_uit_van)]
 
         dates_begin_geldigheid = []
         for zaak_type in extracted:
@@ -46,7 +46,7 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
     def is_resultaat_van(self, create, extracted, **kwargs):
         # required M2M, if it is not passed in, create one
         if not extracted:
-            extracted = [ResultaatTypeFactory.create()]
+            extracted = [ResultaatTypeFactory.create(is_relevant_voor__maakt_deel_uit_van=self.maakt_deel_uit_van)]
 
         for resultaat_type in extracted:
             self.is_resultaat_van.add(resultaat_type)

@@ -13,26 +13,20 @@ class InformatieObjectTypeAPITests(APITestCase):
     def setUp(self):
         super().setUp()
 
-        self.informatieobjecttype = InformatieObjectTypeFactory.create(maakt_deel_uit_van=self.catalogus,
-                                                                       zaaktypes=None)
-        self.zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
-        # self.informatieobjecttype.zaaktypes.add(self.zaaktype)
-        # self.informatieobjecttype.zaaktypes.save()
-
-        self.ziot = ZaakInformatieobjectTypeFactory.create(
-            zaaktype=self.zaaktype,
-            informatie_object_type=self.informatieobjecttype,
-            volgnummer=1,
-            richting='richting',
+        self.informatieobjecttype = InformatieObjectTypeFactory.create(
+            maakt_deel_uit_van=self.catalogus,
+            zaaktypes=None,
+            model=['http://www.example.com'],
+            informatieobjecttypetrefwoord=['abc', 'def']
         )
 
         self.informatieobjecttype_list_url = reverse('api:informatieobjecttype-list', kwargs={
-            'version': '1',
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
         })
 
         self.informatieobjecttype_detail_url = reverse('api:informatieobjecttype-detail', kwargs={
-            'version': '1',
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'pk': self.informatieobjecttype.pk
         })
@@ -42,39 +36,10 @@ class InformatieObjectTypeAPITests(APITestCase):
         response = self.api_client.get(self.informatieobjecttype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        expected = {
-            '_links': {
-                'self': {
-                    'href': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/'.format(
-                        self.catalogus.pk)
-                }
-            },
-            'results': [
-                {
-                    'trefwoord': [],
-                    'einddatumObject': None,
-                    'maaktDeeluitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
-                        self.catalogus.pk),
-                    'omschrijvingGeneriek': '',
-                    'categorie': 'informatieobjectcategorie',
-                    'vertrouwelijkAanduiding': None,
-                    'isVastleggingVoor': [],
-                    'model': [],
-                    'toelichting': None,
-                    'omschrijving': self.informatieobjecttype.informatieobjecttype_omschrijving,
-                    'ingangsdatumObject': '',
-                    'url': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
-                        self.catalogus.pk, self.informatieobjecttype.pk),
-                    'isRelevantVoor': [
-                        'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/is_relevant_voor/{}/'.format(
-                            self.catalogus.pk, self.informatieobjecttype.pk, self.ziot.pk,
-                        )
-                    ],
+        data = response.json()
 
-                }
-            ]
-        }
-        self.assertEqual(expected, response.json())
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
 
     def test_get_detail(self):
         """Retrieve the details of a single `InformatieObjectType` object."""
@@ -86,20 +51,41 @@ class InformatieObjectTypeAPITests(APITestCase):
             'einddatumObject': None,
             'ingangsdatumObject': '',
             'isVastleggingVoor': [],
-            'maaktDeeluitVan': 'http://testserver/api/v1/catalogussen/{}/'.format(
-                self.catalogus.pk),
-            'model': [],
+            'maaktDeeluitVan': 'http://testserver{}'.format(self.catalogus_detail_url),
+            'model': ['http://www.example.com'],
             'omschrijving': self.informatieobjecttype.informatieobjecttype_omschrijving,
             'omschrijvingGeneriek': '',
             'toelichting': None,
-            'trefwoord': [],
-            'url': 'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/'.format(
-                self.catalogus.pk, self.informatieobjecttype.pk),
+            'trefwoord': ['abc', 'def'],
+            'url': 'http://testserver{}'.format(self.informatieobjecttype_detail_url),
             'vertrouwelijkAanduiding': None,
-            'isRelevantVoor': [
-                'http://testserver/api/v1/catalogussen/{}/informatieobjecttypen/{}/is_relevant_voor/{}/'.format(
-                    self.catalogus.pk, self.informatieobjecttype.pk, self.ziot.pk,
-                )
-            ],
+            'isRelevantVoor': [],
         }
         self.assertEqual(expected, response.json())
+
+    def test_is_relevant_voor(self):
+        zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+
+        ziot = ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype,
+            informatie_object_type=self.informatieobjecttype,
+            volgnummer=1,
+            richting='richting',
+        )
+
+        response = self.api_client.get(self.informatieobjecttype_detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertTrue('isRelevantVoor' in data)
+        self.assertEqual(len(data['isRelevantVoor']), 1)
+        self.assertEqual(
+            data['isRelevantVoor'][0],
+            'http://testserver{}'.format(reverse('api:zktiot-detail', args=[
+                self.API_VERSION, self.catalogus.pk, zaaktype.pk, ziot.pk
+            ]))
+        )
+
+    def test_is_vastlegging_voor(self):
+        pass

@@ -1,86 +1,61 @@
-from django.test import TestCase
 from django.urls import reverse
 
-from freezegun import freeze_time
-
-from ztc.datamodel.tests.base_tests import HaaglandenMixin
-
-from .base import ClientAPITestMixin
+from ...datamodel.choices import RolTypeOmschrijving
+from ...datamodel.tests.factories import RolTypeFactory
+from .base import APITestCase
 
 
-@freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
-class RolTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
+class RolTypeAPITests(APITestCase):
     maxDiff = None
 
     def setUp(self):
         super().setUp()
 
-        self.list_url = reverse('api:roltype-list', kwargs={
-            'version': '1',
+        self.rol_type = RolTypeFactory.create(
+            roltypeomschrijving='Vergunningaanvrager',
+            roltypeomschrijving_generiek=RolTypeOmschrijving.initiator,
+            soort_betrokkene=['Aanvrager'],
+            is_van__maakt_deel_uit_van=self.catalogus,
+        )
+        self.zaaktype = self.rol_type.is_van
+
+        self.rol_type_list_url = reverse('api:roltype-list', kwargs={
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'zaaktype_pk': self.zaaktype.pk
         })
-        self.rol_type_vergunnings_aanvrager_detail_url = reverse('api:roltype-detail', kwargs={
-            'version': '1',
+        self.rol_type_detail_url = reverse('api:roltype-detail', kwargs={
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'zaaktype_pk': self.zaaktype.pk,
-            'pk': self.rol_type_vergunnings_aanvrager.pk,
+            'pk': self.rol_type.pk,
         })
 
     def test_get_list(self):
-        # let the magZetten list empty in this test
-        self.rol_type_vergunnings_aanvrager.mag_zetten.all().delete()
-
-        response = self.api_client.get(self.list_url)
+        response = self.api_client.get(self.rol_type_list_url)
         self.assertEqual(response.status_code, 200)
 
-        json_response = response.json()
-        results = json_response.pop('results')
-        self.assertEqual(len(results), 7)
+        data = response.json()
 
-        self.assertEqual(results[0], {
-            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/roltypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk, self.rol_type_vergunnings_aanvrager.pk),
-            'ingangsdatumObject': 'V20180207',
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
+
+    def test_get_detail(self):
+        response = self.api_client.get(self.rol_type_detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            'url': 'http://testserver{}'.format(self.rol_type_detail_url),
+            'ingangsdatumObject': '',
             'einddatumObject': None,
-            'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk),
+            'isVan': 'http://testserver{}'.format(
+                reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
             'omschrijving': 'Vergunningaanvrager',
             'omschrijvingGeneriek': 'Initiator',
             'soortBetrokkene': ['Aanvrager'],
             'magZetten': [],
-        })
-
-        expected = {
-            '_links': {
-                'self': {
-                    'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/roltypen/'.format(
-                        self.catalogus.pk, self.zaaktype.pk)
-                }
-            },
         }
-        self.assertEqual(response.json(), expected)
+        self.assertEqual(expected, response.json())
 
-    def test_get_detail(self):
-        response = self.api_client.get(self.rol_type_vergunnings_aanvrager_detail_url)
-        self.assertEqual(response.status_code, 200)
-
-        response_json = response.json()
-        magZetten = response_json.pop('magZetten')
-        self.assertEqual(len(magZetten), 4)
-        for statustype in magZetten:
-            self.assertTrue(statustype.startswith('http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/statustypen/'.format(
-                self.catalogus.pk, self.zaaktype.pk)))
-
-        expected = {
-            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/roltypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk, self.rol_type_vergunnings_aanvrager.pk),
-            'ingangsdatumObject': 'V20180207',
-            'einddatumObject': None,
-            'isVan': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk),
-            'omschrijving': 'Vergunningaanvrager',
-            'omschrijvingGeneriek': 'Initiator',
-            'soortBetrokkene': ['Aanvrager'],
-        }
-        self.assertEqual(expected, response_json)
+    def test_mag_zetten(self):
+        pass
