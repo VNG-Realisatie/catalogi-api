@@ -168,12 +168,11 @@ class AutoSchema(SwaggerAutoSchema):
         return ret
 
     def get_operation_id(self, operation_keys):
-        keys = operation_keys[:]
-
-        # Remove the catalog from the operation ID if the operation is not directly about the catalog.
-        if len(keys) > 2:
-            keys = keys[1:]
-        return super().get_operation_id(keys)
+        """
+        Simply return the model name as lowercase string, postfixed with the operation name.
+        """
+        model_name = self.view.queryset.model.__name__.lower()
+        return '_'.join([model_name, operation_keys[-1]])
 
     def get_tags(self, operation_keys):
         keys = operation_keys[:]
@@ -183,3 +182,13 @@ class AutoSchema(SwaggerAutoSchema):
         if len(keys) > 2:
             keys = keys[1:]
         return super().get_tags(keys)
+
+    def get_description(self):
+        description = self.overrides.get('operation_description', None)
+        if description is None:
+            model_name = self.view.queryset.model.__name__.upper()
+            description = '**Objecttype {}**\n\n{}'.format(
+                model_name,
+                self._sch.get_description(self.path, self.method),
+            )
+        return description
