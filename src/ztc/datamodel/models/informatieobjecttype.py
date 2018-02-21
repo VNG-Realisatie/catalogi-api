@@ -84,7 +84,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         blank=True, help_text=_(
             'De URL naar het model / sjabloon dat wordt gebruikt voor de creatie van informatieobjecten '
             'van dit INFORMATIEOBJECTTYPE. (Gebruik een komma om waarden van elkaar te onderscheiden.)'))
-    toelichting = models.TextField(
+    toelichting = models.CharField(
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
 
@@ -92,7 +92,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
                                            help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.'))
 
     zaaktypes = models.ManyToManyField(
-        'datamodel.Zaaktype', verbose_name=_('zaaktypes'), related_name='heeft_relevant_informatieobjecttype',
+        'datamodel.ZaakType', verbose_name=_('zaaktypes'), related_name='heeft_relevant_informatieobjecttype',
         through='datamodel.ZaakInformatieobjectType', help_text=_(
             'ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit INFORMATIEOBJECTTYPE'))
 
@@ -107,6 +107,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
             'maakt_deel_uit_van',
             'informatieobjectcategorie',
         )
+        ordering_fields = filter_fields
         search_fields = (
             'informatieobjecttype_omschrijving',
             'informatieobjectcategorie',

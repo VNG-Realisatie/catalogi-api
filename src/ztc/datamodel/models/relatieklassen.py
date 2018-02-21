@@ -1,4 +1,4 @@
-from django.core.validators import MaxValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -17,8 +17,8 @@ class ZaakInformatieobjectType(models.Model):
     informatie_object_type = models.ForeignKey('datamodel.InformatieObjectType',
                                                verbose_name=_('informatie object type'))
 
-    volgnummer = models.IntegerField(
-        _('volgnummer'), validators=[MaxValueValidator(999)], help_text=_(
+    volgnummer = models.PositiveSmallIntegerField(
+        _('volgnummer'), validators=[MinValueValidator(1), MaxValueValidator(999)], help_text=_(
             'Uniek volgnummer van het ZAAK-INFORMATIEOBJECT-TYPE binnen het ZAAKTYPE.'))
     richting = models.CharField(_('richting'), max_length=20, choices=RichtingChoices.choices, help_text=_(
         'Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE '
@@ -31,6 +31,23 @@ class ZaakInformatieobjectType(models.Model):
             'De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het STATUSTYPE gerelateerde ZAAKTYPE '
             'waarvoor geldt dat deze verplicht aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE '
             'voordat de status van dit STATUSTYPE kan worden gezet bij die zaak.'))
+
+    class Meta:
+        # NOTE: The uniqueness is implied in the specification.
+        unique_together = ('zaaktype', 'volgnummer',)
+        verbose_name = _('Zaak-Informatieobject-Type')
+        verbose_name_plural = _('Zaak-Informatieobject-Typen')
+        ordering = unique_together
+
+        filter_fields = (
+            'zaaktype',
+            'informatie_object_type',
+            'richting',
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'volgnummer'
+        )
 
 
 class ZaakInformatieobjectTypeArchiefregime(models.Model):
@@ -64,7 +81,21 @@ class ZaakInformatieobjectTypeArchiefregime(models.Model):
 
     class Meta:
         mnemonic = 'ZIA'
+        # NOTE: The uniqueness is not explicitly defined in specification:
+        unique_together = ('zaak_informatieobject_type', 'resultaattype')
+        verbose_name = _('Zaak-Informatieobject-Type Archiefregime')
+        verbose_name_plural = _('Zaak-Informatieobject-Type Archiefregimes')
+        ordering = ('pk', )
 
+        filter_fields = (
+            'zaak_informatieobject_type',
+            'resultaattype',
+            'archiefnominatie',
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'selectielijstklasse',
+        )
 
 class ZaakTypenRelatie(models.Model):
     """
@@ -81,3 +112,20 @@ class ZaakTypenRelatie(models.Model):
         'Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE'))
     toelichting = models.CharField(_('toelichting'), max_length=255, blank=True, null=True, help_text=_(
         'Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN.'))
+
+    class Meta:
+        # NOTE: The uniqueness is not explicitly defined in specification:
+        unique_together = ('zaaktype_van', 'zaaktype_naar')
+        verbose_name = _('Zaaktypenrelatie')
+        verbose_name_plural = _('Zaaktypenrelaties')
+        ordering = ('pk', )
+
+        filter_fields = (
+            'zaaktype_van',
+            'zaaktype_naar',
+            'aard_relatie',
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'toelichting',
+        )

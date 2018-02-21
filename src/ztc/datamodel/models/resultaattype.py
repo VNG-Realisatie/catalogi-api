@@ -88,6 +88,22 @@ class ResultaatType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'RST'
         unique_together = ('is_relevant_voor', 'resultaattypeomschrijving')
+        verbose_name = _('Resultaattype')
+        verbose_name_plural = _('Resultaattypen')
+        ordering = unique_together
+
+        filter_fields = (
+            'is_relevant_voor',
+            'archiefnominatie',
+            'brondatum_archiefprocedure',
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'resultaattypeomschrijving',
+            'resultaattypeomschrijving_generiek',
+            'selectielijstklasse',
+            'toelichting',
+        )
 
     def clean(self):
         """

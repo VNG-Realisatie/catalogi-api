@@ -2,19 +2,15 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import Eigenschap, EigenschapReferentie, EigenschapSpecificatie
-from .mixins import GeldigheidAdminMixin
+from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 
 
 @admin.register(Eigenschap)
-class EigenschapAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+class EigenschapAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+    model = Eigenschap
+
     # List
     list_display = ('eigenschapnaam', 'is_van')
-    list_filter = ('eigenschapnaam',)
-    search_fields = (
-        'eigenschapnaam',
-        'definitie',
-        'toelichting',
-    )
 
     # Details
     fieldsets = (

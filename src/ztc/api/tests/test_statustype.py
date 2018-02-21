@@ -1,7 +1,6 @@
 from django.urls import reverse
 
-from ztc.datamodel.tests.factories import (
-    StatusTypeFactory)
+from ztc.datamodel.tests.factories import StatusTypeFactory
 
 from .base import APITestCase
 

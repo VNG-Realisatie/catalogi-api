@@ -1,6 +1,8 @@
 from django.urls import reverse
 
-from ztc.datamodel.tests.factories import ZaakInformatieobjectTypeFactory, ResultaatTypeFactory
+from ztc.datamodel.tests.factories import (
+    ResultaatTypeFactory, ZaakInformatieobjectTypeFactory
+)
 
 from .base import APITestCase
 

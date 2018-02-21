@@ -171,7 +171,7 @@ class Eigenschap(GeldigheidMixin, models.Model):
     referentie_naar_eigenschap = models.ForeignKey(
         'datamodel.EigenschapReferentie', verbose_name=_('referentie naar eigenschap'), blank=True, null=True,
         help_text=_('Verwijzing naar de standaard waarin de eigenschap is gespecificeerd'))
-    toelichting = models.TextField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
+    toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
         'Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.'))
 
     status_type = models.ForeignKey(
@@ -186,6 +186,18 @@ class Eigenschap(GeldigheidMixin, models.Model):
         unique_together = ('is_van', 'eigenschapnaam')
         verbose_name = _('Eigenschap')
         verbose_name_plural = _('Eigenschappen')
+        ordering = unique_together
+
+        filter_fields = (
+            'is_van',
+            'eigenschapnaam'
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'eigenschapnaam',
+            'definitie',
+            'toelichting',
+        )
 
     def clean(self):
         """

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import CheckListItem, StatusType
-from .mixins import GeldigheidAdminMixin
+from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 
 
 @admin.register(CheckListItem)
@@ -12,12 +12,11 @@ class CheckListItemAdmin(admin.ModelAdmin):
 
 
 @admin.register(StatusType)
-class StatusTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+class StatusTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+    model = StatusType
+
+    # List
     list_display = ('statustype_omschrijving', 'statustypevolgnummer', 'is_van')
-    list_filter = ('is_van', )
-    search_fields = (
-        'statustype_omschrijving', 'statustypevolgnummer'
-    )
 
     # Details
     fieldsets = (
