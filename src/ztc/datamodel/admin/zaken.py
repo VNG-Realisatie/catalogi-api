@@ -9,22 +9,19 @@ from ..models import (
     ZaakType, ZaakTypenRelatie
 )
 from .eigenschap import EigenschapAdmin
-from .mixins import GeldigheidAdminMixin
+from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 from .resultaattype import ResultaatTypeAdmin
 from .roltype import RolTypeAdmin
 from .statustype import StatusTypeAdmin
 
 
 @admin.register(ZaakObjectType)
-class ZaakObjectTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+class ZaakObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+    model = ZaakObjectType
+
+    # List
     list_display = ['objecttype', 'ander_objecttype', 'status_type']
-    # list_filter = ('', )
-    search_fields = (
-        'objecttype',
-        'ander_objecttype',
-        'relatieomschrijving',
-        'status_type',
-    )
+
     # Details
     fieldsets = (
         (_('Algemeen'), {
@@ -80,16 +77,11 @@ class ZaakTypenRelatieInline(admin.TabularInline):
 
 
 @admin.register(ZaakType)
-class ZaakTypeAdmin(ListObjectActionsAdminMixin,GeldigheidAdminMixin, admin.ModelAdmin):
+class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin, GeldigheidAdminMixin, admin.ModelAdmin):
+    model = ZaakType
+
+    # List
     list_display = ('zaaktype_identificatie', 'zaaktype_omschrijving', 'zaakcategorie', 'maakt_deel_uit_van')
-    list_filter = ('maakt_deel_uit_van', )
-    search_fields = (
-        'zaaktype_omschrijving',
-        'zaaktype_omschrijving_generiek',
-        'zaakcategorie',
-        'onderwerp',
-        'trefwoord'
-    )
 
     # Details
     fieldsets = (

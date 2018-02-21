@@ -8,8 +8,8 @@ from ..utils.rest_flex_fields import FlexFieldsMixin
 class EigenschapViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    De verzameling van EIGENSCHAPpen.
-    wordt.
+    Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
+    kenmerk is van een zaak.
 
     list:
     Een verzameling van EIGENSCHAPpen.

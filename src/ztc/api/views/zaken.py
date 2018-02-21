@@ -8,8 +8,7 @@ from ..utils.rest_flex_fields import FlexFieldsMixin
 class ZaakObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    De verzameling van ZAAKOBJECTTYPEn.
-    wordt.
+    De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
 
     list:
     Een verzameling van ZAAKOBJECTTYPEn.
@@ -25,11 +24,10 @@ class ZaakObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
 class ZaakTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    De verzameling van ZAAKTYPEs.
-    wordt.
+    Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
 
     list:
-    Een verzameling van ZAAKTYPEs.
+    Een verzameling van ZAAKTYPEn.
     """
     queryset = ZaakType.objects.all()
     serializer_class = ZaakTypeSerializer

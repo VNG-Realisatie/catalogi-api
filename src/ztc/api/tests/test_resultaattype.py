@@ -1,135 +1,82 @@
-from django.test import TestCase
 from django.urls import reverse
 
-from freezegun import freeze_time
+from ztc.datamodel.tests.factories import (
+    ResultaatTypeFactory, ZaakInformatieobjectTypeFactory
+)
 
-from ztc.datamodel.tests.base_tests import HaaglandenMixin
-from ztc.datamodel.tests.factories import ZaakInformatieobjectTypeFactory
-
-from .base import ClientAPITestMixin
+from .base import APITestCase
 
 
-@freeze_time('2018-02-07')  # datum_begin_geldigheid will be 'today': 'V20180207'
-class ResultaatTypeAPITests(ClientAPITestMixin, HaaglandenMixin, TestCase):
+class ResultaatTypeAPITests(APITestCase):
     maxDiff = None
 
     def setUp(self):
         super().setUp()
 
-        self.list_url = reverse('api:resultaattype-list', kwargs={
-            'version': '1',
+        self.resultaattype = ResultaatTypeFactory.create(
+            resultaattypeomschrijving='Verleend',
+            is_relevant_voor__maakt_deel_uit_van=self.catalogus,
+            bepaalt_afwijkend_archiefregime_van=None,
+        )
+        self.zaaktype = self.resultaattype.is_relevant_voor
+
+        self.resultaattype_list_url = reverse('api:resultaattype-list', kwargs={
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'zaaktype_pk': self.zaaktype.pk
         })
-        self.resultaattype_geweigerd_detail_url = reverse('api:resultaattype-detail', kwargs={
-            'version': '1',
+        self.resultaattype_detail_url = reverse('api:resultaattype-detail', kwargs={
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'zaaktype_pk': self.zaaktype.pk,
-            'pk': self.resultaattype_geweigerd.pk,
+            'pk': self.resultaattype.pk,
         })
-
-        self.ziot = ZaakInformatieobjectTypeFactory.create(
-            status_type=self.status_type_inhoudelijk_behandeld,
-            zaaktype=self.zaaktype,
-            # informatie_object_type=self.  # let the factory create a new one
-            volgnummer=1,
-            richting='richting',
-        )
-        self.iot = self.ziot.informatie_object_type
-
-        self.besluittype_aanhoudingsbesluit.is_resultaat_van.add(self.resultaattype_geweigerd)
-        self.besluittype_aanhoudingsbesluit.save()
-
-        self.resultaattype_geweigerd.heeft_voor_brondatum_archiefprocedure_relevante = self.eigenschap_beoogde_producten
-        self.resultaattype_geweigerd.heeft_verplichte_ziot.add(self.ziot)
-        self.resultaattype_geweigerd.heeft_verplichte_zot.add(self.zaakobjecttype_milieu)
-        self.resultaattype_geweigerd.save()
 
     def test_get_list(self):
-        response = self.api_client.get(self.list_url)
+        response = self.api_client.get(self.resultaattype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        json_response = response.json()
-        results = json_response.pop('results')
+        data = response.json()
 
-        # there are 5 results. only check the one with omschrijving 'Verleend'
-        self.assertEqual(len(results), 5)
-        result = None
-        for _result in results:
-            if _result.get('omschrijving') == 'Verleend':
-                result = _result
-
-        # there are 3 expected results for leidtTot
-        leidtTot = result.pop('leidtTot')
-        self.assertEqual(len(leidtTot), 3)
-        for leidt_tot in leidtTot:
-            self.assertTrue(leidt_tot.startswith(
-                'http://testserver/api/v1/catalogussen/{}/besluittypen/'.format(self.catalogus.pk)
-            ))
-
-        expected_result = {
-            'heeftVerplichteZaakobjecttype': [],
-            'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk
-            ),
-            'archiefactietermijn': 14,
-            'selectielijstklasse': None,
-            'omschrijvingGeneriek': '',
-            'brondatumProcedure': 'eigenschap',
-            'einddatumObject': None,
-            'ingangsdatumObject': 'V20180207',
-            'archiefnominatie': '',
-            'omschrijving': 'Verleend',
-            'toelichting': None,
-            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/resultaattypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk, self.resultaattype_verleend.pk,
-            )
-        }
-        self.assertEqual(result, expected_result)
-
-        self.assertEqual(json_response, {
-            '_links': {
-                'self': {
-                    'href': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/resultaattypen/'.format(
-                        self.catalogus.pk, self.zaaktype.pk
-                    )
-                }
-            }
-        })
+        self.assertTrue('results' in data)
+        self.assertEqual(len(data['results']), 1)
 
     def test_get_detail(self):
-        response = self.api_client.get(self.resultaattype_geweigerd_detail_url)
+        response = self.api_client.get(self.resultaattype_detail_url)
         self.assertEqual(response.status_code, 200)
 
         expected = {
             'archiefactietermijn': 14,
             'archiefnominatie': '',
+            'bepaaltAfwijkendArchiefRegimeVan': [],
             'brondatumProcedure': 'eigenschap',
             'einddatumObject': None,
-            'heeftVerplichteZaakobjecttype': [
-                'http://testserver/api/v1/catalogussen/{}/zaakobjecttypen/{}/'.format(
-                    self.catalogus.pk, self.zaakobjecttype_milieu.pk)
-            ],
-            'ingangsdatumObject': 'V20180207',
-            'isRelevantVoor': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk),
-            'leidtTot': [
-                'http://testserver/api/v1/catalogussen/{}/besluittypen/{}/'.format(
-                    self.catalogus.pk, self.besluittype_aanhoudingsbesluit.pk)
-            ],
-            'omschrijving': 'Geweigerd',
+            'heeftVerplichtDocumentype': [],
+            'heeftVerplichteZaakobjecttype': [],
+            'heeftVoorBrondatumArchiefprocedureRelevante': None,
+            'ingangsdatumObject': '',
+            'isRelevantVoor': 'http://testserver{}'.format(
+                reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
+            'leidtTot': [],
+            'omschrijving': 'Verleend',
             'omschrijvingGeneriek': '',
             'selectielijstklasse': None,
             'toelichting': None,
-            'url': 'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/resultaattypen/{}/'.format(
-                self.catalogus.pk, self.zaaktype.pk, self.resultaattype_geweigerd.pk),
-            # 'heeftVerplichtDocumentype': [
-            #     'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/heeft_relevant/{}/'.format(
-            #         self.catalogus.pk, self.zaaktype.pk, self.ziot.pk)
-            # ],
-            # 'heeftVoorBrondatumArchiefprocedureRelevante':
-            #     'http://testserver/api/v1/catalogussen/{}/zaaktypen/{}/eigenschappen/{}/'.format(
-            #         self.catalogus.pk, self.zaaktype.pk, self.eigenschap_beoogde_producten.pk),
-
+            'url': 'http://testserver{}'.format(self.resultaattype_detail_url)
         }
         self.assertEqual(expected, response.json())
+
+    def test_bepaalt_afwijkend_archiefregime_van(self):
+        pass
+
+    def test_heeft_verplichte_zaakobjecttype(self):
+        pass
+
+    def test_heeft_verplicht_documenttype(self):
+        pass
+
+    def test_heeft_voor_brondatum_archiefprocedure_revelante(self):
+        pass
+
+    def test_leidt_tot(self):
+        pass

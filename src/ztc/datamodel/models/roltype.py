@@ -47,6 +47,18 @@ class RolType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'RLT'
         unique_together = ('is_van', 'roltypeomschrijving')
+        verbose_name = _('Roltype')
+        verbose_name_plural = _('Roltypen')
+        ordering = unique_together
+
+        filter_fields = (
+            'is_van',
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'roltypeomschrijving',
+            'roltypeomschrijving_generiek',
+        )
 
     def clean(self):
         """

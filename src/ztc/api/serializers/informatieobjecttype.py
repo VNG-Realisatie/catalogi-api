@@ -1,3 +1,5 @@
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
@@ -15,24 +17,30 @@ class InformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSer
         'catalogus_pk': 'maakt_deel_uit_van__pk'
     }
 
+    # This is needed because spanning relations is not done correctly when specifying the ``source`` attribute later,
+    # as is done by the ``Meta.source_mapping`` property.
     omschrijvingGeneriek = serializers.CharField(
-        source='informatieobjecttype_omschrijving_generiek.informatieobjecttype_omschrijving_generiek')
+        read_only=True,
+        source='informatieobjecttype_omschrijving_generiek.informatieobjecttype_omschrijving_generiek',
+        max_length=80,
+        help_text=_('Algemeen gehanteerde omschrijving van het type informatieobject.')
+    )
 
     isVastleggingVoor = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='besluittype_set',
         view_name='api:besluittype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van_id'}
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
     )
     isRelevantVoor = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='zaakinformatieobjecttype_set',
-        view_name='api:iotzkt-detail',
+        view_name='api:zktiot-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'informatieobjecttype_pk': 'informatie_object_type__pk',
+            'zaaktype_pk': 'zaaktype__pk',
         }
     )
 

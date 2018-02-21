@@ -77,6 +77,20 @@ class StatusType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'STT'
         unique_together = ('is_van', 'statustypevolgnummer')
+        verbose_name = _('Statustype')
+        verbose_name_plural = _('Statustypen')
+        ordering = unique_together
+
+        filter_fields = (
+            'is_van',
+            'informeren',
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'statustype_omschrijving',
+            'statustype_omschrijving_generiek',
+            'statustypevolgnummer',
+        )
 
     def clean(self):
         """

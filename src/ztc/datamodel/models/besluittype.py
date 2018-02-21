@@ -62,7 +62,7 @@ class BesluitType(GeldigheidMixin, models.Model):
             '(inverse van:) Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE.'))
 
     zaaktypes = models.ManyToManyField(
-        'datamodel.Zaaktype', verbose_name=_('zaaktypes'), related_name='heeft_relevant_besluittype',
+        'datamodel.ZaakType', verbose_name=_('zaaktypes'), related_name='heeft_relevant_besluittype',
         help_text=_('ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE'))
 
     class Meta:
@@ -72,7 +72,10 @@ class BesluitType(GeldigheidMixin, models.Model):
         verbose_name_plural = _('Besluittypen')
         ordering = unique_together
 
-        filter_fields = ('maakt_deel_uit_van', )
+        filter_fields = (
+            'maakt_deel_uit_van',
+        )
+        ordering_fields = filter_fields
         search_fields = (
             'besluittype_omschrijving',
             'besluittype_omschrijving_generiek',

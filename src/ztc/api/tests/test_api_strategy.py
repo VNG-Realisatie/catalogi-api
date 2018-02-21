@@ -35,7 +35,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         `catalogussen` resource: `/api/v1/catalogussen/1/besluittypen/`.
         """
         kwargs = {
-            'version': '1',
+            'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'pk': self.besluittype.pk
         }
@@ -678,7 +678,7 @@ class ErrorHandlingTests(APITestCase):
 
     def test_standard_json_error_response_404(self):
         """DSO: API-50 (standard JSON error response 404)"""
-        non_existing_detail_url = reverse('api:catalogus-detail', kwargs={'version': '1', 'pk': 0})
+        non_existing_detail_url = reverse('api:catalogus-detail', kwargs={'version': self.API_VERSION, 'pk': 0})
 
         response = self.api_client.get(non_existing_detail_url)
         self.assertEqual(response.status_code, 404)

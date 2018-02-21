@@ -8,8 +8,7 @@ from ..utils.rest_flex_fields import FlexFieldsMixin
 class RolTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    De verzameling van ROLTYPEn.
-    wordt.
+    Generieke aanduiding van de aard van een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE.
 
     list:
     Een verzameling van ROLTYPEn.

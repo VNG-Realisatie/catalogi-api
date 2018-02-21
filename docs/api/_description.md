@@ -16,3 +16,11 @@ zoals deze zijn gedefinieerd in SOAP.
 [1]: http://www.gemmaonline.nl/index.php/Informatiemodel_Zaaktypen_(ImZTC)
 [2]: https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/
 [3]: https://www.gemmaonline.nl/index.php/Sectormodel_Zaaktypen(-catalogus):_StUF%E2%80%93ZTC
+
+
+Waarschuwing
+------------
+
+Hoewel op dit moment versie 1 van de API beschikbaar is, kunnen er breaking
+changes voorkomen zolang de Zaaktypecatalogus nog niet versie 1.0.0 heeft
+bereikt.

@@ -2,16 +2,17 @@ import logging
 import os
 
 from django.conf import settings
+from django.utils.functional import empty
 
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.app_settings import swagger_settings
 from drf_yasg.inspectors import (
-    CoreAPICompatInspector, NotHandled, SwaggerAutoSchema
+    CoreAPICompatInspector, FieldInspector, NotHandled, SwaggerAutoSchema
 )
 from drf_yasg.utils import is_list_view
 from drf_yasg.views import get_schema_view
-from rest_framework import filters, permissions, status
+from rest_framework import filters, permissions, serializers, status
 from rest_framework.settings import api_settings
 
 from .utils.pagination import HALPaginationInspector
@@ -91,8 +92,41 @@ class OrderingDescriptionInspector(CoreAPICompatInspector):
         return NotHandled
 
 
+class RelatedFieldDescriptionHelperInspector(FieldInspector):
+    """
+    This helper adds a description to the n-to serializers. Typically, the (``Nested``)``HyperlinkedRelatedField``
+    where ``many=True``, but also the ``ManyToManyField``.
+
+    The description indicates to which resource the URI's point.
+    """
+    def process_result(self, result, method_name, obj, **kwargs):
+        if isinstance(obj, serializers.ManyRelatedField):
+            description = getattr(result, 'description', empty)
+            if description is empty:
+                field = getattr(self.view.queryset.model, obj.source)
+                if getattr(field, 'reverse', True):
+                    related_model_name = field.rel.related_model.__name__.upper()
+                else:
+                    related_model_name = field.rel.model.__name__.upper()
+                result.description = 'Zero or more URI\'s to a {}'.format(related_model_name)
+        elif isinstance(obj, serializers.RelatedField):
+            description = getattr(result, 'description', empty)
+            if description is empty:
+                if obj.source != '*':
+                    model = getattr(self.view.queryset.model, obj.source)
+                    if hasattr(model, 'rel'):
+                        related_model = model.rel.related_model
+                    else:
+                        related_model = model.field.related_model
+                    related_model_name = related_model.__name__.upper()
+                    result.description = 'URI to a {}'.format(related_model_name)
+        return super().process_result(result, method_name, obj, **kwargs)
+
+
+
 class AutoSchema(SwaggerAutoSchema):
     field_inspectors = [
+        RelatedFieldDescriptionHelperInspector,
     ] + swagger_settings.DEFAULT_FIELD_INSPECTORS
     filter_inspectors = [
         DjangoFilterDescriptionInspector,
@@ -132,3 +166,29 @@ class AutoSchema(SwaggerAutoSchema):
             ret[status.HTTP_404_NOT_FOUND] = '{} not found'.format(object_name)
 
         return ret
+
+    def get_operation_id(self, operation_keys):
+        """
+        Simply return the model name as lowercase string, postfixed with the operation name.
+        """
+        model_name = self.view.queryset.model.__name__.lower()
+        return '_'.join([model_name, operation_keys[-1]])
+
+    def get_tags(self, operation_keys):
+        keys = operation_keys[:]
+
+        # Similar to the operation ID, we want to group by one level deeper than catalog. Otherwise everything will be
+        # under the Catalog group.
+        if len(keys) > 2:
+            keys = keys[1:]
+        return super().get_tags(keys)
+
+    def get_description(self):
+        description = self.overrides.get('operation_description', None)
+        if description is None:
+            model_name = self.view.queryset.model.__name__.upper()
+            description = '**Objecttype {}**\n\n{}'.format(
+                model_name,
+                self._sch.get_description(self.path, self.method),
+            )
+        return description

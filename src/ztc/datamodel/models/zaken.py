@@ -51,6 +51,19 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'ZOT'
         unique_together = ('is_relevant_voor', 'objecttype')
+        verbose_name = _('Zaakobjecttype')
+        verbose_name_plural = _('Zaakobjecttypen')
+        ordering = unique_together
+
+        filter_fields = (
+            'is_relevant_voor',
+            'ander_objecttype',
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'objecttype',
+            'relatieomschrijving',
+        )
 
     def clean(self):
         """
@@ -76,7 +89,7 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
                 _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
 
         if self.datum_einde_geldigheid:
-            datum_einde = parse_onvolledige_datum(self.datum_einde_geldigheid)
+            datum_einde = self.datum_einde_geldigheid_date
 
             if datum_einde < datum_begin:
                 raise ValidationError(_(
@@ -355,6 +368,30 @@ class ZaakType(GeldigheidMixin, models.Model):
     class Meta:
         mnemonic = 'ZKT'
         unique_together = ('maakt_deel_uit_van', 'zaaktype_identificatie')
+        verbose_name = _('Zaaktype')
+        verbose_name_plural = _('Zaaktypen')
+        ordering = unique_together
+
+        filter_fields = (
+            'maakt_deel_uit_van',
+            'publicatie_indicatie',
+            'verlenging_mogelijk',
+            'opschorting_aanhouding_mogelijk',
+            'indicatie_intern_of_extern',
+            'vertrouwelijkheidaanduiding',
+
+        )
+        ordering_fields = filter_fields
+        search_fields = (
+            'zaaktype_identificatie',
+            'zaaktype_omschrijving',
+            'zaaktype_omschrijving_generiek',
+            'zaakcategorie',
+            'doel',
+            'aanleiding',
+            'onderwerp',
+            'toelichting',
+        )
 
     @property
     def versiedatum_date(self):

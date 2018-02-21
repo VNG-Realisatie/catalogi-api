@@ -22,7 +22,7 @@ class StatusTypeFactory(factory.django.DjangoModelFactory):
     def roltypen(self, create, extracted, **kwargs):
         # optional M2M, do nothing when no arguments are passed
         if not extracted:
-            extracted = [RolTypeFactory.create()]
+            extracted = [RolTypeFactory.create(is_van=self.is_van)]
 
         for roltype in extracted:
             self.roltypen.add(roltype)

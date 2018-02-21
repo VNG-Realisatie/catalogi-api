@@ -10,8 +10,6 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
     """
     Serializer based on ``CAT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
-
-    # Nested serializers are shown as URLs, but should be expandable (see below).
     bestaatuitInformatieobjecttype = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -33,7 +31,7 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
         read_only=True,
         source='zaaktype_set',
         view_name='api:zaaktype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'},
     )
 
     class Meta:
@@ -47,7 +45,6 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
         extra_kwargs = {
             'url': {'view_name': 'api:catalogus-detail'},
         }
-        # All fields should be included. Meta data that is not part of the ZTC information model can be left out.
         fields = (
             'url',
 
@@ -64,5 +61,5 @@ class CatalogusSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixi
     expandable_fields = {
         'bestaatuitInformatieobjecttype': ('ztc.api.serializers.InformatieObjectTypeSerializer', {'source': 'informatieobjecttype_set', 'many': True}),
         'bestaatuitBesluittype': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'besluittype_set', 'many': True}),
-        'bestaatuitZaaktype': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'zaaktype_set', 'many': True})
+        'bestaatuitZaaktype': ('ztc.api.serializers.ZaakTypeSerializer', {'source': 'zaaktype_set', 'many': True})
     }

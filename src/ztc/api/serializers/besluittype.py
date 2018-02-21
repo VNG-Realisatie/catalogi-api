@@ -19,7 +19,26 @@ class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMi
         read_only=True,
         source='wordt_vastgelegd_in',
         view_name='api:informatieobjecttype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van_id'}
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
+    )
+
+    isRelevantVoor = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='zaaktypes',
+        view_name='api:zaaktype-detail',
+        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
+    )
+
+    isResultaatVan = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='is_resultaat_van',
+        view_name='api:resultaattype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_relevant_voor__pk'
+        }
     )
 
     class Meta:
@@ -53,13 +72,13 @@ class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMi
             'publicatieTermijn',
             'toelichting',
 
-            'maaktDeeluitVan',
-            'wordtVastgelegdIn',
             'ingangsdatumObject',
             'einddatumObject',
 
-            # 'isRelevantVoor',
-            # 'isResultaatVan',
+            'maaktDeeluitVan',
+            'wordtVastgelegdIn',
+            'isRelevantVoor',
+            'isResultaatVan',
         )
 
     expandable_fields = {
