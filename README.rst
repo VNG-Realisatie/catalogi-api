@@ -2,9 +2,11 @@
 Zaaktypecatalogus
 =================
 
-:Version: TBD
-:Source: https://github.com/Haarlem/Zaaktypecataloguscomponent
+:Version: 0.1.0
+:Source: https://github.com/Haarlem/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
+
+|build-status| |coverage|
 
 Implementatie van het informatiemodel Zaaktypecatalogus (ImZTC) 2.1 welke
 beheerd kan worden middels een webinterface en ontsloten wordt middels een
@@ -32,9 +34,8 @@ De ZTC2 ondersteunt de volgende functionaliteiten:
 
 * Webinterface voor het aanmaken, wijzigen en verwijderen van catalogi en alle
   bijbehorende zakentypen, besluittypen, etc.
-* Exporteren en importeren van catalogi of delen daarvan
-* Referentie en/of voorbeeld catalogi inladen
 * Ontsluiten van catalogi middels een RESTful API
+* Uitgebreide API documentatie.
 
 
 Opmerking
@@ -61,17 +62,17 @@ Verwijzingen
 
 * `Community <https://discussie.kinggemeenten.nl/discussie/gemma/ztc>`_
   (rapporteren van bugs, functionaliteit aanvragen, algemene vragen)
-* `Issues <https://github.com/Haarlem/zaakregistratiecomponent/issues>`_
-* `Code <https://github.com/Haarlem/zaakregistratiecomponent>`_
+* `Issues <https://github.com/Haarlem/zaaktypecataloguscomponent/issues>`_
+* `Code <https://github.com/Haarlem/zaaktypecataloguscomponent>`_
 
 
-.. |build-status| image:: https://secure.travis-ci.org/Haarlem/Zaaktypecataloguscomponent.svg?branch=develop
+.. |build-status| image:: https://secure.travis-ci.org/Haarlem/zaaktypecataloguscomponent.svg?branch=develop
     :alt: Build status
-    :target: https://travis-ci.org/Haarlem/Zaaktypecataloguscomponent
+    :target: https://travis-ci.org/Haarlem/zaaktypecataloguscomponent
 
-.. |coverage| image:: https://codecov.io/github/Haarlem/Zaaktypecataloguscomponent/coverage.svg?branch=develop
+.. |coverage| image:: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent/coverage.svg?branch=develop
     :alt: Coverage
-    :target: https://codecov.io/github/Haarlem/Zaaktypecataloguscomponent?branch=develop
+    :target: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent?branch=develop
 
 .. _RSGB Bevragingen: https://www.gemmaonline.nl/index.php/RSGB_Bevragingen
 .. _StUF-ZTC: https://www.gemmaonline.nl/index.php/Sectormodel_Zaaktypen(-catalogus):_StUF%E2%80%93ZTC
