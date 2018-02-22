@@ -9,9 +9,12 @@ from ..serializers import (
     ZaakTypeInformatieObjectTypeSerializer, ZaakTypenRelatieSerializer
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
+from ..utils.viewsets import (
+    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
+)
 
 
-class ZaakTypenRelatieViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakTypenRelatieViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Relatie met zaaktype dat gerelateerd is aan het zaaktype.
@@ -22,12 +25,8 @@ class ZaakTypenRelatieViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     queryset = ZaakTypenRelatie.objects.all()
     serializer_class = ZaakTypenRelatieSerializer
 
-    filter_fields = ('zaaktype_van', 'zaaktype_naar')
-    ordering_fields = filter_fields
-    search_fields = filter_fields
 
-
-class ZaakTypeInformatieObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakTypeInformatieObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Relatie met informatieobjecttype dat relevant is voor zaaktype.
@@ -38,12 +37,8 @@ class ZaakTypeInformatieObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyMode
     queryset = ZaakInformatieobjectType.objects.all()
     serializer_class = ZaakTypeInformatieObjectTypeSerializer
 
-    filter_fields = ('zaaktype', 'informatie_object_type')
-    ordering_fields = filter_fields
-    search_fields = filter_fields
 
-
-class ZaakInformatieobjectTypeArchiefregimeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Afwijkende archiveringskenmerken van informatieobjecten van een INFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE op
@@ -54,7 +49,3 @@ class ZaakInformatieobjectTypeArchiefregimeViewSet(FlexFieldsMixin, viewsets.Rea
     """
     queryset = ZaakInformatieobjectTypeArchiefregime.objects.all()
     serializer_class = ZaakInformatieobjectTypeArchiefregimeSerializer
-
-    filter_fields = ('zaak_informatieobject_type', 'resultaattype')
-    ordering_fields = filter_fields
-    search_fields = filter_fields

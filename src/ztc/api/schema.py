@@ -2,7 +2,7 @@ import logging
 import os
 
 from django.conf import settings
-from django.utils.functional import empty
+from django.utils.functional import cached_property, empty
 
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
@@ -100,10 +100,12 @@ class RelatedFieldDescriptionHelperInspector(FieldInspector):
     The description indicates to which resource the URI's point.
     """
     def process_result(self, result, method_name, obj, **kwargs):
+        model = self.view.queryset.model
+
         if isinstance(obj, serializers.ManyRelatedField):
             description = getattr(result, 'description', empty)
             if description is empty:
-                field = getattr(self.view.queryset.model, obj.source)
+                field = getattr(model, obj.source)
                 if getattr(field, 'reverse', True):
                     related_model_name = field.rel.related_model.__name__.upper()
                 else:
@@ -113,15 +115,14 @@ class RelatedFieldDescriptionHelperInspector(FieldInspector):
             description = getattr(result, 'description', empty)
             if description is empty:
                 if obj.source != '*':
-                    model = getattr(self.view.queryset.model, obj.source)
-                    if hasattr(model, 'rel'):
-                        related_model = model.rel.related_model
+                    source_model = getattr(model, obj.source)
+                    if hasattr(source_model, 'rel'):
+                        related_model = source_model.rel.related_model
                     else:
-                        related_model = model.field.related_model
+                        related_model = source_model.field.related_model
                     related_model_name = related_model.__name__.upper()
                     result.description = 'URI to a {}'.format(related_model_name)
         return super().process_result(result, method_name, obj, **kwargs)
-
 
 
 class AutoSchema(SwaggerAutoSchema):
@@ -137,6 +138,13 @@ class AutoSchema(SwaggerAutoSchema):
        HALPaginationInspector,
     ] + swagger_settings.DEFAULT_PAGINATOR_INSPECTORS
 
+    @cached_property
+    def model(self):
+        if hasattr(self.view, 'queryset'):
+            return self.view.queryset.model
+
+        return None
+
     def get_default_responses(self):
         """Get the default responses determined for this view from the request serializer and request method.
 
@@ -145,13 +153,11 @@ class AutoSchema(SwaggerAutoSchema):
         ret = super().get_default_responses()
 
         # Figure out object (or model) name.
-        queryset = getattr(self.view, 'queryset', None)
-        if queryset:
-            model = queryset.model
-            if hasattr(model._meta, 'verbose_name'):
-                object_name = model._meta.verbose_name
+        if self.model:
+            if hasattr(self.model._meta, 'verbose_name'):
+                object_name = self.model._meta.verbose_name
             else:
-                object_name = model.__name__
+                object_name = self.model.__name__
         else:
             object_name = 'Object'
 
@@ -171,7 +177,7 @@ class AutoSchema(SwaggerAutoSchema):
         """
         Simply return the model name as lowercase string, postfixed with the operation name.
         """
-        model_name = self.view.queryset.model.__name__.lower()
+        model_name = self.model.__name__.lower()
         return '_'.join([model_name, operation_keys[-1]])
 
     def get_tags(self, operation_keys):
@@ -186,7 +192,7 @@ class AutoSchema(SwaggerAutoSchema):
     def get_description(self):
         description = self.overrides.get('operation_description', None)
         if description is None:
-            model_name = self.view.queryset.model.__name__.upper()
+            model_name = self.model.__name__.upper()
             description = '**Objecttype {}**\n\n{}'.format(
                 model_name,
                 self._sch.get_description(self.path, self.method),

@@ -3,9 +3,12 @@ from rest_framework import viewsets
 from ...datamodel.models import ZaakObjectType, ZaakType
 from ..serializers import ZaakObjectTypeSerializer, ZaakTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
+from ..utils.viewsets import (
+    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
+)
 
 
-class ZaakObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
@@ -16,12 +19,8 @@ class ZaakObjectTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     queryset = ZaakObjectType.objects.all()
     serializer_class = ZaakObjectTypeSerializer
 
-    filter_fields = ('is_relevant_voor',)
-    ordering_fields = filter_fields
-    search_fields = filter_fields
 
-
-class ZaakTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
@@ -31,7 +30,3 @@ class ZaakTypeViewSet(FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     queryset = ZaakType.objects.all()
     serializer_class = ZaakTypeSerializer
-
-    filter_fields = ('maakt_deel_uit_van',)
-    ordering_fields = filter_fields
-    search_fields = filter_fields

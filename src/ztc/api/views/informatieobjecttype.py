@@ -3,10 +3,12 @@ from rest_framework import viewsets
 from ...datamodel.models import InformatieObjectType
 from ..serializers import InformatieObjectTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from ..utils.viewsets import (
+    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
+)
 
 
-class InformatieObjectTypeViewSet(FlexFieldsMixin, FilterSearchOrderingViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class InformatieObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.

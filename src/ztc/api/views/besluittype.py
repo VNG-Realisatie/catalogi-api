@@ -3,10 +3,12 @@ from rest_framework import viewsets
 
 from ...datamodel.models import BesluitType
 from ..serializers import BesluitTypeSerializer
-from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from ..utils.viewsets import (
+    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
+)
 
 
-class BesluitTypeViewSet(FlexFieldsMixin, FilterSearchOrderingViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class BesluitTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een besluit.
