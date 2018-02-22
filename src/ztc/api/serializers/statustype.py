@@ -53,6 +53,7 @@ class StatusTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMix
         view_name='api:zaakobjecttype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_relevant_voor__pk',
         },
     )
     heeftVerplichteInformatieobjecttype = NestedHyperlinkedRelatedField(
