@@ -66,13 +66,13 @@ Verwijzingen
 * `Code <https://github.com/Haarlem/zaaktypecataloguscomponent>`_
 
 
-.. |build-status| image:: https://secure.travis-ci.org/Haarlem/zaaktypecataloguscomponent.svg?branch=develop
+.. |build-status| image:: https://secure.travis-ci.org/Haarlem/zaaktypecataloguscomponent.svg?branch=master
     :alt: Build status
     :target: https://travis-ci.org/Haarlem/zaaktypecataloguscomponent
 
-.. |coverage| image:: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent/coverage.svg?branch=develop
+.. |coverage| image:: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent/coverage.svg?branch=master
     :alt: Coverage
-    :target: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent?branch=develop
+    :target: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent?branch=master
 
 .. _RSGB Bevragingen: https://www.gemmaonline.nl/index.php/RSGB_Bevragingen
 .. _StUF-ZTC: https://www.gemmaonline.nl/index.php/Sectormodel_Zaaktypen(-catalogus):_StUF%E2%80%93ZTC
