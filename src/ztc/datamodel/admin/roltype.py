@@ -27,3 +27,4 @@ class RolTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.M
             )
         }),
     )
+    raw_id_fields = ('is_van', )

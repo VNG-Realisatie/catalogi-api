@@ -39,3 +39,8 @@ class StatusTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admi
             )
         }),
     )
+    filter_horizontal = (
+        'roltypen',
+        'checklistitem',
+    )
+    raw_id_fields = ('is_van', )

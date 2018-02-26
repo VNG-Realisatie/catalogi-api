@@ -39,4 +39,9 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, a
             )
         }),
     )
+    filter_horizontal = (
+        'heeft_verplichte_zot',
+        'heeft_verplichte_ziot',
+    )
+    raw_id_fields = ('heeft_voor_brondatum_archiefprocedure_relevante', 'is_relevant_voor', )
     inlines = (ZaakInformatieobjectTypeArchiefregimeInline,)  # 'bepaalt_afwijkend_archiefregime_van',

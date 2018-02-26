@@ -38,6 +38,7 @@ class ZaakObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, 
             )
         }),
     )
+    raw_id_fields = ('is_relevant_voor', 'status_type', )
 
 
 class StatusTypeInline(EditInlineAdminMixin, admin.TabularInline):
@@ -74,6 +75,7 @@ class ZaakTypenRelatieInline(admin.TabularInline):
     model = ZaakTypenRelatie
     fk_name = 'zaaktype_van'
     extra = 1
+    raw_id_fields = ('zaaktype_naar', )
 
 
 @admin.register(ZaakType)
@@ -134,6 +136,12 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
             )
         }),
     )
+    filter_horizontal = (
+        'is_deelzaaktype_van',
+        'product_dienst',
+        'formulier',
+    )
+    raw_id_fields = ('maakt_deel_uit_van', )
     inlines = (
         ZaakTypenRelatieInline,  # heeft_gerelateerd
         StatusTypeInline, ZaakObjectTypeInline, RolTypeInline, EigenschapInline, ResultaatTypeInline,
@@ -169,30 +177,30 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
 # models for ZaakType
 #
 @admin.register(ProductDienst)
-class ZaakTypeAdmin(admin.ModelAdmin):
+class ProductDienstAdmin(admin.ModelAdmin):
     list_display = ['naam']
     fields = ('naam', 'link')
 
 
 @admin.register(Formulier)
-class ZaakTypeAdmin(admin.ModelAdmin):
+class FormulierAdmin(admin.ModelAdmin):
     list_display = ['naam']
     fields = ('naam', 'link')
 
 
 @admin.register(ReferentieProces)
-class ZaakTypeAdmin(admin.ModelAdmin):
+class ReferentieProcesAdmin(admin.ModelAdmin):
     list_display = ['naam']
     fields = ('naam', 'link')
 
 
 @admin.register(BronCatalogus)
-class ZaakTypeAdmin(admin.ModelAdmin):
+class BronCatalogusAdmin(admin.ModelAdmin):
     list_display = ['domein', 'rsin']
     fields = ('domein', 'rsin')
 
 
 @admin.register(BronZaakType)
-class ZaakTypeAdmin(admin.ModelAdmin):
+class BronZaakTypeAdmin(admin.ModelAdmin):
     list_display = ['zaaktype_identificatie', 'zaaktype_omschrijving']
     fields = ('zaaktype_identificatie', 'zaaktype_omschrijving')

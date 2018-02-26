@@ -7,7 +7,6 @@
 from __future__ import absolute_import, unicode_literals
 
 import re
-
 from collections import namedtuple
 
 __version__ = '0.1.0'

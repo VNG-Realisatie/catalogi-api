@@ -49,6 +49,9 @@ class ZaakInformatieobjectType(models.Model):
             'volgnummer'
         )
 
+    def __str__(self):
+        return '{} - {}'.format(self.zaaktype, self.volgnummer)
+
 
 class ZaakInformatieobjectTypeArchiefregime(models.Model):
     """
@@ -97,6 +100,10 @@ class ZaakInformatieobjectTypeArchiefregime(models.Model):
             'selectielijstklasse',
         )
 
+    def __str__(self):
+        return '{} - {}'.format('zaak_informatieobject_type', 'resultaattype')
+
+
 class ZaakTypenRelatie(models.Model):
     """
     ZAAKTYPENRELATIE
@@ -129,3 +136,6 @@ class ZaakTypenRelatie(models.Model):
         search_fields = (
             'toelichting',
         )
+
+    def __str__(self):
+        return '{} - {}'.format('zaaktype_van', 'zaaktype_naar', )

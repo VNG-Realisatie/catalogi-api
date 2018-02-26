@@ -41,6 +41,9 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         verbose_name = _('Generieke informatieobjecttype-omschrijving')
         verbose_name_plural = _('Generieke informatieobjecttype-omschrijvingen')
 
+    def __str__(self):
+        return self.informatieobjecttype_omschrijving_generiek
+
     def clean(self):
         """
         Er is alleen een regel voor datum_einde_geldigheid:

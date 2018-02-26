@@ -79,28 +79,31 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
         De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
         """
         if self.ander_objecttype == JaNee.nee and self.objecttype not in ObjectTypen.values.keys():
-            raise ValidationError("Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit het RSGB of het RGBZ")
+            raise ValidationError(_("Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit het "
+                                    "RSGB of het RGBZ. Bekende objecttypen zijn: {}").format(
+                ', '.join(ObjectTypen.values.keys())
+            ))
 
         datum_begin = self.datum_begin_geldigheid_date
         versiedatum = self.is_relevant_voor.versiedatum_date
 
         if datum_begin != versiedatum:
-            raise ValidationError(
-                _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
+            raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het "
+                                    "gerelateerde zaaktype."))
 
         if self.datum_einde_geldigheid:
             datum_einde = self.datum_einde_geldigheid_date
 
             if datum_einde < datum_begin:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
+                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals "
+                                        "opgenomen onder 'Datum begin geldigheid'."))
 
             if datum_einde + timedelta(days=1) != versiedatum:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum "
+                                        "van het gerelateerde zaaktype."))
 
     def __str__(self):
-        return '{} - {}'.format(self.is_relevant_voor, self.objecttype)
+        return '{} - {}{}'.format(self.is_relevant_voor, self.objecttype, self.ander_objecttype)
 
 
 class ProductDienst(models.Model):
@@ -129,6 +132,7 @@ class ProductDienst(models.Model):
         return self.naam
 
     class Meta:
+        verbose_name = _('Product / Dienst')
         verbose_name_plural = _('Product / Diensten')
 
 
@@ -157,6 +161,7 @@ class Formulier(models.Model):
         return self.naam
 
     class Meta:
+        verbose_name = _('Formulier')
         verbose_name_plural = _('Formulieren')
 
 
@@ -177,6 +182,7 @@ class ReferentieProces(models.Model):
         return self.naam
 
     class Meta:
+        verbose_name = _('Referentieprocess')
         verbose_name_plural = _('Referentieprocessen')
 
 
@@ -209,7 +215,8 @@ class BronCatalogus(models.Model):
         return '{} - {}'.format(self.rsin, self.domein)
 
     class Meta:
-        verbose_name_plural = _('Bron Catalogussen')
+        verbose_name = _('Bron catalogus')
+        verbose_name_plural = _('Bron catalogussen')
 
 
 class BronZaakType(models.Model):
@@ -243,6 +250,10 @@ class BronZaakType(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.zaaktype_identificatie, self.zaaktype_omschrijving)
+
+    class Meta:
+        verbose_name = _('Bron zaaktype')
+        verbose_name_plural = _('Bron zaaktypen')
 
 
 class ZaakType(GeldigheidMixin, models.Model):
@@ -407,7 +418,7 @@ class ZaakType(GeldigheidMixin, models.Model):
             return None
 
     def __str__(self):
-        return '{}-{}'.format(self.maakt_deel_uit_van, self.zaaktype_identificatie)
+        return '{} - {}'.format(self.maakt_deel_uit_van, self.zaaktype_identificatie)
 
     def clean(self):
         if self.servicenorm_behandeling and self.servicenorm_behandeling > self.doorlooptijd_behandeling:
