@@ -1,0 +1,14 @@
+# Inspired by https://docs.docker.com/compose/django/
+version: '3'
+
+services:
+  db:
+    image: postgres
+  web:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE=ztc.conf.docker
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
