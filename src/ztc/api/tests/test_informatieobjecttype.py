@@ -49,7 +49,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         expected = {
             'categorie': 'informatieobjectcategorie',
             'einddatumObject': None,
-            'ingangsdatumObject': '',
+            'ingangsdatumObject': '2018-01-01',
             'isVastleggingVoor': [],
             'maaktDeeluitVan': 'http://testserver{}'.format(self.catalogus_detail_url),
             'model': ['http://www.example.com'],

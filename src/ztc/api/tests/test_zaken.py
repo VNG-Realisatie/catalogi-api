@@ -40,7 +40,7 @@ class ZaakTypeAPITests(APITestCase):
 
         expected = {
             'url': 'http://testserver{}'.format(self.zaaktype_detail_url),
-            'ingangsdatumObject': '',
+            'ingangsdatumObject': '2018-01-01',
             'einddatumObject': None,
             'vertrouwelijkheidAanduiding': '',
             'identificatie': self.zaaktype.zaaktype_identificatie,
@@ -63,7 +63,7 @@ class ZaakTypeAPITests(APITestCase):
             'verlengingmogelijk': '',
             'handelingBehandelaar': '',
             'doel': '',
-            'versiedatum': '',
+            'versiedatum': '2018-01-01',
             'formulier': [],
             'onderwerp': '',
             'publicatietekst': None,
@@ -168,7 +168,7 @@ class ZaakObjectTypeAPITests(APITestCase):
         expected = {
             'anderObject': '',
             'einddatumObject': None,
-            'ingangsdatumObject': '',
+            'ingangsdatumObject': '2018-01-01',
             'isRelevantVoor': 'http://testserver{}'.format(
                 reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
             'objecttype': '',

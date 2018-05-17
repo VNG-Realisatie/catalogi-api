@@ -6,8 +6,6 @@ from django.core.validators import RegexValidator, _lazy_re_compile
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.utils.stuff_date import parse_onvolledige_datum
-
 
 @deconstructible
 class KardinaliteitValidator(object):
@@ -27,16 +25,6 @@ class KardinaliteitValidator(object):
 
 
 validate_kardinaliteit = KardinaliteitValidator()
-
-
-@deconstructible
-class OnvolledigeDatumValidator(object):
-    """
-    Indien de waarde niet geparsed kan worden (volgens de regels die gespecificeerd zijn in de
-    parse_onvolledige_datum) zal hij worden geinvalideerd
-    """
-    def __call__(self, value):
-        parse_onvolledige_datum(value)
 
 
 uppercase_validator = RegexValidator(
@@ -73,17 +61,3 @@ letters_numbers_underscores_spaces_validator = RegexValidator(
 
 def validate_letters_numbers_underscores_spaces(value):
     return letters_numbers_underscores_spaces_validator(value)
-
-
-@deconstructible
-class DatumValidator(object):
-    """
-    Datum moet exact de lengte 8 hebben, en waarden voor 'jjjjmmdd' die geparsed kunnen worden naar
-    een date
-    """
-    def __call__(self, value):
-        try:
-            assert len(value) == 8
-            datetime.strptime(value, settings.DATUM_FORMAT)
-        except Exception:
-            raise ValidationError("Datum '{}' voldoet niet aan het formaat 'jjjjmmdd' of is geen geldige datum.".format(value))

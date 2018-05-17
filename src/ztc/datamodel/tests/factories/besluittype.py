@@ -1,3 +1,5 @@
+from datetime import date
+
 import factory
 
 from ...models import BesluitType
@@ -10,6 +12,7 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
     besluittype_omschrijving = 'Besluittype'
     maakt_deel_uit_van = factory.SubFactory(CatalogusFactory)
     reactietermijn = 14
+    datum_begin_geldigheid = date(2018, 1, 1)
 
     class Meta:
         model = BesluitType
@@ -33,14 +36,14 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
         dates_begin_geldigheid = []
         for zaak_type in extracted:
             dates_begin_geldigheid.append(
-                (zaak_type.datum_begin_geldigheid_date, zaak_type.datum_begin_geldigheid)
+                zaak_type.datum_begin_geldigheid
             )
             self.zaaktypes.add(zaak_type)
 
         # sort the list on python datetime.date(), the first element of the tuple, and then
         # use the OnvolledigeDatum value (second element in tuple) as the value
         dates_begin_geldigheid.sort()
-        self.datum_begin_geldigheid = dates_begin_geldigheid[0][1]
+        self.datum_begin_geldigheid = dates_begin_geldigheid[0]
 
     @factory.post_generation
     def is_resultaat_van(self, create, extracted, **kwargs):

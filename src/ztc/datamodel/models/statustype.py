@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+
 from ..choices import JaNee
 from .mixins import GeldigheidMixin
 
@@ -101,23 +102,9 @@ class StatusType(GeldigheidMixin, models.Model):
         - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid statusType’.
         - De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
         """
-        datum_begin = self.datum_begin_geldigheid_date
-        versiedatum = self.is_van.versiedatum_date
+        super().clean()
 
-        if datum_begin != versiedatum:
-            raise ValidationError(
-                _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
-
-        if self.datum_einde_geldigheid:
-            datum_einde = self.datum_einde_geldigheid_date
-
-            if datum_einde < datum_begin:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
-
-            if datum_einde + timedelta(days=1) != versiedatum:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+        self._clean_geldigheid(self.is_van)
 
     def __str__(self):
         return '{} - {}'.format(self.is_van, self.statustypevolgnummer)

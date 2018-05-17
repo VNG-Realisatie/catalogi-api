@@ -46,7 +46,7 @@ class RolTypeAPITests(APITestCase):
 
         expected = {
             'url': 'http://testserver{}'.format(self.rol_type_detail_url),
-            'ingangsdatumObject': '',
+            'ingangsdatumObject': '2018-01-01',
             'einddatumObject': None,
             'isVan': 'http://testserver{}'.format(
                 reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),

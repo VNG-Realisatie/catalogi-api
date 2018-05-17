@@ -71,7 +71,7 @@ class EigenschapAPITests(APITestCase):
         expected = {
             'definitie': '',
             'einddatumObject': None,
-            'ingangsdatumObject': '',
+            'ingangsdatumObject': '2018-01-01',
             'isVan': 'http://testserver{}'.format(
                 reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])
             ),

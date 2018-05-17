@@ -1,3 +1,5 @@
+from datetime import date
+
 import factory
 
 from ztc.datamodel.models import (
@@ -72,6 +74,9 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     verantwoordingsrelatie = []  # ArrayField has blank=True but not null=True
     maakt_deel_uit_van = factory.SubFactory(CatalogusFactory)
     referentieproces = factory.SubFactory(ReferentieProcesFactory)
+
+    datum_begin_geldigheid = date(2018, 1, 1)
+    versiedatum = date(2018, 1, 1)
 
     # this one is optional, if its added as below, it will keep adding related ZaakTypes (and reach max recursion depth)
     # heeft_gerelateerd = factory.RelatedFactory(ZaakTypenRelatieFactory, 'zaaktype_van')
