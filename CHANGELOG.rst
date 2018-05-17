@@ -14,6 +14,7 @@ Change history
   affects all ``ingangsdatumObject``, ``einddatumObject`` and ``versiedatum``
   fields.
 * Changed the storage of dates from StUF date format to native date format.
+* Added missing code coverage requirement
 
 
 0.1.0
