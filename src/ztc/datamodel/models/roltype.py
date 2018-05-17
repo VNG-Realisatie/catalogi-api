@@ -1,11 +1,9 @@
-from datetime import timedelta
-
 from django.contrib.postgres.fields import ArrayField
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ..choices import RolTypeOmschrijving
+
 from .mixins import GeldigheidMixin
 
 
@@ -61,30 +59,9 @@ class RolType(GeldigheidMixin, models.Model):
         )
 
     def clean(self):
-        """
-        datum_begin_geldigheid is gelijk aan een Versiedatum van het gerelateerde zaaktype.
+        super().clean()
 
-        datum_einde_geldigheid
-        De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid roltype’.
-        De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
-        """
-        datum_begin = self.datum_begin_geldigheid_date
-        versiedatum = self.is_van.versiedatum_date
-
-        if datum_begin != versiedatum:
-            raise ValidationError(
-                _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
-
-        if self.datum_einde_geldigheid:
-            datum_einde = self.datum_einde_geldigheid_date
-
-            if datum_einde < datum_begin:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
-
-            if datum_einde + timedelta(days=1) != versiedatum:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+        self._clean_geldigheid(self.is_van)
 
     def __str__(self):
         return '{} - {}'.format(self.is_van, self.roltypeomschrijving)

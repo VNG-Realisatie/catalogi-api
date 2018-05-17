@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.conf.urls import include, url
+from django.views.generic import RedirectView
 
 from rest_framework_nested import routers
 
@@ -11,7 +13,7 @@ from .views import (
     ZaakTypenRelatieViewSet, ZaakTypeViewSet
 )
 
-root_router = routers.SimpleRouter()
+root_router = routers.DefaultRouter()
 root_router.register(r'catalogussen', CatalogusViewSet)
 
 catalogus_router = routers.NestedSimpleRouter(root_router, r'catalogussen', lookup='catalogus')
@@ -41,4 +43,6 @@ urlpatterns = [
     url('{}/'.format(API_PREFIX), include(root_router.urls)),
     url('{}/'.format(API_PREFIX), include(catalogus_router.urls)),
     url('{}/'.format(API_PREFIX), include(zaaktype_router.urls)),
+
+    url('', RedirectView.as_view(url='v{}/'.format(settings.REST_FRAMEWORK.get('DEFAULT_VERSION', '1')))),
 ]

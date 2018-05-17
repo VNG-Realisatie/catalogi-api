@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
@@ -9,7 +9,7 @@ from django.core.validators import (
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.utils.fields import DatumField
+
 
 from ..choices import (
     InternExtern, JaNee, ObjectTypen, VertrouwelijkheidAanduiding
@@ -78,29 +78,15 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
         - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid zaakobjecttype’.
         De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
         """
+        super().clean()
+
         if self.ander_objecttype == JaNee.nee and self.objecttype not in ObjectTypen.values.keys():
             raise ValidationError(_("Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit het "
                                     "RSGB of het RGBZ. Bekende objecttypen zijn: {}").format(
                 ', '.join(ObjectTypen.values.keys())
             ))
 
-        datum_begin = self.datum_begin_geldigheid_date
-        versiedatum = self.is_relevant_voor.versiedatum_date
-
-        if datum_begin != versiedatum:
-            raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het "
-                                    "gerelateerde zaaktype."))
-
-        if self.datum_einde_geldigheid:
-            datum_einde = self.datum_einde_geldigheid_date
-
-            if datum_einde < datum_begin:
-                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals "
-                                        "opgenomen onder 'Datum begin geldigheid'."))
-
-            if datum_einde + timedelta(days=1) != versiedatum:
-                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum "
-                                        "van het gerelateerde zaaktype."))
+        self._clean_geldigheid(self.is_relevant_voor)
 
     def __str__(self):
         return '{} - {}{}'.format(self.is_relevant_voor, self.objecttype, self.ander_objecttype)
@@ -346,7 +332,7 @@ class ZaakType(GeldigheidMixin, models.Model):
         blank=True, help_text=_(
             'De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording. '
             '(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
-    versiedatum = DatumField(_('versiedatum'), help_text=_(
+    versiedatum = models.DateField(_('versiedatum'), help_text=_(
         'De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden'))
 
     #
@@ -404,23 +390,12 @@ class ZaakType(GeldigheidMixin, models.Model):
             'toelichting',
         )
 
-    @property
-    def versiedatum_date(self):
-        """
-        The 'versiedatum' is saved as 'jjjjmmdd', so when we want to compare it as a
-        python datetime.date we call this property
-
-        Validation should happen in the forms, this propery return a valid datetime.date or None
-        """
-        try:
-            return datetime.strptime(self.versiedatum, settings.DATUM_FORMAT).date()
-        except Exception:
-            return None
-
     def __str__(self):
         return '{} - {}'.format(self.maakt_deel_uit_van, self.zaaktype_identificatie)
 
     def clean(self):
+        super().clean()
+
         if self.servicenorm_behandeling and self.servicenorm_behandeling > self.doorlooptijd_behandeling:
             raise ValidationError("'Servicenorm behandeling' periode mag niet langer zijn dan de periode van 'Doorlooptijd behandeling'.")
 
@@ -432,25 +407,4 @@ class ZaakType(GeldigheidMixin, models.Model):
             ).exclude(pk=self.pk).exists():
                 raise ValidationError("Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS.")
 
-        #
-        # datums
-        #
-        datum_begin = self.datum_begin_geldigheid_date
-        versiedatum = self.versiedatum_date
-
-        # TODO: De datum is gelijk aan de vroegste Versiedatum van het zaaktype. Maar er is maar een versie datum?
-        if datum_begin != versiedatum:
-            raise ValidationError(
-                _("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
-
-        if self.datum_einde_geldigheid:
-            datum_einde = self.datum_einde_geldigheid_date
-
-            if not(datum_begin <= versiedatum <= datum_einde):
-                raise ValidationError(_('De Versiedatum moet gelijk zijn aan of liggen na de Datum begin geldigheid '
-                                        'zaaktype en gelijk zijn aan of liggen na de Datum einde geldigheid zaaktype.'))
-
-            if datum_einde < datum_begin:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder "
-                    "'Datum begin geldigheid’"))
+        self._clean_geldigheid(self)

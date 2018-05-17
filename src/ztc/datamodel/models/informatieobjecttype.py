@@ -50,12 +50,7 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         Alleen een datum die gelijk is aan of die gelegen is na de datum zoals opgenomen onder 'Datum
         begin geldigheid’ kan in de registratie worden opgenomen.
         """
-        if self.datum_einde_geldigheid:
-            datum_begin = self.datum_begin_geldigheid_date
-            datum_einde = self.datum_einde_geldigheid_date
-
-            if datum_einde < datum_begin:
-                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
+        super().clean()
 
 
 class InformatieObjectType(GeldigheidMixin, models.Model):
@@ -128,13 +123,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid informatieobjecttype’.
         - De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
         """
-        if self.datum_einde_geldigheid:
-            datum_begin = self.datum_begin_geldigheid_date
-            datum_einde = self.datum_einde_geldigheid_date
-
-            if datum_einde < datum_begin:
-                raise ValidationError(_(
-                    "'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
+        super().clean()
 
     def __str__(self):
         return '{} - {}'.format(self.maakt_deel_uit_van, self.informatieobjecttype_omschrijving)

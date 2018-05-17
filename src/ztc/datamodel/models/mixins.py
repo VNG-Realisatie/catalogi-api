@@ -1,39 +1,18 @@
+from datetime import timedelta
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from ztc.utils.fields import StUFDateField
-from ztc.utils.stuff_date import parse_onvolledige_datum
-
 
 class GeldigheidMixin(models.Model):
-    datum_begin_geldigheid = StUFDateField(
+    datum_begin_geldigheid = models.DateField(
         _('datum begin geldigheid'), help_text=_('De datum waarop het is ontstaan.'))
-    datum_einde_geldigheid = StUFDateField(
+    datum_einde_geldigheid = models.DateField(
         _('datum einde geldigheid'), blank=True, null=True, help_text=_('De datum waarop het is opgeheven.'))
 
     class Meta:
         abstract = True
-
-    @property
-    def datum_begin_geldigheid_date(self):
-        """
-        :return: datetime.date or None when the value is not ok
-        """
-        try:
-            return parse_onvolledige_datum(self.datum_begin_geldigheid)
-        except ValidationError:
-            return None
-
-    @property
-    def datum_einde_geldigheid_date(self):
-        """
-        :return: datetime.date or None when the value is not ok
-        """
-        try:
-            return parse_onvolledige_datum(self.datum_einde_geldigheid)
-        except ValidationError:
-            return None
 
     def clean(self):
         """
@@ -85,7 +64,24 @@ class GeldigheidMixin(models.Model):
             De Versiedatum is gelijk aan of ligt na de Datum begin geldigheid zaaktype en is gelijk aan of ligt voor de Datum einde geldigheid zaaktype
 
         """
-        if self.datum_begin_geldigheid and self.datum_einde_geldigheid:
-            if self.datum_begin_geldigheid_date > self.datum_begin_geldigheid_date:
+        super().clean()
+
+        if self.datum_einde_geldigheid:
+            if self.datum_einde_geldigheid < self.datum_begin_geldigheid:
                 raise ValidationError(_('Datum einde geldigheid is gelijk aan of gelegen na de datum zoals opgenomen '
                                         'onder Datum begin geldigheid.'))
+
+    def _clean_geldigheid(self, zaaktype):
+        """
+        De begin_datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
+
+        De datum_einde_geldigheid is gelijk aan of gelegen na de datum zoals opgenomen
+        onder 'Datum begin geldigheid resultaattype’.
+        De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
+        """
+        if self.datum_begin_geldigheid != zaaktype.versiedatum:
+            raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
+
+        if self.datum_einde_geldigheid:
+            if self.datum_einde_geldigheid + timedelta(days=1) != zaaktype.versiedatum:
+                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))

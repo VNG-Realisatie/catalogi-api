@@ -50,7 +50,7 @@ class StatusTypeAPITests(APITestCase):
             'omschrijving': 'Besluit genomen',
             'volgnummer': self.status_type.statustypevolgnummer,
             'checklistitem': [],
-            'ingangsdatumObject': '',
+            'ingangsdatumObject': '2018-01-01',
             'einddatumObject': None,
             'heeftVerplichteEigenschap': [],
             'heeftVerplichteZaakObjecttype': [],

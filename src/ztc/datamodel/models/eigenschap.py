@@ -11,6 +11,7 @@ from ..validators import (
     validate_kardinaliteit, validate_letters_numbers_underscores,
     validate_letters_numbers_underscores_spaces
 )
+
 from .mixins import GeldigheidMixin
 
 
@@ -210,19 +211,7 @@ class Eigenschap(GeldigheidMixin, models.Model):
         if bool(self.specificatie_van_eigenschap) ^ bool(self.referentie_naar_eigenschap):  # xor
             raise ValidationError(_('Één van twee groepen attributen is verplicht: specificatie van eigenschap of referentie naar eigenschap'))
 
-        if self.datum_begin_geldigheid_date != self.is_van.versiedatum_date:
-            raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
-
-        if self.datum_einde_geldigheid:
-            datum_begin = self.datum_begin_geldigheid_date
-            datum_einde = self.datum_einde_geldigheid_date
-            versiedatum = self.is_van.versiedatum_date
-
-            if datum_einde < datum_begin:
-                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid’"))
-
-            if datum_einde + timedelta(days=1) != versiedatum:
-                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+        self._clean_geldigheid(self.is_van)
 
     def __str__(self):
         return '{} - {}'.format(self.is_van, self.eigenschapnaam)

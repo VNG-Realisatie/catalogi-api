@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.test import TestCase
 
 from freezegun import freeze_time
@@ -48,7 +50,7 @@ class FactoryTests(HaaglandenMixin, TestCase):
         #
         # now test the datum_begin_geldigheid on all instances, duplicate code so the default error msg makes sense
         #
-        expected_dates = ['V20180130']  # since the freeze time is used, that date should appear
+        expected_dates = [date(2018, 1, 30)]  # since the freeze time is used, that date should appear
         self.assertEqual(list(set(RolType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
         self.assertEqual(list(set(StatusType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
         self.assertEqual(list(set(BesluitType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)

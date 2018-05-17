@@ -8,6 +8,12 @@ Change history
 *tbd*
 
 * Added Docker related files and instructions.
+* Show all resources (only catalogussen) on the root resource and redirect to
+  default API version resources if no version provided.
+* Changed the StUF date format to ISO8601 format throughout the API. This
+  affects all ``ingangsdatumObject``, ``einddatumObject`` and ``versiedatum``
+  fields.
+* Changed the storage of dates from StUF date format to native date format.
 
 
 0.1.0
