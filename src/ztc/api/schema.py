@@ -1,11 +1,8 @@
 import logging
-import os
 
-from django.conf import settings
 from django.utils.functional import cached_property, empty
 
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_yasg import openapi
 from drf_yasg.app_settings import swagger_settings
 from drf_yasg.inspectors import (
     CoreAPICompatInspector, FieldInspector, NotHandled, SwaggerAutoSchema
@@ -13,32 +10,13 @@ from drf_yasg.inspectors import (
 from drf_yasg.utils import is_list_view
 from drf_yasg.views import get_schema_view
 from rest_framework import filters, permissions, serializers, status
-from rest_framework.settings import api_settings
 
 from .utils.pagination import HALPaginationInspector
 
 logger = logging.getLogger(__name__)
 
-
-try:
-    file_path = os.path.join(settings.BASE_DIR, 'docs', 'api', '_description.md')
-    with open(file_path, 'r', encoding='utf-8') as f:
-        description = f.read()
-except FileNotFoundError as e:
-    logger.warning('Could not load API documentation description: %s', e)
-    description = None
-
-
 schema_view = get_schema_view(
-    openapi.Info(
-        title='Zaaktypecatalogus (ZTC) API documentatie',
-        default_version='v{}'.format(api_settings.DEFAULT_VERSION),
-        description=description,
-        # terms_of_service='',
-        contact=openapi.Contact(email='support@maykinmedia.nl'),
-        license=openapi.License(name='EUPL 1.2'),
-    ),
-    #validators=['flex', 'ssv'],
+    # validators=['flex', 'ssv'],
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
@@ -48,6 +26,7 @@ class DjangoFilterDescriptionInspector(CoreAPICompatInspector):
     """
     Simple filter inspector to set an appropriate description for filter fields.
     """
+
     def get_filter_parameters(self, filter_backend):
         if isinstance(filter_backend, DjangoFilterBackend):
             result = super().get_filter_parameters(filter_backend)
@@ -63,6 +42,7 @@ class SearchDescriptionInspector(CoreAPICompatInspector):
     """
     Simple filter inspector to set an appropriate description for search fields.
     """
+
     def get_filter_parameters(self, filter_backend):
         if isinstance(filter_backend, filters.SearchFilter):
             search_fields = getattr(self.view, 'search_fields', [])
@@ -79,6 +59,7 @@ class OrderingDescriptionInspector(CoreAPICompatInspector):
     """
     Simple filter inspector to set an appropriate description for ordering fields.
     """
+
     def get_filter_parameters(self, filter_backend):
         if isinstance(filter_backend, filters.OrderingFilter):
             ordering_fields = getattr(self.view, 'ordering_fields', [])
@@ -99,6 +80,7 @@ class RelatedFieldDescriptionHelperInspector(FieldInspector):
 
     The description indicates to which resource the URI's point.
     """
+
     def process_result(self, result, method_name, obj, **kwargs):
         model = self.view.queryset.model
 
@@ -135,7 +117,7 @@ class AutoSchema(SwaggerAutoSchema):
         OrderingDescriptionInspector,
     ] + swagger_settings.DEFAULT_FILTER_INSPECTORS
     paginator_inspectors = [
-       HALPaginationInspector,
+        HALPaginationInspector
     ] + swagger_settings.DEFAULT_PAGINATOR_INSPECTORS
 
     @cached_property

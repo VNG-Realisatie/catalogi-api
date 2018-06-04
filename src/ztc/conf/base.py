@@ -460,6 +460,7 @@ SWAGGER_SETTINGS = {
     },
     # drf_yasg.inspectors.SwaggerAutoSchema
     'DEFAULT_AUTO_SCHEMA_CLASS': 'ztc.api.schema.AutoSchema',
+    'DEFAULT_INFO': 'ztc.api.info.info',
 }
 
 # Django-CORS-middleware
