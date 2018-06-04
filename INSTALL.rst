@@ -157,6 +157,16 @@ You can find the admin interface at:
 
 * http://localhost:8000/admin/
 
+API Access token
+----------------
+
+The API requires a valid access token. You can generate one in the admin
+at http://localhost:8000/admin/oauth2_provider/accesstoken/, with scope
+``read write``.
+
+Next, configure your API Client (Postman) or similar to use the auth: add the
+header ``Authorization: Bearer <token>``.
+
 Testsuite
 ---------
 

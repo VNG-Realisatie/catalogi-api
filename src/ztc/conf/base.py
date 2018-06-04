@@ -372,8 +372,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
     #
     # # Filtering
-    'SEARCH_PARAM': 'zoek', # 'search',
-    'ORDERING_PARAM': 'sorteer', # 'ordering',
+    'SEARCH_PARAM': 'zoek',  # 'search',
+    'ORDERING_PARAM': 'sorteer',  # 'ordering',
     #
     # Versioning
     'DEFAULT_VERSION': '1',
