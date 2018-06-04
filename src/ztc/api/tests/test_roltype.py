@@ -1,3 +1,5 @@
+from unittest import skip
+
 from django.urls import reverse
 
 from ...datamodel.choices import RolTypeOmschrijving
@@ -5,6 +7,7 @@ from ...datamodel.tests.factories import RolTypeFactory
 from .base import APITestCase
 
 
+@skip("Not MVP yet")
 class RolTypeAPITests(APITestCase):
     maxDiff = None
 

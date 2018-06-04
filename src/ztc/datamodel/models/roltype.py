@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from ..choices import RolTypeOmschrijving
-
 from .mixins import GeldigheidMixin
 
 

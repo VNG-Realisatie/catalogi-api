@@ -1,9 +1,12 @@
+from unittest import skip
+
 from django.urls import reverse
 
 from ...datamodel.tests.factories import BesluitTypeFactory
 from .base import APITestCase
 
 
+@skip("Not MVP yet")
 class BesluitTypeAPITests(APITestCase):
     maxDiff = None
 

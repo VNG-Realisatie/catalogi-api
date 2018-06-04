@@ -11,7 +11,6 @@ from ..validators import (
     validate_kardinaliteit, validate_letters_numbers_underscores,
     validate_letters_numbers_underscores_spaces
 )
-
 from .mixins import GeldigheidMixin
 
 

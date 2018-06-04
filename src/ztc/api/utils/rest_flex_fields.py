@@ -23,22 +23,21 @@ class FlexFieldsMixin(_FlexFieldsMixin):
     """
 
     @swagger_auto_schema(manual_parameters=[
-            openapi.Parameter(
-                'expand',
-                openapi.IN_QUERY,
-                description='One or more field names, that link to resources, to expand. '
-                            'Multiple fields can be separated with a comma.',
-                type=openapi.TYPE_STRING
-            ),
-            openapi.Parameter(
-                'fields',
-                openapi.IN_QUERY,
-                description='One or more field names to show in the response. All other fields will be excluded. '
-                            'Multiple fields can be separated with a comma.',
-                type=openapi.TYPE_STRING
-            ),
-        ]
-    )
+        openapi.Parameter(
+            'expand',
+            openapi.IN_QUERY,
+            description='One or more field names, that link to resources, to expand. '
+                        'Multiple fields can be separated with a comma.',
+            type=openapi.TYPE_STRING
+        ),
+        openapi.Parameter(
+            'fields',
+            openapi.IN_QUERY,
+            description='One or more field names to show in the response. All other fields will be excluded. '
+                        'Multiple fields can be separated with a comma.',
+            type=openapi.TYPE_STRING
+        ),
+    ])
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
 

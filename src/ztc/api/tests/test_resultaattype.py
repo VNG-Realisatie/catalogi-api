@@ -1,12 +1,13 @@
+from unittest import skip
+
 from django.urls import reverse
 
-from ztc.datamodel.tests.factories import (
-    ResultaatTypeFactory, ZaakInformatieobjectTypeFactory
-)
+from ztc.datamodel.tests.factories import ResultaatTypeFactory
 
 from .base import APITestCase
 
 
+@skip("Not MVP yet")
 class ResultaatTypeAPITests(APITestCase):
     maxDiff = None
 

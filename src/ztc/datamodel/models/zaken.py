@@ -389,8 +389,10 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_('De ZAAKTYPEn (van de hoofdzaken) waaronder ZAAKen van dit ZAAKTYPE als deelzaak kunnen voorkomen.')
     )
 
-    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('maakt deel uit van'), help_text=_(
-        'De CATALOGUS waartoe dit ZAAKTYPE behoort.'))
+    maakt_deel_uit_van = models.ForeignKey(
+        'datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
+        help_text=_('De CATALOGUS waartoe dit ZAAKTYPE behoort.')
+    )
 
     class Meta:
         mnemonic = 'ZKT'

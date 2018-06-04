@@ -8,7 +8,8 @@ from ..utils.viewsets import (
 )
 
 
-class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
+                            FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
@@ -20,7 +21,8 @@ class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin
     serializer_class = ZaakObjectTypeSerializer
 
 
-class ZaakTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
+                      FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.

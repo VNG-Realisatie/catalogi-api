@@ -2,11 +2,11 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
+from . import base
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
     ZaakObjectType, ZaakType
 )
-from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
 
@@ -92,106 +92,106 @@ class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
         )
 
 
-class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class ZaakTypeSerializer(base.NestedModelSerializer):
     parent_lookup_kwargs = {
         'catalogus_pk': 'maakt_deel_uit_van__pk',
     }
 
-    product_dienst = ProductDienstSerializer(many=True, read_only=True)
-    formulier = FormulierSerializer(many=True, read_only=True)
-    referentieproces = ReferentieProcesSerializer(read_only=True)
-    broncatalogus = BronCatalogusSerializer(read_only=True)
-    bronzaaktype = BronZaakTypeSerializer(read_only=True)
+    # product_dienst = ProductDienstSerializer(many=True, read_only=True)
+    # formulier = FormulierSerializer(many=True, read_only=True)
+    # referentieproces = ReferentieProcesSerializer(read_only=True)
+    # broncatalogus = BronCatalogusSerializer(read_only=True)
+    # bronzaaktype = BronZaakTypeSerializer(read_only=True)
 
-    heeftRelevantZaakObjecttype = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='zaakobjecttype_set',
-        view_name='api:zaakobjecttype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_relevant_voor__pk',
-        }
-    )
-    heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='heeft_relevant_besluittype',
-        view_name='api:besluittype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk'
-        }
-    )
-    # TODO: currently only show one side of the relations for a ZaakType.
-    heeftGerelateerd = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='zaaktypenrelatie_van',
-        view_name='api:zaaktypenrelatie-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'zaaktype_van__pk',
-        }
-    )
-    isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='is_deelzaaktype_van',
-        view_name='api:zaaktype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk'
-        },
-    )
-    heeftEigenschap = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='eigenschap_set',
-        view_name='api:eigenschap-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_van__pk'
-        },
-    )
-    heeftRoltype = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='roltype_set',
-        view_name='api:roltype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_van__pk'
-        },
-    )
-    heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='zaakinformatieobjecttype_set',
-        view_name='api:zktiot-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'zaaktype__pk',
-        }
-    )
-    heeftRelevantResultaattype = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='resultaattype_set',
-        view_name='api:resultaattype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_relevant_voor__pk',
-        }
-    )
-    heeftStatustype = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='statustype_set',
-        view_name='api:statustype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_van__pk',
-        }
-    )
+    # heeftRelevantZaakObjecttype = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='zaakobjecttype_set',
+    #     view_name='api:zaakobjecttype-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'is_relevant_voor__pk',
+    #     }
+    # )
+    # heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='heeft_relevant_besluittype',
+    #     view_name='api:besluittype-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'maakt_deel_uit_van__pk'
+    #     }
+    # )
+    # # TODO: currently only show one side of the relations for a ZaakType.
+    # heeftGerelateerd = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='zaaktypenrelatie_van',
+    #     view_name='api:zaaktypenrelatie-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'zaaktype_van__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'zaaktype_van__pk',
+    #     }
+    # )
+    # isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='is_deelzaaktype_van',
+    #     view_name='api:zaaktype-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'maakt_deel_uit_van__pk'
+    #     },
+    # )
+    # heeftEigenschap = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='eigenschap_set',
+    #     view_name='api:eigenschap-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'is_van__pk'
+    #     },
+    # )
+    # heeftRoltype = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='roltype_set',
+    #     view_name='api:roltype-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'is_van__pk'
+    #     },
+    # )
+    # heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='zaakinformatieobjecttype_set',
+    #     view_name='api:zktiot-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'zaaktype__pk',
+    #     }
+    # )
+    # heeftRelevantResultaattype = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='resultaattype_set',
+    #     view_name='api:resultaattype-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'is_relevant_voor__pk',
+    #     }
+    # )
+    # heeftStatustype = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='statustype_set',
+    #     view_name='api:statustype-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+    #         'zaaktype_pk': 'is_van__pk',
+    #     }
+    # )
 
     class Meta:
         model = ZaakType
@@ -225,49 +225,49 @@ class ZaakTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin
             'identificatie',
             'omschrijving',
             'omschrijvingGeneriek',
-            'zaakcategorie',
-            'doel',
-            'aanleiding',
-            'toelichting',
-            'indicatieInternOfExtern',
-            'handelingInitiator',
-            'onderwerp',
-            'handelingBehandelaar',
-            'doorlooptijd',
-            'servicenorm',
-            'opschortingAanhouding',
-            'verlengingmogelijk',
-            'verlengingstermijn',
-            'trefwoord',
-            'archiefclassificatiecode',
-            'vertrouwelijkheidAanduiding',
-            'verantwoordelijke',
-            'publicatieIndicatie',
-            'publicatietekst',
+            # 'zaakcategorie',
+            # 'doel',
+            # 'aanleiding',
+            # 'toelichting',
+            # 'indicatieInternOfExtern',
+            # 'handelingInitiator',
+            # 'onderwerp',
+            # 'handelingBehandelaar',
+            # 'doorlooptijd',
+            # 'servicenorm',
+            # 'opschortingAanhouding',
+            # 'verlengingmogelijk',
+            # 'verlengingstermijn',
+            # 'trefwoord',
+            # 'archiefclassificatiecode',
+            # 'vertrouwelijkheidAanduiding',
+            # 'verantwoordelijke',
+            # 'publicatieIndicatie',
+            # 'publicatietekst',
 
-            # groepsattribuutsoorten
-            'product_dienst',
-            'formulier',
-            'referentieproces',
-            'verantwoordingsrelatie',
-            'broncatalogus',
-            'bronzaaktype',
+            # # groepsattribuutsoorten
+            # 'product_dienst',
+            # 'formulier',
+            # 'referentieproces',
+            # 'verantwoordingsrelatie',
+            # 'broncatalogus',
+            # 'bronzaaktype',
 
-            'ingangsdatumObject',
-            'versiedatum',
-            'einddatumObject',
+            # 'ingangsdatumObject',
+            # 'versiedatum',
+            # 'einddatumObject',
 
             # relaties
             'maaktDeelUitVan',
-            'heeftRelevantInformatieobjecttype',
-            'heeftRelevantBesluittype',
-            'heeftEigenschap',
-            'heeftRelevantZaakObjecttype',
-            'heeftRelevantResultaattype',
-            'heeftStatustype',
-            'heeftRoltype',
-            'isDeelzaaktypeVan',
-            'heeftGerelateerd',
+            # # 'heeftRelevantInformatieobjecttype',
+            # # 'heeftRelevantBesluittype',
+            # # 'heeftEigenschap',
+            # # 'heeftRelevantZaakObjecttype',
+            # # 'heeftRelevantResultaattype',
+            # # 'heeftStatustype',
+            # # 'heeftRoltype',
+            # # 'isDeelzaaktypeVan',
+            # # 'heeftGerelateerd',
         )
 
         expandable_fields = {

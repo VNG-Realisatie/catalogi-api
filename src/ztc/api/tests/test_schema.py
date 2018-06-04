@@ -1,12 +1,12 @@
 import json
 
-from django.test import TransactionTestCase
+from django.test import TestCase
 from django.urls import reverse
 
 from .base import ClientAPITestMixin
 
 
-class DocumentationAPITests(ClientAPITestMixin, TransactionTestCase):
+class DocumentationAPITests(ClientAPITestMixin, TestCase):
     """Section 2.6.3 of the DSO: API strategy"""
 
     def setUp(self):

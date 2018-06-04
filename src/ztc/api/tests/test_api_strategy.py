@@ -13,91 +13,99 @@ from rest_framework.settings import api_settings
 
 from ...datamodel.models import Catalogus
 from ...datamodel.tests.factories import (
-    BesluitTypeFactory, InformatieObjectTypeFactory
+    BesluitTypeFactory, InformatieObjectTypeFactory, ZaakTypeFactory
 )
 from .base import APITestCase, CatalogusAPITestMixin, ClientAPITestMixin
 
 
 class RestfulPrinciplesAPITests(APITestCase):
     """Section 2.6.1 of the DSO: API strategy"""
-    def setUp(self):
-        super().setUp()
-
-        self.besluittype = BesluitTypeFactory.create(
-            maakt_deel_uit_van=self.catalogus, publicatie_indicatie='J')
-        self.informatieobjecttype = InformatieObjectTypeFactory.create(
-            maakt_deel_uit_van=self.catalogus)
 
     def test_nested_resources(self):
         """DSO: API-09 (nested resources)
 
-        An `BesluitType` object can only be part of a `Catalogus` object. Hence, it should be nested under the
-        `catalogussen` resource: `/api/v1/catalogussen/1/besluittypen/`.
+        A ``ZaakType`` object can only be part of a ``Catalogus`` object.
+        Hence, it should be nested under the ``catalogussen`` resource:
+        ``/api/v1/catalogussen/1/zaaktypen/``.
         """
+        zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
         kwargs = {
             'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
-            'pk': self.besluittype.pk
+            'pk': zaaktype.pk
         }
-        besluittype_detail_url = reverse('api:besluittype-detail', kwargs=kwargs)
+        zaaktype_detail_url = reverse('api:zaaktype-detail', kwargs=kwargs)
 
         self.assertEqual(
-            besluittype_detail_url,
-            '/api/v{version}/catalogussen/{catalogus_pk}/besluittypen/{pk}/'.format(**kwargs)
+            zaaktype_detail_url,
+            '/api/v{version}/catalogussen/{catalogus_pk}/zaaktypen/{pk}/'.format(**kwargs)
         )
 
     def test_expand_all_resources(self):
         """DSO: API-10 (expand all resources)
 
-        Passing `/api/v1/catalogussen/1/?expand=true` expands all (1st level) expandable resources.
+        Passing `/api/v1/catalogussen/1/?expand=true` expands all (1st level)
+        expandable resources.
         """
+        ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+
         # TODO: Why is this an English term, while search and ordering are Dutch?
-        response = self.api_client.get('{}?expand=true'.format(self.catalogus_detail_url))
+        response = self.api_client.get(self.catalogus_detail_url, {'expand': 'true'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         # TODO: Extend with other resources.
-        expected_expanded_resources = ['bestaatuitBesluittype', 'bestaatuitInformatieobjecttype']
+        expected_expanded_resources = ['bestaatuitZaaktype']
         for resource in expected_expanded_resources:
-            self.assertGreater(len(data[resource]), 0, data[resource])
-            self.assertIsInstance(data[resource][0], dict)
+            with self.subTest(resource=resource):
+                self.assertGreater(len(data[resource]), 0, data[resource])
+                self.assertIsInstance(data[resource][0], dict)
 
     def test_expand_single_resource(self):
         """DSO: API-11 (expand single resource)
 
-        Passing `/api/v1/catalogussen/1/?expand=bestaatuitBesluittype` expands only the resource referenced by the field
-        "besluittypen".
+        Passing ``/api/v1/catalogussen/1/?expand=bestaatuitZaaktype`` expands
+        only the resource referenced by the field "besluittypen".
         """
-        response = self.api_client.get('{}?expand=bestaatuitBesluittype'.format(self.catalogus_detail_url))
-        self.assertEqual(response.status_code, 200)
+        ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
 
+        response = self.api_client.get(self.catalogus_detail_url, {'expand': 'bestaatuitZaaktype'})
+
+        self.assertEqual(response.status_code, 200)
         data = response.json()
 
-        expected_expanded_resource = 'bestaatuitBesluittype'
+        expected_expanded_resource = 'bestaatuitZaaktype'
         self.assertGreater(len(data[expected_expanded_resource]), 0)
         self.assertIsInstance(data[expected_expanded_resource][0], dict)
 
         # TODO: Extend with other resources.
-        expected_closed_resources = ['bestaatuitInformatieobjecttype', ]
+        expected_closed_resources = []  # ['bestaatuitInformatieobjecttype']
         for resource in expected_closed_resources:
             self.assertGreater(len(data[resource]), 0)
             self.assertIsInstance(data[resource][0], str)
             self.assertTrue(data[resource][0].startswith('http://'))
 
+    @skip("Only bestaatuitZaaktype is currently enabled")
     def test_expand_multiple_resources(self):
         """DSO: API-11 (expand multiple resources)
 
-        Passing `/api/v1/catalogussen/1/?expand=bestaatuitBesluittype,bestaatuitInformatieobjecttype` expands only the two resources
-        referenced by the field "besluittypen" and "informatieobjecttypen".
+        Passing ``/api/v1/catalogussen/1/?expand=bestaatuitBesluittype,bestaatuitInformatieobjecttype``
+        expands only the two resources referenced by the field "besluittypen" and "informatieobjecttypen".
         """
-        response = self.api_client.get('{}?expand=bestaatuitBesluittype,bestaatuitInformatieobjecttype'.format(self.catalogus_detail_url))
-        self.assertEqual(response.status_code, 200)
+        BesluitTypeFactory.create(maakt_deel_uit_van=self.catalogus, publicatie_indicatie='J')
+        InformatieObjectTypeFactory.create(maakt_deel_uit_van=self.catalogus)
 
+        response = self.api_client.get(
+            self.catalogus_detail_url,
+            {'expand': 'bestaatuitBesluittype,bestaatuitInformatieobjecttype'}
+        )
+
+        self.assertEqual(response.status_code, 200)
         data = response.json()
 
         # TODO: Extend with other resources.
-        expected_expanded_resources = ['bestaatuitBesluittype', 'bestaatuitInformatieobjecttype', ]
+        expected_expanded_resources = ['bestaatuitBesluittype', 'bestaatuitInformatieobjecttype']
         for resource in expected_expanded_resources:
             self.assertGreater(len(data[resource]), 0)
             self.assertIsInstance(data[resource][0], dict)
@@ -112,15 +120,17 @@ class RestfulPrinciplesAPITests(APITestCase):
     def test_expand_resource_with_specific_field(self):
         """DSO: API-11 (expand resource with specific field)
 
-        Passing `/api/v1/catalogussen/1/?expand=bestaatuitBesluittype.omschrijving` expands only the resource
+        Passing ``/api/v1/catalogussen/1/?expand=bestaatuitZaaktype.omschrijving`` expands only the resource
         referenced by the field "besluittypen" and only shows the field "omschrijving" of that resource.
         """
-        response = self.api_client.get('{}?expand=bestaatuitBesluittype.omschrijving'.format(self.catalogus_detail_url))
-        self.assertEqual(response.status_code, 200)
+        ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
 
+        response = self.api_client.get(self.catalogus_detail_url, {'expand': 'bestaatuitZaaktype.omschrijving'})
+
+        self.assertEqual(response.status_code, 200)
         data = response.json()
 
-        expected_expanded_resource = 'bestaatuitBesluittype'
+        expected_expanded_resource = 'bestaatuitZaaktype'
         self.assertGreater(len(data[expected_expanded_resource]), 0)
         self.assertIsInstance(data[expected_expanded_resource][0], dict)
         self.assertEqual(len(data[expected_expanded_resource][0]), 1)

@@ -1,3 +1,5 @@
+from unittest import skip
+
 from django.urls import reverse
 
 from ztc.datamodel.tests.factories import (
@@ -8,6 +10,7 @@ from ztc.datamodel.tests.factories import (
 from .base import APITestCase
 
 
+@skip("Not MVP yet")
 class EigenschapAPITests(APITestCase):
     maxDiff = None
 

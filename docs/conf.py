@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# django_dbcache_fields documentation build configuration file, created by
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+#
+import os
+import sys
+
+# ztc documentation build configuration file, created by
 # sphinx-quickstart on Tue Oct 31 09:48:19 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -13,16 +20,10 @@ from __future__ import absolute_import, unicode_literals
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-import os
-import sys
 
 sys.path.insert(0, os.path.abspath('../src'))
 
-import ztc
+import ztc  # noqa isort:skip
 
 
 # -- General configuration ------------------------------------------------

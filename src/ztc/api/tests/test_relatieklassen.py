@@ -1,3 +1,5 @@
+from unittest import skip
+
 from django.urls import reverse
 
 from ztc.datamodel.tests.factories import (
@@ -8,6 +10,7 @@ from ztc.datamodel.tests.factories import (
 from .base import APITestCase
 
 
+@skip("Not MVP yet")
 class ZaakTypeRelatieAPITests(APITestCase):
     maxDiff = None
 
@@ -60,6 +63,7 @@ class ZaakTypeRelatieAPITests(APITestCase):
         self.assertEqual(response.json(), expected)
 
 
+@skip("Not MVP yet")
 class ZaakInformatieobjectTypeAPITests(APITestCase):
     maxDiff = None
 
@@ -114,6 +118,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.json(), expected)
 
 
+@skip("Not MVP yet")
 class ZaakInformatieobjectTypeArchiefregimeAPITests(APITestCase):
     maxDiff = None
 

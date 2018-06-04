@@ -9,7 +9,7 @@ from oauth2_provider.models import AccessToken
 from ...datamodel.tests.factories import CatalogusFactory
 
 
-class ClientAPITestMixin(object):
+class ClientAPITestMixin:
     def setUp(self):
         super().setUp()
 
@@ -22,7 +22,7 @@ class ClientAPITestMixin(object):
             content_type='application/json', AUTHORIZATION='Bearer {}'.format(self.token.token))
 
 
-class CatalogusAPITestMixin(object):
+class CatalogusAPITestMixin:
     API_VERSION = '1'
 
     def setUp(self):

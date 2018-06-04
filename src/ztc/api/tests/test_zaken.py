@@ -1,3 +1,5 @@
+from unittest import skip
+
 from django.urls import reverse
 
 from ztc.datamodel.tests.factories import (
@@ -40,53 +42,53 @@ class ZaakTypeAPITests(APITestCase):
 
         expected = {
             'url': 'http://testserver{}'.format(self.zaaktype_detail_url),
-            'ingangsdatumObject': '2018-01-01',
-            'einddatumObject': None,
-            'vertrouwelijkheidAanduiding': '',
+            # 'ingangsdatumObject': '2018-01-01',
+            # 'einddatumObject': None,
+            # 'vertrouwelijkheidAanduiding': '',
             'identificatie': self.zaaktype.zaaktype_identificatie,
-            'product_dienst': [{
-                'naam': self.zaaktype.product_dienst.get().naam,
-                'link': None
-            }],
-            'broncatalogus': None,
-            'publicatieIndicatie': '',
-            'trefwoord': [],
-            'zaakcategorie': None,
-            'toelichting': None,
-            'handelingInitiator': '',
-            'bronzaaktype': None,
-            'aanleiding': '',
-            'verlengingstermijn': 30,
-            'opschortingAanhouding': '',
+            # 'product_dienst': [{
+            #     'naam': self.zaaktype.product_dienst.get().naam,
+            #     'link': None
+            # }],
+            # 'broncatalogus': None,
+            # 'publicatieIndicatie': '',
+            # 'trefwoord': [],
+            # 'zaakcategorie': None,
+            # 'toelichting': None,
+            # 'handelingInitiator': '',
+            # 'bronzaaktype': None,
+            # 'aanleiding': '',
+            # 'verlengingstermijn': 30,
+            # 'opschortingAanhouding': '',
             'maaktDeelUitVan': 'http://testserver{}'.format(self.catalogus_detail_url),
-            'indicatieInternOfExtern': '',
-            'verlengingmogelijk': '',
-            'handelingBehandelaar': '',
-            'doel': '',
-            'versiedatum': '2018-01-01',
-            'formulier': [],
-            'onderwerp': '',
-            'publicatietekst': None,
+            # 'indicatieInternOfExtern': '',
+            # 'verlengingmogelijk': '',
+            # 'handelingBehandelaar': '',
+            # 'doel': '',
+            # 'versiedatum': '2018-01-01',
+            # 'formulier': [],
+            # 'onderwerp': '',
+            # 'publicatietekst': None,
             'omschrijvingGeneriek': None,
-            'verantwoordingsrelatie': [],
-            'isDeelzaaktypeVan': [],
-            'servicenorm': None,
-            'archiefclassificatiecode': None,
-            'referentieproces': {
-                'link': None,
-                'naam': self.zaaktype.referentieproces.naam,
-            },
-            'doorlooptijd': 30,
-            'verantwoordelijke': '',
+            # 'verantwoordingsrelatie': [],
+            # 'isDeelzaaktypeVan': [],
+            # 'servicenorm': None,
+            # 'archiefclassificatiecode': None,
+            # 'referentieproces': {
+            #     'link': None,
+            #     'naam': self.zaaktype.referentieproces.naam,
+            # },
+            # 'doorlooptijd': 30,
+            # 'verantwoordelijke': '',
             'omschrijving': '',
-            'heeftGerelateerd': [],
-            'heeftRelevantInformatieobjecttype': [],
-            'heeftEigenschap': [],
-            'heeftRelevantBesluittype': [],
-            'heeftRelevantResultaattype': [],
-            'heeftRelevantZaakObjecttype': [],
-            'heeftRoltype': [],
-            'heeftStatustype': [],
+            # 'heeftGerelateerd': [],
+            # 'heeftRelevantInformatieobjecttype': [],
+            # 'heeftEigenschap': [],
+            # 'heeftRelevantBesluittype': [],
+            # 'heeftRelevantResultaattype': [],
+            # 'heeftRelevantZaakObjecttype': [],
+            # 'heeftRoltype': [],
+            # 'heeftStatustype': [],
         }
         self.assertEqual(expected, response.json())
 
@@ -130,6 +132,7 @@ class ZaakTypeAPITests(APITestCase):
         pass
 
 
+@skip("Not in current MVP")
 class ZaakObjectTypeAPITests(APITestCase):
     maxDiff = None
 
