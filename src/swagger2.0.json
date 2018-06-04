@@ -284,13 +284,13 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "version",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "version",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -338,6 +338,12 @@
             },
             "parameters": [
                 {
+                    "name": "version",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
                     "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
@@ -349,12 +355,6 @@
                     "description": "A unique integer value identifying this Zaaktype.",
                     "required": true,
                     "type": "integer"
-                },
-                {
-                    "name": "version",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
                 }
             ]
         },
@@ -399,17 +399,17 @@
             },
             "parameters": [
                 {
+                    "name": "version",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
                     "name": "id",
                     "in": "path",
                     "description": "A unique integer value identifying this Catalogus.",
                     "required": true,
                     "type": "integer"
-                },
-                {
-                    "name": "version",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
                 }
             ]
         }

@@ -1,0 +1,594 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Zaaktypecatalogus (ZTC) API documentatie",
+        "description": "Introductie\n-----------\n\nDe GEMMA Zaaktypecatalogus 2 (ZTC2, ofwel de 2e generatie zaaktypecatalogus)\nhelpt gemeenten om het proces vanuit de 'vraag van een klant' (productaanvraag,\nmelding, aangifte, informatieverzoek e.d.) tot en met het leveren van een\npassend antwoord daarop in te richten, inclusief de bijbehorende\ninformatievoorziening. Opslag van gegevens gebeurt conform het\n[Informatiemodel Zaaktypen/Zaaktypecatalogus][1] (ImZTC, versie 2.1).\n\nDe catalogi worden middels een RESTful API ontsloten. Hierbij is zeer sterk\ngekeken naar het [Digitaal Stelsel Omgevingswet][2] (DSO) voor de API- en URI\nstrategie, en [StUF-ZTC][3] om zo goed mogelijk aan te sluiten op de services\nzoals deze zijn gedefinieerd in SOAP.\n\n[1]: http://www.gemmaonline.nl/index.php/Informatiemodel_Zaaktypen_(ImZTC)\n[2]: https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/\n[3]: https://www.gemmaonline.nl/index.php/Sectormodel_Zaaktypen(-catalogus):_StUF%E2%80%93ZTC\n\n\nWaarschuwing\n------------\n\nHoewel op dit moment versie 1 van de API beschikbaar is, kunnen er breaking\nchanges voorkomen zolang de Zaaktypecatalogus nog niet versie 1.0.0 heeft\nbereikt.",
+        "contact": {
+            "email": "support@maykinmedia.nl"
+        },
+        "license": {
+            "name": "EUPL 1.2"
+        },
+        "version": "1"
+    },
+    "security": [
+        {
+            "OAuth2": [],
+            "Bearer": []
+        }
+    ],
+    "paths": {
+        "/api/v{version}/catalogussen/": {
+            "get": {
+                "operationId": "catalogus_list",
+                "description": "**Objecttype CATALOGUS**\n\nEen verzameling van CATALOGUSsen.",
+                "parameters": [
+                    {
+                        "name": "domein",
+                        "in": "query",
+                        "description": "Filter the returned list by domein.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rsin",
+                        "in": "query",
+                        "description": "Filter the returned list by rsin.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "zoek",
+                        "in": "query",
+                        "description": "One or more search terms, separated by a space, to search the returned list. The following fields will be searched: domein, rsin, contactpersoon_beheer_naam.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sorteer",
+                        "in": "query",
+                        "description": "A field name to sort the returned list, ascending by default. Prefix with a minus to sort descending. Valid values: domein, rsin.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagina",
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "headers": {
+                            "X-Total-Count": {
+                                "description": "Total number of results.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            },
+                            "X-Pagination-Count": {
+                                "description": "Total number of pages.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            },
+                            "X-Pagination-Page": {
+                                "description": "Current page number.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            },
+                            "X-Pagination-Limit": {
+                                "description": "Number of results per page.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "_links",
+                                        "results"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "_links": {
+                                            "description": "Pagination meta data about the result set.",
+                                            "required": [
+                                                "self"
+                                            ],
+                                            "type": "object",
+                                            "properties": {
+                                                "self": {
+                                                    "description": "URL to the current page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "first": {
+                                                    "description": "URL to the first page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "prev": {
+                                                    "description": "URL to the previous page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "next": {
+                                                    "description": "URL to the next page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "last": {
+                                                    "description": "URL to the last page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                }
+                                            }
+                                        },
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Catalogus"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "version",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "/api/v{version}/catalogussen/{catalogus_pk}/zaaktypen/": {
+            "get": {
+                "operationId": "zaaktype_list",
+                "description": "**Objecttype ZAAKTYPE**\n\nEen verzameling van ZAAKTYPEn.",
+                "parameters": [
+                    {
+                        "name": "zoek",
+                        "in": "query",
+                        "description": "One or more search terms, separated by a space, to search the returned list. The following fields will be searched: zaaktype_identificatie, zaaktype_omschrijving, zaaktype_omschrijving_generiek, zaakcategorie, doel, aanleiding, onderwerp, toelichting.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sorteer",
+                        "in": "query",
+                        "description": "A field name to sort the returned list, ascending by default. Prefix with a minus to sort descending. Valid values: maakt_deel_uit_van, publicatie_indicatie, verlenging_mogelijk, opschorting_aanhouding_mogelijk, indicatie_intern_of_extern, vertrouwelijkheidaanduiding.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pagina",
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "headers": {
+                            "X-Total-Count": {
+                                "description": "Total number of results.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            },
+                            "X-Pagination-Count": {
+                                "description": "Total number of pages.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            },
+                            "X-Pagination-Page": {
+                                "description": "Current page number.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            },
+                            "X-Pagination-Limit": {
+                                "description": "Number of results per page.",
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "required": [
+                                        "_links",
+                                        "results"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "_links": {
+                                            "description": "Pagination meta data about the result set.",
+                                            "required": [
+                                                "self"
+                                            ],
+                                            "type": "object",
+                                            "properties": {
+                                                "self": {
+                                                    "description": "URL to the current page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "first": {
+                                                    "description": "URL to the first page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "prev": {
+                                                    "description": "URL to the previous page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "next": {
+                                                    "description": "URL to the next page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                },
+                                                "last": {
+                                                    "description": "URL to the last page in the result set.",
+                                                    "type": "string",
+                                                    "format": "uri"
+                                                }
+                                            }
+                                        },
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ZaakType"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "version",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "name": "catalogus_pk",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "/api/v{version}/catalogussen/{catalogus_pk}/zaaktypen/{id}/": {
+            "get": {
+                "operationId": "zaaktype_read",
+                "description": "**Objecttype ZAAKTYPE**\n\nHet geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.",
+                "parameters": [
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "One or more field names, that link to resources, to expand. Multiple fields can be separated with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "One or more field names to show in the response. All other fields will be excluded. Multiple fields can be separated with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ZaakType"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Zaaktype not found"
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "version",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "name": "catalogus_pk",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this Zaaktype.",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            ]
+        },
+        "/api/v{version}/catalogussen/{id}/": {
+            "get": {
+                "operationId": "catalogus_read",
+                "description": "**Objecttype CATALOGUS**\n\nDe verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor een Domein die als één geheel beheerd\nwordt.",
+                "parameters": [
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "One or more field names, that link to resources, to expand. Multiple fields can be separated with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "One or more field names to show in the response. All other fields will be excluded. Multiple fields can be separated with a comma.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Catalogus"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Catalogus not found"
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "version",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    }
+                },
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this Catalogus.",
+                    "required": true,
+                    "schema": {
+                        "type": "integer"
+                    }
+                }
+            ]
+        }
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "OAuth2": {
+                "type": "oauth2",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "/oauth2/token/",
+                        "scopes": {
+                            "write": "Schrijftoegang tot de catalogus en gerelateerde objecten.",
+                            "read": "Leestoegang tot de catalogus en gerelateerde objecten."
+                        }
+                    }
+                }
+            },
+            "Bearer": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header"
+            }
+        },
+        "schemas": {
+            "Catalogus": {
+                "required": [
+                    "domein",
+                    "rsin",
+                    "contactpersoonBeheerNaam"
+                ],
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "title": "Url",
+                        "type": "string",
+                        "format": "uri",
+                        "readOnly": true
+                    },
+                    "domein": {
+                        "title": "Domein",
+                        "description": "Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt.",
+                        "type": "string",
+                        "maxLength": 5
+                    },
+                    "rsin": {
+                        "title": "Rsin",
+                        "description": "Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS.",
+                        "type": "string",
+                        "maxLength": 9
+                    },
+                    "contactpersoonBeheerNaam": {
+                        "title": "Naam",
+                        "description": "De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.",
+                        "type": "string",
+                        "maxLength": 40
+                    },
+                    "contactpersoonBeheerTelefoonnummer": {
+                        "title": "Telefoonnummer",
+                        "description": "Het telefoonnummer van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.",
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "contactpersoonBeheerEmailadres": {
+                        "title": "Emailadres",
+                        "description": "Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.",
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "bestaatuitZaaktype": {
+                        "title": "Bestaatuitzaaktype",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "URI to a ZAAKTYPE"
+                        },
+                        "readOnly": true,
+                        "uniqueItems": true,
+                        "description": "Zero or more URI's to a ZAAKTYPE"
+                    }
+                }
+            },
+            "ZaakType": {
+                "required": [
+                    "identificatie",
+                    "omschrijving",
+                    "maaktDeelUitVan"
+                ],
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "title": "Url",
+                        "type": "string",
+                        "format": "uri",
+                        "readOnly": true
+                    },
+                    "identificatie": {
+                        "title": "Identificatie",
+                        "description": "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.",
+                        "type": "integer",
+                        "maximum": 99999,
+                        "minimum": 0
+                    },
+                    "omschrijving": {
+                        "title": "Omschrijving",
+                        "description": "Omschrijving van de aard van ZAAKen van het ZAAKTYPE.",
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "omschrijvingGeneriek": {
+                        "title": "Omschrijving generiek",
+                        "description": "Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE",
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "maaktDeelUitVan": {
+                        "title": "Maaktdeeluitvan",
+                        "description": "De CATALOGUS waartoe dit ZAAKTYPE behoort.",
+                        "type": "string",
+                        "format": "uri"
+                    }
+                }
+            }
+        }
+    }
+}
