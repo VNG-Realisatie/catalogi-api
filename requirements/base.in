@@ -1,23 +1,30 @@
-psycopg2
-Pillow
+pip-tools
+psycopg2-binary
+python-dotenv
+python-dateutil
 pytz
 raven
 
 Django>=1.11,<2
-django-hijack
-django-hijack-admin
 django-axes
 django-choices
+django-hijack
+django-hijack-admin
+django-choices
 django-rosetta
-django-sniplates
 django-redis
 django_admin_index
 
 djangorestframework
 django-filter
+djangorestframework-camel-case
+djangorestframework-filters
+drf-yasg
+
 drf-nested-routers
 drf-flex-fields
 django-oauth-toolkit
 django-cors-middleware
 requests-oauthlib
-drf-yasg
+
+-e git+https://github.com/maykinmedia/gemma-zaken-common.git@master#egg=zds_schema

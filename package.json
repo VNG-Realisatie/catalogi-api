@@ -7,7 +7,7 @@
     "doc": "doc"
   },
   "scripts": {
-    "convert": "swagger2openapi src/swagger2.0.json -o openapi.json"
+    "convert": "swagger2openapi src/swagger2.0.json -o src/openapi.yaml"
   },
   "repository": {
     "type": "git",

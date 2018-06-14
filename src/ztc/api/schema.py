@@ -1,8 +1,11 @@
 import logging
+import os
 
+from django.conf import settings
 from django.utils.functional import cached_property, empty
 
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg import openapi
 from drf_yasg.app_settings import swagger_settings
 from drf_yasg.inspectors import (
     CoreAPICompatInspector, FieldInspector, NotHandled, SwaggerAutoSchema
@@ -15,6 +18,28 @@ from .utils.pagination import HALPaginationInspector
 
 logger = logging.getLogger(__name__)
 
+
+try:
+    file_path = os.path.join(settings.BASE_DIR, 'docs', 'api', '_description.md')
+    with open(file_path, 'r', encoding='utf-8') as f:
+        description = f.read()
+except FileNotFoundError as e:
+    logger.warning('Could not load API documentation description: %s', e)
+    description = None
+
+
+info = openapi.Info(
+    title='Zaaktypecatalogus (ZTC) API documentatie',
+    default_version='1',
+    description=description,
+    # terms_of_service='',
+    contact=openapi.Contact(
+        email='support@maykinmedia.nl',
+        url='https://github.com/VNG-Realisatie/gemma-zaken'
+    ),
+    license=openapi.License(name='EUPL 1.2'),
+)
+
 schema_view = get_schema_view(
     # validators=['flex', 'ssv'],
     public=True,
@@ -22,6 +47,7 @@ schema_view = get_schema_view(
 )
 
 
+# TODO: move to zds_schema
 class DjangoFilterDescriptionInspector(CoreAPICompatInspector):
     """
     Simple filter inspector to set an appropriate description for filter fields.

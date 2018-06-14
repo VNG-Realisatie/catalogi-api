@@ -1,4 +1,11 @@
-from .base import *
+import os
+
+os.environ.setdefault('SECRET_KEY', 'i3yihsrle$16%4_&0_ic5psrzih+ostvzkzn7zwj$qddcl18+j')
+os.environ.setdefault('DB_NAME', 'ztc')
+os.environ.setdefault('DB_USER', 'ztc')
+os.environ.setdefault('DB_PASSWORD', 'ztc')
+
+from .base import *  # noqa isort:skip
 
 #
 # Standard Django settings.
@@ -9,18 +16,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ADMINS = ()
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ztc',
-        # The following settings are not used with sqlite3:
-        'USER': 'ztc',
-        'PASSWORD': 'ztc',
-        'HOST': '',  # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',  # Set to empty string for default.
-    }
-}
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -81,8 +76,12 @@ DEBUG_TOOLBAR_CONFIG = {
 
 AXES_BEHIND_REVERSE_PROXY = False  # Default: False (we are typically using Nginx as reverse proxy)
 
+REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] += (
+    'rest_framework.renderers.BrowsableAPIRenderer',
+)
+
 # Override settings with local settings.
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
     pass

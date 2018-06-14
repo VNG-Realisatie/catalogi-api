@@ -1,8 +1,8 @@
 import os
 
 import django.db.models.options as options
-# Django-hijack (and Django-hijack-admin)
-from django.core.urlresolvers import reverse_lazy
+
+from .api import *  # noqa
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 DJANGO_PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir))
@@ -12,12 +12,23 @@ BASE_DIR = os.path.abspath(os.path.join(DJANGO_PROJECT_DIR, os.path.pardir, os.p
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'i3yihsrle$16%4_&0_ic5psrzih+ostvzkzn7zwj$qddcl18+j'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = []
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.getenv('DB_NAME', 'ztc'),
+        'USER': os.getenv('DB_USER', 'ztc'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'ztc'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', 5432),
+    }
+}
 
 # Application definition
 
@@ -43,15 +54,13 @@ INSTALLED_APPS = [
 
     # External applications.
     'axes',
-    'sniplates',
-    'hijack',
-    'compat',  # Part of hijack
-    'hijack_admin',
-
-    'oauth2_provider',
+    'django_filters',
     'corsheaders',
-    'rest_framework',
+    'zds_schema',  # before drf_yasg to override the management command
     'drf_yasg',
+    'oauth2_provider',
+    'rest_framework',
+    'rest_framework_filters',
 
     # Project applications.
     'ztc.accounts',
@@ -305,14 +314,6 @@ AXES_BEHIND_REVERSE_PROXY = True  # Default: False (we are typically using Nginx
 AXES_ONLY_USER_FAILURES = False  # Default: False (you might want to block on username rather than IP)
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = False  # Default: False (you might want to block on username and IP)
 
-# Django-Hijack
-HIJACK_LOGIN_REDIRECT_URL = reverse_lazy('admin:index')
-HIJACK_LOGOUT_REDIRECT_URL = reverse_lazy('admin:accounts_user_changelist')
-HIJACK_REGISTER_ADMIN = False
-# This is a CSRF-security risk.
-# See: http://django-hijack.readthedocs.io/en/latest/configuration/#allowing-get-method-for-hijack-views
-HIJACK_ALLOW_GET_REQUESTS = True
-
 DATUM_FORMAT = "%Y%m%d"  # Datum (jjjjmmdd)
 
 # Django-OAuth-Toolkit
@@ -322,145 +323,6 @@ OAUTH2_PROVIDER = {
         'read': 'Read scope',
         'write': 'Write scope',
     }
-}
-
-# Django REST Framework
-REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        # 'rest_framework.renderers.BrowsableAPIRenderer',
-    ),
-    'DEFAULT_PARSER_CLASSES': (
-        'rest_framework.parsers.JSONParser',
-        # 'rest_framework.parsers.FormParser',
-        # 'rest_framework.parsers.MultiPartParser'
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication'
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
-        # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.AllowAny',
-    ),
-    # 'DEFAULT_THROTTLE_CLASSES': (),
-    # 'DEFAULT_CONTENT_NEGOTIATION_CLASS': 'rest_framework.negotiation.DefaultContentNegotiation',
-    # 'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
-    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
-    #
-    # # Generic view behavior
-    'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-        'rest_framework.filters.SearchFilter',
-        'rest_framework.filters.OrderingFilter',
-    ),
-    #
-    # # Schema
-    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.AutoSchema',
-    #
-    # # Throttling
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'user': None,
-    #     'anon': None,
-    # },
-    # 'NUM_PROXIES': None,
-    #
-    # # Pagination
-    'PAGE_SIZE': 100,
-    #
-    # # Filtering
-    'SEARCH_PARAM': 'zoek',  # 'search',
-    'ORDERING_PARAM': 'sorteer',  # 'ordering',
-    #
-    # Versioning
-    'DEFAULT_VERSION': '1',
-    'ALLOWED_VERSIONS': ('1', ),
-    'VERSION_PARAM': 'version',
-    #
-    # # Authentication
-    # 'UNAUTHENTICATED_USER': 'django.contrib.auth.models.AnonymousUser',
-    # 'UNAUTHENTICATED_TOKEN': None,
-    #
-    # # View configuration
-    # 'VIEW_NAME_FUNCTION': 'rest_framework.views.get_view_name',
-    # 'VIEW_DESCRIPTION_FUNCTION': 'rest_framework.views.get_view_description',
-    #
-    # # Exception handling
-    # 'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
-    'EXCEPTION_HANDLER': 'ztc.api.utils.exceptions.exception_handler',
-    # 'NON_FIELD_ERRORS_KEY': 'non_field_errors',
-    #
-    # # Testing
-    # 'TEST_REQUEST_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.MultiPartRenderer',
-    #     'rest_framework.renderers.JSONRenderer'
-    # ),
-    # 'TEST_REQUEST_DEFAULT_FORMAT': 'multipart',
-    #
-    # # Hyperlink settings
-    # 'URL_FORMAT_OVERRIDE': 'format',
-    # 'FORMAT_SUFFIX_KWARG': 'format',
-    # 'URL_FIELD_NAME': 'url',
-    #
-    # # Input and output formats
-    # 'DATE_FORMAT': ISO_8601,
-    # 'DATE_INPUT_FORMATS': (ISO_8601,),
-    #
-    # 'DATETIME_FORMAT': ISO_8601,
-    # 'DATETIME_INPUT_FORMATS': (ISO_8601,),
-    #
-    # 'TIME_FORMAT': ISO_8601,
-    # 'TIME_INPUT_FORMATS': (ISO_8601,),
-    #
-    # # Encoding
-    # 'UNICODE_JSON': True,
-    # 'COMPACT_JSON': True,
-    # 'STRICT_JSON': True,
-    # 'COERCE_DECIMAL_TO_STRING': True,
-    # 'UPLOADED_FILES_USE_URL': True,
-    #
-    # # Browseable API
-    # 'HTML_SELECT_CUTOFF': 1000,
-    # 'HTML_SELECT_CUTOFF_TEXT': "More than {count} items...",
-    #
-    # # Schemas
-    # 'SCHEMA_COERCE_PATH_PK': True,
-    # 'SCHEMA_COERCE_METHOD_NAMES': {
-    #     'retrieve': 'read',
-    #     'destroy': 'delete'
-    # },
-}
-
-REST_FRAMEWORK_EXT = {
-    'PAGE_PARAM': 'pagina',
-    'EXPAND_PARAM': 'expand',
-    'EXPAND_ALL_VALUE': 'true',
-    'FIELDS_PARAM': 'fields',
-}
-
-SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'OAuth2': {
-            'type': 'oauth2',
-            'flow': 'application',
-            'tokenUrl': '/oauth2/token/',
-            'scopes': {
-                'write': 'Schrijftoegang tot de catalogus en gerelateerde objecten.',
-                'read': 'Leestoegang tot de catalogus en gerelateerde objecten.'
-            }
-        },
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
-        },
-    },
-    # drf_yasg.inspectors.SwaggerAutoSchema
-    'DEFAULT_AUTO_SCHEMA_CLASS': 'ztc.api.schema.AutoSchema',
-    'DEFAULT_INFO': 'ztc.api.info.info',
 }
 
 # Django-CORS-middleware
