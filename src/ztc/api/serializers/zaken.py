@@ -92,7 +92,7 @@ class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
         )
 
 
-class ZaakTypeSerializer(base.NestedModelSerializer):
+class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'catalogus_pk': 'maakt_deel_uit_van__pk',
     }
@@ -195,36 +195,11 @@ class ZaakTypeSerializer(base.NestedModelSerializer):
 
     class Meta:
         model = ZaakType
-        ref_name = model.__name__
-        source_mapping = {
-            "ingangsdatumObject": 'datum_begin_geldigheid',
-            "einddatumObject": 'datum_einde_geldigheid',
-
-            'identificatie': 'zaaktype_identificatie',
-            'omschrijving': 'zaaktype_omschrijving',
-            'omschrijvingGeneriek': 'zaaktype_omschrijving_generiek',
-            'indicatieInternOfExtern': 'indicatie_intern_of_extern',
-            'handelingInitiator': 'handeling_initiator',
-            'handelingBehandelaar': 'handeling_behandelaar',
-            'doorlooptijd': 'doorlooptijd_behandeling',
-            'servicenorm': 'servicenorm_behandeling',
-            'opschortingAanhouding': 'opschorting_aanhouding_mogelijk',
-            'verlengingmogelijk': 'verlenging_mogelijk',
-            'vertrouwelijkheidAanduiding': 'vertrouwelijkheidaanduiding',
-            'publicatieIndicatie': 'publicatie_indicatie',
-            'heeftGerelateerd': 'heeft_gerelateerd',
-            'isDeelzaaktypeVan': 'is_deelzaaktype_van',
-            'maaktDeelUitVan': 'maakt_deel_uit_van',
-        }
-        extra_kwargs = {
-            'url': {'view_name': 'api:zaaktype-detail'},
-            'maaktDeelUitVan': {'view_name': 'api:catalogus-detail'},
-        }
         fields = (
             'url',
             'identificatie',
             'omschrijving',
-            'omschrijvingGeneriek',
+            'omschrijving_generiek',
             # 'zaakcategorie',
             # 'doel',
             # 'aanleiding',
@@ -258,7 +233,7 @@ class ZaakTypeSerializer(base.NestedModelSerializer):
             # 'einddatumObject',
 
             # relaties
-            'maaktDeelUitVan',
+            'maakt_deel_uit_van',
             # # 'heeftRelevantInformatieobjecttype',
             # # 'heeftRelevantBesluittype',
             # # 'heeftEigenschap',
@@ -269,7 +244,18 @@ class ZaakTypeSerializer(base.NestedModelSerializer):
             # # 'isDeelzaaktypeVan',
             # # 'heeftGerelateerd',
         )
-
-        expandable_fields = {
-            'maaktDeelUitVan': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
+        extra_kwargs = {
+            'identificatie': {
+                'source': 'zaaktype_identificatie',
+            },
+            'omschrijving': {
+                'source': 'zaaktype_omschrijving',
+            },
+            'omschrijving_generiek': {
+                'source': 'zaaktype_omschrijving_generiek',
+            },
         }
+
+        # expandable_fields = {
+        #     'maaktDeelUitVan': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
+        # }

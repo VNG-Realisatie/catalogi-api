@@ -21,8 +21,7 @@ class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin
     serializer_class = ZaakObjectTypeSerializer
 
 
-class ZaakTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
-                      FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.

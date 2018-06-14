@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 
     # API views
-    url(r'^api/', include('ztc.api.urls', namespace='api')),
+    url(r'^api/', include('ztc.api.urls')),
     url(r'^oauth2/', include('ztc.api.oauth2_urls', namespace='oauth2_provider')),
 
     # Simply show the master template.
