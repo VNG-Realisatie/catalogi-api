@@ -1,4 +1,5 @@
 import os
+import sys
 
 os.environ.setdefault('SECRET_KEY', 'i3yihsrle$16%4_&0_ic5psrzih+ostvzkzn7zwj$qddcl18+j')
 os.environ.setdefault('DB_NAME', 'ztc')
@@ -76,9 +77,10 @@ DEBUG_TOOLBAR_CONFIG = {
 
 AXES_BEHIND_REVERSE_PROXY = False  # Default: False (we are typically using Nginx as reverse proxy)
 
-REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] += (
-    'rest_framework.renderers.BrowsableAPIRenderer',
-)
+if 'test' not in sys.argv:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] += (
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
 
 # Override settings with local settings.
 try:

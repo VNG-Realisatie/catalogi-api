@@ -1,25 +1,34 @@
+import warnings
 from datetime import timedelta
 
-from django.test import TestCase
-from django.urls import reverse
 from django.utils import timezone
 
 from oauth2_provider.models import AccessToken
+from rest_framework.test import APITestCase as _APITestCase
+from zds_schema.tests import get_operation_url
 
 from ...datamodel.tests.factories import CatalogusFactory
 
 
 class ClientAPITestMixin:
+
     def setUp(self):
         super().setUp()
 
         # Create a token without the whole authentication flow.
         self.token = AccessToken.objects.create(
-            token='12345', expires=timezone.now() + timedelta(days=1), scope='write read')
+            token='12345',
+            expires=timezone.now() + timedelta(days=1),
+            scope='write read'
+        )
 
-        # Create a simple API client using our token and default JSON content type.
-        self.api_client = self.client_class(
-            content_type='application/json', AUTHORIZATION='Bearer {}'.format(self.token.token))
+        # Set up auth
+        self.client.credentials(AUTHORIZATION='Bearer 12345')
+
+    @property
+    def api_client(self):
+        warnings.warn("Use the built in `self.client` instead of `self.api_client`", DeprecationWarning)
+        return self.client
 
 
 class CatalogusAPITestMixin:
@@ -30,10 +39,9 @@ class CatalogusAPITestMixin:
 
         self.catalogus = CatalogusFactory.create(domein='ABCDE', rsin='000000001')
 
-        self.catalogus_list_url = reverse('api:catalogus-list', kwargs={'version': self.API_VERSION})
-        self.catalogus_detail_url = reverse('api:catalogus-detail', kwargs={
-            'version': self.API_VERSION, 'pk': self.catalogus.pk})
+        self.catalogus_list_url = get_operation_url('catalogus_list')
+        self.catalogus_detail_url = get_operation_url('catalogus_read', id=self.catalogus.id)
 
 
-class APITestCase(ClientAPITestMixin, CatalogusAPITestMixin, TestCase):
+class APITestCase(ClientAPITestMixin, CatalogusAPITestMixin, _APITestCase):
     pass
