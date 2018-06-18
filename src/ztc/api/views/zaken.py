@@ -31,3 +31,4 @@ class ZaakTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     queryset = ZaakType.objects.all()
     serializer_class = ZaakTypeSerializer
+    pagination_class = None

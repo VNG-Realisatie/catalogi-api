@@ -68,42 +68,14 @@
             "get": {
                 "operationId": "zaaktype_list",
                 "description": "Een verzameling van ZAAKTYPEn.",
-                "parameters": [
-                    {
-                        "name": "pagina",
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/ZaakType"
-                                    }
-                                }
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ZaakType"
                             }
                         }
                     }
@@ -158,42 +130,14 @@
             "get": {
                 "operationId": "statustype_list",
                 "description": "Een verzameling van STATUSTYPEn.",
-                "parameters": [
-                    {
-                        "name": "pagina",
-                        "in": "query",
-                        "description": "A page number within the paginated result set.",
-                        "required": false,
-                        "type": "integer"
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "required": [
-                                "count",
-                                "results"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "count": {
-                                    "type": "integer"
-                                },
-                                "next": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "previous": {
-                                    "type": "string",
-                                    "format": "uri"
-                                },
-                                "results": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/StatusType"
-                                    }
-                                }
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/StatusType"
                             }
                         }
                     }
@@ -204,13 +148,13 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -236,13 +180,13 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"

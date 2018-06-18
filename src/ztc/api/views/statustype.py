@@ -15,3 +15,4 @@ class StatusTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     queryset = StatusType.objects.all()
     serializer_class = StatusTypeSerializer
+    pagination_class = None
