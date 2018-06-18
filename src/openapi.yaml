@@ -136,17 +136,94 @@ paths:
       tags:
         - catalogussen
     parameters:
+      - name: catalogus_pk
+        in: path
+        required: true
+        schema:
+          type: string
       - name: id
         in: path
         description: A unique integer value identifying this Zaaktype.
         required: true
         schema:
           type: integer
+  '/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/statustypen':
+    get:
+      operationId: statustype_list
+      description: Een verzameling van STATUSTYPEn.
+      parameters:
+        - name: pagina
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                required:
+                  - count
+                  - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusType'
+      tags:
+        - catalogussen
+    parameters:
       - name: catalogus_pk
         in: path
         required: true
         schema:
           type: string
+      - name: zaaktype_pk
+        in: path
+        required: true
+        schema:
+          type: string
+  '/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/statustypen/{id}':
+    get:
+      operationId: statustype_read
+      description: Generieke aanduiding van de aard van een status.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusType'
+      tags:
+        - catalogussen
+    parameters:
+      - name: catalogus_pk
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: zaaktype_pk
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: A unique integer value identifying this Statustype.
+        required: true
+        schema:
+          type: integer
   '/catalogussen/{id}':
     get:
       operationId: catalogus_read
@@ -281,3 +358,48 @@ components:
           description: De CATALOGUS waartoe dit ZAAKTYPE behoort.
           type: string
           format: uri
+        statustypen:
+          title: Statustypen
+          type: array
+          items:
+            type: string
+            format: uri
+          readOnly: true
+          uniqueItems: true
+    StatusType:
+      required:
+        - omschrijving
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+          format: uri
+          readOnly: true
+        omschrijving:
+          title: Omschrijving
+          description: >-
+            Een korte, voor de initiator van de zaak relevante, omschrijving van
+            de aard van de STATUS van zaken van een ZAAKTYPE.
+          type: string
+          maxLength: 80
+        omschrijvingGeneriek:
+          title: Omschrijving generiek
+          description: >-
+            Algemeen gehanteerde omschrijving van de aard van STATUSsen van het
+            STATUSTYPE
+          type: string
+          maxLength: 80
+        statustekst:
+          title: Statustekst
+          description: >-
+            De tekst die wordt gebruikt om de Initiator te informeren over het
+            bereiken van een STATUS van dit STATUSTYPE bij het desbetreffende
+            ZAAKTYPE.
+          type: string
+          maxLength: 1000
+        isVan:
+          title: Is van
+          type: string
+          format: uri
+          readOnly: true

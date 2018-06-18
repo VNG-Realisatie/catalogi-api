@@ -1,6 +1,3 @@
-from datetime import timedelta
-
-from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -42,10 +39,20 @@ class StatusType(GeldigheidMixin, models.Model):
     individuele zaak de statussen te plannen maar om geïnteresseerden informatie te verschaffen
     over de termijn waarop normaliter een volgende status bereikt wordt.
     """
-    statustype_omschrijving = models.CharField(_('omschrijving'), max_length=80, help_text=_(
-        'Een korte, voor de initiator van de zaak relevante, omschrijving van de aard van de STATUS van zaken van een ZAAKTYPE.'))
+    # relations
+    is_van = models.ForeignKey(
+        'ZaakType', verbose_name=_('is van'), related_name='statustypen',
+        help_text=_('Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.')
+    )
+
+    # attributes
+    statustype_omschrijving = models.CharField(
+        _('omschrijving'), max_length=80,
+        help_text=_('Een korte, voor de initiator van de zaak relevante, omschrijving van de '
+                    'aard van de STATUS van zaken van een ZAAKTYPE.')
+    )
     statustype_omschrijving_generiek = models.CharField(
-        _('omschrijving generiek'), max_length=80, blank=True, null=True,
+        _('omschrijving generiek'), max_length=80, blank=True,
         help_text=_('Algemeen gehanteerde omschrijving van de aard van STATUSsen van het STATUSTYPE'))
     # waardenverzameling is 0001 - 9999, omdat int('0001') == 1 als PositiveSmallIntegerField
     statustypevolgnummer = models.PositiveSmallIntegerField(
@@ -54,14 +61,22 @@ class StatusType(GeldigheidMixin, models.Model):
     doorlooptijd_status = models.PositiveSmallIntegerField(
         _('doorlooptijd status'), blank=True, null=True, validators=[MinValueValidator(1), MaxValueValidator(999)],
         help_text=_('De door de zaakbehandelende organisatie(s) gestelde norm voor de doorlooptijd voor het bereiken '
-                    'van statussen van dit STATUSTYPE bij het desbetreffende ZAAKTYPE, vanaf het bereiken van de voorafgaande status'))
+                    'van statussen van dit STATUSTYPE bij het desbetreffende ZAAKTYPE, vanaf het bereiken van '
+                    'de voorafgaande status')
+    )
     checklistitem = models.ManyToManyField(
         'datamodel.CheckListItem', verbose_name=_('checklistitem'), blank=True, help_text=_(
             'Te controleren aandachtspunt voorafgaand aan het bereiken van een status van het STATUSTYPE.'))
-    informeren = models.CharField(_('informeren'), max_length=1, choices=JaNee.choices, help_text=_(
-        'Aanduiding die aangeeft of na het zetten van een STATUS van dit STATUSTYPE de Initiator moet worden geïnformeerd over de statusovergang.'))
-    statustekst = models.CharField(_('statustekst'), max_length=1000, blank=True, null=True,
-        help_text=_('De tekst die wordt gebruikt om de Initiator te informeren over het bereiken van een STATUS van dit STATUSTYPE bij het desbetreffende ZAAKTYPE.'))
+    informeren = models.CharField(
+        _('informeren'), max_length=1, choices=JaNee.choices,
+        help_text=_('Aanduiding die aangeeft of na het zetten van een STATUS van dit STATUSTYPE de Initiator moet '
+                    'worden geïnformeerd over de statusovergang.')
+    )
+    statustekst = models.CharField(
+        _('statustekst'), max_length=1000, blank=True,
+        help_text=_('De tekst die wordt gebruikt om de Initiator te informeren over het bereiken van een STATUS van '
+                    'dit STATUSTYPE bij het desbetreffende ZAAKTYPE.')
+    )
     toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
         'Een eventuele toelichting op dit STATUSTYPE.'))
 
@@ -71,8 +86,6 @@ class StatusType(GeldigheidMixin, models.Model):
     roltypen = models.ManyToManyField(
         'datamodel.RolType', verbose_name=_('roltypen'), related_name='mag_zetten',
         help_text=_('De STATUSTYPEn die een betrokkene in een rol van dit ROLTYPE mag zetten.'))
-    is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
-        'Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.'))
 
     class Meta:
         mnemonic = 'STT'

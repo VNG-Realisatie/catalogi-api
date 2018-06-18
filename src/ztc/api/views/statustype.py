@@ -2,13 +2,10 @@ from rest_framework import viewsets
 
 from ...datamodel.models import StatusType
 from ..serializers import StatusTypeSerializer
-from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import (
-    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
-)
+from ..utils.viewsets import NestedViewSetMixin
 
 
-class StatusTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class StatusTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een status.

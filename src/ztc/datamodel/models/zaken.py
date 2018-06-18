@@ -264,7 +264,7 @@ class ZaakType(GeldigheidMixin, models.Model):
         'Omschrijving van de aard van ZAAKen van het ZAAKTYPE.'))
     # TODO [KING]: waardenverzameling zoals vastgelegt in CATALOGUS, wat is deze waardeverzameling dan?
     zaaktype_omschrijving_generiek = models.CharField(
-        _('omschrijving generiek'), max_length=80, blank=True, null=True, help_text=_(
+        _('omschrijving generiek'), max_length=80, blank=True, help_text=_(
             'Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE'))
     # TODO [KING]: waardenverzameling zie Zaaktypecatalogus, is dat de
     # catalogus die bij dit zaaktype hoort? Wat is de categorie dan?

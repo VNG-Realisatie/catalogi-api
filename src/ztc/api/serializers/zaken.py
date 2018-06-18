@@ -182,16 +182,15 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'zaaktype_pk': 'is_relevant_voor__pk',
     #     }
     # )
-    # heeftStatustype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='statustype_set',
-    #     view_name='api:statustype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-    #         'zaaktype_pk': 'is_van__pk',
-    #     }
-    # )
+    statustypen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='statustype-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_van__pk',
+        }
+    )
 
     class Meta:
         model = ZaakType
@@ -234,12 +233,12 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
 
             # relaties
             'maakt_deel_uit_van',
+            'statustypen',
             # # 'heeftRelevantInformatieobjecttype',
             # # 'heeftRelevantBesluittype',
             # # 'heeftEigenschap',
             # # 'heeftRelevantZaakObjecttype',
             # # 'heeftRelevantResultaattype',
-            # # 'heeftStatustype',
             # # 'heeftRoltype',
             # # 'isDeelzaaktypeVan',
             # # 'heeftGerelateerd',
