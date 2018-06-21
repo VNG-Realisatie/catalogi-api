@@ -53,7 +53,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'django-dbcache-fields'
+project = 'Zaaktypecatalogus'
 copyright = '2017, Maykin Media'
 author = ztc.__author__
 
@@ -99,7 +99,7 @@ html_theme = 'alabaster'
 html_theme_options = {
     'github_user': 'maykinmedia',
     'github_banner': True,
-    'github_repo': 'django-dbcache-fields',
+    'github_repo': 'gemma-zaaktypecatalogus',
     'travis_button': True,
     'codecov_button': True,
     # 'analytics_id':  '',
