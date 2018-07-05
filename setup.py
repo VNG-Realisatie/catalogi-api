@@ -53,8 +53,10 @@ def _reqs(*f, deps):
 def reqs(*f, deps=False):
     return [req for subreq in _reqs(*f, deps=deps) for req in subreq]
 
+
 def deps(*f):
     return reqs(*f, deps=True)
+
 
 print(reqs('base.txt'))
 print(deps('base.txt'))
@@ -65,14 +67,14 @@ print(deps('base.txt'))
 if os.path.exists('README.rst'):
     long_description = codecs.open('README.rst', 'r', 'utf-8').read()
 else:
-    long_description = 'See: https://github.com/Haarlem/zaaktypecataloguscomponent'
+    long_description = 'See: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent'
 
 # -*- %%% -*-
 
 setuptools.setup(
     name=NAME,
     # packages=setuptools.find_packages(exclude=['tests', 'tests.*']),
-    version='0.1.0',
+    version='0.1.1',
     description='Implementatie van het component Zaaktypecatalogus (ZTC)',
     long_description=long_description,
     keywords='zaaktypen ztc imztc ztc2, ztcaas, saas, rest, api',
