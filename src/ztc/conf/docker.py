@@ -45,9 +45,14 @@ CACHES = {
 }
 
 # Deal with being hosted on a subpath
-FORCE_SCRIPT_NAME = '/ztc'
-STATIC_URL = f"{FORCE_SCRIPT_NAME}{STATIC_URL}"
-MEDIA_URL = f"{FORCE_SCRIPT_NAME}{MEDIA_URL}"
+subpath = getenv('SUBPATH')
+if subpath:
+    if not subpath.startswith('/'):
+        subpath = f'/{subpath}'
+
+    FORCE_SCRIPT_NAME = subpath
+    STATIC_URL = f"{FORCE_SCRIPT_NAME}{STATIC_URL}"
+    MEDIA_URL = f"{FORCE_SCRIPT_NAME}{MEDIA_URL}"
 
 #
 # Additional Django settings
