@@ -327,3 +327,23 @@ OAUTH2_PROVIDER = {
 
 # Django-CORS-middleware
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Raven
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+
+if SENTRY_DSN:
+    INSTALLED_APPS = INSTALLED_APPS + [
+        'raven.contrib.django.raven_compat',
+    ]
+
+    RAVEN_CONFIG = {
+        'dsn': SENTRY_DSN,
+        # 'release': raven.fetch_git_sha(BASE_DIR), doesn't work in Docker
+    }
+    LOGGING['handlers'].update({
+        'sentry': {
+            'level': 'WARNING',
+            'class': 'raven.handlers.logging.SentryHandler',
+            'dsn': RAVEN_CONFIG['dsn']
+        },
+    })

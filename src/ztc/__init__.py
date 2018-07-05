@@ -1,18 +1,14 @@
-# -*- coding: utf-8 -*-
 """Zaaktypecatalogus"""
-# :copyright: (c) 2018, Maykin Media B.V.
+# :copyright: (c) 2018, VNG Realisatie
 #             All rights reserved.
 # :license:   EUPL 1.2, see LICENSE for more details.
-
-from __future__ import absolute_import, unicode_literals
 
 import re
 from collections import namedtuple
 
-__version__ = '0.1.0'
-__author__ = 'Maykin Media B.V.'
-__contact__ = 'info@maykinmedia.nl'
-__homepage__ = 'https://github.com/Haarlem/zaaktypecataloguscomponent/'
+__version__ = '0.1.1'
+__author__ = 'Maykin Media B.V., VNG Realisatie'
+__homepage__ = 'https://github.com/VNG-Realisatie/zaaktypecataloguscomponent/'
 __docformat__ = 'restructuredtext'
 
 # -eof meta-

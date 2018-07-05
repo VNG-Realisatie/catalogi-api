@@ -1,7 +1,6 @@
 -r base.txt
 -r testing.txt
+
 django-jenkins
-codecov
-flake8
 pep8
 pylint
