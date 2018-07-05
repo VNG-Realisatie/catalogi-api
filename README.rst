@@ -3,17 +3,17 @@ Zaaktypecatalogus
 =================
 
 :Version: 0.1.0
-:Source: https://github.com/Haarlem/zaaktypecataloguscomponent
+:Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
-|build-status| |coverage|
+|build-status|
 
-Implementatie van het informatiemodel Zaaktypecatalogus (ImZTC) 2.1 welke
-beheerd kan worden middels een webinterface en ontsloten wordt middels een
-RESTful API.
+Referentieimplementatie van het informatiemodel Zaaktypecatalogus (ImZTC) 2.1
+welke beheerd kan worden middels een webinterface en ontsloten wordt middels
+een RESTful API.
 
 Ontwikkeld door `Maykin Media B.V. <https://www.maykinmedia.nl>`_ in opdracht
-van de Gemeente Haarlem.
+van VNG.
 
 
 Introductie
@@ -37,15 +37,8 @@ De ZTC2 ondersteunt de volgende functionaliteiten:
 * Ontsluiten van catalogi middels een RESTful API
 * Uitgebreide API documentatie.
 
-
-Opmerking
-=========
-
-In afwijking van de specificatie is er geen vertaling van het ImZTC naar het
-uitwisselformaat `StUF-ZTC`_ en de bijbehorende SOAP-services. Met het oog op
-de toekomst is gekeken naar `RSGB Bevragingen`_ en de strategieën gebruikt in
-het `Digitaal Stelsel Omgevingswet`_ (DSO).
-
+Deze component heeft ook een `testomgeving`_ waar leveranciers tegenaan kunnen
+testen.
 
 Documentatie
 ============
@@ -60,20 +53,16 @@ Zie ``INSTALL.rst`` voor installatie instructies, commando's en instellingen.
 Verwijzingen
 ============
 
-* `Community <https://discussie.kinggemeenten.nl/discussie/gemma/ztc>`_
-  (rapporteren van bugs, functionaliteit aanvragen, algemene vragen)
-* `Issues <https://github.com/Haarlem/zaaktypecataloguscomponent/issues>`_
-* `Code <https://github.com/Haarlem/zaaktypecataloguscomponent>`_
+* `Ontwikkeling ZDS 2.0 standaard <https://github.com/VNG-Realisatie/gemma-zaken/>`_
+* `Issues <https://github.com/VNG-Realisatie/zaaktypecataloguscomponent/issues>`_
+* `Code <https://github.com/VNG-Realisatie/zaaktypecataloguscomponent>`_
 
-
-.. |build-status| image:: https://secure.travis-ci.org/Haarlem/zaaktypecataloguscomponent.svg?branch=master
+.. |build-status| image:: http://jenkins.nlx.io/buildStatus/icon?job=gemma-zaaktypecatalogus-stable
     :alt: Build status
-    :target: https://travis-ci.org/Haarlem/zaaktypecataloguscomponent
+    :target: http://jenkins.nlx.io/job/gemma-zaaktypecatalogus-stable
 
-.. |coverage| image:: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent/coverage.svg?branch=master
-    :alt: Coverage
-    :target: https://codecov.io/github/Haarlem/zaaktypecataloguscomponent?branch=master
+.. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
+     :target: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements/?branch=master
+     :alt: Requirements status
 
-.. _RSGB Bevragingen: https://www.gemmaonline.nl/index.php/RSGB_Bevragingen
-.. _StUF-ZTC: https://www.gemmaonline.nl/index.php/Sectormodel_Zaaktypen(-catalogus):_StUF%E2%80%93ZTC
-.. _Digitaal Stelsel Omgevingswet: https://aandeslagmetdeomgevingswet.nl/digitaal-stelsel/documenten/documenten/api-uri-strategie/
+.. _testomgeving: https://ref.tst.vng.cloud/ztc/

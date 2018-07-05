@@ -1,46 +1,78 @@
-# Stage 1 - Compile needed python dependencies
-FROM alpine:3.7 AS build
+# Stage 1.1 - Compile needed python dependencies
+FROM python:3.6-alpine AS build
 RUN apk --no-cache add \
     gcc \
     musl-dev \
     pcre-dev \
     linux-headers \
     postgresql-dev \
-    python3 \
     python3-dev \
-    # lxml
+    # libraries installed using git
+    git \
+    # lxml dependencies
     libxslt-dev \
-    # Pillow dependencies
+    # pillow dependencies
     jpeg-dev \
     openjpeg-dev \
     zlib-dev
-RUN pip3 install virtualenv
-RUN virtualenv /app/env
 
 WORKDIR /app
 
 COPY ./requirements /app/requirements
-RUN /app/env/bin/pip install -r requirements/dev.txt
-RUN /app/env/bin/pip install uwsgi
+RUN pip install -r requirements/production.txt
 
-# Stage 2 - Build docker image suitable for execution and deployment
-FROM alpine:3.7
+# Stage 1.2 - Compile needed frontend dependencies
 RUN apk --no-cache add \
-      ca-certificates \
-      mailcap \
-      musl \
-      pcre \
-      postgresql \
-      python3 \
-      zlib
+    # node.js
+    nodejs \
+    nodejs-npm
 
+COPY ./*.json /app/
+
+RUN npm install
+
+# Stage 1.3 - Copy source code
 COPY ./src /app/src
-COPY ./docker/start.sh /start.sh
+
+# Stage 2 - Prepare jenkins tests image
+FROM build AS jenkins
+
+COPY --from=build /usr/local/lib/python3.6 /usr/local/lib/python3.6
+COPY --from=build /app/requirements /app/requirements
+
+RUN pip install -r requirements/jenkins.txt --exists-action=s
+
+COPY ./src/drc/conf/jenkins.py /app/src/drc/conf/jenkins.py
+
+COPY ./setup.cfg /app/setup.cfg
+COPY ./bin/runtests.sh /runtests.sh
+RUN mkdir /app/log && rm /app/src/drc/conf/test.py
+
+CMD ["/runtests.sh"]
+
+
+# Stage 3 - Build docker image suitable for execution and deployment
+FROM python:3.6-alpine AS production
+RUN apk --no-cache add \
+    ca-certificates \
+    mailcap \
+    musl \
+    pcre \
+    postgresql \
+    # lxml dependencies
+    libxslt \
+    # pillow dependencies
+    jpeg \
+    openjpeg \
+    zlib
+
+
+COPY --from=build /usr/local/lib/python3.6 /usr/local/lib/python3.6
+COPY --from=build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
+COPY --from=build /app/src /app/src
+COPY ./bin/docker_start.sh /start.sh
 RUN mkdir /app/log
 
-COPY --from=build /app/env /app/env
-
-ENV PATH="/app/env/bin:${PATH}"
 WORKDIR /app
 EXPOSE 8000
 CMD ["/start.sh"]
