@@ -42,11 +42,11 @@ COPY --from=build /app/requirements /app/requirements
 
 RUN pip install -r requirements/jenkins.txt --exists-action=s
 
-COPY ./src/drc/conf/jenkins.py /app/src/drc/conf/jenkins.py
+COPY ./src/ztc/conf/jenkins.py /app/src/ztc/conf/jenkins.py
 
 COPY ./setup.cfg /app/setup.cfg
 COPY ./bin/runtests.sh /runtests.sh
-RUN mkdir /app/log && rm /app/src/drc/conf/test.py
+RUN mkdir /app/log && rm /app/src/ztc/conf/test.py
 
 CMD ["/runtests.sh"]
 
