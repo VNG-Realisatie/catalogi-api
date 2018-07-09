@@ -22,8 +22,10 @@ class EigenschapSpecificatie(models.Model):
     """
 
     groep = models.CharField(  # waardenverzameling Letters, cijfers en liggende streepjes
-        _('groep'), max_length=32, blank=True, null=True, validators=[validate_letters_numbers_underscores],
-        help_text=_('Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert.'))
+        _('groep'), max_length=32, blank=True, validators=[validate_letters_numbers_underscores],
+        help_text=_('Benaming van het object of groepattribuut waarvan de EIGENSCHAP een '
+                    'inhoudelijk gegeven specificeert.')
+    )
     # waardenverzameling gedefinieerd als tekst, getal, datum (jjjjmmdd), datum/tijd (jjjjmmdduummss), met AN20
     formaat = models.CharField(_('formaat'), max_length=20, choices=FormaatChoices.choices, help_text=_(
         'Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.'))
@@ -35,7 +37,8 @@ class EigenschapSpecificatie(models.Model):
     waardenverzameling = ArrayField(
         models.CharField(_('waardenverzameling'), max_length=100),
         blank=True, help_text=_('Waarden die deze EIGENSCHAP kan hebben '
-                                '(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
+                                '(Gebruik een komma om waarden van elkaar te onderscheiden.)')
+    )
 
     class Meta:
         verbose_name = _('Eigenschap specificatie')
@@ -166,18 +169,27 @@ class Eigenschap(GeldigheidMixin, models.Model):
     definitie = models.CharField(_('definitie'), max_length=255, help_text=_(
         'De beschrijving van de betekenis van deze EIGENSCHAP'))
     specificatie_van_eigenschap = models.ForeignKey(
-        'datamodel.EigenschapSpecificatie', verbose_name=_('specificatie van eigenschap'), blank=True, null=True,
-        help_text=_('Attribuutkenmerken van de eigenschap'))
+        'datamodel.EigenschapSpecificatie', verbose_name=_('specificatie van eigenschap'),
+        blank=True, null=True, help_text=_('Attribuutkenmerken van de eigenschap')
+    )
     referentie_naar_eigenschap = models.ForeignKey(
-        'datamodel.EigenschapReferentie', verbose_name=_('referentie naar eigenschap'), blank=True, null=True,
-        help_text=_('Verwijzing naar de standaard waarin de eigenschap is gespecificeerd'))
-    toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
-        'Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.'))
+        'datamodel.EigenschapReferentie', verbose_name=_('referentie naar eigenschap'),
+        blank=True, null=True,
+        help_text=_('Verwijzing naar de standaard waarin de eigenschap is gespecificeerd')
+    )
+    toelichting = models.CharField(
+        _('toelichting'), max_length=1000, blank=True,
+        help_text=_('Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.')
+    )
 
+    # shouldn't this be a M2M?
     status_type = models.ForeignKey(
-        'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
+        'datamodel.StatusType', verbose_name=_('status type'),
+        blank=True, null=True,
         related_name='heeft_verplichte_eigenschap', help_text=_(
-            'Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een STATUS van het STATUSTYPE kan worden gezet.'))
+            'Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een '
+            'STATUS van het STATUSTYPE kan worden gezet.')
+    )
     is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
         'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'))
 
@@ -207,8 +219,11 @@ class Eigenschap(GeldigheidMixin, models.Model):
         """
         super().clean()
 
-        if bool(self.specificatie_van_eigenschap) ^ bool(self.referentie_naar_eigenschap):  # xor
-            raise ValidationError(_('Één van twee groepen attributen is verplicht: specificatie van eigenschap of referentie naar eigenschap'))
+        if not (bool(self.specificatie_van_eigenschap) ^ bool(self.referentie_naar_eigenschap)):  # xor
+            raise ValidationError(
+                _('Één van twee groepen attributen is verplicht: specificatie '
+                  'van eigenschap of referentie naar eigenschap')
+            )
 
         self._clean_geldigheid(self.is_van)
 
