@@ -2,7 +2,6 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
-from . import base
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
     ZaakObjectType, ZaakType
@@ -142,16 +141,6 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'catalogus_pk': 'maakt_deel_uit_van__pk'
     #     },
     # )
-    # heeftEigenschap = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='eigenschap_set',
-    #     view_name='api:eigenschap-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-    #         'zaaktype_pk': 'is_van__pk'
-    #     },
-    # )
     # heeftRoltype = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -190,6 +179,17 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
             'zaaktype_pk': 'is_van__pk',
         }
+    )
+
+    eigenschappen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='eigenschap_set',
+        view_name='eigenschap-detail',
+        parent_lookup_kwargs={
+            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'zaaktype_pk': 'is_van__pk'
+        },
     )
 
     class Meta:
@@ -234,9 +234,9 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # relaties
             'maakt_deel_uit_van',
             'statustypen',
+            'eigenschappen',
             # # 'heeftRelevantInformatieobjecttype',
             # # 'heeftRelevantBesluittype',
-            # # 'heeftEigenschap',
             # # 'heeftRelevantZaakObjecttype',
             # # 'heeftRelevantResultaattype',
             # # 'heeftRoltype',

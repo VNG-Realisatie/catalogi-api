@@ -112,17 +112,91 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
-                },
-                {
                     "name": "id",
                     "in": "path",
                     "description": "A unique integer value identifying this Zaaktype.",
                     "required": true,
                     "type": "integer"
+                },
+                {
+                    "name": "catalogus_pk",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/eigenschappen": {
+            "get": {
+                "operationId": "eigenschap_list",
+                "description": "Een verzameling van EIGENSCHAPpen.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eigenschap"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "zaaktype_pk",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "catalogus_pk",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ]
+        },
+        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/eigenschappen/{id}": {
+            "get": {
+                "operationId": "eigenschap_read",
+                "description": "Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard\nkenmerk is van een zaak.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Eigenschap"
+                        }
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this Eigenschap.",
+                    "required": true,
+                    "type": "integer"
+                },
+                {
+                    "name": "zaaktype_pk",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "catalogus_pk",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
                 }
             ]
         },
@@ -180,6 +254,13 @@
             },
             "parameters": [
                 {
+                    "name": "id",
+                    "in": "path",
+                    "description": "A unique integer value identifying this Statustype.",
+                    "required": true,
+                    "type": "integer"
+                },
+                {
                     "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
@@ -190,13 +271,6 @@
                     "in": "path",
                     "required": true,
                     "type": "string"
-                },
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this Statustype.",
-                    "required": true,
-                    "type": "integer"
                 }
             ]
         },
@@ -334,6 +408,122 @@
                     },
                     "readOnly": true,
                     "uniqueItems": true
+                },
+                "eigenschappen": {
+                    "title": "Eigenschappen",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                }
+            }
+        },
+        "EigenschapSpecificatie": {
+            "title": "Specificatie",
+            "required": [
+                "formaat",
+                "lengte",
+                "kardinaliteit"
+            ],
+            "type": "object",
+            "properties": {
+                "groep": {
+                    "title": "Groep",
+                    "description": "Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert.",
+                    "type": "string",
+                    "maxLength": 32
+                },
+                "formaat": {
+                    "title": "Formaat",
+                    "description": "Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.",
+                    "type": "string",
+                    "enum": [
+                        "tekst",
+                        "getal",
+                        "datum (jjjjmmdd)",
+                        "datum/tijd (jjjjmmdduummss)"
+                    ]
+                },
+                "lengte": {
+                    "title": "Lengte",
+                    "description": "Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd.",
+                    "type": "string",
+                    "maxLength": 14
+                },
+                "kardinaliteit": {
+                    "title": "Kardinaliteit",
+                    "description": "Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE.",
+                    "type": "string",
+                    "maxLength": 3
+                },
+                "waardenverzameling": {
+                    "title": "Waardenverzameling",
+                    "description": "Waarden die deze EIGENSCHAP kan hebben (Gebruik een komma om waarden van elkaar te onderscheiden.)",
+                    "type": "array",
+                    "items": {
+                        "title": "Waardenverzameling",
+                        "type": "string",
+                        "maxLength": 100
+                    }
+                }
+            },
+            "readOnly": true
+        },
+        "Eigenschap": {
+            "required": [
+                "naam",
+                "definitie",
+                "ingangsdatumObject"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "naam": {
+                    "title": "Naam",
+                    "description": "De naam van de EIGENSCHAP",
+                    "type": "string",
+                    "maxLength": 20
+                },
+                "definitie": {
+                    "title": "Definitie",
+                    "description": "De beschrijving van de betekenis van deze EIGENSCHAP",
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "specificatie": {
+                    "$ref": "#/definitions/EigenschapSpecificatie"
+                },
+                "toelichting": {
+                    "title": "Toelichting",
+                    "description": "Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.",
+                    "type": "string",
+                    "maxLength": 1000
+                },
+                "ingangsdatumObject": {
+                    "title": "Ingangsdatum object",
+                    "description": "De datum waarop het is ontstaan.",
+                    "type": "string",
+                    "format": "date"
+                },
+                "einddatumObject": {
+                    "title": "Einddatum object",
+                    "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date"
+                },
+                "isVan": {
+                    "title": "Is van",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
                 }
             }
         },

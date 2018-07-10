@@ -3,7 +3,9 @@ from django.conf.urls import include, url
 from rest_framework_nested import routers
 
 from .schema import schema_view
-from .views import CatalogusViewSet, StatusTypeViewSet, ZaakTypeViewSet
+from .views import (
+    CatalogusViewSet, EigenschapViewSet, StatusTypeViewSet, ZaakTypeViewSet
+)
 
 root_router = routers.DefaultRouter(trailing_slash=False)
 root_router.register(r'catalogussen', CatalogusViewSet)
@@ -19,6 +21,7 @@ zaaktype_router = routers.NestedSimpleRouter(
     lookup='zaaktype', trailing_slash=False,
 )
 zaaktype_router.register('statustypen', StatusTypeViewSet)
+zaaktype_router.register('eigenschappen', EigenschapViewSet)
 
 
 urlpatterns = [
