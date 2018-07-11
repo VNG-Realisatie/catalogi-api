@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^oauth2/', include('ztc.api.oauth2_urls', namespace='oauth2_provider')),
 
     # Simply show the master template.
-    url(r'^$', TemplateView.as_view(template_name='demo.html')),
+    url(r'^$', TemplateView.as_view(template_name='index.html')),
 ]
 
 # NOTE: The staticfiles_urlpatterns also discovers static files (ie. no need to run collectstatic). Both the static
