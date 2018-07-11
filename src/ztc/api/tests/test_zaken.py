@@ -17,11 +17,11 @@ class ZaakTypeAPITests(APITestCase):
 
         self.zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
 
-        self.zaaktype_list_url = reverse('api:zaaktype-list', kwargs={
+        self.zaaktype_list_url = reverse('zaaktype-list', kwargs={
             'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
         })
-        self.zaaktype_detail_url = reverse('api:zaaktype-detail', kwargs={
+        self.zaaktype_detail_url = reverse('zaaktype-detail', kwargs={
             'version': self.API_VERSION,
             'catalogus_pk': self.catalogus.pk,
             'pk': self.zaaktype.pk,
@@ -33,8 +33,7 @@ class ZaakTypeAPITests(APITestCase):
 
         data = response.json()
 
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(len(data), 1)
 
     def test_get_detail(self):
         response = self.api_client.get(self.zaaktype_detail_url)
@@ -69,7 +68,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'formulier': [],
             # 'onderwerp': '',
             # 'publicatietekst': None,
-            'omschrijvingGeneriek': None,
+            'omschrijvingGeneriek': '',
             # 'verantwoordingsrelatie': [],
             # 'isDeelzaaktypeVan': [],
             # 'servicenorm': None,
@@ -83,12 +82,12 @@ class ZaakTypeAPITests(APITestCase):
             'omschrijving': '',
             # 'heeftGerelateerd': [],
             # 'heeftRelevantInformatieobjecttype': [],
-            # 'heeftEigenschap': [],
+            'eigenschappen': [],
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantResultaattype': [],
             # 'heeftRelevantZaakObjecttype': [],
             # 'heeftRoltype': [],
-            # 'heeftStatustype': [],
+            'statustypen': [],
         }
         self.assertEqual(expected, response.json())
 
@@ -143,12 +142,12 @@ class ZaakObjectTypeAPITests(APITestCase):
 
         self.zaaktype = self.zaakobjecttype.is_relevant_voor
 
-        self.zaakobjecttype_list_url = reverse('api:zaakobjecttype-list', kwargs={
+        self.zaakobjecttype_list_url = reverse('zaakobjecttype-list', kwargs={
             'version': self.API_VERSION,
             'zaaktype_pk': self.zaaktype.pk,
             'catalogus_pk': self.catalogus.pk,
         })
-        self.zaakobjecttype_detail_url = reverse('api:zaakobjecttype-detail', kwargs={
+        self.zaakobjecttype_detail_url = reverse('zaakobjecttype-detail', kwargs={
             'version': self.API_VERSION,
             'zaaktype_pk': self.zaaktype.pk,
             'catalogus_pk': self.catalogus.pk,
@@ -173,7 +172,7 @@ class ZaakObjectTypeAPITests(APITestCase):
             'einddatumObject': None,
             'ingangsdatumObject': '2018-01-01',
             'isRelevantVoor': 'http://testserver{}'.format(
-                reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
+                reverse('zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
             'objecttype': '',
             'relatieOmschrijving': '',
             'url': 'http://testserver{}'.format(self.zaakobjecttype_detail_url)

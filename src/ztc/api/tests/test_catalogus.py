@@ -1,4 +1,6 @@
-from ztc.api.tests.base import APITestCase
+import unittest
+
+from .base import APITestCase
 
 
 class CatalogusAPITests(APITestCase):
@@ -11,8 +13,7 @@ class CatalogusAPITests(APITestCase):
 
         data = response.json()
 
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(len(data), 1)
 
     def test_get_detail(self):
         """Retrieve the details of a single `Catalog` object."""
@@ -27,16 +28,19 @@ class CatalogusAPITests(APITestCase):
             'contactpersoonBeheerNaam': self.catalogus.contactpersoon_beheer_naam,
             'contactpersoonBeheerEmailadres': self.catalogus.contactpersoon_beheer_emailadres,
             # 'bestaatuitInformatieobjecttype': [],
-            'bestaatuitZaaktype': [],
+            'zaaktypen': [],
             # 'bestaatuitBesluittype': []
         }
         self.assertEqual(response.json(), expected)
 
+    @unittest.expectedFailure
     def test_bestaatuit_informatieobjecttype(self):
-        pass
+        raise NotImplementedError
 
+    @unittest.expectedFailure
     def test_bestaatuit_zaaktype(self):
-        pass
+        raise NotImplementedError
 
+    @unittest.expectedFailure
     def test_bestaatuit_besluittype(self):
-        pass
+        raise NotImplementedError
