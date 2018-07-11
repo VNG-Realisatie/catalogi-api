@@ -4,7 +4,7 @@
 #
 #    pip-compile --no-index --output-file requirements/base.txt requirements/base.in
 #
--e git+https://github.com/VNG-Realisatie/gemma-zaken-common.git@master#egg=zds_schema
+-e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema
 certifi==2017.11.5        # via requests
 chardet==3.0.4            # via requests
 click==6.7                # via pip-tools
@@ -54,5 +54,6 @@ requests-oauthlib==0.8.0
 requests==2.18.4          # via coreapi, django-oauth-toolkit, django-rosetta, microsofttranslator, requests-oauthlib
 ruamel.yaml==0.15.35      # via drf-yasg
 six==1.11.0               # via django-compat, django-rosetta, drf-yasg, microsofttranslator, pip-tools, python-dateutil
+unidecode==1.0.22
 uritemplate==3.0.0        # via coreapi, drf-yasg
 urllib3==1.22             # via requests
