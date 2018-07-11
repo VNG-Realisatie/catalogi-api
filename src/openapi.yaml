@@ -142,12 +142,12 @@ paths:
       tags:
         - catalogussen
     parameters:
-      - name: catalogus_pk
+      - name: zaaktype_pk
         in: path
         required: true
         schema:
           type: string
-      - name: zaaktype_pk
+      - name: catalogus_pk
         in: path
         required: true
         schema:
@@ -170,12 +170,12 @@ paths:
       tags:
         - catalogussen
     parameters:
-      - name: catalogus_pk
+      - name: zaaktype_pk
         in: path
         required: true
         schema:
           type: string
-      - name: zaaktype_pk
+      - name: catalogus_pk
         in: path
         required: true
         schema:
@@ -202,12 +202,12 @@ paths:
       tags:
         - catalogussen
     parameters:
-      - name: catalogus_pk
+      - name: zaaktype_pk
         in: path
         required: true
         schema:
           type: string
-      - name: zaaktype_pk
+      - name: catalogus_pk
         in: path
         required: true
         schema:
@@ -226,12 +226,12 @@ paths:
       tags:
         - catalogussen
     parameters:
-      - name: catalogus_pk
+      - name: zaaktype_pk
         in: path
         required: true
         schema:
           type: string
-      - name: zaaktype_pk
+      - name: catalogus_pk
         in: path
         required: true
         schema:

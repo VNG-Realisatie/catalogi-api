@@ -148,13 +148,13 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -180,13 +180,13 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -222,13 +222,13 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -254,13 +254,13 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
