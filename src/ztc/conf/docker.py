@@ -45,9 +45,14 @@ CACHES = {
 }
 
 # Deal with being hosted on a subpath
-FORCE_SCRIPT_NAME = '/ztc'
-STATIC_URL = f"{FORCE_SCRIPT_NAME}{STATIC_URL}"
-MEDIA_URL = f"{FORCE_SCRIPT_NAME}{MEDIA_URL}"
+subpath = getenv('SUBPATH')
+if subpath:
+    if not subpath.startswith('/'):
+        subpath = f'/{subpath}'
+
+    FORCE_SCRIPT_NAME = subpath
+    STATIC_URL = f"{FORCE_SCRIPT_NAME}{STATIC_URL}"
+    MEDIA_URL = f"{FORCE_SCRIPT_NAME}{MEDIA_URL}"
 
 #
 # Additional Django settings
@@ -75,3 +80,9 @@ if missing_environment_vars:
 # django-axes
 AXES_BEHIND_REVERSE_PROXY = False
 AXES_CACHE = 'axes_cache'
+
+
+# Temporary to simplify auth
+REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = (
+    'rest_framework.permissions.AllowAny',
+)

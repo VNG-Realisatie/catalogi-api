@@ -1,18 +1,19 @@
 import json
 
-from django.test import TestCase
 from django.urls import reverse
+
+from rest_framework.test import APITestCase
 
 from .base import ClientAPITestMixin
 
 
-class DocumentationAPITests(ClientAPITestMixin, TestCase):
+class DocumentationAPITests(ClientAPITestMixin, APITestCase):
     """Section 2.6.3 of the DSO: API strategy"""
 
     def setUp(self):
         super().setUp()
 
-        self.schema_url = reverse('api:api-schema', kwargs={'version': '1'})
+        self.schema_url = reverse('schema-redoc', kwargs={'version': '1'})
 
     def test_schema_does_not_contain_flex_serializers(self):
         """
@@ -26,4 +27,5 @@ class DocumentationAPITests(ClientAPITestMixin, TestCase):
 
         data = json.loads(response.content.decode('utf-8'))
 
-        self.assertFalse('DynamicFieldsModel' in data)
+        self.assertIn('swagger', data)
+        self.assertNotIn('DynamicFieldsModel', data)

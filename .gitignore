@@ -12,6 +12,10 @@ __pycache__
 # Javascript libraries
 /node_modules/
 
+# Generated files
+src/ztc/static/fonts
+src/ztc/static/css/screen.css
+
 # Coverage reports
 /reports/
 /htmlcov/
