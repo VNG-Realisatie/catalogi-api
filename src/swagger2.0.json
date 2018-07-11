@@ -112,17 +112,17 @@
             },
             "parameters": [
                 {
+                    "name": "catalogus_pk",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
                     "name": "id",
                     "in": "path",
                     "description": "A unique integer value identifying this Zaaktype.",
                     "required": true,
                     "type": "integer"
-                },
-                {
-                    "name": "catalogus_pk",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
                 }
             ]
         },
@@ -148,13 +148,13 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -180,11 +180,10 @@
             },
             "parameters": [
                 {
-                    "name": "id",
+                    "name": "catalogus_pk",
                     "in": "path",
-                    "description": "A unique integer value identifying this Eigenschap.",
                     "required": true,
-                    "type": "integer"
+                    "type": "string"
                 },
                 {
                     "name": "zaaktype_pk",
@@ -193,10 +192,11 @@
                     "type": "string"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "id",
                     "in": "path",
+                    "description": "A unique integer value identifying this Eigenschap.",
                     "required": true,
-                    "type": "string"
+                    "type": "integer"
                 }
             ]
         },
@@ -222,13 +222,13 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_pk",
                     "in": "path",
                     "required": true,
                     "type": "string"
@@ -254,11 +254,10 @@
             },
             "parameters": [
                 {
-                    "name": "id",
+                    "name": "catalogus_pk",
                     "in": "path",
-                    "description": "A unique integer value identifying this Statustype.",
                     "required": true,
-                    "type": "integer"
+                    "type": "string"
                 },
                 {
                     "name": "zaaktype_pk",
@@ -267,10 +266,11 @@
                     "type": "string"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "id",
                     "in": "path",
+                    "description": "A unique integer value identifying this Statustype.",
                     "required": true,
-                    "type": "string"
+                    "type": "integer"
                 }
             ]
         },
@@ -519,8 +519,8 @@
                     "type": "string",
                     "format": "date"
                 },
-                "isVan": {
-                    "title": "Is van",
+                "zaaktype": {
+                    "title": "Zaaktype",
                     "type": "string",
                     "format": "uri",
                     "readOnly": true

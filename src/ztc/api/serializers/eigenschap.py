@@ -42,8 +42,9 @@ class EigenschapSerializer(NestedHyperlinkedModelSerializer):
     specificatie = EigenschapSpecificatieSerializer(read_only=True, source='specificatie_van_eigenschap')
     # referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
 
-    is_van = NestedHyperlinkedRelatedField(
+    zaaktype = NestedHyperlinkedRelatedField(
         read_only=True,
+        source='is_van',
         view_name='zaaktype-detail',
         parent_lookup_kwargs={
             'catalogus_pk': 'maakt_deel_uit_van__pk',
@@ -71,5 +72,5 @@ class EigenschapSerializer(NestedHyperlinkedModelSerializer):
             'toelichting',
             'ingangsdatum_object',
             'einddatum_object',
-            'is_van',
+            'zaaktype',
         )

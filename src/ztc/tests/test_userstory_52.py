@@ -71,7 +71,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             ('toelichting', str),
             ('ingangsdatumObject', str),
             ('einddatumObject', type(None)),
-            ('isVan', str),
+            ('zaaktype', str),
         })
 
         eigenschap_objecttype = next((eig for eig in response_data if eig['naam'] == 'objecttype'))
@@ -95,7 +95,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                 'definitie': '',
                 'einddatumObject': None,
                 'ingangsdatumObject': zaaktype.datum_begin_geldigheid.strftime("%Y-%m-%d"),
-                'isVan': f'http://testserver{zaaktype_url}',
+                'zaaktype': f'http://testserver{zaaktype_url}',
                 'toelichting': '',
                 'specificatie': {
                     'formaat': FormaatChoices.tekst,
