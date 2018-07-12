@@ -1,27 +1,20 @@
 from django.conf.urls import include, url
 
-from rest_framework_nested import routers
+from zds_schema import routers
 
 from .schema import schema_view
 from .views import (
     CatalogusViewSet, EigenschapViewSet, StatusTypeViewSet, ZaakTypeViewSet
 )
 
-root_router = routers.DefaultRouter(trailing_slash=False)
-root_router.register(r'catalogussen', CatalogusViewSet)
 
-catalogus_router = routers.NestedSimpleRouter(
-    root_router, r'catalogussen',
-    lookup='catalogus', trailing_slash=False
-)
-catalogus_router.register('zaaktypen', ZaakTypeViewSet)
-
-zaaktype_router = routers.NestedSimpleRouter(
-    catalogus_router, r'zaaktypen',
-    lookup='zaaktype', trailing_slash=False,
-)
-zaaktype_router.register('statustypen', StatusTypeViewSet)
-zaaktype_router.register('eigenschappen', EigenschapViewSet)
+router = routers.DefaultRouter()
+router.register(r'catalogussen', CatalogusViewSet, [
+    routers.nested('zaaktypen', ZaakTypeViewSet, [
+        routers.nested('statustypen', StatusTypeViewSet),
+        routers.nested('eigenschappen', EigenschapViewSet),
+    ])
+])
 
 
 urlpatterns = [
@@ -36,8 +29,6 @@ urlpatterns = [
             name='schema-redoc'),
 
         # actual API
-        url(r'^', include(root_router.urls)),
-        url(r'^', include(catalogus_router.urls)),
-        url(r'^', include(zaaktype_router.urls)),
+        url(r'^', include(router.urls)),
     ])),
 ]
