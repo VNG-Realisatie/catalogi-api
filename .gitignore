@@ -23,6 +23,7 @@ src/ztc/static/css/screen.css
 # Environment
 local.py
 /env/
+.env
 /media/
 /static/
 /mail/
