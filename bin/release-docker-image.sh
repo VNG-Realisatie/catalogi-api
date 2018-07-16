@@ -3,46 +3,56 @@
 set -e # exit on error
 set -x # echo commands
 
-CONTAINER_REPO=nlxio/gemma-ztc
-
+CONTAINER_REPO=nlxio/gemma-zrc
 
 git_tag=$(git tag --points-at HEAD) &>/dev/null
-git_branch=$(git rev-parse --abbrev-ref HEAD)
 
 
-if [[ -n "$git_tag" ]]; then
-    echo "Building image for git tag $git_tag"
-    RELEASE_TAG=$git_tag
-else
-    RELEASE_TAG=${RELEASE_TAG:-latest}
-fi
+build_image() {
+    tag=$1
+    docker build \
+        --target production \
+        -t ${CONTAINER_REPO}:$tag \
+        -f Dockerfile .
+}
 
-
-docker build \
-    --target production \
-    -t ${CONTAINER_REPO}:${RELEASE_TAG} \
-    -f Dockerfile .
-
-
-# JOB_NAME is set by Jenkins
-# only push the image if running in CI
-if [[ -n "$JOB_NAME" ]]; then
-    docker push ${CONTAINER_REPO}:${RELEASE_TAG}
-
-    # if this is a tag, and this is master -> push latest as well
-    if [[ -n "$git_tag" && $git_branch -eq "master" ]]; then
-        docker push ${CONTAINER_REPO}:latest
+get_release_tag() {
+    if [[ -n "$git_tag" ]]; then
+        echo "Building image for git tag $git_tag"
+        release_tag=$git_tag
+    else
+        release_tag=${RELEASE_TAG:-latest}
     fi
+    echo $release_tag
+}
 
+push_image() {
+    # JOB_NAME is set by Jenkins
+    # only push the image if running in CI
+    if [[ -n "$JOB_NAME" ]]; then
+        docker push ${CONTAINER_REPO}:${RELEASE_TAG}
+
+        # if this is a tag, and this is master -> push latest as well
+        if [[ -n "$git_tag" && $git_branch -eq "master" ]]; then
+            build_image latest
+            docker push ${CONTAINER_REPO}:latest
+        fi
+
+        write_deploy_params
+    else
+        echo "Not pushing image, set the JOB_NAME envvar to push after building"
+    fi
+}
+
+write_deploy_params() {
     # if on jenkins AND it's a tagged release -> prepare deployment
     if [[ -n "$JENKINS_URL" && -n "$git_tag" ]]; then
         echo "
 VERSION=${git_tag}
 " > deployment-parameters
     fi
-else
-    echo "Not pushing image, set the JOB_NAME envvar to push after building"
-fi
+}
 
 
-# If on Jenkins, write the
+build_image $(get_release_tag)
+push_image
