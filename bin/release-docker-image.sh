@@ -3,7 +3,7 @@
 set -e # exit on error
 set -x # echo commands
 
-CONTAINER_REPO=nlxio/gemma-ztc
+CONTAINER_REPO=vngr/gemma-ztc
 
 git_tag=$(git tag --points-at HEAD) &>/dev/null
 
