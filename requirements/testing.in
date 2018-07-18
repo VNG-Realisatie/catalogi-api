@@ -1,0 +1,11 @@
+coverage
+django-webtest
+factory_boy
+freezegun
+isort
+mock
+pep8
+pylint==1.9.2
+pyquery
+tblib
+webtest
