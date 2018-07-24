@@ -28,18 +28,18 @@ class RestfulPrinciplesAPITests(APITestCase):
 
         A ``ZaakType`` object can only be part of a ``Catalogus`` object.
         Hence, it should be nested under the ``catalogussen`` resource:
-        ``/api/v1/catalogussen/1/zaaktypen/``.
+        ``/api/v1/catalogussen/{uuid}/zaaktypen``.
         """
         zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
         kwargs = {
-            'catalogus_pk': self.catalogus.pk,
-            'id': zaaktype.pk
+            'catalogus_uuid': self.catalogus.uuid,
+            'uuid': zaaktype.uuid
         }
         zaaktype_detail_url = get_operation_url('zaaktype_read', **kwargs)
 
         self.assertEqual(
             zaaktype_detail_url,
-            '/api/v1/catalogussen/{catalogus_pk}/zaaktypen/{id}'.format(**kwargs)
+            '/api/v1/catalogussen/{catalogus_uuid}/zaaktypen/{uuid}'.format(**kwargs)
         )
 
     @skip("Not MVP")
@@ -250,7 +250,7 @@ class SecurityAPITests(CatalogusAPITestMixin, APILiveServerTestCase):
         )
 
         # We use the live test server rather than the shortcut client.
-        list_url = '{}{}'.format(self.live_server_url, self.catalogus_list_url)
+        list_url = f'{self.live_server_url}{self.catalogus_list_url}'
 
         # Make request using requests_oauthlib
         response = oauth.get(list_url)
@@ -700,7 +700,7 @@ class ErrorHandlingTests(APITestCase):
 
     def test_standard_json_error_response_404(self):
         """DSO: API-50 (standard JSON error response 404)"""
-        non_existing_detail_url = reverse('catalogus-detail', kwargs={'version': self.API_VERSION, 'pk': 0})
+        non_existing_detail_url = reverse('catalogus-detail', kwargs={'version': self.API_VERSION, 'uuid': 'dummy'})
 
         response = self.client.get(non_existing_detail_url)
         self.assertEqual(response.status_code, 404)

@@ -53,8 +53,8 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         url = get_operation_url(
             'eigenschap_list',
-            catalogus_pk=zaaktype.maakt_deel_uit_van_id,
-            zaaktype_pk=zaaktype.id
+            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            zaaktype_uuid=zaaktype.uuid
         )
 
         response = self.client.get(url)
@@ -78,14 +78,14 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         zaaktype_url = get_operation_url(
             'zaaktype_read',
-            catalogus_pk=zaaktype.maakt_deel_uit_van_id,
-            id=zaaktype.id,
+            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            uuid=zaaktype.uuid,
         )
         detail_url = get_operation_url(
             'eigenschap_read',
-            catalogus_pk=zaaktype.maakt_deel_uit_van_id,
-            zaaktype_pk=zaaktype.id,
-            id=eigenschap1.id,
+            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            zaaktype_uuid=zaaktype.uuid,
+            uuid=eigenschap1.uuid,
         )
         self.assertEqual(
             eigenschap_objecttype,

@@ -23,15 +23,16 @@ class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
 
 class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'zaaktype_pk': 'is_van__pk',
-        'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+        'zaaktype_uuid': 'is_van__uuid',
+        'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
     }
 
     is_van = NestedHyperlinkedRelatedField(
         read_only=True,
         view_name='zaaktype-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
         },
     )
     # heeftVerplichteEigenschap = NestedHyperlinkedRelatedField(
@@ -89,6 +90,9 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
             # 'heeftVerplichteZaakObjecttype',
         )
         extra_kwargs = {
+            'url': {
+                'lookup_field': 'uuid',
+            },
             'omschrijving': {
                 'source': 'statustype_omschrijving',
             },

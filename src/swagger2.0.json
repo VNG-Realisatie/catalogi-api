@@ -64,7 +64,7 @@
             },
             "parameters": []
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen": {
             "get": {
                 "operationId": "zaaktype_list",
                 "description": "Een verzameling van ZAAKTYPEn.",
@@ -86,14 +86,16 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{id}": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{uuid}": {
             "get": {
                 "operationId": "zaaktype_read",
                 "description": "Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.",
@@ -112,21 +114,24 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "id",
+                    "name": "uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this Zaaktype.",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/eigenschappen": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/eigenschappen": {
             "get": {
                 "operationId": "eigenschap_list",
                 "description": "Een verzameling van EIGENSCHAPpen.",
@@ -148,20 +153,24 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/eigenschappen/{id}": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/eigenschappen/{uuid}": {
             "get": {
                 "operationId": "eigenschap_read",
                 "description": "Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard\nkenmerk is van een zaak.",
@@ -180,27 +189,32 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "uuid",
                     "in": "path",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid"
                 },
                 {
-                    "name": "id",
+                    "name": "zaaktype_uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this Eigenschap.",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/statustypen": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/statustypen": {
             "get": {
                 "operationId": "statustype_list",
                 "description": "Een verzameling van STATUSTYPEn.",
@@ -222,20 +236,24 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/statustypen/{id}": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/statustypen/{uuid}": {
             "get": {
                 "operationId": "statustype_read",
                 "description": "Generieke aanduiding van de aard van een status.",
@@ -254,27 +272,32 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "uuid",
                     "in": "path",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid"
                 },
                 {
-                    "name": "id",
+                    "name": "zaaktype_uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this Statustype.",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{id}": {
+        "/catalogussen/{uuid}": {
             "get": {
                 "operationId": "catalogus_read",
                 "description": "De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor een Domein die als \u00e9\u00e9n geheel beheerd\nwordt.",
@@ -293,11 +316,12 @@
             },
             "parameters": [
                 {
-                    "name": "id",
+                    "name": "uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this catalogus.",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid"
                 }
             ]
         }

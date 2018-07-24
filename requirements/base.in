@@ -26,4 +26,4 @@ django-oauth-toolkit
 django-cors-middleware
 requests-oauthlib
 
--e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.10
+-e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.11

@@ -17,3 +17,4 @@ class EigenschapViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Eigenschap.objects.all()
     serializer_class = EigenschapSerializer
     pagination_class = None
+    lookup_field = 'uuid'
