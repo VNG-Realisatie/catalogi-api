@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -39,6 +41,11 @@ class StatusType(GeldigheidMixin, models.Model):
     individuele zaak de statussen te plannen maar om geïnteresseerden informatie te verschaffen
     over de termijn waarop normaliter een volgende status bereikt wordt.
     """
+    uuid = models.UUIDField(
+        unique=True, default=uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
+
     # relations
     is_van = models.ForeignKey(
         'ZaakType', verbose_name=_('is van'), related_name='statustypen',

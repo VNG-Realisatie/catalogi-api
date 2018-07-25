@@ -17,6 +17,4 @@ class CatalogusViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Catalogus.objects.all()
     serializer_class = CatalogusSerializer
     pagination_class = None
-
-    # This makes the URLs consistent with `NestedSimpleRouter`, which uses `<prefix>_id` instead of `<prefix>_pk`.
-    # lookup_url_kwarg = 'id'
+    lookup_field = 'uuid'

@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.core.validators import (
@@ -257,6 +259,10 @@ class ZaakType(GeldigheidMixin, models.Model):
     ‘ZAAKTYPE heeft gerelateerd ZAAKTYPE’ voor wat betreft zaaktypen van deelzaken
     respectievelijk gerelateerde zaken.
     """
+    uuid = models.UUIDField(
+        unique=True, default=uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
     zaaktype_identificatie = models.PositiveIntegerField(  # N5, integer with max_length of 5
         _('identificatie'), validators=[MaxValueValidator(99999)], help_text=_(
             'Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.'))

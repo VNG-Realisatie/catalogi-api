@@ -93,7 +93,7 @@ class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
 
 class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'catalogus_pk': 'maakt_deel_uit_van__pk',
+        'catalogus_uuid': 'maakt_deel_uit_van__uuid',
     }
 
     # product_dienst = ProductDienstSerializer(many=True, read_only=True)
@@ -175,9 +175,10 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         many=True,
         read_only=True,
         view_name='statustype-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_van__pk',
+            'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
+            'zaaktype_uuid': 'is_van__uuid',
         }
     )
 
@@ -186,9 +187,10 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         read_only=True,
         source='eigenschap_set',
         view_name='eigenschap-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_van__pk'
+            'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
+            'zaaktype_uuid': 'is_van__uuid'
         },
     )
 
@@ -244,6 +246,9 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # # 'heeftGerelateerd',
         )
         extra_kwargs = {
+            'url': {
+                'lookup_field': 'uuid',
+            },
             'identificatie': {
                 'source': 'zaaktype_identificatie',
             },
@@ -253,6 +258,9 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'omschrijving_generiek': {
                 'source': 'zaaktype_omschrijving_generiek',
             },
+            'maakt_deel_uit_van': {
+                'lookup_field': 'uuid',
+            }
         }
 
         # expandable_fields = {

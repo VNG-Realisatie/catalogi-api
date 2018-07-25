@@ -19,12 +19,12 @@ class ZaakTypeAPITests(APITestCase):
 
         self.zaaktype_list_url = reverse('zaaktype-list', kwargs={
             'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
+            'catalogus_uuid': self.catalogus.uuid,
         })
         self.zaaktype_detail_url = reverse('zaaktype-detail', kwargs={
             'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'pk': self.zaaktype.pk,
+            'catalogus_uuid': self.catalogus.uuid,
+            'uuid': self.zaaktype.uuid,
         })
 
     def test_get_list(self):
@@ -40,7 +40,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         expected = {
-            'url': 'http://testserver{}'.format(self.zaaktype_detail_url),
+            'url': f'http://testserver{self.zaaktype_detail_url}',
             # 'ingangsdatumObject': '2018-01-01',
             # 'einddatumObject': None,
             # 'vertrouwelijkheidAanduiding': '',
@@ -59,7 +59,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'aanleiding': '',
             # 'verlengingstermijn': 30,
             # 'opschortingAanhouding': '',
-            'maaktDeelUitVan': 'http://testserver{}'.format(self.catalogus_detail_url),
+            'maaktDeelUitVan': f'http://testserver{self.catalogus_detail_url}',
             # 'indicatieInternOfExtern': '',
             # 'verlengingmogelijk': '',
             # 'handelingBehandelaar': '',
@@ -144,14 +144,14 @@ class ZaakObjectTypeAPITests(APITestCase):
 
         self.zaakobjecttype_list_url = reverse('zaakobjecttype-list', kwargs={
             'version': self.API_VERSION,
-            'zaaktype_pk': self.zaaktype.pk,
-            'catalogus_pk': self.catalogus.pk,
+            'zaaktype_uuid': self.zaaktype.uuid,
+            'catalogus_uuid': self.catalogus.uuid,
         })
         self.zaakobjecttype_detail_url = reverse('zaakobjecttype-detail', kwargs={
             'version': self.API_VERSION,
-            'zaaktype_pk': self.zaaktype.pk,
-            'catalogus_pk': self.catalogus.pk,
-            'pk': self.zaakobjecttype.pk,
+            'zaaktype_uuid': self.zaaktype.uuid,
+            'catalogus_uuid': self.catalogus.uuid,
+            'uuid': self.zaakobjecttype.uuid,
         })
 
     def test_get_list(self):
