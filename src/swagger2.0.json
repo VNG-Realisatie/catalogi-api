@@ -20,25 +20,27 @@
         "application/json"
     ],
     "securityDefinitions": {
+        "Bearer": {
+            "in": "header",
+            "name": "Authorization",
+            "type": "apiKey"
+        },
         "OAuth2": {
-            "type": "oauth2",
             "flow": "application",
-            "tokenUrl": "/oauth2/token/",
             "scopes": {
                 "write": "Schrijftoegang tot de catalogus en gerelateerde objecten.",
                 "read": "Leestoegang tot de catalogus en gerelateerde objecten."
-            }
-        },
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+            },
+            "tokenUrl": "/oauth2/token/",
+            "type": "oauth2"
         }
     },
     "security": [
         {
-            "OAuth2": [],
             "Bearer": []
+        },
+        {
+            "OAuth2": []
         }
     ],
     "paths": {
@@ -64,7 +66,7 @@
             },
             "parameters": []
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen": {
             "get": {
                 "operationId": "zaaktype_list",
                 "description": "Een verzameling van ZAAKTYPEn.",
@@ -86,14 +88,16 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{id}": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{uuid}": {
             "get": {
                 "operationId": "zaaktype_read",
                 "description": "Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.",
@@ -112,21 +116,24 @@
             },
             "parameters": [
                 {
-                    "name": "catalogus_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "id",
+                    "name": "uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this Zaaktype.",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/eigenschappen": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/eigenschappen": {
             "get": {
                 "operationId": "eigenschap_list",
                 "description": "Een verzameling van EIGENSCHAPpen.",
@@ -148,20 +155,24 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/eigenschappen/{id}": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/eigenschappen/{uuid}": {
             "get": {
                 "operationId": "eigenschap_read",
                 "description": "Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard\nkenmerk is van een zaak.",
@@ -180,27 +191,32 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "uuid",
                     "in": "path",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid"
                 },
                 {
-                    "name": "id",
+                    "name": "zaaktype_uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this Eigenschap.",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/statustypen": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/statustypen": {
             "get": {
                 "operationId": "statustype_list",
                 "description": "Een verzameling van STATUSTYPEn.",
@@ -222,20 +238,24 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "zaaktype_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{catalogus_pk}/zaaktypen/{zaaktype_pk}/statustypen/{id}": {
+        "/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/statustypen/{uuid}": {
             "get": {
                 "operationId": "statustype_read",
                 "description": "Generieke aanduiding van de aard van een status.",
@@ -254,27 +274,32 @@
             },
             "parameters": [
                 {
-                    "name": "zaaktype_pk",
+                    "name": "catalogus_uuid",
                     "in": "path",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 },
                 {
-                    "name": "catalogus_pk",
+                    "name": "uuid",
                     "in": "path",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "string"
+                    "type": "string",
+                    "format": "uuid"
                 },
                 {
-                    "name": "id",
+                    "name": "zaaktype_uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this Statustype.",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
                 }
             ]
         },
-        "/catalogussen/{id}": {
+        "/catalogussen/{uuid}": {
             "get": {
                 "operationId": "catalogus_read",
                 "description": "De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor een Domein die als \u00e9\u00e9n geheel beheerd\nwordt.",
@@ -293,11 +318,12 @@
             },
             "parameters": [
                 {
-                    "name": "id",
+                    "name": "uuid",
                     "in": "path",
-                    "description": "A unique integer value identifying this catalogus.",
+                    "description": "Unieke resource identifier (UUID4)",
                     "required": true,
-                    "type": "integer"
+                    "type": "string",
+                    "format": "uuid"
                 }
             ]
         }
@@ -321,19 +347,22 @@
                     "title": "Domein",
                     "description": "Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt.",
                     "type": "string",
-                    "maxLength": 5
+                    "maxLength": 5,
+                    "minLength": 1
                 },
                 "rsin": {
                     "title": "Rsin",
                     "description": "Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS.",
                     "type": "string",
-                    "maxLength": 9
+                    "maxLength": 9,
+                    "minLength": 1
                 },
                 "contactpersoonBeheerNaam": {
                     "title": "Naam",
                     "description": "De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.",
                     "type": "string",
-                    "maxLength": 40
+                    "maxLength": 40,
+                    "minLength": 1
                 },
                 "contactpersoonBeheerTelefoonnummer": {
                     "title": "Telefoonnummer",
@@ -349,7 +378,6 @@
                     "maxLength": 254
                 },
                 "zaaktypen": {
-                    "title": "Zaaktypen",
                     "type": "array",
                     "items": {
                         "type": "string",
@@ -385,7 +413,8 @@
                     "title": "Omschrijving",
                     "description": "Omschrijving van de aard van ZAAKen van het ZAAKTYPE.",
                     "type": "string",
-                    "maxLength": 80
+                    "maxLength": 80,
+                    "minLength": 1
                 },
                 "omschrijvingGeneriek": {
                     "title": "Omschrijving generiek",
@@ -400,7 +429,6 @@
                     "format": "uri"
                 },
                 "statustypen": {
-                    "title": "Statustypen",
                     "type": "array",
                     "items": {
                         "type": "string",
@@ -410,7 +438,6 @@
                     "uniqueItems": true
                 },
                 "eigenschappen": {
-                    "title": "Eigenschappen",
                     "type": "array",
                     "items": {
                         "type": "string",
@@ -451,22 +478,24 @@
                     "title": "Lengte",
                     "description": "Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd.",
                     "type": "string",
-                    "maxLength": 14
+                    "maxLength": 14,
+                    "minLength": 1
                 },
                 "kardinaliteit": {
                     "title": "Kardinaliteit",
                     "description": "Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE.",
                     "type": "string",
-                    "maxLength": 3
+                    "maxLength": 3,
+                    "minLength": 1
                 },
                 "waardenverzameling": {
-                    "title": "Waardenverzameling",
                     "description": "Waarden die deze EIGENSCHAP kan hebben (Gebruik een komma om waarden van elkaar te onderscheiden.)",
                     "type": "array",
                     "items": {
                         "title": "Waardenverzameling",
                         "type": "string",
-                        "maxLength": 100
+                        "maxLength": 100,
+                        "minLength": 1
                     }
                 }
             },
@@ -490,13 +519,15 @@
                     "title": "Naam",
                     "description": "De naam van de EIGENSCHAP",
                     "type": "string",
-                    "maxLength": 20
+                    "maxLength": 20,
+                    "minLength": 1
                 },
                 "definitie": {
                     "title": "Definitie",
                     "description": "De beschrijving van de betekenis van deze EIGENSCHAP",
                     "type": "string",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "minLength": 1
                 },
                 "specificatie": {
                     "$ref": "#/definitions/EigenschapSpecificatie"
@@ -543,7 +574,8 @@
                     "title": "Omschrijving",
                     "description": "Een korte, voor de initiator van de zaak relevante, omschrijving van de aard van de STATUS van zaken van een ZAAKTYPE.",
                     "type": "string",
-                    "maxLength": 80
+                    "maxLength": 80,
+                    "minLength": 1
                 },
                 "omschrijvingGeneriek": {
                     "title": "Omschrijving generiek",

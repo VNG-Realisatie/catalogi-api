@@ -7,7 +7,6 @@ from .views import (
     CatalogusViewSet, EigenschapViewSet, StatusTypeViewSet, ZaakTypeViewSet
 )
 
-
 router = routers.DefaultRouter()
 router.register(r'catalogussen', CatalogusViewSet, [
     routers.nested('zaaktypen', ZaakTypeViewSet, [

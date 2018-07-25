@@ -42,6 +42,9 @@ RUN npm run build
 # Stage 3 - Prepare jenkins tests image
 FROM build AS jenkins
 
+RUN apk --no-cache add \
+    postgresql-client
+
 COPY --from=build /usr/local/lib/python3.6 /usr/local/lib/python3.6
 COPY --from=build /app/requirements /app/requirements
 

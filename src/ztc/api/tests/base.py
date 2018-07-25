@@ -40,7 +40,7 @@ class CatalogusAPITestMixin:
         self.catalogus = CatalogusFactory.create(domein='ABCDE', rsin='000000001')
 
         self.catalogus_list_url = get_operation_url('catalogus_list')
-        self.catalogus_detail_url = get_operation_url('catalogus_read', id=self.catalogus.id)
+        self.catalogus_detail_url = get_operation_url('catalogus_read', uuid=self.catalogus.uuid)
 
 
 class APITestCase(ClientAPITestMixin, CatalogusAPITestMixin, _APITestCase):

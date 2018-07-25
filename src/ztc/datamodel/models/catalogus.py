@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -21,6 +23,10 @@ class Catalogus(models.Model):
 
     KING bepaalt niet op voorhand welke waarden 'Domein' kan aannemen, maar registreert wel alle gebruikte waarden.
     """
+    uuid = models.UUIDField(
+        unique=True, default=uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
     # TODO [KING]: "Voor de waardenverzameling wordt door KING een waardenlijst beheerd waarin wordt
     # bijgehouden welke afkorting welk domein betreft." ZTC 2.1, blz 42 - Waar dan?
     domein = models.CharField(  # waardenverzameling hoofdletters

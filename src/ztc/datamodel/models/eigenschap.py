@@ -1,4 +1,4 @@
-from datetime import timedelta
+import uuid
 from decimal import Decimal, InvalidOperation
 
 from django.contrib.postgres.fields import ArrayField
@@ -165,6 +165,10 @@ class Eigenschap(GeldigheidMixin, models.Model):
     de vergunning verleend kan worden of niet).
 
     """
+    uuid = models.UUIDField(
+        unique=True, default=uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
     eigenschapnaam = models.CharField(_('eigenschapnaam'), max_length=20, help_text=_('De naam van de EIGENSCHAP'))
     definitie = models.CharField(_('definitie'), max_length=255, help_text=_(
         'De beschrijving van de betekenis van deze EIGENSCHAP'))

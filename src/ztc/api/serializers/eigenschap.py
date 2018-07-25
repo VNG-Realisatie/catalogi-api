@@ -35,8 +35,8 @@ class EigenschapSpecificatieSerializer(ModelSerializer):
 
 class EigenschapSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'zaaktype_pk': 'is_van__pk',
-        'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+        'zaaktype_uuid': 'is_van__uuid',
+        'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
     }
 
     specificatie = EigenschapSpecificatieSerializer(read_only=True, source='specificatie_van_eigenschap')
@@ -46,24 +46,14 @@ class EigenschapSerializer(NestedHyperlinkedModelSerializer):
         read_only=True,
         source='is_van',
         view_name='zaaktype-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
         },
     )
 
     class Meta:
         model = Eigenschap
-        extra_kwargs = {
-            'ingangsdatum_object': {
-                'source': 'datum_begin_geldigheid',
-            },
-            'einddatum_object': {
-                'source': 'datum_einde_geldigheid',
-            },
-            'naam': {
-                'source': 'eigenschapnaam',
-            }
-        }
         fields = (
             'url',
             'naam',
@@ -74,3 +64,17 @@ class EigenschapSerializer(NestedHyperlinkedModelSerializer):
             'einddatum_object',
             'zaaktype',
         )
+        extra_kwargs = {
+            'url': {
+                'lookup_field': 'uuid',
+            },
+            'ingangsdatum_object': {
+                'source': 'datum_begin_geldigheid',
+            },
+            'einddatum_object': {
+                'source': 'datum_einde_geldigheid',
+            },
+            'naam': {
+                'source': 'eigenschapnaam',
+            }
+        }

@@ -10,7 +10,8 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         source='zaaktype_set',
         view_name='zaaktype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'},
+        lookup_field='uuid',
+        parent_lookup_kwargs={'catalogus_uuid': 'maakt_deel_uit_van__uuid'},
     )
 
     class Meta:
@@ -24,3 +25,8 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
             'contactpersoon_beheer_emailadres',
             'zaaktypen',
         )
+        extra_kwargs = {
+            'url': {
+                'lookup_field': 'uuid'
+            }
+        }

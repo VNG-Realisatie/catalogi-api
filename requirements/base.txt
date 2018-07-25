@@ -4,7 +4,7 @@
 #
 #    pip-compile --no-index --output-file requirements/base.txt requirements/base.in
 #
--e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema
+-e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.11
 certifi==2017.11.5        # via requests
 chardet==3.0.4            # via requests
 click==6.7                # via pip-tools
@@ -30,7 +30,7 @@ djangorestframework-filters==0.10.2
 djangorestframework==3.7.7
 drf-flex-fields==0.2.2
 drf-nested-routers==0.90.2
-drf-yasg==1.4.0
+drf-yasg==1.9.1
 first==2.0.1              # via pip-tools
 future==0.16.0            # via drf-yasg
 idna==2.6                 # via requests
