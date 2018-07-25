@@ -36,7 +36,7 @@ djangorestframework-filters==0.10.2
 djangorestframework==3.7.7
 drf-flex-fields==0.2.2
 drf-nested-routers==0.90.2
-drf-yasg==1.4.0
+drf-yasg==1.9.1
 factory-boy==2.11.1
 faker==0.8.17             # via factory-boy
 first==2.0.1
