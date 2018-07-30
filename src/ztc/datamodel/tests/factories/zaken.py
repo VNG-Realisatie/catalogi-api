@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 import factory
 
@@ -8,7 +8,7 @@ from ztc.datamodel.models import (
 )
 
 from .catalogus import CatalogusFactory
-from .relatieklassen import ZaakTypenRelatieFactory
+from .relatieklassen import ZaakTypenRelatieFactory  # noqa
 
 ZAAKTYPEN = [
     'Melding behandelen',
@@ -68,7 +68,7 @@ class BronZaakTypeFactory(factory.django.DjangoModelFactory):
 
 class ZaakTypeFactory(factory.django.DjangoModelFactory):
     zaaktype_identificatie = factory.Sequence(lambda n: n)
-    doorlooptijd_behandeling = 30
+    doorlooptijd_behandeling = timedelta(days=30)
     verlengingstermijn = 30
     trefwoord = []  # ArrayField has blank=True but not null=True
     verantwoordingsrelatie = []  # ArrayField has blank=True but not null=True

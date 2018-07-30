@@ -4,7 +4,7 @@
 #
 #    pip-compile --no-index --output-file requirements/base.txt requirements/base.in
 #
--e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.11
+-e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.17
 certifi==2017.11.5        # via requests
 chardet==3.0.4            # via requests
 click==6.7                # via pip-tools
@@ -35,6 +35,7 @@ first==2.0.1              # via pip-tools
 future==0.16.0            # via drf-yasg
 idna==2.6                 # via requests
 inflection==0.3.1         # via drf-yasg
+iso-639==0.4.5
 itypes==1.1.0             # via coreapi
 jinja2==2.10              # via coreschema
 markupsafe==1.0           # via jinja2

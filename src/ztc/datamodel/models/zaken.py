@@ -2,11 +2,11 @@ import uuid
 
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
-from django.core.validators import (
-    MaxValueValidator, MinValueValidator, RegexValidator
-)
+from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+from zds_schema.fields import DaysDurationField
 
 from ..choices import (
     InternExtern, JaNee, ObjectTypen, VertrouwelijkheidAanduiding
@@ -303,12 +303,13 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_("Werkwoord dat hoort bij de handeling die de behandelaar verricht bij het afdoen van ZAAKen van "
                     "dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren', 'vaststellen' of 'onderhouden'.")
     )
-    doorlooptijd_behandeling = models.PositiveSmallIntegerField(
-        _('doorlooptijd behandeling'), validators=[MinValueValidator(1), MaxValueValidator(999)], help_text=_(
-            'De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn.'))
-    servicenorm_behandeling = models.IntegerField(
+    doorlooptijd_behandeling = DaysDurationField(
+        _('doorlooptijd behandeling'),
+        help_text=_('De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE '
+                    'afgerond dient te zijn, in kalenderdagen.')
+    )
+    servicenorm_behandeling = DaysDurationField(
         _('servicenorm behandeling'), blank=True, null=True,
-        validators=[MinValueValidator(1), MaxValueValidator(999)],
         help_text=_('De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform '
                     'de geldende servicenormen van de zaakbehandelende organisatie(s).')
     )

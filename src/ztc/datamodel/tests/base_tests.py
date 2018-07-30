@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.utils import timezone
 
 from ztc.datamodel.choices import (
@@ -106,7 +108,7 @@ class HaaglandenMixin(object):
             #
             # Planning
             #
-            doorlooptijd_behandeling=8,  # weken
+            doorlooptijd_behandeling=timedelta(days=8 * 7),
             # servicenorm_behandeling=8,  # TODO 'afhankelijk van hetgeen aangevraagd is' should be an integer
 
             #
@@ -287,7 +289,7 @@ class HaaglandenMixin(object):
             statustypevolgnummer=4,
             doorlooptijd_status=2,  # werkdagen
             informeren=JaNee.nee,
-            toelichting='''Op basis van de aanvraag en het advies met betrekking tot de 
+            toelichting='''Op basis van de aanvraag en het advies met betrekking tot de
                 vergunning wordt het definitieve besluit op- en vastgesteld.''',
             roltypen=[
                 self.rol_type_bevoegd_gezag,
@@ -303,8 +305,8 @@ class HaaglandenMixin(object):
             statustypevolgnummer=6,  # NOTE: also refered to as '5' in de haaglanden doc
             doorlooptijd_status=3,  # werkdagen
             informeren=JaNee.nee,
-            toelichting='''Het besluit wordt verzonden en gepubliceerd en het zaakdossier wordt afgesloten 
-                en gearchiveerd (indien de provincie het bevoegd gezag is) dan wel ter archivering 
+            toelichting='''Het besluit wordt verzonden en gepubliceerd en het zaakdossier wordt afgesloten
+                en gearchiveerd (indien de provincie het bevoegd gezag is) dan wel ter archivering
                 overgedragen aan het bevoegd gezag (indien dat de gemeente is).''',
             roltypen=[
                 self.rol_type_vergunnings_aanvrager,

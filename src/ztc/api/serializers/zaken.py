@@ -209,8 +209,8 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # 'handelingInitiator',
             # 'onderwerp',
             # 'handelingBehandelaar',
-            # 'doorlooptijd',
-            # 'servicenorm',
+            'doorlooptijd',
+            'servicenorm',
             # 'opschortingAanhouding',
             # 'verlengingmogelijk',
             # 'verlengingstermijn',
@@ -260,7 +260,13 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             },
             'maakt_deel_uit_van': {
                 'lookup_field': 'uuid',
-            }
+            },
+            'doorlooptijd': {
+                'source': 'doorlooptijd_behandeling',
+            },
+            'servicenorm': {
+                'source': 'servicenorm_behandeling',
+            },
         }
 
         # expandable_fields = {

@@ -369,6 +369,7 @@ components:
       required:
         - identificatie
         - omschrijving
+        - doorlooptijd
         - maaktDeelUitVan
       type: object
       properties:
@@ -398,6 +399,19 @@ components:
             ZAAKTYPE
           type: string
           maxLength: 80
+        doorlooptijd:
+          title: Doorlooptijd
+          description: >-
+            De periode waarbinnen volgens wet- en regelgeving een ZAAK van het
+            ZAAKTYPE afgerond dient te zijn, in kalenderdagen.
+          type: string
+        servicenorm:
+          title: Servicenorm
+          description: >-
+            De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE
+            afgerond wordt conform de geldende servicenormen van de
+            zaakbehandelende organisatie(s).
+          type: string
         maaktDeelUitVan:
           title: Maakt deel uit van
           description: De CATALOGUS waartoe dit ZAAKTYPE behoort.

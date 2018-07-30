@@ -4,7 +4,7 @@
 #
 #    pip-compile --no-index --output-file requirements/jenkins.txt requirements/base.txt requirements/testing.in requirements/jenkins.in
 #
--e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.11
+-e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.17
 astroid==1.6.5            # via pylint
 beautifulsoup4==4.6.0     # via webtest
 certifi==2017.11.5
@@ -44,6 +44,7 @@ freezegun==0.3.10
 future==0.16.0
 idna==2.6
 inflection==0.3.1
+iso-639==0.4.5
 isort==4.3.4
 itypes==1.1.0
 jinja2==2.10
