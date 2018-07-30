@@ -77,7 +77,7 @@ class ZaakTypeAPITests(APITestCase):
             #     'link': None,
             #     'naam': self.zaaktype.referentieproces.naam,
             # },
-            'doorlooptijd': "30 00:00:00",
+            'doorlooptijd': "P30D",
             # 'verantwoordelijke': '',
             'omschrijving': '',
             # 'heeftGerelateerd': [],

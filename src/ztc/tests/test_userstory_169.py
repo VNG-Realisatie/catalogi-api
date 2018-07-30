@@ -28,4 +28,4 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             ('servicenorm', type(None)),
         ))
 
-        self.assertEqual(response_data['doorlooptijd'], '30 00:00:00')
+        self.assertEqual(response_data['doorlooptijd'], 'P30D')
