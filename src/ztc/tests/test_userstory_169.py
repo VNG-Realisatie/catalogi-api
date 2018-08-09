@@ -29,3 +29,13 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         ))
 
         self.assertEqual(response_data['doorlooptijd'], 'P30D')
+
+    def test_ophalen_mogelijke_behandelaars(self):
+        """
+        Toon aan dat het mogelijk is om een lijst van mogelijke behandelaars
+        op te halen.
+
+        Zie https://github.com/VNG-Realisatie/gemma-zaken/issues/182#issuecomment-408899919
+        voor context
+        """
+        zaaktype = ZaakTypeFactory.create()
