@@ -2,7 +2,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from zds_schema.constants import RolOmschrijving
+from zds_schema.constants import RolOmschrijving, RolTypes
 
 from .mixins import GeldigheidMixin
 
@@ -70,3 +70,17 @@ class RolType(GeldigheidMixin, models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.zaaktype, self.roltypeomschrijving)
+
+
+class MogelijkeBetrokkene(models.Model):
+    roltype = models.ForeignKey(RolType)
+
+    betrokkene = models.URLField(help_text="Een betrokkene die kan gerelateerd worden aan een zaak")
+    betrokkene_type = models.CharField(max_length=100, choices=RolTypes.choices)
+
+    class Meta:
+        verbose_name = _('mogelijke betrokkene')
+        verbose_name_plural = _('mogelijke betrokkenen')
+
+    def __str__(self):
+        return f"{self.roltype} - {self.betrokkene_type}"
