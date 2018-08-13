@@ -61,7 +61,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         )
 
         response = self.client.get(url, {
-            'omschrijvingGeneriek': RolOmschrijving.behandelaar,
+            'omschrijving_generiek': RolOmschrijving.behandelaar,
         })
 
         self.assertEqual(response.status_code, 200)
@@ -73,7 +73,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             ('url', str),
             ('zaaktype', str),
             ('omschrijving', str),
-            ('omschrijving_generiek', str),
+            ('omschrijvingGeneriek', str),
             ('mogelijkeBetrokkenen', list),
         ))
 
@@ -82,5 +82,5 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         self.assertResponseTypes(mogelijke_betrokkenen[0], (
             ('betrokkene', str),
-            ('betrokkene_type', str),
+            ('betrokkeneType', str),
         ))

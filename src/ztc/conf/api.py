@@ -19,11 +19,11 @@ REST_FRAMEWORK = {
     #
     # # Generic view behavior
     'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
-    # 'DEFAULT_FILTER_BACKENDS': (
-    #     'django_filters.rest_framework.DjangoFilterBackend',
-    #     'rest_framework.filters.SearchFilter',
-    #     'rest_framework.filters.OrderingFilter',
-    # ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'zds_schema.filters.Backend',
+        # 'rest_framework.filters.SearchFilter',
+        # 'rest_framework.filters.OrderingFilter',
+    ),
     #
     # # Filtering
     'SEARCH_PARAM': 'zoek',  # 'search',
@@ -65,4 +65,7 @@ SWAGGER_SETTINGS = {
     },
     'DEFAULT_AUTO_SCHEMA_CLASS': 'zds_schema.schema.AutoSchema',
     'DEFAULT_INFO': 'ztc.api.schema.info',
+    'DEFAULT_FILTER_INSPECTORS': (
+        'zds_schema.inspectors.query.FilterInspector',
+    )
 }

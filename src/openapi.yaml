@@ -204,6 +204,21 @@ paths:
     get:
       operationId: roltype_list
       description: Een verzameling van ROLTYPEn.
+      parameters:
+        - name: omschrijving_generiek
+          in: query
+          description: Algemeen gehanteerde omschrijving van de aard van de ROL.
+          required: false
+          schema:
+            type: string
+            enum:
+              - Adviseur
+              - Behandelaar
+              - Belanghebbende
+              - Beslisser
+              - Initiator
+              - Klantcontacter
+              - Zaakcoördinator
       responses:
         '200':
           description: ''

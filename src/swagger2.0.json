@@ -220,7 +220,24 @@
             "get": {
                 "operationId": "roltype_list",
                 "description": "Een verzameling van ROLTYPEn.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "omschrijving_generiek",
+                        "in": "query",
+                        "description": "Algemeen gehanteerde omschrijving van de aard van de ROL.",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "Adviseur",
+                            "Behandelaar",
+                            "Belanghebbende",
+                            "Beslisser",
+                            "Initiator",
+                            "Klantcontacter",
+                            "Zaakco\u00f6rdinator"
+                        ]
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
