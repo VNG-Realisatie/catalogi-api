@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -30,6 +32,7 @@ class RolType(GeldigheidMixin, models.Model):
     specifieke benamingen. Waar gesproken wordt van ‘zaak’ bedoelen we zowel ‘hoofdzaak’ als
     ‘deelzaak’.
     """
+    uuid = models.UUIDField(default=uuid.uuid4)
     omschrijving = models.CharField(_('omschrijving'), max_length=20, help_text=_(
         'Omschrijving van de aard van de ROL.')
     )
@@ -73,6 +76,7 @@ class RolType(GeldigheidMixin, models.Model):
 
 
 class MogelijkeBetrokkene(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4)
     roltype = models.ForeignKey(RolType)
 
     betrokkene = models.URLField(help_text="Een betrokkene die kan gerelateerd worden aan een zaak")

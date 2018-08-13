@@ -48,16 +48,6 @@ class ArchiefProcedure(DjangoChoices):
     ander_datumkenmerk = ChoiceItem('ander datumkenmerk', _('ander datumkenmerk'))
 
 
-class RolTypeOmschrijving(DjangoChoices):
-    adviseur = ChoiceItem('Adviseur', _('adviseur'))  # Kennis in dienst stellen van de behandeling van (een deel van) een zaak.
-    behandelaar = ChoiceItem('Behandelaar', _('behandelaar'))  # De vakinhoudelijke behandeling doen van (een deel van) een zaak.
-    belanghebbende = ChoiceItem('Belanghebbende', _('belanghebbende'))  # Vanuit eigen en objectief belang rechtstreeks betrokken zijn bij de behandeling en/of de uitkomst van een zaak.
-    beslisser = ChoiceItem('Beslisser', _('beslisser'))  # Nemen van besluiten die voor de uitkomst van een zaak noodzakelijk zijn.
-    initiator = ChoiceItem('Initiator', _('initiator'))  # Aanleiding geven tot de start van een zaak ..
-    klantcontacter = ChoiceItem('Klantcontacter', _('klantcontacter'))  # Het eerste aanspreekpunt zijn voor vragen van burgers en bedrijven ..
-    zaakcoordinator = ChoiceItem('Zaakcoördinator', _('zaakcoördinator'))  # Er voor zorg dragen dat de behandeling van de zaak in samenhang uitgevoerd wordt conform de daarover gemaakte afspraken.
-
-
 class ObjectTypen(DjangoChoices):
     """
     Objecttypen uit het RSGB of het RGBZ

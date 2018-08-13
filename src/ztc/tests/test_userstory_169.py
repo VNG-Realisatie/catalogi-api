@@ -3,10 +3,11 @@ Test the flow described in https://github.com/VNG-Realisatie/gemma-zaken/issues/
 """
 from rest_framework import status
 from rest_framework.test import APITestCase
+from zds_schema.constants import RolOmschrijving
 from zds_schema.tests import TypeCheckMixin, get_operation_url
 
 from ztc.api.tests.base import ClientAPITestMixin
-from ztc.datamodel.tests.factories import ZaakTypeFactory
+from ztc.datamodel.tests.factories import ZaakTypeFactory, RolTypeFactory, MogelijkeBetrokkeneFactory
 
 
 class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
@@ -39,3 +40,30 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         voor context
         """
         zaaktype = ZaakTypeFactory.create()
+        roltype_behandelaar = RolTypeFactory.create(
+            zaaktype=zaaktype,
+            omschrijving_generiek=RolOmschrijving.behandelaar,
+        )
+        MogelijkeBetrokkeneFactory.create_batch(2, roltype=roltype_behandelaar)
+
+        # unrelated, but same ZAAKTYPE, should not show up
+        MogelijkeBetrokkeneFactory.create(
+            roltype__zaaktype=zaaktype,
+            roltype__omschrijving_generiek=RolOmschrijving.adviseur
+        )
+
+        url = get_operation_url(
+            'roltype_list',
+            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            zaaktype_uuid=zaaktype.uuid
+        )
+
+        response = self.client.get(url, {
+            'omschrijvingGeneriek': RolOmschrijving.behandelaar,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json()
+
+        self.assertEqual(len(response_data), 2)
+        import bpdb; bpdb.set_trace()

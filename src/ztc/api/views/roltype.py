@@ -2,13 +2,10 @@ from rest_framework import viewsets
 
 from ...datamodel.models import RolType
 from ..serializers import RolTypeSerializer
-from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import (
-    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
-)
+from ..utils.viewsets import NestedViewSetMixin
 
 
-class RolTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class RolTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE.
@@ -18,3 +15,5 @@ class RolTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexF
     """
     queryset = RolType.objects.all()
     serializer_class = RolTypeSerializer
+    pagination_class = None
+    lookup_field = 'uuid'
