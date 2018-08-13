@@ -78,7 +78,6 @@ RUN apk --no-cache add \
     zlib
 
 COPY --from=build /usr/local/lib/python3.6 /usr/local/lib/python3.6
-COPY --from=build /app/src /app/src
 COPY --from=build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 
 # Stage 4.2 - Copy source code

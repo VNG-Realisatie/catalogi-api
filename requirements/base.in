@@ -20,10 +20,9 @@ django-filter
 djangorestframework-camel-case
 djangorestframework-filters
 drf-yasg==1.9.1
+zds-schema
 
 drf-flex-fields
 django-oauth-toolkit
 django-cors-middleware
 requests-oauthlib
-
--e git+https://github.com/vng-Realisatie/gemma-zaken-common.git@master#egg=zds_schema-0.0.17
