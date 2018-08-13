@@ -61,7 +61,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         )
 
         response = self.client.get(url, {
-            'omschrijving_generiek': RolOmschrijving.behandelaar,
+            'omschrijvingGeneriek': RolOmschrijving.behandelaar,
         })
 
         self.assertEqual(response.status_code, 200)

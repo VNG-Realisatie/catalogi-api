@@ -222,7 +222,7 @@
                 "description": "Een verzameling van ROLTYPEn.",
                 "parameters": [
                     {
-                        "name": "omschrijving_generiek",
+                        "name": "omschrijvingGeneriek",
                         "in": "query",
                         "description": "Algemeen gehanteerde omschrijving van de aard van de ROL.",
                         "required": false,
