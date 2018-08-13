@@ -1,13 +1,11 @@
-from unittest import skip
-
 from django.urls import reverse
 
-from ...datamodel.choices import RolTypeOmschrijving
+from zds_schema.constants import RolOmschrijvingGeneriek
+
 from ...datamodel.tests.factories import RolTypeFactory
 from .base import APITestCase
 
 
-@skip("Not MVP yet")
 class RolTypeAPITests(APITestCase):
     maxDiff = None
 
@@ -15,23 +13,23 @@ class RolTypeAPITests(APITestCase):
         super().setUp()
 
         self.rol_type = RolTypeFactory.create(
-            roltypeomschrijving='Vergunningaanvrager',
-            roltypeomschrijving_generiek=RolTypeOmschrijving.initiator,
+            omschrijving='Vergunningaanvrager',
+            omschrijving_generiek=RolOmschrijvingGeneriek.initiator,
             soort_betrokkene=['Aanvrager'],
-            is_van__maakt_deel_uit_van=self.catalogus,
+            zaaktype__maakt_deel_uit_van=self.catalogus,
         )
-        self.zaaktype = self.rol_type.is_van
+        self.zaaktype = self.rol_type.zaaktype
 
-        self.rol_type_list_url = reverse('api:roltype-list', kwargs={
+        self.rol_type_list_url = reverse('roltype-list', kwargs={
             'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk
+            'catalogus_uuid': self.catalogus.uuid,
+            'zaaktype_uuid': self.zaaktype.uuid
         })
-        self.rol_type_detail_url = reverse('api:roltype-detail', kwargs={
+        self.rol_type_detail_url = reverse('roltype-detail', kwargs={
             'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
-            'pk': self.rol_type.pk,
+            'catalogus_uuid': self.catalogus.uuid,
+            'zaaktype_uuid': self.zaaktype.uuid,
+            'uuid': self.rol_type.uuid,
         })
 
     def test_get_list(self):
@@ -40,23 +38,31 @@ class RolTypeAPITests(APITestCase):
 
         data = response.json()
 
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
+        # TODO: when pagination gets re-added
+        # self.assertTrue('results' in data)
+        # self.assertEqual(len(data['results']), 1)
+        self.assertEqual(len(data), 1)
 
     def test_get_detail(self):
         response = self.api_client.get(self.rol_type_detail_url)
         self.assertEqual(response.status_code, 200)
 
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'version': self.API_VERSION,
+            'catalogus_uuid': self.catalogus.uuid,
+            'uuid': self.zaaktype.uuid,
+        })
+
         expected = {
-            'url': 'http://testserver{}'.format(self.rol_type_detail_url),
-            'ingangsdatumObject': '2018-01-01',
-            'einddatumObject': None,
-            'isVan': 'http://testserver{}'.format(
-                reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
+            'url': f'http://testserver{self.rol_type_detail_url}',
+            # 'ingangsdatumObject': '2018-01-01',
+            # 'einddatumObject': None,
+            'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'Vergunningaanvrager',
-            'omschrijvingGeneriek': 'Initiator',
-            'soortBetrokkene': ['Aanvrager'],
-            'magZetten': [],
+            'omschrijvingGeneriek': RolOmschrijvingGeneriek.initiator,
+            'mogelijkeBetrokkenen': [],
+            # 'soortBetrokkene': ['Aanvrager'],
+            # 'magZetten': [],
         }
         self.assertEqual(expected, response.json())
 

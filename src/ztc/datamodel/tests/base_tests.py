@@ -2,8 +2,10 @@ from datetime import timedelta
 
 from django.utils import timezone
 
+from zds_schema.constants import RolOmschrijvingGeneriek
+
 from ztc.datamodel.choices import (
-    JaNee, ObjectTypen, RolTypeOmschrijving, VertrouwelijkheidAanduiding
+    JaNee, ObjectTypen, VertrouwelijkheidAanduiding
 )
 
 from .factories import (
@@ -144,49 +146,55 @@ class HaaglandenMixin(object):
         #
         # rollen en betrokkenen
         #
-        # NOTE: Statusen are first in the Haaglanden document, but our datamodel has a reverse relation, so RolType goes first here
+        # NOTE: Statusen are first in the Haaglanden document, but our datamodel has a reverse relation,
+        # so RolType goes first here
         # NOTE: statussen are 1, 2, 3, 4, 5, but there is no 5, only a 6
         self.rol_type_vergunnings_aanvrager = RolTypeFactory.create(
-            roltypeomschrijving='Vergunningaanvrager',
-            roltypeomschrijving_generiek=RolTypeOmschrijving.initiator,
+            omschrijving='Vergunningaanvrager',
+            omschrijving_generiek=RolOmschrijvingGeneriek.initiator,
             soort_betrokkene=['Aanvrager'],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.rol_type_bevoegd_gezag = RolTypeFactory.create(
-            roltypeomschrijving='Bevoegd gezag',
-            roltypeomschrijving_generiek=RolTypeOmschrijving.belanghebbende,
+            omschrijving='Bevoegd gezag',
+            omschrijving_generiek=RolOmschrijvingGeneriek.belanghebbende,
             soort_betrokkene=['Bevoegd gezag'],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.rol_type_zaakverantwoordelijke = RolTypeFactory.create(
-            roltypeomschrijving='Zaakverantwoordelijke'[:20],  # TODO: this one has length 21, too long for AN20
-            roltypeomschrijving_generiek=RolTypeOmschrijving.beslisser,  # FIXME: docs has 'verantwoordelijke' but is not an option in the specs  # FIXME: is not an option
+            omschrijving='Zaakverantwoordelijke'[:20],  # TODO: this one has length 21, too long for AN20
+            # FIXME: docs has 'verantwoordelijke' but is not an option in the specs  # FIXME: is not an option
+            omschrijving_generiek=RolOmschrijvingGeneriek.beslisser,
             soort_betrokkene=['Teamleider afdeling', 'Toetsing & Vergunningen'],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.rol_type_vergunningbehandelaar = RolTypeFactory.create(
-            roltypeomschrijving='Vergunningbehandelaar'[:20],  # TODO: this one has length 21, too long for AN20
-            roltypeomschrijving_generiek=RolTypeOmschrijving.behandelaar,  # FIXME: docs has 'uitvoerder' but is not an option in the specs
+            omschrijving='Vergunningbehandelaar'[:20],  # TODO: this one has length 21, too long for AN20
+            # FIXME: docs has 'uitvoerder' but is not an option in the specs
+            omschrijving_generiek=RolOmschrijvingGeneriek.behandelaar,
             soort_betrokkene=['Teamleider afdeling', 'Toetsing & Vergunningen'],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.rol_type_juridisch_adviseur = RolTypeFactory.create(
-            roltypeomschrijving='Juridisch adviseur',
-            roltypeomschrijving_generiek=RolTypeOmschrijving.adviseur,  # FIXME: docs has 'uitvoerder' but is not an option in the specs
+            omschrijving='Juridisch adviseur',
+            # FIXME: docs has 'uitvoerder' but is not an option in the specs
+            omschrijving_generiek=RolOmschrijvingGeneriek.adviseur,
             soort_betrokkene=['Milieujurist'],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.rol_type_documentair_ondersteuner = RolTypeFactory.create(
-            roltypeomschrijving='Documentair ondersteuner'[:20],  # TODO: this one is longer then AN20
-            roltypeomschrijving_generiek=RolTypeOmschrijving.klantcontacter,  # FIXME: docs has 'overig' but is not an option in the specs
+            omschrijving='Documentair ondersteuner'[:20],  # TODO: this one is longer then AN20
+            # FIXME: docs has 'overig' but is not an option in the specs
+            omschrijving_generiek=RolOmschrijvingGeneriek.klantcontacter,
             soort_betrokkene=['Medewerker Administratie'],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.rol_type_procesondersteuner = RolTypeFactory.create(
-            roltypeomschrijving='Procesondersteuner',
-            roltypeomschrijving_generiek=RolTypeOmschrijving.klantcontacter,  # FIXME: docs has 'overig' but is not an option in the specs
+            omschrijving='Procesondersteuner',
+            # FIXME: docs has 'overig' but is not an option in the specs
+            omschrijving_generiek=RolOmschrijvingGeneriek.zaakcoordinator,
             soort_betrokkene=['Medewerker Procedurele ondersteuning Milieu'],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
 
         #
@@ -376,7 +384,7 @@ class HaaglandenMixin(object):
             informatieobjectcategorie='Aanvraag',
             informatieobjecttypetrefwoord=[],  # ArrayField
             vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.zaakvertrouwelijk,
-            model=[],  #ArrayField
+            model=[],  # ArrayField
             zaaktypes=[self.zaaktype],
 
             # TODO: following fields are in haaglanden doc but not in the datamodel
@@ -392,7 +400,7 @@ class HaaglandenMixin(object):
             informatieobjectcategorie='Brief',
             informatieobjecttypetrefwoord=[],  # ArrayField
             vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.zaakvertrouwelijk,
-            model=[],  #ArrayField
+            model=[],  # ArrayField
             zaaktypes=[self.zaaktype],
 
             # TODO: following fields are in haaglanden doc but not in the datamodel

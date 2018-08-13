@@ -86,8 +86,8 @@ class ZaakTypeAPITests(APITestCase):
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantResultaattype': [],
             # 'heeftRelevantZaakObjecttype': [],
-            # 'heeftRoltype': [],
             'statustypen': [],
+            'roltypen': [],
         }
         self.assertEqual(expected, response.json())
 
