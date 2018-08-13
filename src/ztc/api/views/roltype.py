@@ -13,7 +13,7 @@ class RolTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     list:
     Een verzameling van ROLTYPEn.
     """
-    queryset = RolType.objects.all()
+    queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set')
     serializer_class = RolTypeSerializer
     pagination_class = None
     lookup_field = 'uuid'

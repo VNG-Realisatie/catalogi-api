@@ -7,7 +7,9 @@ from zds_schema.constants import RolOmschrijving
 from zds_schema.tests import TypeCheckMixin, get_operation_url
 
 from ztc.api.tests.base import ClientAPITestMixin
-from ztc.datamodel.tests.factories import ZaakTypeFactory, RolTypeFactory, MogelijkeBetrokkeneFactory
+from ztc.datamodel.tests.factories import (
+    MogelijkeBetrokkeneFactory, RolTypeFactory, ZaakTypeFactory
+)
 
 
 class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
@@ -65,5 +67,20 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         self.assertEqual(response.status_code, 200)
         response_data = response.json()
 
-        self.assertEqual(len(response_data), 2)
-        import bpdb; bpdb.set_trace()
+        self.assertEqual(len(response_data), 1)
+
+        self.assertResponseTypes(response_data[0], (
+            ('url', str),
+            ('zaaktype', str),
+            ('omschrijving', str),
+            ('omschrijving_generiek', str),
+            ('mogelijkeBetrokkenen', list),
+        ))
+
+        mogelijke_betrokkenen = response_data[0]['mogelijkeBetrokkenen']
+        self.assertEqual(len(mogelijke_betrokkenen), 2)
+
+        self.assertResponseTypes(mogelijke_betrokkenen[0], (
+            ('betrokkene', str),
+            ('betrokkene_type', str),
+        ))

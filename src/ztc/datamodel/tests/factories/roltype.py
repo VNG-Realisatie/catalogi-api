@@ -1,6 +1,5 @@
 import factory
 import factory.fuzzy
-
 from zds_schema.constants import RolOmschrijving, RolTypes
 
 from ...models import RolType

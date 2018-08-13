@@ -200,6 +200,72 @@ paths:
         schema:
           type: string
           format: uuid
+  '/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/roltypen':
+    get:
+      operationId: roltype_list
+      description: Een verzameling van ROLTYPEn.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolType'
+      tags:
+        - catalogussen
+    parameters:
+      - name: catalogus_uuid
+        in: path
+        required: true
+        description: Unieke resource identifier (UUID4)
+        schema:
+          type: string
+          format: uuid
+      - name: zaaktype_uuid
+        in: path
+        required: true
+        description: Unieke resource identifier (UUID4)
+        schema:
+          type: string
+          format: uuid
+  '/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/roltypen/{uuid}':
+    get:
+      operationId: roltype_read
+      description: >-
+        Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
+        uitoefenen in ZAAKen van een ZAAKTYPE.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolType'
+      tags:
+        - catalogussen
+    parameters:
+      - name: catalogus_uuid
+        in: path
+        required: true
+        description: Unieke resource identifier (UUID4)
+        schema:
+          type: string
+          format: uuid
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: zaaktype_uuid
+        in: path
+        required: true
+        description: Unieke resource identifier (UUID4)
+        schema:
+          type: string
+          format: uuid
   '/catalogussen/{catalogus_uuid}/zaaktypen/{zaaktype_uuid}/statustypen':
     get:
       operationId: statustype_list
@@ -431,6 +497,13 @@ components:
             format: uri
           readOnly: true
           uniqueItems: true
+        roltypen:
+          type: array
+          items:
+            type: string
+            format: uri
+          readOnly: true
+          uniqueItems: true
     EigenschapSpecificatie:
       title: Specificatie
       required:
@@ -532,6 +605,67 @@ components:
           type: string
           format: uri
           readOnly: true
+    MogelijkeBetrokkene:
+      required:
+        - betrokkene
+        - betrokkeneType
+      type: object
+      properties:
+        betrokkene:
+          title: Betrokkene
+          description: Een betrokkene die kan gerelateerd worden aan een zaak
+          type: string
+          format: uri
+          maxLength: 200
+          minLength: 1
+        betrokkeneType:
+          title: Betrokkene type
+          type: string
+          enum:
+            - Natuurlijk persoon
+            - Niet-natuurlijk persoon
+            - Vestiging
+            - Organisatorische eenheid
+            - Medewerker
+    RolType:
+      required:
+        - omschrijving
+        - omschrijvingGeneriek
+        - mogelijkeBetrokkenen
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+          format: uri
+          readOnly: true
+        zaaktype:
+          title: Zaaktype
+          type: string
+          format: uri
+          readOnly: true
+        omschrijving:
+          title: Omschrijving
+          description: Omschrijving van de aard van de ROL.
+          type: string
+          maxLength: 20
+          minLength: 1
+        omschrijvingGeneriek:
+          title: Omschrijving generiek
+          description: Algemeen gehanteerde omschrijving van de aard van de ROL.
+          type: string
+          enum:
+            - Adviseur
+            - Behandelaar
+            - Belanghebbende
+            - Beslisser
+            - Initiator
+            - Klantcontacter
+            - Zaakcoördinator
+        mogelijkeBetrokkenen:
+          type: array
+          items:
+            $ref: '#/components/schemas/MogelijkeBetrokkene'
     StatusType:
       required:
         - omschrijving

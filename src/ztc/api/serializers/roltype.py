@@ -1,55 +1,61 @@
+from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
-from ...datamodel.models import RolType
-from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
-from ..utils.serializers import SourceMappingSerializerMixin
+from ...datamodel.models import MogelijkeBetrokkene, RolType
 
 
-class RolTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class MogelijkeBetrokkeneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MogelijkeBetrokkene
+        fields = (
+            'betrokkene',
+            'betrokkene_type',
+        )
+
+
+class RolTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'zaaktype_pk': 'is_van__pk',
-        'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+        'zaaktype_uuid': 'zaaktype__uuid',
+        'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
     }
-    isVan = NestedHyperlinkedRelatedField(
+    zaaktype = NestedHyperlinkedRelatedField(
         read_only=True,
-        source='is_van',
-        view_name='api:zaaktype-detail',
+        view_name='zaaktype-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
         },
     )
-    magZetten = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='mag_zetten',
-        view_name='api:statustype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_van__pk',
-        },
-    )
+
+    mogelijke_betrokkenen = MogelijkeBetrokkeneSerializer(many=True, source='mogelijkebetrokkene_set')
+    # magZetten = NestedHyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     source='mag_zetten',
+    #     view_name='api:statustype-detail',
+    #     parent_lookup_kwargs={
+    #         'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
+    #         'zaaktype_uuid': 'zaaktype__uuid',
+    #     },
+    # )
 
     class Meta:
         model = RolType
-        ref_name = model.__name__
-        source_mapping = {
-            'ingangsdatumObject': 'datum_begin_geldigheid',
-            'einddatumObject': 'datum_einde_geldigheid',
-            'omschrijving': 'roltypeomschrijving',
-            'omschrijvingGeneriek': 'roltypeomschrijving_generiek',
-            'soortBetrokkene': 'soort_betrokkene',
-        }
-        extra_kwargs = {
-            'url': {'view_name': 'api:roltype-detail'},
-        }
         fields = (
             'url',
+            'zaaktype',
             'omschrijving',
-            'omschrijvingGeneriek',
-            'soortBetrokkene',
-            'ingangsdatumObject',
-            'einddatumObject',
-            'isVan',
-            'magZetten',
+            'omschrijving_generiek',
+            'mogelijke_betrokkenen',
+
+            # 'ingangsdatumObject',
+            # 'einddatumObject',
+            # 'soortBetrokkene',
+            # 'magZetten',
         )
+        extra_kwargs = {
+            'url': {
+                'lookup_field': 'uuid'
+            },
+        }
