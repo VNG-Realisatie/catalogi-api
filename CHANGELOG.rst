@@ -1,25 +1,30 @@
-==============
-Change history
-==============
+===========
+Wijzigingen
+===========
 
-0.1.1
-=====
+0.2.2 (2018-08-15)
+==================
 
-*tbd*
+Set wijzigingen om VNG-Realisatie/gemma-zaken#169 te implementeren:
 
-* Added Docker related files and instructions.
-* Show all resources (only catalogussen) on the root resource and redirect to
-  default API version resources if no version provided.
-* Changed the StUF date format to ISO8601 format throughout the API. This
-  affects all ``ingangsdatumObject``, ``einddatumObject`` and ``versiedatum``
-  fields.
-* Changed the storage of dates from StUF date format to native date format.
-* Added missing code coverage requirement
+* OAS 3.0 validator toegevoegd
+* ``ZaakType`` resource uitgebreid:
+    * ``servicenorm`` en ``doorlooptijd`` velden toegevoegd
+    * toevoeging van mogelijke (standaard) betrokkenen bij ROLTYPEn voor een
+      ZAAKTYPE
+    * filter parameters toegevoegd
 
+0.2.1 (2018-07-25)
+==================
 
-0.1.0
-=====
+* Added missing migration
 
-*February 21, 2018*
+0.2.0 (2018-07-25)
+==================
 
-* Initial public release.
+Aantal design decisions & reorganisatie doorgevoerd
+
+* Docker Hub organisatie nlxio -> vngr
+* Jenkins containers 100% stateless gemaakt
+* Gebruik van UUID in API urls in plaats van database primary keys
+* Update tooling

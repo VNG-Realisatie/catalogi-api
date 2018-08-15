@@ -56,7 +56,6 @@ class ZaakObjectTypeInline(EditInlineAdminMixin, admin.TabularInline):
 class RolTypeInline(EditInlineAdminMixin, admin.TabularInline):
     model = RolType
     fields = RolTypeAdmin.list_display
-    fk_name = 'is_van'
 
 
 class EigenschapInline(EditInlineAdminMixin, admin.TabularInline):

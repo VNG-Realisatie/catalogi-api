@@ -10,21 +10,21 @@ class RolTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.M
     model = RolType
 
     # List
-    list_display = ('roltypeomschrijving', 'is_van')
+    list_display = ('omschrijving', 'zaaktype')
 
     # Details
     fieldsets = (
         (_('Algemeen'), {
             'fields': (
-                'roltypeomschrijving',
-                'roltypeomschrijving_generiek',
+                'omschrijving',
+                'omschrijving_generiek',
                 'soort_betrokkene',
             )
         }),
         (_('Relaties'), {
             'fields': (
-                'is_van',
+                'zaaktype',
             )
         }),
     )
-    raw_id_fields = ('is_van', )
+    raw_id_fields = ('zaaktype', )
