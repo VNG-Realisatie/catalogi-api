@@ -1,3 +1,4 @@
+import uuid as _uuid
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -59,6 +60,10 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
 
     Unieke aanduiding van CATALOGUS in combinatie met Informatieobjecttype-omschrijving.
     """
+    uuid = models.UUIDField(
+        unique=True, default=_uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
     informatieobjecttype_omschrijving = models.CharField(
         _('omschrijving'), max_length=80,
         help_text=_('Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))

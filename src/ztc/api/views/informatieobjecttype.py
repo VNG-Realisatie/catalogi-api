@@ -8,7 +8,7 @@ from ..utils.viewsets import (
 )
 
 
-class InformatieObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class InformatieObjectTypeViewSet(NestedViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
@@ -18,3 +18,5 @@ class InformatieObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSe
     """
     queryset = InformatieObjectType.objects.all()
     serializer_class = InformatieObjectTypeSerializer
+    pagination_class = None
+    lookup_field = 'uuid'

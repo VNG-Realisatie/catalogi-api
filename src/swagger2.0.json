@@ -66,6 +66,86 @@
             },
             "parameters": []
         },
+        "/catalogussen/{catalogus_uuid}/informatieobjecttypen": {
+            "get": {
+                "operationId": "informatieobjecttype_list",
+                "description": "Een verzameling van INFORMATIEOBJECTen.",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/InformatieObjectType"
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "catalogus_uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
+                }
+            ]
+        },
+        "/catalogussen/{catalogus_uuid}/informatieobjecttypen/{uuid}": {
+            "get": {
+                "operationId": "informatieobjecttype_read",
+                "description": "Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.",
+                "parameters": [
+                    {
+                        "name": "expand",
+                        "in": "query",
+                        "description": "One or more field names, that link to resources, to expand. Multiple fields can be separated with a comma.",
+                        "type": "string"
+                    },
+                    {
+                        "name": "fields",
+                        "in": "query",
+                        "description": "One or more field names to show in the response. All other fields will be excluded. Multiple fields can be separated with a comma.",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/InformatieObjectType"
+                        }
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ]
+            },
+            "parameters": [
+                {
+                    "name": "catalogus_uuid",
+                    "in": "path",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Unieke resource identifier (UUID4)"
+                },
+                {
+                    "name": "uuid",
+                    "in": "path",
+                    "description": "Unieke resource identifier (UUID4)",
+                    "required": true,
+                    "type": "string",
+                    "format": "uuid"
+                }
+            ]
+        },
         "/catalogussen/{catalogus_uuid}/zaaktypen": {
             "get": {
                 "operationId": "zaaktype_list",
@@ -484,6 +564,34 @@
                     },
                     "readOnly": true,
                     "uniqueItems": true
+                }
+            }
+        },
+        "InformatieObjectType": {
+            "required": [
+                "omschrijving",
+                "catalogus"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "Url",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
+                "omschrijving": {
+                    "title": "Omschrijving",
+                    "description": "Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.",
+                    "type": "string",
+                    "maxLength": 80,
+                    "minLength": 1
+                },
+                "catalogus": {
+                    "title": "Catalogus",
+                    "description": "De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.",
+                    "type": "string",
+                    "format": "uri"
                 }
             }
         },
