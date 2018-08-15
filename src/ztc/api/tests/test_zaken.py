@@ -71,13 +71,13 @@ class ZaakTypeAPITests(APITestCase):
             'omschrijvingGeneriek': '',
             # 'verantwoordingsrelatie': [],
             # 'isDeelzaaktypeVan': [],
-            # 'servicenorm': None,
+            'servicenorm': None,
             # 'archiefclassificatiecode': None,
             # 'referentieproces': {
             #     'link': None,
             #     'naam': self.zaaktype.referentieproces.naam,
             # },
-            # 'doorlooptijd': 30,
+            'doorlooptijd': "P30D",
             # 'verantwoordelijke': '',
             'omschrijving': '',
             # 'heeftGerelateerd': [],
@@ -86,8 +86,8 @@ class ZaakTypeAPITests(APITestCase):
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantResultaattype': [],
             # 'heeftRelevantZaakObjecttype': [],
-            # 'heeftRoltype': [],
             'statustypen': [],
+            'roltypen': [],
         }
         self.assertEqual(expected, response.json())
 

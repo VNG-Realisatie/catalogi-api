@@ -25,28 +25,28 @@ class FactoryTests(TestCase):
         self.assertIsNotNone(iot.informatieobjecttype_omschrijving_generiek_id)
         self.assertIsNotNone(iot.maakt_deel_uit_van_id)
 
-        iotog = InformatieObjectTypeOmschrijvingGeneriekFactory.create()
+        InformatieObjectTypeOmschrijvingGeneriekFactory.create()
 
-        eigenschap_specificatie = EigenschapSpecificatieFactory.create()
-        eigenschap_referentie = EigenschapReferentieFactory.create()
-        catalogus = CatalogusFactory.create()
-        eigenschap = EigenschapFactory.create()
-        besluit_type = BesluitTypeFactory.create()
+        EigenschapSpecificatieFactory.create()
+        EigenschapReferentieFactory.create()
+        CatalogusFactory.create()
+        EigenschapFactory.create()
+        BesluitTypeFactory.create()
         # self.assertIsNotNone(besluit_type.wordt_vastgelegd_in)
         # self.assertIsNotNone(besluit_type.zaaktypes)
         # self.assertIsNotNone(besluit_type.is_resultaat_van)
 
-        resultaattype = ResultaatTypeFactory.create()
-        roltype = RolTypeFactory.create()
-        zaakobjecttype = ZaakObjectTypeFactory.create()
-        product_dients = ProductDienstFactory.create()
-        formulier = FormulierFactory.create()
-        referentieproces = ReferentieProcesFactory.create()
-        broncatalogus = BronCatalogusFactory.create()
-        bronzaaktype = BronZaakTypeFactory.create()
-        check_list_item = CheckListItemFactory.create()
-        status_type = StatusTypeFactory.create()
-        zaaktype = ZaakTypeFactory.create()
+        ResultaatTypeFactory.create()
+        RolTypeFactory.create()
+        ZaakObjectTypeFactory.create()
+        ProductDienstFactory.create()
+        FormulierFactory.create()
+        ReferentieProcesFactory.create()
+        BronCatalogusFactory.create()
+        BronZaakTypeFactory.create()
+        CheckListItemFactory.create()
+        StatusTypeFactory.create()
+        ZaakTypeFactory.create()
 
     def test_informatie_object_type_factory(self):
         self.assertEqual(InformatieObjectType.objects.count(), 0)
@@ -64,14 +64,14 @@ class FactoryTests(TestCase):
         self.assertEqual(ZaakInformatieobjectTypeArchiefregime.objects.count(), 0)
         self.assertEqual(ZaakInformatieobjectType.objects.count(), 0)
 
-        resultaattype = ResultaatTypeFactory.create()
+        ResultaatTypeFactory.create()
 
         self.assertEqual(ResultaatType.objects.count(), 1)
         self.assertEqual(ZaakInformatieobjectTypeArchiefregime.objects.count(), 1)
         # TODO: we might want to enforce that the same ZIT will be used. they currently belong to different ZaakTypes
         self.assertEqual(ZaakInformatieobjectType.objects.count(), 2)
 
-        resultaattype2 = ResultaatTypeFactory.create(bepaalt_afwijkend_archiefregime_van=None)
+        ResultaatTypeFactory.create(bepaalt_afwijkend_archiefregime_van=None)
         self.assertEqual(ResultaatType.objects.count(), 2)  # + 1
         self.assertEqual(ZaakInformatieobjectTypeArchiefregime.objects.count(), 1)  # stays the same
         self.assertEqual(ZaakInformatieobjectType.objects.count(), 2)  # stay the same

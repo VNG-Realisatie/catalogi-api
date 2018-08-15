@@ -51,12 +51,30 @@ class FactoryTests(HaaglandenMixin, TestCase):
         # now test the datum_begin_geldigheid on all instances, duplicate code so the default error msg makes sense
         #
         expected_dates = [date(2018, 1, 30)]  # since the freeze time is used, that date should appear
-        self.assertEqual(list(set(RolType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
-        self.assertEqual(list(set(StatusType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
-        self.assertEqual(list(set(BesluitType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
-        self.assertEqual(list(set(Eigenschap.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
-        self.assertEqual(list(set(ResultaatType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
-        self.assertEqual(list(set(ZaakObjectType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
+        self.assertEqual(
+            list(set(RolType.objects.values_list('datum_begin_geldigheid', flat=True))),
+            expected_dates
+        )
+        self.assertEqual(
+            list(set(StatusType.objects.values_list('datum_begin_geldigheid', flat=True))),
+            expected_dates
+        )
+        self.assertEqual(
+            list(set(BesluitType.objects.values_list('datum_begin_geldigheid', flat=True))),
+            expected_dates
+        )
+        self.assertEqual(
+            list(set(Eigenschap.objects.values_list('datum_begin_geldigheid', flat=True))),
+            expected_dates
+        )
+        self.assertEqual(
+            list(set(ResultaatType.objects.values_list('datum_begin_geldigheid', flat=True))),
+            expected_dates
+        )
+        self.assertEqual(
+            list(set(ZaakObjectType.objects.values_list('datum_begin_geldigheid', flat=True))),
+            expected_dates
+        )
 
         # TODO, following factories do not set the begin_datum yet, they will be empty ('') now..
         # self.assertEqual(list(set(InformatieObjectTypeOmschrijvingGeneriek.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)

@@ -141,16 +141,6 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'catalogus_pk': 'maakt_deel_uit_van__pk'
     #     },
     # )
-    # heeftRoltype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='roltype_set',
-    #     view_name='api:roltype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
-    #         'zaaktype_pk': 'is_van__pk'
-    #     },
-    # )
     # heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -194,6 +184,18 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         },
     )
 
+    roltypen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='roltype_set',
+        view_name='roltype-detail',
+        lookup_field='uuid',
+        parent_lookup_kwargs={
+            'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
+            'zaaktype_uuid': 'zaaktype__uuid'
+        },
+    )
+
     class Meta:
         model = ZaakType
         fields = (
@@ -209,8 +211,8 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # 'handelingInitiator',
             # 'onderwerp',
             # 'handelingBehandelaar',
-            # 'doorlooptijd',
-            # 'servicenorm',
+            'doorlooptijd',
+            'servicenorm',
             # 'opschortingAanhouding',
             # 'verlengingmogelijk',
             # 'verlengingstermijn',
@@ -237,11 +239,11 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'maakt_deel_uit_van',
             'statustypen',
             'eigenschappen',
+            'roltypen',
             # # 'heeftRelevantInformatieobjecttype',
             # # 'heeftRelevantBesluittype',
             # # 'heeftRelevantZaakObjecttype',
             # # 'heeftRelevantResultaattype',
-            # # 'heeftRoltype',
             # # 'isDeelzaaktypeVan',
             # # 'heeftGerelateerd',
         )
@@ -260,7 +262,13 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             },
             'maakt_deel_uit_van': {
                 'lookup_field': 'uuid',
-            }
+            },
+            'doorlooptijd': {
+                'source': 'doorlooptijd_behandeling',
+            },
+            'servicenorm': {
+                'source': 'servicenorm_behandeling',
+            },
         }
 
         # expandable_fields = {
