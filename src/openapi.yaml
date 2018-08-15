@@ -81,7 +81,7 @@ paths:
   '/catalogussen/{catalogus_uuid}/informatieobjecttypen':
     get:
       operationId: informatieobjecttype_list
-      description: Een verzameling van INFORMATIEOBJECTen.
+      description: Een verzameling van INFORMATIEOBJECTTYPEn.
       responses:
         '200':
           description: ''
@@ -105,23 +105,8 @@ paths:
     get:
       operationId: informatieobjecttype_read
       description: >-
-        Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de
-        zaakbehandelende organisatie.
-      parameters:
-        - name: expand
-          in: query
-          description: >-
-            One or more field names, that link to resources, to expand. Multiple
-            fields can be separated with a comma.
-          schema:
-            type: string
-        - name: fields
-          in: query
-          description: >-
-            One or more field names to show in the response. All other fields
-            will be excluded. Multiple fields can be separated with a comma.
-          schema:
-            type: string
+        Aanduiding van de aard van INFORMATIEOBJECTTYPEn zoals gehanteerd door
+        de zaakbehandelende organisatie.
       responses:
         '200':
           description: ''

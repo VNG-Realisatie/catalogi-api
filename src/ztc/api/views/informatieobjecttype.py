@@ -8,13 +8,13 @@ from ..utils.viewsets import (
 )
 
 
-class InformatieObjectTypeViewSet(NestedViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+class InformatieObjectTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
-    Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
+    Aanduiding van de aard van INFORMATIEOBJECTTYPEn zoals gehanteerd door de zaakbehandelende organisatie.
 
     list:
-    Een verzameling van INFORMATIEOBJECTen.
+    Een verzameling van INFORMATIEOBJECTTYPEn.
     """
     queryset = InformatieObjectType.objects.all()
     serializer_class = InformatieObjectTypeSerializer

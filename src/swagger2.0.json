@@ -69,7 +69,7 @@
         "/catalogussen/{catalogus_uuid}/informatieobjecttypen": {
             "get": {
                 "operationId": "informatieobjecttype_list",
-                "description": "Een verzameling van INFORMATIEOBJECTen.",
+                "description": "Een verzameling van INFORMATIEOBJECTTYPEn.",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -100,21 +100,8 @@
         "/catalogussen/{catalogus_uuid}/informatieobjecttypen/{uuid}": {
             "get": {
                 "operationId": "informatieobjecttype_read",
-                "description": "Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.",
-                "parameters": [
-                    {
-                        "name": "expand",
-                        "in": "query",
-                        "description": "One or more field names, that link to resources, to expand. Multiple fields can be separated with a comma.",
-                        "type": "string"
-                    },
-                    {
-                        "name": "fields",
-                        "in": "query",
-                        "description": "One or more field names to show in the response. All other fields will be excluded. Multiple fields can be separated with a comma.",
-                        "type": "string"
-                    }
-                ],
+                "description": "Aanduiding van de aard van INFORMATIEOBJECTTYPEn zoals gehanteerd door de zaakbehandelende organisatie.",
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "",

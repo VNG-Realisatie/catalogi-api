@@ -46,7 +46,6 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
 
     class Meta:
         model = InformatieObjectType
-        ref_name = model.__name__
         source_mapping = {
             'omschrijving': 'informatieobjecttype_omschrijving',
             # 'categorie': 'informatieobjectcategorie',
