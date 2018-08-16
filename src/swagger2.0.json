@@ -301,7 +301,8 @@
                             "Beslisser",
                             "Initiator",
                             "Klantcontacter",
-                            "Zaakco\u00f6rdinator"
+                            "Zaakco\u00f6rdinator",
+                            "Mede-initiator"
                         ]
                     }
                 ],
@@ -838,7 +839,8 @@
                         "Beslisser",
                         "Initiator",
                         "Klantcontacter",
-                        "Zaakco\u00f6rdinator"
+                        "Zaakco\u00f6rdinator",
+                        "Mede-initiator"
                     ]
                 },
                 "mogelijkeBetrokkenen": {
