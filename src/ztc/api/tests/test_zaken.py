@@ -1,6 +1,7 @@
 from unittest import skip
 
 from django.urls import reverse
+from zds_schema.tests import get_operation_url
 
 from ztc.datamodel.tests.factories import (
     ZaakObjectTypeFactory, ZaakTypeFactory
@@ -17,15 +18,15 @@ class ZaakTypeAPITests(APITestCase):
 
         self.zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
 
-        self.zaaktype_list_url = reverse('zaaktype-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_uuid': self.catalogus.uuid,
-        })
-        self.zaaktype_detail_url = reverse('zaaktype-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_uuid': self.catalogus.uuid,
-            'uuid': self.zaaktype.uuid,
-        })
+        self.zaaktype_list_url = get_operation_url(
+            'zaaktype_list',
+            catalogus_uuid=self.catalogus.uuid
+        )
+        self.zaaktype_detail_url = get_operation_url(
+            'zaaktype_read',
+            catalogus_uuid=self.catalogus.uuid,
+            uuid=self.zaaktype.uuid
+        )
 
     def test_get_list(self):
         response = self.api_client.get(self.zaaktype_list_url)

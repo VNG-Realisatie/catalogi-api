@@ -2,6 +2,16 @@
 Wijzigingen
 ===========
 
+0.3.0 (2018-08-16)
+==================
+
+API resource toegevoegd & toolingverbeteringen
+
+* InformatieObjectType toegevoegd t.b.v. vng-Realisatie/gemma-zaken#154
+* Typo gefixed in ``bin/compile_dependencies.sh``
+* Windows script toegevoegd om dependencies te comilen
+  (``bin/compile_dependencies.cmd``)
+
 0.2.2 (2018-08-15)
 ==================
 

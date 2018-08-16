@@ -1,5 +1,9 @@
 """
 Test the flow described in https://github.com/VNG-Realisatie/gemma-zaken/issues/39
+
+Zie ook:
+
+* https://github.com/VNG-Realisatie/gemma-zaken/issues/45
 """
 from rest_framework import status
 from rest_framework.test import APITestCase
