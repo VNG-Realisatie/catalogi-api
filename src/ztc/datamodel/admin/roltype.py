@@ -10,7 +10,7 @@ class RolTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.M
     model = RolType
 
     # List
-    list_display = ('omschrijving', 'zaaktype')
+    list_display = ('omschrijving', 'zaaktype', 'uuid')
 
     # Details
     fieldsets = (
