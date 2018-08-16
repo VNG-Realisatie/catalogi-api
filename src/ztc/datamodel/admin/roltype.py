@@ -1,8 +1,14 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from ..models import RolType
+from ..models import MogelijkeBetrokkene, RolType
 from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+
+
+class MogelijkeBetrokkeneInline(admin.TabularInline):
+    model = MogelijkeBetrokkene
+    readonly_fields = ('uuid',)
+    extra = 1
 
 
 @admin.register(RolType)
@@ -28,3 +34,5 @@ class RolTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.M
         }),
     )
     raw_id_fields = ('zaaktype', )
+
+    inlines = [MogelijkeBetrokkeneInline]
