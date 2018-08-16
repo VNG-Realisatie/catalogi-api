@@ -1,6 +1,7 @@
 from unittest import skip
 
 from django.urls import reverse
+from zds_schema.tests import get_operation_url
 
 from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
@@ -9,7 +10,6 @@ from ...datamodel.tests.factories import (
 from .base import APITestCase
 
 
-@skip("Not MVP yet")
 class InformatieObjectTypeAPITests(APITestCase):
     maxDiff = None
 
@@ -23,16 +23,15 @@ class InformatieObjectTypeAPITests(APITestCase):
             informatieobjecttypetrefwoord=['abc', 'def']
         )
 
-        self.informatieobjecttype_list_url = reverse('api:informatieobjecttype-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-        })
-
-        self.informatieobjecttype_detail_url = reverse('api:informatieobjecttype-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'pk': self.informatieobjecttype.pk
-        })
+        self.informatieobjecttype_list_url = get_operation_url(
+            'informatieobjecttype_list',
+            catalogus_uuid=self.catalogus.uuid
+        )
+        self.informatieobjecttype_detail_url = get_operation_url(
+            'informatieobjecttype_read',
+            catalogus_uuid=self.catalogus.uuid,
+            uuid=self.informatieobjecttype.uuid
+        )
 
     def test_get_list(self):
         """Retrieve a list of `InformatieObjectType` objects."""
@@ -41,8 +40,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         data = response.json()
 
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(len(data), 1)
 
     def test_get_detail(self):
         """Retrieve the details of a single `InformatieObjectType` object."""
@@ -50,22 +48,23 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         expected = {
-            'categorie': 'informatieobjectcategorie',
-            'einddatumObject': None,
-            'ingangsdatumObject': '2018-01-01',
-            'isVastleggingVoor': [],
-            'maaktDeeluitVan': 'http://testserver{}'.format(self.catalogus_detail_url),
-            'model': ['http://www.example.com'],
+            # 'categorie': 'informatieobjectcategorie',
+            # 'einddatumObject': None,
+            # 'ingangsdatumObject': '2018-01-01',
+            # 'isVastleggingVoor': [],
+            'catalogus': 'http://testserver{}'.format(self.catalogus_detail_url),
+            # 'model': ['http://www.example.com'],
             'omschrijving': self.informatieobjecttype.informatieobjecttype_omschrijving,
-            'omschrijvingGeneriek': '',
-            'toelichting': None,
-            'trefwoord': ['abc', 'def'],
+            # 'omschrijvingGeneriek': '',
+            # 'toelichting': None,
+            # 'trefwoord': ['abc', 'def'],
             'url': 'http://testserver{}'.format(self.informatieobjecttype_detail_url),
-            'vertrouwelijkAanduiding': None,
-            'isRelevantVoor': [],
+            # 'vertrouwelijkAanduiding': None,
+            # 'isRelevantVoor': [],
         }
         self.assertEqual(expected, response.json())
 
+    @skip("Not MVP yet")
     def test_is_relevant_voor(self):
         zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
 
@@ -90,5 +89,6 @@ class InformatieObjectTypeAPITests(APITestCase):
             ]))
         )
 
+    @skip("Not MVP yet")
     def test_is_vastlegging_voor(self):
         pass
