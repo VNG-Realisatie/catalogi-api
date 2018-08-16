@@ -1,6 +1,7 @@
 from unittest import skip
 
 from django.urls import reverse
+
 from zds_schema.tests import get_operation_url
 
 from ...datamodel.tests.factories import (

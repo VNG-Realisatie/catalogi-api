@@ -4,8 +4,8 @@ from zds_schema import routers
 
 from .schema import schema_view
 from .views import (
-    CatalogusViewSet, EigenschapViewSet, RolTypeViewSet, StatusTypeViewSet,
-    ZaakTypeViewSet, InformatieObjectTypeViewSet
+    CatalogusViewSet, EigenschapViewSet, InformatieObjectTypeViewSet,
+    RolTypeViewSet, StatusTypeViewSet, ZaakTypeViewSet
 )
 
 router = routers.DefaultRouter()
