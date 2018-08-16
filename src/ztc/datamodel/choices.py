@@ -10,7 +10,7 @@ from djchoices import ChoiceItem, DjangoChoices
 # ZaakType.vertrouwelijkheidsaanduiding: 'ZEER GEHEIM' (dus geheel in hoofdletters met spatie)
 # ResultaatType.archiefnominatie: 'Blijvend bewaren' (alleen eerste is hoofdletter en een spatie)
 # ResultaatType.brondatum_archiefprocedure: 'afgehandeld' dus geheel met kleine letters
-# RolType.roltypeomschrijving_generiek: 'Zaakcoördinator' (met umlaut/trema)
+
 
 class JaNee(DjangoChoices):
     ja = ChoiceItem('J', _('Ja'))

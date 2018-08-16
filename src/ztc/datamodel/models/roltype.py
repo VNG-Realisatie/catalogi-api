@@ -72,7 +72,7 @@ class RolType(GeldigheidMixin, models.Model):
         self._clean_geldigheid(self.zaaktype)
 
     def __str__(self):
-        return '{} - {}'.format(self.zaaktype, self.roltypeomschrijving)
+        return '{} - {}'.format(self.zaaktype, self.omschrijving)
 
 
 class MogelijkeBetrokkene(models.Model):
