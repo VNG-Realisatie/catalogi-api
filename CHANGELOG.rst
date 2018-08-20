@@ -2,6 +2,17 @@
 Wijzigingen
 ===========
 
+0.3.1 (2018-08-20)
+==================
+
+Kleine Quality of Life verbeteringen
+
+* update naar ``zds-schema==0.0.26`` waarin ``RolomschrijvingGeneriek``
+  verwijderd is. Dit heeft geen gevolgen voor de API spec.
+* verschillende verbeteringen in de admin omgeving:
+    * tonen ``uuid`` in lijstweergave
+    * mogelijke betrokkenen aan ``RolType`` configureerbaar gemaakt
+
 0.3.0 (2018-08-16)
 ==================
 
