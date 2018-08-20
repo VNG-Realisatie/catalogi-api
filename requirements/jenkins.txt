@@ -9,7 +9,6 @@ beautifulsoup4==4.6.0     # via webtest
 certifi==2017.11.5
 chardet==3.0.4
 click==6.7
-colorama==0.3.9           # via pylint
 coreapi==2.3.3
 coreschema==0.0.4
 coverage==4.5.1
@@ -83,4 +82,4 @@ waitress==1.1.0           # via webtest
 webob==1.8.2              # via webtest
 webtest==2.0.30
 wrapt==1.10.11            # via astroid
-zds-schema==0.0.24
+zds-schema==0.0.26

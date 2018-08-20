@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from zds_schema.constants import RolOmschrijvingGeneriek
+from zds_schema.constants import RolOmschrijving
 
 from ztc.datamodel.choices import (
     JaNee, ObjectTypen, VertrouwelijkheidAanduiding
@@ -151,48 +151,48 @@ class HaaglandenMixin(object):
         # NOTE: statussen are 1, 2, 3, 4, 5, but there is no 5, only a 6
         self.rol_type_vergunnings_aanvrager = RolTypeFactory.create(
             omschrijving='Vergunningaanvrager',
-            omschrijving_generiek=RolOmschrijvingGeneriek.initiator,
+            omschrijving_generiek=RolOmschrijving.initiator,
             soort_betrokkene=['Aanvrager'],
             zaaktype=self.zaaktype,
         )
         self.rol_type_bevoegd_gezag = RolTypeFactory.create(
             omschrijving='Bevoegd gezag',
-            omschrijving_generiek=RolOmschrijvingGeneriek.belanghebbende,
+            omschrijving_generiek=RolOmschrijving.belanghebbende,
             soort_betrokkene=['Bevoegd gezag'],
             zaaktype=self.zaaktype,
         )
         self.rol_type_zaakverantwoordelijke = RolTypeFactory.create(
             omschrijving='Zaakverantwoordelijke'[:20],  # TODO: this one has length 21, too long for AN20
             # FIXME: docs has 'verantwoordelijke' but is not an option in the specs  # FIXME: is not an option
-            omschrijving_generiek=RolOmschrijvingGeneriek.beslisser,
+            omschrijving_generiek=RolOmschrijving.beslisser,
             soort_betrokkene=['Teamleider afdeling', 'Toetsing & Vergunningen'],
             zaaktype=self.zaaktype,
         )
         self.rol_type_vergunningbehandelaar = RolTypeFactory.create(
             omschrijving='Vergunningbehandelaar'[:20],  # TODO: this one has length 21, too long for AN20
             # FIXME: docs has 'uitvoerder' but is not an option in the specs
-            omschrijving_generiek=RolOmschrijvingGeneriek.behandelaar,
+            omschrijving_generiek=RolOmschrijving.behandelaar,
             soort_betrokkene=['Teamleider afdeling', 'Toetsing & Vergunningen'],
             zaaktype=self.zaaktype,
         )
         self.rol_type_juridisch_adviseur = RolTypeFactory.create(
             omschrijving='Juridisch adviseur',
             # FIXME: docs has 'uitvoerder' but is not an option in the specs
-            omschrijving_generiek=RolOmschrijvingGeneriek.adviseur,
+            omschrijving_generiek=RolOmschrijving.adviseur,
             soort_betrokkene=['Milieujurist'],
             zaaktype=self.zaaktype,
         )
         self.rol_type_documentair_ondersteuner = RolTypeFactory.create(
             omschrijving='Documentair ondersteuner'[:20],  # TODO: this one is longer then AN20
             # FIXME: docs has 'overig' but is not an option in the specs
-            omschrijving_generiek=RolOmschrijvingGeneriek.klantcontacter,
+            omschrijving_generiek=RolOmschrijving.klantcontacter,
             soort_betrokkene=['Medewerker Administratie'],
             zaaktype=self.zaaktype,
         )
         self.rol_type_procesondersteuner = RolTypeFactory.create(
             omschrijving='Procesondersteuner',
             # FIXME: docs has 'overig' but is not an option in the specs
-            omschrijving_generiek=RolOmschrijvingGeneriek.zaakcoordinator,
+            omschrijving_generiek=RolOmschrijving.zaakcoordinator,
             soort_betrokkene=['Medewerker Procedurele ondersteuning Milieu'],
             zaaktype=self.zaaktype,
         )

@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from zds_schema.constants import RolOmschrijvingGeneriek
+from zds_schema.constants import RolOmschrijving
 
 from ...datamodel.tests.factories import RolTypeFactory
 from .base import APITestCase
@@ -14,7 +14,7 @@ class RolTypeAPITests(APITestCase):
 
         self.rol_type = RolTypeFactory.create(
             omschrijving='Vergunningaanvrager',
-            omschrijving_generiek=RolOmschrijvingGeneriek.initiator,
+            omschrijving_generiek=RolOmschrijving.initiator,
             soort_betrokkene=['Aanvrager'],
             zaaktype__maakt_deel_uit_van=self.catalogus,
         )
@@ -59,7 +59,7 @@ class RolTypeAPITests(APITestCase):
             # 'einddatumObject': None,
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'Vergunningaanvrager',
-            'omschrijvingGeneriek': RolOmschrijvingGeneriek.initiator,
+            'omschrijvingGeneriek': RolOmschrijving.initiator,
             'mogelijkeBetrokkenen': [],
             # 'soortBetrokkene': ['Aanvrager'],
             # 'magZetten': [],

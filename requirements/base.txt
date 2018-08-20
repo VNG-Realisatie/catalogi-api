@@ -58,4 +58,4 @@ six==1.11.0               # via django-compat, django-rosetta, drf-yasg, isodate
 unidecode==1.0.22         # via zds-schema
 uritemplate==3.0.0        # via coreapi, drf-yasg
 urllib3==1.22             # via requests
-zds-schema==0.0.24
+zds-schema==0.0.26
