@@ -853,7 +853,8 @@
         },
         "StatusType": {
             "required": [
-                "omschrijving"
+                "omschrijving",
+                "volgnummer"
             ],
             "type": "object",
             "properties": {
@@ -887,6 +888,13 @@
                     "type": "string",
                     "format": "uri",
                     "readOnly": true
+                },
+                "volgnummer": {
+                    "title": "Volgnummer",
+                    "description": "Een volgnummer voor statussen van het STATUSTYPE binnen een zaak.",
+                    "type": "integer",
+                    "maximum": 9999,
+                    "minimum": 1
                 }
             }
         }
