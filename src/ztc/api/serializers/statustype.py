@@ -76,7 +76,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
 
             'is_van',
 
-            # 'volgnummer',
+            'volgnummer',
             # 'doorlooptijd',
             # 'checklistitem',
             # 'informeren',
@@ -98,5 +98,8 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
             },
             'omschrijving_generiek': {
                 'source': 'statustype_omschrijving_generiek',
-            }
+            },
+            'volgnummer': {
+                'source': 'statustypevolgnummer',
+            },
         }
