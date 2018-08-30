@@ -48,7 +48,7 @@ class StatusType(GeldigheidMixin, models.Model):
 
     # relations
     is_van = models.ForeignKey(
-        'ZaakType', verbose_name=_('is van'), related_name='statustypen',
+        'ZaakType', verbose_name=_('is van'), related_name='statustypen', on_delete=models.CASCADE,
         help_text=_('Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.')
     )
 

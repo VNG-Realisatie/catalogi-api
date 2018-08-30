@@ -70,7 +70,8 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         help_text=_('Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
     informatieobjecttype_omschrijving_generiek = models.ForeignKey(
         'datamodel.InformatieObjectTypeOmschrijvingGeneriek', verbose_name=_('omschrijving generiek'),
-        blank=True, null=True, help_text=_('Algemeen gehanteerde omschrijving van het INFORMATIEOBJECTTYPE.'))
+        blank=True, null=True, on_delete=models.CASCADE,
+        help_text=_('Algemeen gehanteerde omschrijving van het INFORMATIEOBJECTTYPE.'))
     informatieobjectcategorie = models.CharField(
         _('categorie'), max_length=80,
         help_text=_('Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
@@ -92,8 +93,10 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
 
-    maakt_deel_uit_van = models.ForeignKey('datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
-                                           help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.'))
+    maakt_deel_uit_van = models.ForeignKey(
+        'datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
+        on_delete=models.CASCADE, help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.')
+    )
 
     zaaktypes = models.ManyToManyField(
         'datamodel.ZaakType', verbose_name=_('zaaktypes'), related_name='heeft_relevant_informatieobjecttype',
@@ -118,7 +121,6 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
             'informatieobjecttypetrefwoord',
             'toelichting',
         )
-
 
     def clean(self):
         """

@@ -13,9 +13,11 @@ class ZaakInformatieobjectType(models.Model):
 
     Kenmerken van de relatie ZAAKTYPE heeft relevante INFORMATIEOBJECTTYPEn.
     """
-    zaaktype = models.ForeignKey('datamodel.Zaaktype', verbose_name=_('zaaktype'))
-    informatie_object_type = models.ForeignKey('datamodel.InformatieObjectType',
-                                               verbose_name=_('informatie object type'))
+    zaaktype = models.ForeignKey('datamodel.Zaaktype', verbose_name=_('zaaktype'), on_delete=models.CASCADE)
+    informatie_object_type = models.ForeignKey(
+        'datamodel.InformatieObjectType', on_delete=models.CASCADE,
+        verbose_name=_('informatie object type')
+    )
 
     volgnummer = models.PositiveSmallIntegerField(
         _('volgnummer'), validators=[MinValueValidator(1), MaxValueValidator(999)], help_text=_(
@@ -27,6 +29,7 @@ class ZaakInformatieobjectType(models.Model):
     # this is the relation that is described on StatusType in the specification
     status_type = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
+        on_delete=models.CASCADE,
         related_name='heeft_verplichte_zit', help_text=_(
             'De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het STATUSTYPE gerelateerde ZAAKTYPE '
             'waarvoor geldt dat deze verplicht aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE '
@@ -61,9 +64,14 @@ class ZaakInformatieobjectTypeArchiefregime(models.Model):
     INFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE op grond van
     resultaten van een RESULTAATTYPE bij dat ZAAKTYPE
     """
-    zaak_informatieobject_type = models.ForeignKey('datamodel.ZaakInformatieobjectType',
-                                                   verbose_name=_('zaakinformatie object type'))
-    resultaattype = models.ForeignKey('datamodel.ResultaatType', verbose_name=_('resultaattype'))
+    zaak_informatieobject_type = models.ForeignKey(
+        'datamodel.ZaakInformatieobjectType', on_delete=models.CASCADE,
+        verbose_name=_('zaakinformatie object type')
+    )
+    resultaattype = models.ForeignKey(
+        'datamodel.ResultaatType', verbose_name=_('resultaattype'),
+        on_delete=models.CASCADE
+    )
 
     # TODO [KING]:  waardenverzameling 'de aanduidingen van de passages cq. klassen in de gehanteerde selectielijst.'
     selectielijstklasse = models.CharField(
@@ -111,9 +119,9 @@ class ZaakTypenRelatie(models.Model):
     Kenmerken van de relatie ZAAKTYPE heeft gerelateerde ZAAKTYPE.
     """
     zaaktype_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('zaaktype van'),
-                                     related_name='zaaktypenrelatie_van')
+                                     related_name='zaaktypenrelatie_van', on_delete=models.CASCADE)
     zaaktype_naar = models.ForeignKey('datamodel.ZaakType', verbose_name=_('zaaktype naar'),
-                                      related_name='zaaktypenrelatie_naar')
+                                      related_name='zaaktypenrelatie_naar', on_delete=models.CASCADE)
 
     aard_relatie = models.CharField(_('aard relatie'), max_length=15, choices=AardRelatieChoices.choices, help_text=_(
         'Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE'))

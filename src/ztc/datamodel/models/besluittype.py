@@ -53,7 +53,9 @@ class BesluitType(GeldigheidMixin, models.Model):
 
     maakt_deel_uit_van = models.ForeignKey(
         'datamodel.Catalogus', verbose_name=_('catalogus'),
-        help_text=_('De CATALOGUS waartoe dit BESLUITTYPE behoort.'))
+        help_text=_('De CATALOGUS waartoe dit BESLUITTYPE behoort.'),
+        on_delete=models.CASCADE
+    )
     wordt_vastgelegd_in = models.ManyToManyField(
         'datamodel.InformatieObjectType', verbose_name=_('informatieobjecttype'), blank=True,
         help_text=_('Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.'))

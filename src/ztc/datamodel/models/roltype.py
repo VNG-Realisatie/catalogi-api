@@ -47,7 +47,7 @@ class RolType(GeldigheidMixin, models.Model):
         default=list
     )
     zaaktype = models.ForeignKey(
-        'datamodel.ZaakType', verbose_name=_('is van'),
+        'datamodel.ZaakType', verbose_name=_('is van'), on_delete=models.CASCADE,
         help_text=_('De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit ZAAKTYPE.')
     )
 
@@ -77,7 +77,7 @@ class RolType(GeldigheidMixin, models.Model):
 
 class MogelijkeBetrokkene(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
-    roltype = models.ForeignKey(RolType)
+    roltype = models.ForeignKey(RolType, on_delete=models.CASCADE)
 
     betrokkene = models.URLField(help_text="Een betrokkene die kan gerelateerd worden aan een zaak")
     betrokkene_type = models.CharField(max_length=100, choices=RolTypes.choices)
