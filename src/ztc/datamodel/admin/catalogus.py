@@ -18,7 +18,6 @@ class ZaakTypeInline(EditInlineAdminMixin, admin.TabularInline):
 class BesluitTypeInline(EditInlineAdminMixin, admin.TabularInline):
     model = BesluitType
     fields = BesluitTypeAdmin.list_display
-    fk_name = 'maakt_deel_uit_van'
 
 
 class InformatieObjectTypeInline(EditInlineAdminMixin, admin.TabularInline):

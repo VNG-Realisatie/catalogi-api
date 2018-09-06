@@ -2,22 +2,20 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import BesluitType
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from .mixins import GeldigheidAdminMixin
 
 
 @admin.register(BesluitType)
-class BesluitTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
-    model = BesluitType
-
+class BesluitTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
     # List
-    list_display = ('maakt_deel_uit_van', 'besluittype_omschrijving', 'besluitcategorie', )
+    list_display = ('catalogus', 'omschrijving', 'besluitcategorie', )
 
     # Details
     fieldsets = (
         (_('Algemeen'), {
             'fields': (
-                'besluittype_omschrijving',
-                'besluittype_omschrijving_generiek',
+                'omschrijving',
+                'omschrijving_generiek',
                 'besluitcategorie',
                 'reactietermijn',
                 'toelichting',
@@ -32,9 +30,9 @@ class BesluitTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, adm
         }),
         (_('Relaties'), {
             'fields': (
-                'maakt_deel_uit_van',
-                'wordt_vastgelegd_in',
+                'catalogus',
+                'informatieobjecttypes',
             )
         }),
     )
-    filter_horizontal = ('wordt_vastgelegd_in', )
+    filter_horizontal = ('informatieobjecttypes', )

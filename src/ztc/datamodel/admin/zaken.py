@@ -78,7 +78,8 @@ class ZaakTypenRelatieInline(admin.TabularInline):
 
 
 @admin.register(ZaakType)
-class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin, GeldigheidAdminMixin, admin.ModelAdmin):
+class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
+                    GeldigheidAdminMixin, admin.ModelAdmin):
     model = ZaakType
 
     # List
@@ -169,7 +170,6 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                 self._build_changelist_url(ResultaatType, query={'is_relevant_voor': obj.pk})
             ),
         )
-
 
 
 #
