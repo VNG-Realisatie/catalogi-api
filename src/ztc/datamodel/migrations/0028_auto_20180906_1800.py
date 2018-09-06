@@ -11,6 +11,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RemoveField(
+            model_name='besluittype', name='publicatietermijn'
+        ),
+        migrations.RemoveField(
+            model_name='besluittype', name='reactietermijn'
+        ),
+
         migrations.AlterField(
             model_name='besluittype',
             name='besluitcategorie',
@@ -40,12 +47,12 @@ class Migration(migrations.Migration):
             field=models.TextField(blank=True, default='', help_text='De generieke tekst van de publicatie van BESLUITen van dit BESLUITTYPE', max_length=1000, verbose_name='publicatietekst'),
             preserve_default=False,
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='besluittype',
             name='publicatietermijn',
             field=zds_schema.fields.DaysDurationField(blank=True, help_text='Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.', max_duration=999, min_duration=1, null=True, verbose_name='publicatietermijn'),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='besluittype',
             name='reactietermijn',
             field=zds_schema.fields.DaysDurationField(blank=True, help_text='Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.', max_duration=999, min_duration=1, null=True, verbose_name='reactietermijn'),
