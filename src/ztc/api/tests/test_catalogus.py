@@ -29,7 +29,7 @@ class CatalogusAPITests(APITestCase):
             'contactpersoonBeheerEmailadres': self.catalogus.contactpersoon_beheer_emailadres,
             # 'bestaatuitInformatieobjecttype': [],
             'zaaktypen': [],
-            # 'bestaatuitBesluittype': []
+            'besluittypen': [],
         }
         self.assertEqual(response.json(), expected)
 

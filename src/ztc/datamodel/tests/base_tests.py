@@ -445,50 +445,50 @@ class HaaglandenMixin(object):
         # Besluiten
         #
         self.besluittype_niet_ontvankelijk = BesluitTypeFactory.create(
-            besluittype_omschrijving='Niet-ontvankelijk-besluit',
-            besluittype_omschrijving_generiek='Ontvankelijkheidsbesluit',
+            omschrijving='Niet-ontvankelijk-besluit',
+            omschrijving_generiek='Ontvankelijkheidsbesluit',
             # besluitcategorie='',
-            reactietermijn=42,  # 6 weken
-            publicatie_indicatie=JaNee.nee,  # required, but not in haaglanden
+            reactietermijn=timedelta(days=42),  # 6 weken
+            publicatie_indicatie=False,  # required, but not in haaglanden
             # publicatietekst='',
             # publicatietermijn=-99
             toelichting='Besluit over het niet ontvankelijk verklaren (bijvoorbeeld omdat de aanvrager niet'
                         'gemachtigd is) van de aanvraag als ook het buiten behandeling stellen van de aanvraag',
-            maakt_deel_uit_van=self.catalogus,
+            catalogus=self.catalogus,
             # wordt_vastgelegd_in=models.ManyToManyField('datamodel.InformatieObjectType'
-            is_resultaat_van=[self.resultaattype_niet_ontvankelijk, ],
+            resultaattypes=[self.resultaattype_niet_ontvankelijk],
             zaaktypes=[self.zaaktype],
         )
         self.besluittype_verlenging = BesluitTypeFactory.create(
-            besluittype_omschrijving='Verlengingsbesluit',
-            besluittype_omschrijving_generiek='Verlengingsbesluit',
-            reactietermijn=42,  # 6 weken (of 15 weken)
-            publicatie_indicatie=JaNee.ja,
+            omschrijving='Verlengingsbesluit',
+            omschrijving_generiek='Verlengingsbesluit',
+            reactietermijn=timedelta(days=42),  # 6 weken (of 15 weken)
+            publicatie_indicatie=True,
             toelichting='De beslissing dat meer tijd genomen wordt voor de behandeling van de aanvraag.',
-            maakt_deel_uit_van=self.catalogus,
+            catalogus=self.catalogus,
             # Guess:
-            is_resultaat_van=[self.resultaattype_verleend, ],
+            resultaattypes=[self.resultaattype_verleend],
             zaaktypes=[self.zaaktype],
         )
         self.besluittype_op_aanvraag = BesluitTypeFactory.create(
-            besluittype_omschrijving='Besluit op aanvraag',
-            besluittype_omschrijving_generiek='Vergunning',
-            reactietermijn=42,  # 6 weken (+1 dag voor Raad van State)
-            publicatie_indicatie=JaNee.nee,  # required, but not in haaglanden
-            maakt_deel_uit_van=self.catalogus,
+            omschrijving='Besluit op aanvraag',
+            omschrijving_generiek='Vergunning',
+            reactietermijn=timedelta(days=42),  # 6 weken (+1 dag voor Raad van State)
+            publicatie_indicatie=False,  # required, but not in haaglanden
+            catalogus=self.catalogus,
             # Guess:
-            is_resultaat_van=[self.resultaattype_verleend, ],
+            resultaattypes=[self.resultaattype_verleend],
             zaaktypes=[self.zaaktype],
         )
         self.besluittype_aanhoudingsbesluit = BesluitTypeFactory.create(
-            besluittype_omschrijving='Aanhoudingsbesluit',
-            besluittype_omschrijving_generiek='',
-            reactietermijn=42,  # 6 weken
-            publicatie_indicatie=JaNee.nee,
+            omschrijving='Aanhoudingsbesluit',
+            omschrijving_generiek='',
+            reactietermijn=timedelta(days=42),  # 6 weken
+            publicatie_indicatie=False,
             toelichting='',
-            maakt_deel_uit_van=self.catalogus,
+            catalogus=self.catalogus,
             # Guess:
-            is_resultaat_van=[self.resultaattype_verleend, ],
+            resultaattypes=[self.resultaattype_verleend],
             zaaktypes=[self.zaaktype],
         )
 

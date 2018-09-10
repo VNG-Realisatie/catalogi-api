@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 import factory
 
@@ -9,29 +9,30 @@ from .zaken import ZaakTypeFactory
 
 
 class BesluitTypeFactory(factory.django.DjangoModelFactory):
-    besluittype_omschrijving = 'Besluittype'
-    maakt_deel_uit_van = factory.SubFactory(CatalogusFactory)
-    reactietermijn = 14
+    omschrijving = 'Besluittype'
+    catalogus = factory.SubFactory(CatalogusFactory)
+    reactietermijn = timedelta(days=14)
+    publicatie_indicatie = False
     datum_begin_geldigheid = date(2018, 1, 1)
 
     class Meta:
         model = BesluitType
 
     @factory.post_generation
-    def wordt_vastgelegd_in(self, create, extracted, **kwargs):
+    def informatieobjecttypes(self, create, extracted, **kwargs):
         # optional M2M, do nothing when no arguments are passed
         if not create:
             return
 
         if extracted:
             for informatie_object_type in extracted:
-                self.wordt_vastgelegd_in.add(informatie_object_type)
+                self.informatieobjecttypes.add(informatie_object_type)
 
     @factory.post_generation
     def zaaktypes(self, create, extracted, **kwargs):
         # required M2M, if it is not passed in, create one
         if not extracted:
-            extracted = [ZaakTypeFactory.create(maakt_deel_uit_van=self.maakt_deel_uit_van)]
+            extracted = [ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)]
 
         dates_begin_geldigheid = []
         for zaak_type in extracted:
@@ -46,10 +47,10 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
         self.datum_begin_geldigheid = dates_begin_geldigheid[0]
 
     @factory.post_generation
-    def is_resultaat_van(self, create, extracted, **kwargs):
+    def resultaattypes(self, create, extracted, **kwargs):
         # required M2M, if it is not passed in, create one
         if not extracted:
-            extracted = [ResultaatTypeFactory.create(is_relevant_voor__maakt_deel_uit_van=self.maakt_deel_uit_van)]
+            extracted = [ResultaatTypeFactory.create(is_relevant_voor__maakt_deel_uit_van=self.catalogus)]
 
         for resultaat_type in extracted:
-            self.is_resultaat_van.add(resultaat_type)
+            self.resultaattypes.add(resultaat_type)

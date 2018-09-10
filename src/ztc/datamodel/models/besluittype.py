@@ -95,7 +95,7 @@ class BesluitType(GeldigheidMixin, models.Model):
         """
         Unieke aanduiding van CATALOGUS in combinatie met Besluittype-omschrijving
         """
-        return f'{self.catalogus} - {self.besluittype_omschrijving}'
+        return f'{self.catalogus} - {self.omschrijving}'
 
     # def clean(self):
     #     """
