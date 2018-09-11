@@ -50,7 +50,9 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
     def resultaattypes(self, create, extracted, **kwargs):
         # required M2M, if it is not passed in, create one
         if not extracted:
-            extracted = [ResultaatTypeFactory.create(is_relevant_voor__maakt_deel_uit_van=self.catalogus)]
+            extracted = [
+                ResultaatTypeFactory.create(is_relevant_voor__maakt_deel_uit_van=self.catalogus)
+            ]
 
         for resultaat_type in extracted:
             self.resultaattypes.add(resultaat_type)

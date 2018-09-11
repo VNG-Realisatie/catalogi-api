@@ -1,3 +1,5 @@
+import uuid as _uuid
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -18,6 +20,11 @@ class BesluitType(GeldigheidMixin, models.Model):
     Het betreft de indeling of groepering van besluiten naar hun aard, zoals
     bouwvergunning, ontheffing geluidhinder en monumentensubsidie.
     """
+    uuid = models.UUIDField(
+        unique=True, default=_uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
+
     omschrijving = models.CharField(
         _('omschrijving'), max_length=80, blank=True,
         help_text=_('Omschrijving van de aard van BESLUITen van het BESLUITTYPE.'))

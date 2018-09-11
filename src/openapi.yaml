@@ -276,9 +276,11 @@ paths:
           format: uuid
       - name: uuid
         in: path
+        description: Unieke resource identifier (UUID4)
         required: true
         schema:
           type: string
+          format: uuid
   '/catalogussen/{catalogus_uuid}/informatieobjecttypen':
     get:
       operationId: informatieobjecttype_list
@@ -1314,9 +1316,7 @@ components:
     BesluitType:
       required:
         - catalogus
-        - zaaktypes
         - omschrijving
-        - resultaattypes
       type: object
       properties:
         url:
@@ -1330,12 +1330,11 @@ components:
           type: string
           format: uri
         zaaktypes:
-          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
           type: array
           items:
-            description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
             type: string
             format: uri
+          readOnly: true
           uniqueItems: true
         omschrijving:
           title: Omschrijving
@@ -1386,30 +1385,11 @@ components:
           type: string
           maxLength: 1000
         informatieobjecttypes:
-          description: >-
-            Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van
-            dit BESLUITTYPE worden vastgelegd.
           type: array
           items:
-            title: Informatieobjecttype
-            description: >-
-              Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten
-              van dit BESLUITTYPE worden vastgelegd.
             type: string
             format: uri
-          uniqueItems: true
-        resultaattypes:
-          description: >-
-            (inverse van:) Het BESLUITTYPE van besluiten die gepaard gaan met
-            resultaten van het RESULTAATTYPE.
-          type: array
-          items:
-            title: Is resultaat van
-            description: >-
-              (inverse van:) Het BESLUITTYPE van besluiten die gepaard gaan met
-              resultaten van het RESULTAATTYPE.
-            type: string
-            format: uri
+          readOnly: true
           uniqueItems: true
     InformatieObjectType:
       required:
