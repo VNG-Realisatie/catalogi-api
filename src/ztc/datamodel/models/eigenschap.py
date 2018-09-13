@@ -174,11 +174,12 @@ class Eigenschap(GeldigheidMixin, models.Model):
         'De beschrijving van de betekenis van deze EIGENSCHAP'))
     specificatie_van_eigenschap = models.ForeignKey(
         'datamodel.EigenschapSpecificatie', verbose_name=_('specificatie van eigenschap'),
-        blank=True, null=True, help_text=_('Attribuutkenmerken van de eigenschap')
+        blank=True, null=True, help_text=_('Attribuutkenmerken van de eigenschap'),
+        on_delete=models.CASCADE
     )
     referentie_naar_eigenschap = models.ForeignKey(
         'datamodel.EigenschapReferentie', verbose_name=_('referentie naar eigenschap'),
-        blank=True, null=True,
+        blank=True, null=True, on_delete=models.CASCADE,
         help_text=_('Verwijzing naar de standaard waarin de eigenschap is gespecificeerd')
     )
     toelichting = models.CharField(
@@ -189,13 +190,15 @@ class Eigenschap(GeldigheidMixin, models.Model):
     # shouldn't this be a M2M?
     status_type = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'),
-        blank=True, null=True,
+        blank=True, null=True, on_delete=models.CASCADE,
         related_name='heeft_verplichte_eigenschap', help_text=_(
             'Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een '
             'STATUS van het STATUSTYPE kan worden gezet.')
     )
     is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
-        'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'))
+        'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'),
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         mnemonic = 'EIG'

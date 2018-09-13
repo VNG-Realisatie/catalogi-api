@@ -38,12 +38,16 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
 
     status_type = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
+        on_delete=models.CASCADE,
         related_name='heeft_verplichte_zaakobjecttype', help_text=_(
             'TODO: dit is de related helptext: De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van '
             'het ZAAKTYPE voordat een STATUS van dit STATUSTYPE kan worden gezet'))
 
-    is_relevant_voor = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is_relevant_voor'), help_text=_(
-        'Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant zijn.'))
+    is_relevant_voor = models.ForeignKey(
+        'datamodel.ZaakType', verbose_name=_('is_relevant_voor'), help_text=_(
+            'Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant zijn.'),
+        on_delete=models.CASCADE
+    )
 
     class Meta:
         mnemonic = 'ZOT'
@@ -373,12 +377,19 @@ class ZaakType(GeldigheidMixin, models.Model):
         'datamodel.Formulier', verbose_name=_('formulier'), blank=True,
         help_text=_('Formulier Het formulier dat ZAAKen van dit ZAAKTYPE initieert.')
     )
-    referentieproces = models.ForeignKey('datamodel.ReferentieProces', verbose_name=_('referentieproces'), help_text=_(
-        'Verwijzing naar een gelijknamig groepattribuutsoort.'))
-    broncatalogus = models.ForeignKey('datamodel.BronCatalogus', verbose_name=_('broncatalogus'), blank=True, null=True,
-                                      help_text=_('De CATALOGUS waaraan het ZAAKTYPE is ontleend.'))
+    referentieproces = models.ForeignKey(
+        'datamodel.ReferentieProces', verbose_name=_('referentieproces'),
+        help_text=_('Verwijzing naar een gelijknamig groepattribuutsoort.'),
+        on_delete=models.CASCADE
+    )
+    broncatalogus = models.ForeignKey(
+        'datamodel.BronCatalogus', verbose_name=_('broncatalogus'),
+        blank=True, null=True, on_delete=models.CASCADE,
+        help_text=_('De CATALOGUS waaraan het ZAAKTYPE is ontleend.')
+    )
     bronzaaktype = models.ForeignKey(
-        'datamodel.BronZaakType', verbose_name=('bronzaaktype'), blank=True, null=True,
+        'datamodel.BronZaakType', verbose_name=('bronzaaktype'),
+        blank=True, null=True, on_delete=models.CASCADE,
         help_text=_('Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.')
     )
 
@@ -397,7 +408,7 @@ class ZaakType(GeldigheidMixin, models.Model):
     )
 
     maakt_deel_uit_van = models.ForeignKey(
-        'datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
+        'datamodel.Catalogus', verbose_name=_('maakt deel uit van'), on_delete=models.CASCADE,
         help_text=_('De CATALOGUS waartoe dit ZAAKTYPE behoort.')
     )
 

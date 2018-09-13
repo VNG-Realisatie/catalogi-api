@@ -5,7 +5,7 @@ python-dateutil
 pytz
 raven
 
-Django>=1.11,<2
+Django>1.11,<2.1
 django-axes
 django-choices
 django-hijack
@@ -20,7 +20,7 @@ django-filter
 djangorestframework-camel-case
 djangorestframework-filters
 drf-yasg==1.9.1
-zds-schema
+zds-schema==0.0.33
 
 drf-flex-fields
 django-oauth-toolkit

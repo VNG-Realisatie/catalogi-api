@@ -76,11 +76,16 @@ class ResultaatType(GeldigheidMixin, models.Model):
             'ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet.')
     )
     heeft_voor_brondatum_archiefprocedure_relevante = models.ForeignKey(
-        'datamodel.Eigenschap', verbose_name=_('heeft voor brondatum archiefprocedure relevante'), blank=True, null=True,
+        'datamodel.Eigenschap',
+        verbose_name=_('heeft voor brondatum archiefprocedure relevante'),
+        blank=True, null=True, on_delete=models.CASCADE,
         help_text=_('De EIGENSCHAP die bepalend is voor het moment waarop de Archiefactietermijn start voor een ZAAK '
                     'met een resultaat van dit RESULTAATTYPE.'))
-    is_relevant_voor = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is relevant voor'), help_text=_(
-        'Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.'))
+    is_relevant_voor = models.ForeignKey(
+        'datamodel.ZaakType', verbose_name=_('is relevant voor'),
+        on_delete=models.CASCADE, help_text=_(
+            'Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.')
+    )
 
     class Meta:
         mnemonic = 'RST'
