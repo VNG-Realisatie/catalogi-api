@@ -2,10 +2,7 @@ from rest_framework import viewsets
 
 from ...datamodel.models import InformatieObjectType
 from ..serializers import InformatieObjectTypeSerializer
-from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import (
-    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
-)
+from ..utils.viewsets import NestedViewSetMixin
 
 
 class InformatieObjectTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):

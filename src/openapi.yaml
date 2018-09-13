@@ -126,6 +126,161 @@ paths:
       tags:
         - catalogussen
     parameters: []
+  '/catalogussen/{catalogus_uuid}/besluittypen':
+    get:
+      operationId: besluittype_list
+      description: |-
+        Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het
+        zaakgericht werken van de behandelende organisatie(s).
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BesluitType'
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '406':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '409':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '410':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '415':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '429':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+      tags:
+        - catalogussen
+    parameters:
+      - name: catalogus_uuid
+        in: path
+        required: true
+        description: Unieke resource identifier (UUID4)
+        schema:
+          type: string
+          format: uuid
+  '/catalogussen/{catalogus_uuid}/besluittypen/{uuid}':
+    get:
+      operationId: besluittype_read
+      description: Generieke aanduiding van de aard van een besluit.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BesluitType'
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '406':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '409':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '410':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '415':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '429':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+      tags:
+        - catalogussen
+    parameters:
+      - name: catalogus_uuid
+        in: path
+        required: true
+        description: Unieke resource identifier (UUID4)
+        schema:
+          type: string
+          format: uuid
+      - name: uuid
+        in: path
+        description: Unieke resource identifier (UUID4)
+        required: true
+        schema:
+          type: string
+          format: uuid
   '/catalogussen/{catalogus_uuid}/informatieobjecttypen':
     get:
       operationId: informatieobjecttype_list
@@ -1112,6 +1267,13 @@ components:
             format: uri
           readOnly: true
           uniqueItems: true
+        besluittypen:
+          type: array
+          items:
+            type: string
+            format: uri
+          readOnly: true
+          uniqueItems: true
     Fout:
       required:
         - code
@@ -1151,6 +1313,84 @@ components:
             kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
           type: string
           minLength: 1
+    BesluitType:
+      required:
+        - catalogus
+        - omschrijving
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+          format: uri
+          readOnly: true
+        catalogus:
+          title: Catalogus
+          description: De CATALOGUS waartoe dit BESLUITTYPE behoort.
+          type: string
+          format: uri
+        zaaktypes:
+          type: array
+          items:
+            type: string
+            format: uri
+          readOnly: true
+          uniqueItems: true
+        omschrijving:
+          title: Omschrijving
+          description: Omschrijving van de aard van BESLUITen van het BESLUITTYPE.
+          type: string
+          maxLength: 80
+        omschrijvingGeneriek:
+          title: Omschrijving generiek
+          description: >-
+            Algemeen gehanteerde omschrijving van de aard van BESLUITen van het
+            BESLUITTYPE
+          type: string
+          maxLength: 80
+        besluitcategorie:
+          title: Besluitcategorie
+          description: Typering van de aard van BESLUITen van het BESLUITTYPE.
+          type: string
+          maxLength: 40
+        reactietermijn:
+          title: Reactietermijn
+          description: >-
+            Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum,
+            waarbinnen verweer tegen een besluit van het besluittype mogelijk
+            is.
+          type: string
+        publicatieIndicatie:
+          title: Publicatie indicatie
+          description: >-
+            Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten
+            worden.
+          type: boolean
+        publicatietekst:
+          title: Publicatietekst
+          description: >-
+            De generieke tekst van de publicatie van BESLUITen van dit
+            BESLUITTYPE
+          type: string
+          maxLength: 1000
+        publicatietermijn:
+          title: Publicatietermijn
+          description: >-
+            Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat
+            BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.
+          type: string
+        toelichting:
+          title: Toelichting
+          description: Een eventuele toelichting op dit BESLUITTYPE.
+          type: string
+          maxLength: 1000
+        informatieobjecttypes:
+          type: array
+          items:
+            type: string
+            format: uri
+          readOnly: true
+          uniqueItems: true
     InformatieObjectType:
       required:
         - omschrijving

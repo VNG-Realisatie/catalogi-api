@@ -2,86 +2,56 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import BesluitType
-from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
-from ..utils.serializers import SourceMappingSerializerMixin
 
 
-class BesluitTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
-    """
-    Serializer based on ``BST-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
-    """
+class BesluitTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'catalogus_pk': 'maakt_deel_uit_van__pk'
+        'catalogus_uuid': 'catalogus__uuid'
     }
 
-    wordtVastgelegdIn = NestedHyperlinkedRelatedField(
+    informatieobjecttypes = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
-        source='wordt_vastgelegd_in',
-        view_name='api:informatieobjecttype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
-    )
-
-    isRelevantVoor = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='zaaktypes',
-        view_name='api:zaaktype-detail',
-        parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
-    )
-
-    isResultaatVan = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source='is_resultaat_van',
-        view_name='api:resultaattype-detail',
+        view_name='informatieobjecttype-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
-            'zaaktype_pk': 'is_relevant_voor__pk'
+            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+        },
+    )
+
+    zaaktypes = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='zaaktype-detail',
+        lookup_field='uuid',
+        parent_lookup_kwargs={
+            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
         }
     )
 
     class Meta:
         model = BesluitType
-        ref_name = model.__name__
-        source_mapping = {
-            'omschrijving': 'besluittype_omschrijving',
-            'omschrijvingGeneriek': 'besluittype_omschrijving_generiek',
-            'categorie': 'besluitcategorie',
-            'publicatieIndicatie': 'publicatie_indicatie',
-            'publicatieTekst': 'publicatietekst',
-            'publicatieTermijn': 'publicatietermijn',
-            'ingangsdatumObject': 'datum_begin_geldigheid',
-            'einddatumObject': 'datum_einde_geldigheid',
-
-            'maaktDeeluitVan': 'maakt_deel_uit_van',
-        }
         extra_kwargs = {
-            'url': {'view_name': 'api:besluittype-detail'},
-            'maaktDeeluitVan': {'view_name': 'api:catalogus-detail'},
+            'url': {
+                'lookup_field': 'uuid',
+            },
+            'catalogus': {
+                'lookup_field': 'uuid',
+            },
         }
         fields = (
             'url',
+            'catalogus',
+            'zaaktypes',
 
             'omschrijving',
-            'omschrijvingGeneriek',
-            'categorie',
+            'omschrijving_generiek',
+            'besluitcategorie',
             'reactietermijn',
-            'publicatieIndicatie',
-            'publicatieTekst',
-            'publicatieTermijn',
+            'publicatie_indicatie',
+            'publicatietekst',
+            'publicatietermijn',
             'toelichting',
 
-            'ingangsdatumObject',
-            'einddatumObject',
-
-            'maaktDeeluitVan',
-            'wordtVastgelegdIn',
-            'isRelevantVoor',
-            'isResultaatVan',
+            'informatieobjecttypes',
         )
-
-    expandable_fields = {
-        'maaktDeeluitVan': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
-        'wordtVastgelegdIn': ('ztc.api.serializers.InformatieObjectTypeSerializer', {'source': 'wordt_vastgelegd_in', 'many': True})
-    }

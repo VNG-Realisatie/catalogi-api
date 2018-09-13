@@ -4,8 +4,9 @@ from zds_schema import routers
 
 from .schema import schema_view
 from .views import (
-    CatalogusViewSet, EigenschapViewSet, InformatieObjectTypeViewSet,
-    RolTypeViewSet, StatusTypeViewSet, ZaakTypeViewSet
+    BesluitTypeViewSet, CatalogusViewSet, EigenschapViewSet,
+    InformatieObjectTypeViewSet, RolTypeViewSet, StatusTypeViewSet,
+    ZaakTypeViewSet
 )
 
 router = routers.DefaultRouter()
@@ -15,7 +16,8 @@ router.register(r'catalogussen', CatalogusViewSet, [
         routers.nested('eigenschappen', EigenschapViewSet),
         routers.nested('roltypen', RolTypeViewSet),
     ]),
-    routers.nested('informatieobjecttypen', InformatieObjectTypeViewSet)
+    routers.nested('informatieobjecttypen', InformatieObjectTypeViewSet),
+    routers.nested('besluittypen', BesluitTypeViewSet),
 ])
 
 
