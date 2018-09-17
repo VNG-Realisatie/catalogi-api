@@ -733,6 +733,7 @@ class DSOApi50Tests(APITestCase):
 
         expected_status = expected_data['status']
         self.assertEqual(response.status_code, expected_status)
+        self.assertEqual(response['Content-Type'], 'application/error+json')
 
         # can't verify UUID...
         self.assertTrue(response.data['instance'].startswith('urn:uuid:'))

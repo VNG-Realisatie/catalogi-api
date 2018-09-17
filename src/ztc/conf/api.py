@@ -1,4 +1,4 @@
-from zds_schema.conf.api import BASE_REST_FRAMEWORK, BASE_SWAGGER_SETTINGS
+from zds_schema.conf.api import *  # noqa - imports white-listed
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
 REST_FRAMEWORK.update({
@@ -48,3 +48,6 @@ REST_FRAMEWORK_EXT = {
     'EXPAND_ALL_VALUE': 'true',
     'FIELDS_PARAM': 'fields',
 }
+
+GEMMA_URL_INFORMATIEMODEL = 'Imztc'
+GEMMA_URL_INFORMATIEMODEL_VERSIE = '2.1'
