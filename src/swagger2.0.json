@@ -1815,6 +1815,12 @@
                     "type": "integer",
                     "maximum": 9999,
                     "minimum": 1
+                },
+                "isEindstatus": {
+                    "title": "Is eindstatus",
+                    "description": "Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer.",
+                    "type": "boolean",
+                    "readOnly": true
                 }
             }
         }

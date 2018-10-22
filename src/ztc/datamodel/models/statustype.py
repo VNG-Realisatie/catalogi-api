@@ -2,6 +2,7 @@ import uuid
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
 from ..choices import JaNee
@@ -124,6 +125,18 @@ class StatusType(GeldigheidMixin, models.Model):
         super().clean()
 
         self._clean_geldigheid(self.is_van)
+
+    def is_eindstatus(self):
+        """
+        Een `StatusType` betreft een eindstatus als het volgnummer van het
+        `StatusType` de hoogste is binnen het `ZaakType`.
+
+        # TODO: Can be cached on the model.
+        """
+        max_statustypevolgnummer = self.is_van.statustypen.aggregate(
+            result=Max('statustypevolgnummer'))['result']
+
+        return max_statustypevolgnummer == self.statustypevolgnummer
 
     def __str__(self):
         return '{} - {}'.format(self.is_van, self.statustypevolgnummer)
