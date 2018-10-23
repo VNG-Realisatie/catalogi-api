@@ -32,6 +32,7 @@ drf-nested-routers==0.90.2  # via zds-schema
 drf-yasg==1.9.1
 first==2.0.1              # via pip-tools
 future==0.16.0            # via drf-yasg
+gemma-zds-client==0.4.3   # via zds-schema
 idna==2.6                 # via requests
 inflection==0.3.1         # via drf-yasg
 iso-639==0.4.5            # via zds-schema
@@ -49,14 +50,14 @@ psycopg2-binary==2.7.5
 python-dateutil==2.7.3
 python-dotenv==0.8.2
 pytz==2017.3
-pyyaml==3.12              # via oyaml, zds-schema
+pyyaml==3.12              # via gemma-zds-client, oyaml, zds-schema
 raven==6.4.0
 redis==2.10.6             # via django-redis
 requests-oauthlib==0.8.0
-requests==2.18.4          # via coreapi, django-oauth-toolkit, django-rosetta, microsofttranslator, requests-oauthlib, zds-schema
+requests==2.18.4          # via coreapi, django-oauth-toolkit, django-rosetta, gemma-zds-client, microsofttranslator, requests-oauthlib, zds-schema
 ruamel.yaml==0.15.54      # via drf-yasg
 six==1.11.0               # via django-compat, django-rosetta, drf-yasg, isodate, microsofttranslator, pip-tools, python-dateutil
 unidecode==1.0.22         # via zds-schema
 uritemplate==3.0.0        # via coreapi, drf-yasg
 urllib3==1.22             # via requests
-zds-schema==0.3.1
+zds-schema==0.6.1
