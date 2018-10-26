@@ -1,3 +1,6 @@
+from django.utils.translation import ugettext_lazy as _
+
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
@@ -35,6 +38,14 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
             'catalogus_uuid': 'maakt_deel_uit_van__uuid',
         },
     )
+
+    is_eindstatus = serializers.BooleanField(
+        read_only=True,
+        help_text=_('Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit '
+                    'gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE '
+                    'met het hoogste volgnummer.')
+    )
+
     # heeftVerplichteEigenschap = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -77,6 +88,8 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
             'is_van',
 
             'volgnummer',
+
+            'is_eindstatus',
             # 'doorlooptijd',
             # 'checklistitem',
             # 'informeren',
