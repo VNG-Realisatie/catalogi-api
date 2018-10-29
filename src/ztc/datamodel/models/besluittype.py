@@ -53,7 +53,7 @@ class BesluitType(GeldigheidMixin, models.Model):
     )
 
     publicatietekst = models.TextField(
-        _('publicatietekst'), max_length=1000, blank=True,
+        _('publicatietekst'), blank=True,
         help_text=_('De generieke tekst van de publicatie van BESLUITen van dit BESLUITTYPE')
     )
 
@@ -63,8 +63,8 @@ class BesluitType(GeldigheidMixin, models.Model):
                     'BESLUITTYPE gepubliceerd moeten blijven.')
     )
 
-    toelichting = models.CharField(
-        _('toelichting'), max_length=1000, blank=True,
+    toelichting = models.TextField(
+        _('toelichting'), blank=True,
         help_text=_('Een eventuele toelichting op dit BESLUITTYPE.')
     )
 

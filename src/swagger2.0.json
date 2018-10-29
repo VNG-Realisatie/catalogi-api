@@ -1450,8 +1450,7 @@
                 "publicatietekst": {
                     "title": "Publicatietekst",
                     "description": "De generieke tekst van de publicatie van BESLUITen van dit BESLUITTYPE",
-                    "type": "string",
-                    "maxLength": 1000
+                    "type": "string"
                 },
                 "publicatietermijn": {
                     "title": "Publicatietermijn",
@@ -1461,8 +1460,7 @@
                 "toelichting": {
                     "title": "Toelichting",
                     "description": "Een eventuele toelichting op dit BESLUITTYPE.",
-                    "type": "string",
-                    "maxLength": 1000
+                    "type": "string"
                 },
                 "informatieobjecttypes": {
                     "type": "array",

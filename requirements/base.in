@@ -20,7 +20,7 @@ django-filter
 djangorestframework-camel-case
 djangorestframework-filters
 drf-yasg==1.9.1
-zds-schema==0.6.1
+zds-schema==0.7.1
 
 drf-flex-fields
 django-oauth-toolkit
