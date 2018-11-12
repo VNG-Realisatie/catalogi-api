@@ -33,7 +33,7 @@ node {
 
 
 
-/* String BRANCH = "${env.BRANCH_NAME}"
+String BRANCH = "${env.BRANCH_NAME}"
 
 if (BRANCH == "master") {
 
@@ -54,7 +54,7 @@ if (BRANCH == "master") {
                 build job: 'Subtask_Openstack_Playbook',
                         parameters: [
                                 [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-thumbnail.yml'],
+                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-zaaktypecatalogus.yml'],
                         ]
             }
         }
@@ -83,9 +83,9 @@ if (BRANCH == "master") {
                 build job: 'Subtask_Openstack_Playbook',
                         parameters: [
                                 [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-thumbnail.yml'],
+                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-zaaktypecatalogus.yml'],
                         ]
             }
         }
     }
-} */
+}
