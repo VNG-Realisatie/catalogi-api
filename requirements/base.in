@@ -4,6 +4,7 @@ python-dotenv
 python-dateutil
 pytz
 raven
+markdown
 
 Django>1.11,<2.1
 django-axes
@@ -11,6 +12,7 @@ django-choices
 django-hijack
 django-hijack-admin
 django-choices
+django-markup
 django-rosetta
 django-redis
 django_admin_index
