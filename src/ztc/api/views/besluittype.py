@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 
 from ...datamodel.models import BesluitType
+from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import BesluitTypeSerializer
 from ..utils.viewsets import NestedViewSetMixin
 
@@ -18,3 +19,7 @@ class BesluitTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = BesluitTypeSerializer
     pagination_class = None
     lookup_field = 'uuid'
+    required_scopes = {
+        'list': SCOPE_ZAAKTYPES_READ,
+        'retrieve': SCOPE_ZAAKTYPES_READ,
+    }

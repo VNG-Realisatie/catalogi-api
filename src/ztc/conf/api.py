@@ -2,15 +2,8 @@ from zds_schema.conf.api import *  # noqa - imports white-listed
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
 REST_FRAMEWORK.update({
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication'
-    ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.TokenHasReadWriteScope',
-        # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.AllowAny',
+        'zds_schema.permissions.ActionScopesRequired',
     ),
     'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
     # Filtering
@@ -18,26 +11,28 @@ REST_FRAMEWORK.update({
     'ORDERING_PARAM': 'sorteer',  # 'ordering',
 })
 
+SECURITY_DEFINITION_NAME = 'JWT-Claims'
 
 SWAGGER_SETTINGS = BASE_SWAGGER_SETTINGS.copy()
 SWAGGER_SETTINGS.update({
-    'SECURITY_DEFINITIONS': {
-        'OAuth2': {
-            'type': 'oauth2',
-            'flow': 'application',
-            'tokenUrl': '/oauth2/token/',
-            'scopes': {
-                'write': 'Schrijftoegang tot de catalogus en gerelateerde objecten.',
-                'read': 'Leestoegang tot de catalogus en gerelateerde objecten.'
-            }
-        },
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header'
-        },
-    },
     'DEFAULT_INFO': 'ztc.api.schema.info',
+
+    'SECURITY_DEFINITIONS': {
+        SECURITY_DEFINITION_NAME: {
+            # OAS 3.0
+            'type': 'http',
+            'scheme': 'bearer',
+            'bearerFormat': 'JWT',
+            # not official...
+            # 'scopes': {},  # TODO: set up registry that's filled in later...
+
+            # Swagger 2.0
+            # 'name': 'Authorization',
+            # 'in': 'header'
+            # 'type': 'apiKey',
+        }
+    },
+
     # no geo things here
     'DEFAULT_FIELD_INSPECTORS': BASE_SWAGGER_SETTINGS['DEFAULT_FIELD_INSPECTORS'][1:]
 })
