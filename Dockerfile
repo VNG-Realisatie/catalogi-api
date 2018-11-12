@@ -63,7 +63,7 @@ CMD ["/runtests.sh"]
 
 
 # Stage 4 - Build docker image suitable for execution and deployment
-FROM python:3.6-alpine AS production
+FROM python:3.6-alpine
 RUN apk --no-cache add \
     ca-certificates \
     mailcap \
