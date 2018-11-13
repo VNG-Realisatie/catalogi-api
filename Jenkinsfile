@@ -62,7 +62,7 @@ if (BRANCH == "develop") {
 
 
     stage('Waiting for approval') {
-        slackSend channel: '#ci-channel-app', color: 'warning', message: 'thumbnail is waiting for Production Release - please confirm'
+        slackSend channel: '#ci-channel-app', color: 'warning', message: 'zaaktypecatalogus is waiting for Production Release - please confirm'
         input "Deploy to Production?"
     }
 
