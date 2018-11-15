@@ -118,6 +118,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters: []
   /catalogussen/{catalogus_uuid}/besluittypen:
     get:
@@ -185,6 +188,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -260,6 +266,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -338,6 +347,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -414,6 +426,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -492,6 +507,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -568,6 +586,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -646,6 +667,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -731,6 +755,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -832,6 +859,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -915,6 +945,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -999,6 +1032,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -1081,6 +1117,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: catalogus_uuid
       in: path
@@ -1171,6 +1210,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
     parameters:
     - name: uuid
       in: path

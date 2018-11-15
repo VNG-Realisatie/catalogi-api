@@ -98,6 +98,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": []
@@ -168,6 +175,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -250,6 +264,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -337,6 +358,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -419,6 +447,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -506,6 +541,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -588,6 +630,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -675,6 +724,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -765,6 +821,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -878,6 +941,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -968,6 +1038,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -1062,6 +1139,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -1152,6 +1236,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
@@ -1250,6 +1341,13 @@
                 },
                 "tags": [
                     "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "zds.scopes.zaaktypes.lezen"
+                        ]
+                    }
                 ]
             },
             "parameters": [
