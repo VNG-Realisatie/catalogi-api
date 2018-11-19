@@ -2,6 +2,24 @@
 Wijzigingen
 ===========
 
+0.4.0 (2018-11-19)
+==================
+
+Support voor BRC en afsluiten zaak toegevoegd
+
+* 694b111 StatusType.volgnummer toegevoegd t.b.v. #153
+* 5ab1bcd Ref. vng-Realisatie/gemma-zaken#130 -- mogelijke foutantwoorden in OAS
+* febaa99 Ref. vng-Realisatie/gemma-zaken#162 -- clean up BesluitType data model
+* 1063e40 Ref. vng-Realisatie/gemma-zaken#162 -- voeg besluittype toe aan API
+* 7aff079 Besluittype tests
+* f745d55 Correcte MIME-types voor error responses
+* 0a635f4 Set up contrib.sites
+* e56f090 Bump zds-schema version
+* 7c2e519 Logisch attribuut "isEindstatus" toegevoegd aan StatusType
+  t.b.v. US 351.
+* 03a4cc7 Pin node-version
+* 548d490 Publicatietekst & toelichting hebben geen lengte-limitatie
+
 0.3.1 (2018-08-20)
 ==================
 
