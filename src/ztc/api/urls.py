@@ -2,8 +2,8 @@ from django.conf.urls import url
 from django.urls import include, path
 
 from zds_schema import routers
+from zds_schema.schema import SchemaView
 
-from .schema import schema_view
 from .views import (
     BesluitTypeViewSet, CatalogusViewSet, EigenschapViewSet,
     InformatieObjectTypeViewSet, RolTypeViewSet, StatusTypeViewSet,
@@ -27,10 +27,10 @@ urlpatterns = [
 
         # API documentation
         url(r'^schema/openapi(?P<format>\.json|\.yaml)$',
-            schema_view.without_ui(cache_timeout=None),
+            SchemaView.without_ui(cache_timeout=None),
             name='schema-json'),
         url(r'^schema/$',
-            schema_view.with_ui('redoc', cache_timeout=None),
+            SchemaView.with_ui('redoc', cache_timeout=None),
             name='schema-redoc'),
 
         # actual API
