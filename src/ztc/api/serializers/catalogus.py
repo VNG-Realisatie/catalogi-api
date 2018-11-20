@@ -23,6 +23,14 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         parent_lookup_kwargs={'catalogus_uuid': 'catalogus__uuid'}
     )
 
+    informatieobjecttypen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='informatieobjecttype_set',
+        view_name='informatieobjecttype-detail',
+        parent_lookup_kwargs={'catalogus_uuid': 'catalogus__uuid'}
+    )
+
     class Meta:
         model = Catalogus
         fields = (
@@ -34,6 +42,7 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
             'contactpersoon_beheer_emailadres',
             'zaaktypen',
             'besluittypen',
+            'informatieobjecttypen',
         )
         extra_kwargs = {
             'url': {
