@@ -2,6 +2,7 @@ from rest_framework import viewsets
 
 from ...datamodel.models import RolType
 from ..filters import RolTypeFilter
+from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import RolTypeSerializer
 from ..utils.viewsets import NestedViewSetMixin
 
@@ -19,3 +20,7 @@ class RolTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     filter_class = RolTypeFilter
     pagination_class = None
     lookup_field = 'uuid'
+    required_scopes = {
+        'list': SCOPE_ZAAKTYPES_READ,
+        'retrieve': SCOPE_ZAAKTYPES_READ,
+    }

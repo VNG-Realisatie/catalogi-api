@@ -16,7 +16,6 @@ urlpatterns = [
 
     # API views
     path('api/', include('ztc.api.urls')),
-    path('oauth2/', include('ztc.api.oauth2_urls')),
 
     # Simply show the master template.
     path('', TemplateView.as_view(template_name='index.html')),

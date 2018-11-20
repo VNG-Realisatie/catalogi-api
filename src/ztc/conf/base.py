@@ -60,9 +60,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'zds_schema',  # before drf_yasg to override the management command
     'drf_yasg',
-    'oauth2_provider',
     'rest_framework',
     'rest_framework_filters',
+    'django_markup',
 
     # Project applications.
     'ztc.accounts',
@@ -78,6 +78,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'zds_schema.middleware.AuthMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
@@ -317,15 +318,6 @@ AXES_ONLY_USER_FAILURES = False  # Default: False (you might want to block on us
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = False  # Default: False (you might want to block on username and IP)
 
 DATUM_FORMAT = "%Y%m%d"  # Datum (jjjjmmdd)
-
-# Django-OAuth-Toolkit
-OAUTH2_PROVIDER = {
-    # this is the list of available scopes
-    'SCOPES': {
-        'read': 'Read scope',
-        'write': 'Write scope',
-    }
-}
 
 # Django-CORS-middleware
 CORS_ORIGIN_ALLOW_ALL = True

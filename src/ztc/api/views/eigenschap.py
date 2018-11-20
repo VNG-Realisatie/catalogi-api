@@ -2,6 +2,7 @@ from rest_framework import viewsets
 
 from ztc.datamodel.models import Eigenschap
 
+from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import EigenschapSerializer
 
 
@@ -18,3 +19,7 @@ class EigenschapViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EigenschapSerializer
     pagination_class = None
     lookup_field = 'uuid'
+    required_scopes = {
+        'list': SCOPE_ZAAKTYPES_READ,
+        'retrieve': SCOPE_ZAAKTYPES_READ,
+    }

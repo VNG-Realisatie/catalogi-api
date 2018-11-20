@@ -1,29 +1,17 @@
 import warnings
-from datetime import timedelta
 
-from django.utils import timezone
-
-from oauth2_provider.models import AccessToken
 from rest_framework.test import APITestCase as _APITestCase
-from zds_schema.tests import get_operation_url
+from zds_schema.tests import JWTScopesMixin, get_operation_url
 
 from ...datamodel.tests.factories import CatalogusFactory
+from ..scopes import SCOPE_ZAAKTYPES_READ
 
 
-class ClientAPITestMixin:
+class ClientAPITestMixin(JWTScopesMixin):
 
-    def setUp(self):
-        super().setUp()
-
-        # Create a token without the whole authentication flow.
-        self.token = AccessToken.objects.create(
-            token='12345',
-            expires=timezone.now() + timedelta(days=1),
-            scope='write read'
-        )
-
-        # Set up auth
-        self.client.credentials(AUTHORIZATION='Bearer 12345')
+    scopes = [
+        SCOPE_ZAAKTYPES_READ
+    ]
 
     @property
     def api_client(self):
