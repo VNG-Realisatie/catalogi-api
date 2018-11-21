@@ -32,7 +32,9 @@ class BesluitTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
             'fields': (
                 'catalogus',
                 'informatieobjecttypes',
+                # 'resultaattypes',
+                'zaaktypes',
             )
         }),
     )
-    filter_horizontal = ('informatieobjecttypes', )
+    filter_horizontal = ('informatieobjecttypes', 'zaaktypes')  # , 'resultaattypes'

@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -43,10 +44,10 @@ class ObjectActionsAdminMixin(object):
         return ()
 
     def _get_object_actions(self, obj):
-        return ' | '.join([
+        return mark_safe(' | '.join([
             '<a href="{url}">{title}</a>'.format(url=action[1], title=action[0])
             for action in self.get_object_actions(obj)
-        ])
+        ]))
     _get_object_actions.allow_tags = True
     _get_object_actions.short_description = _('Acties')
 
