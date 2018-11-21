@@ -11,7 +11,6 @@ from drf_yasg.inspectors import (
     CoreAPICompatInspector, FieldInspector, NotHandled, SwaggerAutoSchema
 )
 from drf_yasg.utils import is_list_view
-from drf_yasg.views import get_schema_view
 from rest_framework import filters, permissions, serializers, status
 
 from .utils.pagination import HALPaginationInspector
@@ -38,12 +37,6 @@ info = openapi.Info(
         url='https://github.com/VNG-Realisatie/gemma-zaken'
     ),
     license=openapi.License(name='EUPL 1.2'),
-)
-
-schema_view = get_schema_view(
-    # validators=['flex', 'ssv'],
-    public=True,
-    permission_classes=(permissions.AllowAny,),
 )
 
 

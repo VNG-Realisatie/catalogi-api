@@ -1,14 +1,10 @@
 import json
-import os
-from datetime import timedelta
 from unittest import expectedFailure, skip, skipIf
 
 from django.test import SimpleTestCase
 from django.urls import reverse, reverse_lazy
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from oauth2_provider.models import AccessToken, Application
 from rest_framework.settings import api_settings
 from rest_framework.test import APILiveServerTestCase, APIRequestFactory
 from zds_schema.tests import get_operation_url
@@ -205,63 +201,25 @@ class SecurityAPITests(CatalogusAPITestMixin, APILiveServerTestCase):
         A valid API key is required to access any resource.
         """
         response = self.client.get(self.catalogus_list_url)
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 403)
 
-    @expectedFailure
+    @skip('We do not use OAUTH but JWT based OAUTH')
     def test_disallow_token_in_query_params(self):
         """DSO: API-16 (disallow token in query params)
 
         It's not allowed to pass the API key/token via the URL as query parameter.
         """
         # Create a token without the whole authentication flow.
-        token = AccessToken.objects.create(
-            token='12345', expires=timezone.now() + timedelta(days=1), scope='write read')
+        pass
 
-        response = self.client.get('{}?bearer={}'.format(self.catalogus_list_url, token.token))
-        self.assertEqual(response.status_code, 400)
-
-        response = self.client.get('{}?token={}'.format(self.catalogus_list_url, token.token))
-        self.assertEqual(response.status_code, 400)
-
+    @skip('We do not use OAUTH but JWT based OAUTH')
     def test_oauth2_authentication(self):
         """DSO: API-17 (OAuth2 authentication)
 
         Test the entire backend application flow:
         https://requests-oauthlib.readthedocs.io/en/latest/oauth2_workflow.html#backend-application-flow
         """
-        # The `LiveServerTestCase` does not use HTTPS.
-        os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-
-        # Create application in the ZTC
-        application = Application.objects.create(
-            client_type=Application.CLIENT_CONFIDENTIAL,
-            authorization_grant_type=Application.GRANT_CLIENT_CREDENTIALS
-        )
-
-        # Get token
-        from oauthlib.oauth2 import BackendApplicationClient
-        from requests_oauthlib import OAuth2Session
-        client = BackendApplicationClient(client_id=application.client_id)
-        oauth = OAuth2Session(client=client)
-
-        token = oauth.fetch_token(
-            token_url='{}/oauth2/token/'.format(self.live_server_url),
-            client_id=application.client_id,
-            client_secret=application.client_secret
-        )
-
-        # We use the live test server rather than the shortcut client.
-        list_url = f'{self.live_server_url}{self.catalogus_list_url}'
-
-        # Make request using requests_oauthlib
-        response = oauth.get(list_url)
-        self.assertEqual(response.status_code, 200)
-
-        # Make straightforward request
-        response = self.client.get(list_url, AUTHORIZATION='Bearer {}'.format(token['access_token']))
-        self.assertEqual(response.status_code, 200)
-
-        os.environ.unsetenv('OAUTHLIB_INSECURE_TRANSPORT')
+        pass
 
 
 class DocumentationAPITests(SimpleTestCase):
@@ -439,7 +397,9 @@ class FilterSortSearchTests(APITestCase):
         # Create an extra catalog to make sure it gets filtered out because of the different domain.
         Catalogus.objects.create(domein='XXXXX', rsin=self.catalogus.rsin)
 
-        response = self.client.get('{}?rsin={}&domein={}'.format(self.catalogus_list_url, self.catalogus.rsin, self.catalogus.domein))
+        response = self.client.get(
+            '{}?rsin={}&domein={}'.format(self.catalogus_list_url, self.catalogus.rsin, self.catalogus.domein)
+        )
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
