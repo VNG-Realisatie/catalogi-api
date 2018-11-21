@@ -27,7 +27,7 @@ class CatalogusAPITests(APITestCase):
             'rsin': self.catalogus.rsin,
             'contactpersoonBeheerNaam': self.catalogus.contactpersoon_beheer_naam,
             'contactpersoonBeheerEmailadres': self.catalogus.contactpersoon_beheer_emailadres,
-            # 'bestaatuitInformatieobjecttype': [],
+            'informatieobjecttypen': [],
             'zaaktypen': [],
             'besluittypen': [],
         }
