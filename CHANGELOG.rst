@@ -2,6 +2,18 @@
 Wijzigingen
 ===========
 
+0.5.0 (2018-11-21)
+==================
+
+Autorisatie-feature release
+
+* Autorisatie-scopes toegevoegd
+* Voeg JWT client/secret management toe
+* Opzet credentialstore om URLs te kunnen valideren met auth/autz
+* Support toevoegd om direct OAS 3.0 te serven op
+  ``http://localhost:8000/api/v1/schema/openapi.yaml?v=3``. Zonder querystring
+  parameter krijg je Swagger 2.0.
+
 0.4.0 (2018-11-19)
 ==================
 
