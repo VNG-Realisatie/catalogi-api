@@ -2,6 +2,14 @@
 Wijzigingen
 ===========
 
+0.5.1 (2018-11-22)
+==================
+
+DSO API-srategie fix
+
+Foutberichten bevatten een ``type`` key. De waarde van deze key begint niet
+langer incorrect met ``"URI: "``.
+
 0.5.0 (2018-11-21)
 ==================
 
