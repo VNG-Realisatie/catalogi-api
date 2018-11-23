@@ -49,22 +49,6 @@
       [
         "corsheaders",
         "corsmodel"
-      ],
-      [
-        "oauth2_provider",
-        "accesstoken"
-      ],
-      [
-        "oauth2_provider",
-        "application"
-      ],
-      [
-        "oauth2_provider",
-        "grant"
-      ],
-      [
-        "oauth2_provider",
-        "refreshtoken"
       ]
     ]
   }
