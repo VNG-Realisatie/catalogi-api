@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from zds_schema.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import RolType
 from ..filters import RolTypeFilter
@@ -7,7 +8,7 @@ from ..serializers import RolTypeSerializer
 from ..utils.viewsets import NestedViewSetMixin
 
 
-class RolTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class RolTypeViewSet(CheckQueryParamsMixin, NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE.
