@@ -349,21 +349,6 @@
         "delete_zaaktypenrelatie",
         "datamodel",
         "zaaktypenrelatie"
-      ],
-      [
-        "add_application",
-        "oauth2_provider",
-        "application"
-      ],
-      [
-        "change_application",
-        "oauth2_provider",
-        "application"
-      ],
-      [
-        "delete_application",
-        "oauth2_provider",
-        "application"
       ]
     ]
   }
