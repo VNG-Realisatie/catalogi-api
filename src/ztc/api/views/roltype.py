@@ -17,7 +17,7 @@ class RolTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     """
     queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set')
     serializer_class = RolTypeSerializer
-    filter_class = RolTypeFilter
+    filterset_class = RolTypeFilter
     pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {

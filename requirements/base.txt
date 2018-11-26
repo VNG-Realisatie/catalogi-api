@@ -15,7 +15,7 @@ django-axes==4.0.1
 django-choices==1.6.0
 django-compat==1.0.15     # via django-hijack, django-hijack-admin
 django-cors-middleware==1.3.1
-django-filter==1.1.0
+django-filter==2.0.0
 django-hijack-admin==2.1.6
 django-hijack==2.1.6
 django-ipware==1.1.6      # via django-axes
@@ -60,4 +60,4 @@ six==1.11.0               # via django-compat, django-markup, django-rosetta, dr
 unidecode==1.0.22         # via zds-schema
 uritemplate==3.0.0        # via coreapi, drf-yasg
 urllib3==1.22             # via requests
-zds-schema==0.14.0
+zds-schema==0.15.2
