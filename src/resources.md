@@ -18,6 +18,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | contactpersoonBeheerEmailadres | Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | nee | C​R​U​D |
 | zaaktypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| informatieobjecttypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## BesluitType
 
@@ -64,6 +65,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | statustypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | eigenschappen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | roltypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| besluittypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## EigenschapSpecificatie
 
