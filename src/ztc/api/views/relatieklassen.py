@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from zds_schema.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import (
     ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime,
@@ -9,9 +10,7 @@ from ..serializers import (
     ZaakTypeInformatieObjectTypeSerializer, ZaakTypenRelatieSerializer
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import (
-    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
-)
+from ..utils.viewsets import FilterSearchOrderingViewSetMixin
 
 
 class ZaakTypenRelatieViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin, FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):

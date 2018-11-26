@@ -1,9 +1,9 @@
 from rest_framework import viewsets
+from zds_schema.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import StatusType
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import StatusTypeSerializer
-from ..utils.viewsets import NestedViewSetMixin
 
 
 class StatusTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):

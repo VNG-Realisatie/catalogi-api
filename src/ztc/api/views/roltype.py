@@ -1,11 +1,10 @@
 from rest_framework import viewsets
-from zds_schema.viewsets import CheckQueryParamsMixin
+from zds_schema.viewsets import CheckQueryParamsMixin, NestedViewSetMixin
 
 from ...datamodel.models import RolType
 from ..filters import RolTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import RolTypeSerializer
-from ..utils.viewsets import NestedViewSetMixin
 
 
 class RolTypeViewSet(CheckQueryParamsMixin, NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
