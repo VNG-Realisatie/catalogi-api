@@ -1,9 +1,11 @@
-from django.urls import reverse
+import uuid
 
+from rest_framework import status
 from zds_schema.constants import RolOmschrijving
 
 from ...datamodel.tests.factories import RolTypeFactory
 from .base import APITestCase
+from .utils import reverse
 
 
 class RolTypeAPITests(APITestCase):
@@ -21,12 +23,10 @@ class RolTypeAPITests(APITestCase):
         self.zaaktype = self.rol_type.zaaktype
 
         self.rol_type_list_url = reverse('roltype-list', kwargs={
-            'version': self.API_VERSION,
             'catalogus_uuid': self.catalogus.uuid,
             'zaaktype_uuid': self.zaaktype.uuid
         })
         self.rol_type_detail_url = reverse('roltype-detail', kwargs={
-            'version': self.API_VERSION,
             'catalogus_uuid': self.catalogus.uuid,
             'zaaktype_uuid': self.zaaktype.uuid,
             'uuid': self.rol_type.uuid,
@@ -68,3 +68,22 @@ class RolTypeAPITests(APITestCase):
 
     def test_mag_zetten(self):
         pass
+
+
+class FilterValidationTests(APITestCase):
+
+    def test_invalid_filters(self):
+        url = reverse('roltype-list', kwargs={
+            'catalogus_uuid': str(uuid.uuid4()),
+            'zaaktype_uuid': str(uuid.uuid4()),
+        })
+
+        invalid_filters = {
+            'omschrijvingGeneriek': 'invalid-option',  # bestaat niet
+            'foo': 'bar',  # unsupported param
+        }
+
+        for key, value in invalid_filters.items():
+            with self.subTest(query_param=key, value=value):
+                response = self.client.get(url, {key: value})
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
