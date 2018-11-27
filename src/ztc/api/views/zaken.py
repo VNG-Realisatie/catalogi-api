@@ -1,12 +1,11 @@
 from rest_framework import viewsets
+from zds_schema.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import ZaakObjectType, ZaakType
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import ZaakObjectTypeSerializer, ZaakTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import (
-    FilterSearchOrderingViewSetMixin, NestedViewSetMixin
-)
+from ..utils.viewsets import FilterSearchOrderingViewSetMixin
 
 
 class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,

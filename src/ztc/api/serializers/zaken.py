@@ -196,6 +196,17 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         },
     )
 
+    besluittypen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='besluittype_set',
+        view_name='besluittype-detail',
+        lookup_field='uuid',
+        parent_lookup_kwargs={
+            'catalogus_uuid': 'catalogus__uuid',
+        }
+    )
+
     class Meta:
         model = ZaakType
         fields = (
@@ -240,6 +251,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'statustypen',
             'eigenschappen',
             'roltypen',
+            'besluittypen',
             # # 'heeftRelevantInformatieobjecttype',
             # # 'heeftRelevantBesluittype',
             # # 'heeftRelevantZaakObjecttype',
