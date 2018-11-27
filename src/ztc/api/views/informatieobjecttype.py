@@ -1,9 +1,9 @@
 from rest_framework import viewsets
+from zds_schema.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import InformatieObjectType
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import InformatieObjectTypeSerializer
-from ..utils.viewsets import NestedViewSetMixin
 
 
 class InformatieObjectTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
