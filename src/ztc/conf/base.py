@@ -83,7 +83,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
-    'ztc.api.middleware.APIVersionHeaderMiddleware'
+    'zds_schema.middleware.APIVersionHeaderMiddleware',
 ]
 
 ROOT_URLCONF = 'ztc.urls'

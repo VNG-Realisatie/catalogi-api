@@ -262,8 +262,8 @@ class VersioningAPITests(APITestCase):
         response = self.client.get(self.catalogus_list_url)
         self.assertEqual(response.status_code, 200)
 
-        self.assertTrue('API-Version' in response)
-        self.assertEqual(response['API-Version'], api_settings.DEFAULT_VERSION)
+        self.assertIn('API-version', response)
+        self.assertEqual(response['API-version'], '1.0.0-alpha')
 
     @skipIf(api_settings.DEFAULT_VERSION == '1', 'Deprecated API versions should be tested once we get there.')
     def test_deprecated_api_version_warning(self):

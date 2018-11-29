@@ -45,54 +45,126 @@
                             "items": {
                                 "$ref": "#/definitions/Catalogus"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -122,54 +194,126 @@
                             "items": {
                                 "$ref": "#/definitions/BesluitType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -205,60 +349,140 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/BesluitType"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "404": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -305,54 +529,126 @@
                             "items": {
                                 "$ref": "#/definitions/InformatieObjectType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -388,60 +684,140 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/InformatieObjectType"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "404": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -488,54 +864,126 @@
                             "items": {
                                 "$ref": "#/definitions/ZaakType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -571,60 +1019,140 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/ZaakType"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "404": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -671,54 +1199,126 @@
                             "items": {
                                 "$ref": "#/definitions/Eigenschap"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -762,60 +1362,140 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Eigenschap"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "404": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -888,60 +1568,140 @@
                             "items": {
                                 "$ref": "#/definitions/RolType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "400": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -985,60 +1745,140 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/RolType"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "404": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -1092,54 +1932,126 @@
                             "items": {
                                 "$ref": "#/definitions/StatusType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -1183,60 +2095,140 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/StatusType"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "404": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
@@ -1288,60 +2280,140 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Catalogus"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "401": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "403": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "404": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "406": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "409": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "410": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "415": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "429": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     },
                     "500": {
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
                         }
                     }
                 },
