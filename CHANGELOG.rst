@@ -2,6 +2,15 @@
 Wijzigingen
 ===========
 
+0.6.1 (2018-11-29)
+==================
+
+Bump to zds-schema 0.17.1
+
+* Fixes missing Location header _when_ we get create operations
+* Uses generic APIVersion middleware
+* Fixes server URLs in OAS
+
 0.6.0 (2018-11-27)
 ==================
 
