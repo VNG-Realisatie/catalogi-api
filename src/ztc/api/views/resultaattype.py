@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from zds_schema.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import ResultaatType
+from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import ResultaatTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
@@ -18,3 +19,7 @@ class ResultaatTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
     """
     queryset = ResultaatType.objects.all()
     serializer_class = ResultaatTypeSerializer
+    required_scopes = {
+        'list': SCOPE_ZAAKTYPES_READ,
+        'retrieve': SCOPE_ZAAKTYPES_READ,
+    }
