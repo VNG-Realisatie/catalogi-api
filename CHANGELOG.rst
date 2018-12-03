@@ -2,6 +2,16 @@
 Wijzigingen
 ===========
 
+0.6.2 (2018-12-03)
+==================
+
+Bugfixes n.a.v. APILab voorbereiding
+
+* Fix voor uniciteit ``RolType.omschrijvingGeneriek`` bij zaaktype
+* Fix voor ontsluiten ``InformatieObjectTypes`` als catalogusonderdeel
+* Meer benodigde scopes toegevoegd
+* Fix toegepast om API-root zonder AUTZ te bekijken
+
 0.6.1 (2018-11-29)
 ==================
 
