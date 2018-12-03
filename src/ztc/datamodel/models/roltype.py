@@ -52,7 +52,7 @@ class RolType(GeldigheidMixin, models.Model):
     )
 
     class Meta:
-        unique_together = ('zaaktype', 'omschrijving_generiek')
+        unique_together = ('zaaktype', 'omschrijving')
         verbose_name = _('Roltype')
         verbose_name_plural = _('Roltypen')
         # ordering = unique_together
