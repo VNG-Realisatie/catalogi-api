@@ -28,7 +28,8 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         source='informatieobjecttype_set',
         view_name='informatieobjecttype-detail',
-        parent_lookup_kwargs={'catalogus_uuid': 'catalogus__uuid'}
+        lookup_field='uuid',
+        parent_lookup_kwargs={'catalogus_uuid': 'maakt_deel_uit_van__uuid'}
     )
 
     class Meta:
