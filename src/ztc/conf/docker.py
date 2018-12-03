@@ -80,9 +80,3 @@ if missing_environment_vars:
 # django-axes
 AXES_BEHIND_REVERSE_PROXY = False
 AXES_CACHE = 'axes_cache'
-
-
-# Temporary to simplify auth
-REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = (
-    'rest_framework.permissions.AllowAny',
-)
