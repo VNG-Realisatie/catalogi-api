@@ -12,7 +12,7 @@ from .zaken import ZaakTypeAdmin
 class ZaakTypeInline(EditInlineAdminMixin, admin.TabularInline):
     model = ZaakType
     fields = ZaakTypeAdmin.list_display
-    fk_name = 'maakt_deel_uit_van'
+    fk_name = 'catalogus'
 
 
 class BesluitTypeInline(EditInlineAdminMixin, admin.TabularInline):
@@ -23,7 +23,7 @@ class BesluitTypeInline(EditInlineAdminMixin, admin.TabularInline):
 class InformatieObjectTypeInline(EditInlineAdminMixin, admin.TabularInline):
     model = InformatieObjectType
     fields = InformatieObjectTypeAdmin.list_display
-    fk_name = 'maakt_deel_uit_van'
+    fk_name = 'catalogus'
 
 
 @admin.register(Catalogus)
@@ -57,14 +57,14 @@ class CatalogusAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin
         return (
             (
                 _('Toon {}').format(ZaakType._meta.verbose_name_plural),
-                self._build_changelist_url(ZaakType, query={'maakt_deel_uit_van': obj.pk})
+                self._build_changelist_url(ZaakType, query={'catalogus': obj.pk})
             ),
             (
                 _('Toon {}').format(BesluitType._meta.verbose_name_plural),
-                self._build_changelist_url(BesluitType, query={'maakt_deel_uit_van': obj.pk})
+                self._build_changelist_url(BesluitType, query={'catalogus': obj.pk})
             ),
             (
                 _('Toon {}').format(InformatieObjectType._meta.verbose_name_plural),
-                self._build_changelist_url(InformatieObjectType, query={'maakt_deel_uit_van': obj.pk})
+                self._build_changelist_url(InformatieObjectType, query={'catalogus': obj.pk})
             ),
         )

@@ -36,7 +36,7 @@ class EigenschapSpecificatieSerializer(ModelSerializer):
 class EigenschapSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'zaaktype_uuid': 'is_van__uuid',
-        'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
+        'catalogus_uuid': 'is_van__catalogus__uuid',
     }
 
     specificatie = EigenschapSpecificatieSerializer(read_only=True, source='specificatie_van_eigenschap')
@@ -48,7 +48,7 @@ class EigenschapSerializer(NestedHyperlinkedModelSerializer):
         view_name='zaaktype-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+            'catalogus_uuid': 'catalogus__uuid',
         },
     )
 

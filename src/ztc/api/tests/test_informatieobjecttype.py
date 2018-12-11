@@ -18,7 +18,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         super().setUp()
 
         self.informatieobjecttype = InformatieObjectTypeFactory.create(
-            maakt_deel_uit_van=self.catalogus,
+            catalogus=self.catalogus,
             zaaktypes=None,
             model=['http://www.example.com'],
             informatieobjecttypetrefwoord=['abc', 'def']
@@ -67,7 +67,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
     @skip("Not MVP yet")
     def test_is_relevant_voor(self):
-        zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
 
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype,

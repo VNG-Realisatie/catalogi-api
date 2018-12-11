@@ -33,7 +33,7 @@ class US351TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         # Volgnummer 1
         url = get_operation_url(
             'statustype_read',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid,
             uuid=status_type_1.uuid,
         )
@@ -48,7 +48,7 @@ class US351TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         # Volgnummer 2
         url = get_operation_url(
             'statustype_read',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid,
             uuid=status_type_2.uuid
         )

@@ -348,7 +348,7 @@ class ZaakType(GeldigheidMixin, models.Model):
     # dan de naam van een Organisatorische eenheid of Medewerker overeenkomstig het RGBZ.
     # Hoe weten we of een catalogus van een specifieke organisatie is? Als we Catalogus.contactpersoon_beheer_naam
     # gebruiken dan is dit veld overbodig want dan gebruiken we gewoon
-    # ZaakType.maakt_deel_uit_van.contactpersoon_beheer_naam
+    # ZaakType.catalogus.contactpersoon_beheer_naam
     verantwoordelijke = models.CharField(
         _('verantwoordelijke'), max_length=50,
         help_text=_('De (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor '
@@ -407,20 +407,20 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_('De ZAAKTYPEn (van de hoofdzaken) waaronder ZAAKen van dit ZAAKTYPE als deelzaak kunnen voorkomen.')
     )
 
-    maakt_deel_uit_van = models.ForeignKey(
+    catalogus = models.ForeignKey(
         'datamodel.Catalogus', verbose_name=_('maakt deel uit van'), on_delete=models.CASCADE,
         help_text=_('De CATALOGUS waartoe dit ZAAKTYPE behoort.')
     )
 
     class Meta:
         mnemonic = 'ZKT'
-        unique_together = ('maakt_deel_uit_van', 'zaaktype_identificatie')
+        unique_together = ('catalogus', 'zaaktype_identificatie')
         verbose_name = _('Zaaktype')
         verbose_name_plural = _('Zaaktypen')
         ordering = unique_together
 
         filter_fields = (
-            'maakt_deel_uit_van',
+            'catalogus',
             'publicatie_indicatie',
             'verlenging_mogelijk',
             'opschorting_aanhouding_mogelijk',
@@ -441,7 +441,7 @@ class ZaakType(GeldigheidMixin, models.Model):
         )
 
     def __str__(self):
-        return '{} - {}'.format(self.maakt_deel_uit_van, self.zaaktype_identificatie)
+        return '{} - {}'.format(self.catalogus, self.zaaktype_identificatie)
 
     def clean(self):
         super().clean()
@@ -450,10 +450,10 @@ class ZaakType(GeldigheidMixin, models.Model):
             raise ValidationError("'Servicenorm behandeling' periode mag niet langer zijn dan "
                                   "de periode van 'Doorlooptijd behandeling'.")
 
-        if self.maakt_deel_uit_van_id:
+        if self.catalogus_id:
             # regel voor zaaktype omschrijving
             if ZaakType.objects.filter(
-                maakt_deel_uit_van=self.maakt_deel_uit_van,
+                catalogus=self.catalogus,
                 zaaktype_omschrijving=self.zaaktype_omschrijving
             ).exclude(pk=self.pk).exists():
                 raise ValidationError("Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS.")

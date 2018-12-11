@@ -9,15 +9,15 @@ from ..utils.serializers import SourceMappingSerializerMixin
 class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'zaaktype_pk': 'is_relevant_voor__pk',
-        'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+        'catalogus_pk': 'is_relevant_voor__catalogus__pk',
     }
 
     isRelevantVoor = NestedHyperlinkedRelatedField(
         read_only=True,
-        source= 'is_relevant_voor',
+        source='is_relevant_voor',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_pk': 'catalogus__pk',
         },
     )
     heeftVerplichtDocumentype = NestedHyperlinkedRelatedField(
@@ -26,7 +26,7 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
         source='heeft_verplichte_ziot',
         view_name='api:zktiot-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+            'catalogus_pk': 'zaaktype__catalogus__pk',
             'zaaktype_pk': 'zaaktype__pk',
         },
     )
@@ -36,7 +36,7 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
         source='zaakinformatieobjecttypearchiefregime_set',
         view_name='api:rstiotarc-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'zaak_informatieobject_type__zaaktype__maakt_deel_uit_van__pk',
+            'catalogus_pk': 'zaak_informatieobject_type__zaaktype__catalogus__pk',
             'zaaktype_pk': 'zaak_informatieobject_type__zaaktype__pk',
         },
     )
@@ -46,7 +46,7 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
         source='leidt_tot',
         view_name='api:besluittype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_pk': 'catalogus__pk',
         },
     )
     heeftVerplichteZaakobjecttype = NestedHyperlinkedRelatedField(
@@ -55,7 +55,7 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
         source='heeft_verplichte_zot',
         view_name='api:zaakobjecttype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+            'catalogus_pk': 'is_relevant_voor__catalogus__pk',
             'zaaktype_pk': 'is_relevant_voor__pk'
         },
     )
@@ -65,7 +65,7 @@ class ResultaatTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializer
         source='heeft_voor_brondatum_archiefprocedure_relevante',
         view_name='api:eigenschap-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+            'catalogus_pk': 'is_van__catalogus__pk',
             'zaaktype_pk': 'is_van__pk',
         },
     )

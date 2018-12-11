@@ -61,7 +61,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE | string | nee | C​R​U​D |
 | doorlooptijd | De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen. | string | ja | C​R​U​D |
 | servicenorm | De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s). | string | nee | C​R​U​D |
-| maaktDeelUitVan | De CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
+| catalogus | De CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
 | statustypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | eigenschappen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | roltypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |

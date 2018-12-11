@@ -53,7 +53,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         url = get_operation_url(
             'eigenschap_list',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid
         )
 
@@ -78,12 +78,12 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         zaaktype_url = get_operation_url(
             'zaaktype_read',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             uuid=zaaktype.uuid,
         )
         detail_url = get_operation_url(
             'eigenschap_read',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid,
             uuid=eigenschap1.uuid,
         )

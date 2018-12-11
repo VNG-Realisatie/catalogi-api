@@ -11,7 +11,7 @@ from ..utils.serializers import SourceMappingSerializerMixin
 
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+        'catalogus_pk': 'is_relevant_voor__catalogus__pk',
         'zaaktype_pk': 'is_relevant_voor__pk',
     }
 
@@ -20,7 +20,7 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
         source='is_relevant_voor',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_pk': 'catalogus__pk',
         }
     )
 
@@ -93,7 +93,7 @@ class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
 
 class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+        'catalogus_uuid': 'catalogus__uuid',
     }
 
     # product_dienst = ProductDienstSerializer(many=True, read_only=True)
@@ -108,7 +108,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='zaakobjecttype_set',
     #     view_name='api:zaakobjecttype-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'is_relevant_voor__catalogus__pk',
     #         'zaaktype_pk': 'is_relevant_voor__pk',
     #     }
     # )
@@ -118,7 +118,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='heeft_relevant_besluittype',
     #     view_name='api:besluittype-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'maakt_deel_uit_van__pk'
+    #         'catalogus_pk': 'catalogus__pk'
     #     }
     # )
     # # TODO: currently only show one side of the relations for a ZaakType.
@@ -128,7 +128,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='zaaktypenrelatie_van',
     #     view_name='api:zaaktypenrelatie-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype_van__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'zaaktype_van__catalogus__pk',
     #         'zaaktype_pk': 'zaaktype_van__pk',
     #     }
     # )
@@ -138,7 +138,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='is_deelzaaktype_van',
     #     view_name='api:zaaktype-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'maakt_deel_uit_van__pk'
+    #         'catalogus_pk': 'catalogus__pk'
     #     },
     # )
     # heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
@@ -147,7 +147,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='zaakinformatieobjecttype_set',
     #     view_name='api:zktiot-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'zaaktype__catalogus__pk',
     #         'zaaktype_pk': 'zaaktype__pk',
     #     }
     # )
@@ -157,7 +157,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='resultaattype_set',
     #     view_name='api:resultaattype-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'is_relevant_voor__catalogus__pk',
     #         'zaaktype_pk': 'is_relevant_voor__pk',
     #     }
     # )
@@ -167,8 +167,8 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         view_name='statustype-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
-            'zaaktype_uuid': 'is_van__uuid',
+            'catalogus_uuid': 'zaaktype__catalogus__uuid',
+            'zaaktype_uuid': 'zaaktype__uuid',
         }
     )
 
@@ -179,7 +179,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         view_name='eigenschap-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
+            'catalogus_uuid': 'is_van__catalogus__uuid',
             'zaaktype_uuid': 'is_van__uuid'
         },
     )
@@ -191,7 +191,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         view_name='roltype-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
+            'catalogus_uuid': 'zaaktype__catalogus__uuid',
             'zaaktype_uuid': 'zaaktype__uuid'
         },
     )
@@ -247,7 +247,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # 'einddatumObject',
 
             # relaties
-            'maakt_deel_uit_van',
+            'catalogus',
             'statustypen',
             'eigenschappen',
             'roltypen',
@@ -272,7 +272,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'omschrijving_generiek': {
                 'source': 'zaaktype_omschrijving_generiek',
             },
-            'maakt_deel_uit_van': {
+            'catalogus': {
                 'lookup_field': 'uuid',
             },
             'doorlooptijd': {
@@ -284,5 +284,5 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         }
 
         # expandable_fields = {
-        #     'maaktDeelUitVan': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
+        #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }

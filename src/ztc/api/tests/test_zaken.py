@@ -17,7 +17,7 @@ class ZaakTypeAPITests(APITestCase):
     def setUp(self):
         super().setUp()
 
-        self.zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        self.zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
 
         self.zaaktype_list_url = get_operation_url(
             'zaaktype_list',
@@ -61,7 +61,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'aanleiding': '',
             # 'verlengingstermijn': 30,
             # 'opschortingAanhouding': '',
-            'maaktDeelUitVan': f'http://testserver{self.catalogus_detail_url}',
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
             # 'indicatieInternOfExtern': '',
             # 'verlengingmogelijk': '',
             # 'handelingBehandelaar': '',
@@ -141,7 +141,7 @@ class ZaakObjectTypeAPITests(APITestCase):
     def setUp(self):
         super().setUp()
 
-        self.zaakobjecttype = ZaakObjectTypeFactory.create(is_relevant_voor__maakt_deel_uit_van=self.catalogus)
+        self.zaakobjecttype = ZaakObjectTypeFactory.create(is_relevant_voor__catalogus=self.catalogus)
 
         self.zaaktype = self.zaakobjecttype.is_relevant_voor
 

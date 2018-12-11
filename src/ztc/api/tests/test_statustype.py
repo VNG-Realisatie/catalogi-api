@@ -16,7 +16,7 @@ class StatusTypeAPITests(APITestCase):
 
         self.status_type = StatusTypeFactory.create(
             statustype_omschrijving='Besluit genomen',
-            is_van__maakt_deel_uit_van=self.catalogus,
+            is_van__catalogus=self.catalogus,
         )
 
         self.zaaktype = self.status_type.is_van

@@ -14,7 +14,7 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
     Serializer based on ``IOT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
     parent_lookup_kwargs = {
-        'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+        'catalogus_uuid': 'catalogus__uuid',
     }
 
     # This is needed because spanning relations is not done correctly when specifying the ``source`` attribute later,
@@ -31,7 +31,7 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
     #     read_only=True,
     #     source='besluittype_set',
     #     view_name='api:besluittype-detail',
-    #     parent_lookup_kwargs={'catalogus_pk': 'maakt_deel_uit_van__pk'}
+    #     parent_lookup_kwargs={'catalogus_pk': 'catalogus__pk'}
     # )
     # isRelevantVoor = NestedHyperlinkedRelatedField(
     #     many=True,
@@ -39,7 +39,7 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
     #     source='zaakinformatieobjecttype_set',
     #     view_name='api:zktiot-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'zaaktype__catalogus__pk',
     #         'zaaktype_pk': 'zaaktype__pk',
     #     }
     # )
@@ -53,8 +53,6 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
             # 'vertrouwelijkAanduiding': 'vertrouwelijkheidaanduiding',
             # 'ingangsdatumObject': 'datum_begin_geldigheid',
             # 'einddatumObject': 'datum_einde_geldigheid',
-
-            'catalogus': 'maakt_deel_uit_van',
         }
         extra_kwargs = {
             'url': {
@@ -82,7 +80,7 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
         )
 
     # expandable_fields = {
-    #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'maakt_deel_uit_van'}),
+    #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
     #     'isRelevantVoor': ('ztc.api.serializers.InformatieObjectTypeZaakTypeSerializer', {'source': 'zaakinformatieobjecttype_set'}),
     #     'isVastleggingVoor': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'besluittype_set', 'many': True})
     # }

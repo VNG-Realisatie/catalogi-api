@@ -15,7 +15,7 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         zaaktype = ZaakTypeFactory.create()
         url = get_operation_url(
             'zaaktype_read',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             uuid=zaaktype.uuid
         )
 
@@ -29,7 +29,7 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             ('identificatie', int),
             ('omschrijving', str),
             ('omschrijvingGeneriek', str),
-            ('maaktDeelUitVan', str),
+            ('catalogus', str),
             ('statustypen', list),
         ))
 
@@ -39,7 +39,7 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         status_type = StatusTypeFactory.create()
         url = get_operation_url(
             'statustype_read',
-            catalogus_uuid=status_type.zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=status_type.zaaktype.catalogus.uuid,
             zaaktype_uuid=status_type.zaaktype.uuid,
             uuid=status_type.uuid
         )

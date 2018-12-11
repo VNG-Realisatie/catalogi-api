@@ -27,7 +27,7 @@ class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
 class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'zaaktype_uuid': 'zaaktype__uuid',
-        'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
+        'catalogus_uuid': 'zaaktype__catalogus__uuid',
     }
 
     zaaktype = NestedHyperlinkedRelatedField(
@@ -35,7 +35,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
         view_name='zaaktype-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+            'catalogus_uuid': 'catalogus__uuid',
         },
     )
 
@@ -52,7 +52,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='heeft_verplichte_eigenschap',
     #     view_name='api:eigenschap-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_van__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'is_van__catalogus__pk',
     #         'zaaktype_pk': 'is_van__pk'
     #     },
     # )
@@ -62,7 +62,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='heeft_verplichte_zaakobjecttype',
     #     view_name='api:zaakobjecttype-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_relevant_voor__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'is_relevant_voor__catalogus__pk',
     #         'zaaktype_pk': 'is_relevant_voor__pk',
     #     },
     # )
@@ -72,7 +72,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='heeft_verplichte_zit',
     #     view_name='api:zktiot-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+    #         'catalogus_pk': 'zaaktype__catalogus__pk',
     #         'zaaktype_pk': 'zaaktype__pk',
     #     },
     # )

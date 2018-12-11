@@ -72,7 +72,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     verlengingstermijn = 30
     trefwoord = []  # ArrayField has blank=True but not null=True
     verantwoordingsrelatie = []  # ArrayField has blank=True but not null=True
-    maakt_deel_uit_van = factory.SubFactory(CatalogusFactory)
+    catalogus = factory.SubFactory(CatalogusFactory)
     referentieproces = factory.SubFactory(ReferentieProcesFactory)
 
     datum_begin_geldigheid = date(2018, 1, 1)

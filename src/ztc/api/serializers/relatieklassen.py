@@ -11,7 +11,7 @@ from ..utils.serializers import SourceMappingSerializerMixin
 
 class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'catalogus_pk': 'zaaktype_van__maakt_deel_uit_van__pk',
+        'catalogus_pk': 'zaaktype_van__catalogus__pk',
         'zaaktype_pk': 'zaaktype_van__pk',
     }
 
@@ -20,7 +20,7 @@ class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSeriali
         source='zaaktype_naar',
         view_name='api:zaaktype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_pk': 'catalogus__pk',
         },
     )
 
@@ -49,7 +49,7 @@ class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMa
     Relatie met informatieobjecttype dat relevant is voor zaaktype.
     """
     parent_lookup_kwargs = {
-        'catalogus_pk': 'zaaktype__maakt_deel_uit_van__pk',
+        'catalogus_pk': 'zaaktype__catalogus__pk',
         'zaaktype_pk': 'zaaktype__pk',
     }
 
@@ -58,7 +58,7 @@ class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMa
         source='informatie_object_type',
         view_name='api:informatieobjecttype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'maakt_deel_uit_van__pk',
+            'catalogus_pk': 'catalogus__pk',
         },
     )
 
@@ -89,7 +89,7 @@ class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin,
     grond van resultaten van een RESULTAATTYPE bij dat ZAAKTYPE.
     """
     parent_lookup_kwargs = {
-        'catalogus_pk': 'zaak_informatieobject_type__zaaktype__maakt_deel_uit_van__pk',
+        'catalogus_pk': 'zaak_informatieobject_type__zaaktype__catalogus__pk',
         'zaaktype_pk': 'zaak_informatieobject_type__zaaktype__pk',
     }
 
@@ -98,7 +98,7 @@ class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin,
         source='zaak_informatieobject_type',
         view_name='api:informatieobjecttype-detail',
         parent_lookup_kwargs={
-            'catalogus_pk': 'informatie_object_type__maakt_deel_uit_van__pk',
+            'catalogus_pk': 'informatie_object_type__catalogus__pk',
             'pk': 'informatie_object_type__pk'
         },
     )

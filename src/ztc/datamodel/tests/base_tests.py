@@ -132,7 +132,7 @@ class HaaglandenMixin(object):
             verlenging_mogelijk=JaNee.ja,
             # toelichting: TODO: is in Haaglanden doc, not in the datamodel
 
-            maakt_deel_uit_van=self.catalogus,
+            catalogus=self.catalogus,
 
             versiedatum=timezone.now().date()
         )
@@ -392,7 +392,7 @@ class HaaglandenMixin(object):
             # bron=ontvangen
             # verplicht=ja
             # TODO: link with Status 1
-            maakt_deel_uit_van=self.catalogus,
+            catalogus=self.catalogus,
         )
         self.document_ontvangstbevestiging = InformatieObjectTypeFactory.create(
             informatieobjecttype_omschrijving='Ontvangstbevestiging',
@@ -408,7 +408,7 @@ class HaaglandenMixin(object):
             # bron=ontvangen of uitgaand
             # verplicht=ja
             # TODO: link with Status 1
-            maakt_deel_uit_van=self.catalogus,
+            catalogus=self.catalogus,
         )
         # there are 10+ more
 

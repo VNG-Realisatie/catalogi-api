@@ -27,7 +27,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         Hence, it should be nested under the ``catalogussen`` resource:
         ``/api/v1/catalogussen/{uuid}/zaaktypen``.
         """
-        zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         kwargs = {
             'catalogus_uuid': self.catalogus.uuid,
             'uuid': zaaktype.uuid
@@ -46,7 +46,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing `/api/v1/catalogussen/1/?expand=true` expands all (1st level)
         expandable resources.
         """
-        ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        ZaakTypeFactory.create(catalogus=self.catalogus)
 
         # TODO: Why is this an English term, while search and ordering are Dutch?
         response = self.client.get(self.catalogus_detail_url, {'expand': 'true'})
@@ -68,7 +68,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing ``/api/v1/catalogussen/1/?expand=bestaatuitZaaktype`` expands
         only the resource referenced by the field "besluittypen".
         """
-        ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        ZaakTypeFactory.create(catalogus=self.catalogus)
 
         response = self.client.get(self.catalogus_detail_url, {'expand': 'bestaatuitZaaktype'})
 
@@ -93,8 +93,8 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing ``/api/v1/catalogussen/1/?expand=bestaatuitBesluittype,bestaatuitInformatieobjecttype``
         expands only the two resources referenced by the field "besluittypen" and "informatieobjecttypen".
         """
-        BesluitTypeFactory.create(maakt_deel_uit_van=self.catalogus, publicatie_indicatie='J')
-        InformatieObjectTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        BesluitTypeFactory.create(catalogus=self.catalogus, publicatie_indicatie='J')
+        InformatieObjectTypeFactory.create(catalogus=self.catalogus)
 
         response = self.client.get(
             self.catalogus_detail_url,
@@ -124,7 +124,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         Passing ``/api/v1/catalogussen/1/?expand=bestaatuitZaaktype.omschrijving`` expands only the resource
         referenced by the field "besluittypen" and only shows the field "omschrijving" of that resource.
         """
-        ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        ZaakTypeFactory.create(catalogus=self.catalogus)
 
         response = self.client.get(self.catalogus_detail_url, {'expand': 'bestaatuitZaaktype.omschrijving'})
 

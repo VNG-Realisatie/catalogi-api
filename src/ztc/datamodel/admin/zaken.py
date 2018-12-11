@@ -83,7 +83,7 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
     model = ZaakType
 
     # List
-    list_display = ('zaaktype_identificatie', 'zaaktype_omschrijving', 'zaakcategorie', 'maakt_deel_uit_van')
+    list_display = ('zaaktype_identificatie', 'zaaktype_omschrijving', 'zaakcategorie', 'catalogus')
 
     # Details
     fieldsets = (
@@ -129,7 +129,7 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
         }),
         (_('Relaties'), {
             'fields': (
-                'maakt_deel_uit_van',
+                'catalogus',
 
                 # m2m:
                 'is_deelzaaktype_van',
@@ -141,7 +141,7 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
         'product_dienst',
         'formulier',
     )
-    raw_id_fields = ('maakt_deel_uit_van', )
+    raw_id_fields = ('catalogus', )
     inlines = (
         ZaakTypenRelatieInline,  # heeft_gerelateerd
         StatusTypeInline, ZaakObjectTypeInline, RolTypeInline, EigenschapInline, ResultaatTypeInline,
