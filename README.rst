@@ -2,7 +2,7 @@
 Zaaktypecatalogus
 =================
 
-:Version: 0.6.2
+:Version: 0.6.5
 :Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 

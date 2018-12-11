@@ -2,6 +2,15 @@
 Wijzigingen
 ===========
 
+0.6.5 (2018-12-11)
+==================
+
+Small bugfixes
+
+* Updated to latest zds-schema
+* Added a name for the session cookie to preserve sessions on the same domain
+  between components.
+
 0.6.2 (2018-12-03)
 ==================
 
