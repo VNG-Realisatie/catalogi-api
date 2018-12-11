@@ -39,8 +39,8 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         status_type = StatusTypeFactory.create()
         url = get_operation_url(
             'statustype_read',
-            catalogus_uuid=status_type.is_van.maakt_deel_uit_van.uuid,
-            zaaktype_uuid=status_type.is_van.uuid,
+            catalogus_uuid=status_type.zaaktype.maakt_deel_uit_van.uuid,
+            zaaktype_uuid=status_type.zaaktype.uuid,
             uuid=status_type.uuid
         )
 
@@ -54,6 +54,6 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             ('omschrijving', str),
             ('omschrijvingGeneriek', str),
             ('statustekst', str),
-            ('isVan', str),
+            ('zaaktype', str),
         ]
         self.assertResponseTypes(response_data, types)

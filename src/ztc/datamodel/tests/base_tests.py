@@ -233,7 +233,7 @@ class HaaglandenMixin(object):
                 self.rol_type_documentair_ondersteuner,
                 self.rol_type_procesondersteuner,
             ],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.status_type_getoetst = StatusTypeFactory.create(
             statustype_omschrijving='Getoetst op indieningsvereisten',
@@ -264,7 +264,7 @@ class HaaglandenMixin(object):
                 self.rol_type_juridisch_adviseur,
                 self.rol_type_procesondersteuner,
             ],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.status_type_inhoudelijk_behandeld = StatusTypeFactory.create(
             statustype_omschrijving='Inhoudelijk behandeld',
@@ -290,7 +290,7 @@ class HaaglandenMixin(object):
                 self.rol_type_juridisch_adviseur,
                 self.rol_type_procesondersteuner,
             ],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.status_type_besluit_genomen = StatusTypeFactory.create(
             statustype_omschrijving='Besluit genomen',
@@ -306,7 +306,7 @@ class HaaglandenMixin(object):
                 self.rol_type_juridisch_adviseur,
                 self.rol_type_procesondersteuner,
             ],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.status_type_producten_geleverd = StatusTypeFactory.create(
             statustype_omschrijving='Producten geleverd',
@@ -323,7 +323,7 @@ class HaaglandenMixin(object):
                 self.rol_type_documentair_ondersteuner,
                 self.rol_type_procesondersteuner,
             ],
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
 
         #

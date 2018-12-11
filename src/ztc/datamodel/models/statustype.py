@@ -48,7 +48,7 @@ class StatusType(GeldigheidMixin, models.Model):
     )
 
     # relations
-    is_van = models.ForeignKey(
+    zaaktype = models.ForeignKey(
         'ZaakType', verbose_name=_('is van'), related_name='statustypen', on_delete=models.CASCADE,
         help_text=_('Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.')
     )
@@ -96,14 +96,13 @@ class StatusType(GeldigheidMixin, models.Model):
         help_text=_('De STATUSTYPEn die een betrokkene in een rol van dit ROLTYPE mag zetten.'))
 
     class Meta:
-        mnemonic = 'STT'
-        unique_together = ('is_van', 'statustypevolgnummer')
+        unique_together = ('zaaktype', 'statustypevolgnummer')
         verbose_name = _('Statustype')
         verbose_name_plural = _('Statustypen')
         ordering = unique_together
 
         filter_fields = (
-            'is_van',
+            'zaaktype',
             'informeren',
         )
         ordering_fields = filter_fields
@@ -124,7 +123,7 @@ class StatusType(GeldigheidMixin, models.Model):
         """
         super().clean()
 
-        self._clean_geldigheid(self.is_van)
+        self._clean_geldigheid(self.zaaktype)
 
     def is_eindstatus(self):
         """
@@ -133,10 +132,10 @@ class StatusType(GeldigheidMixin, models.Model):
 
         # TODO: Can be cached on the model.
         """
-        max_statustypevolgnummer = self.is_van.statustypen.aggregate(
+        max_statustypevolgnummer = self.zaaktype.statustypen.aggregate(
             result=Max('statustypevolgnummer'))['result']
 
         return max_statustypevolgnummer == self.statustypevolgnummer
 
     def __str__(self):
-        return '{} - {}'.format(self.is_van, self.statustypevolgnummer)
+        return '{} - {}'.format(self.zaaktype, self.statustypevolgnummer)

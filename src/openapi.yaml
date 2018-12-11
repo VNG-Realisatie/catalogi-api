@@ -2566,8 +2566,8 @@ components:
             ZAAKTYPE.
           type: string
           maxLength: 1000
-        isVan:
-          title: Is van
+        zaaktype:
+          title: Zaaktype
           type: string
           format: uri
           readOnly: true

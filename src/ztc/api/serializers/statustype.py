@@ -26,11 +26,11 @@ class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
 
 class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
-        'zaaktype_uuid': 'is_van__uuid',
-        'catalogus_uuid': 'is_van__maakt_deel_uit_van__uuid',
+        'zaaktype_uuid': 'zaaktype__uuid',
+        'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
     }
 
-    is_van = NestedHyperlinkedRelatedField(
+    zaaktype = NestedHyperlinkedRelatedField(
         read_only=True,
         view_name='zaaktype-detail',
         lookup_field='uuid',
@@ -85,7 +85,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
             'omschrijving_generiek',
             'statustekst',
 
-            'is_van',
+            'zaaktype',
 
             'volgnummer',
 

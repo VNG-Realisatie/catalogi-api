@@ -44,7 +44,7 @@ class ZaakObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, 
 class StatusTypeInline(EditInlineAdminMixin, admin.TabularInline):
     model = StatusType
     fields = StatusTypeAdmin.list_display
-    fk_name = 'is_van'
+    fk_name = 'zaaktype'
 
 
 class ZaakObjectTypeInline(EditInlineAdminMixin, admin.TabularInline):
