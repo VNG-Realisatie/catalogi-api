@@ -45,7 +45,7 @@ class InformatieObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminM
     model = InformatieObjectType
 
     # List
-    list_display = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving', 'informatieobjectcategorie', )
+    list_display = ('catalogus', 'informatieobjecttype_omschrijving', 'informatieobjectcategorie', )
 
     # Details
     fieldsets = (
@@ -61,7 +61,7 @@ class InformatieObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminM
         }),
         (_('Relaties'), {
             'fields': (
-                'maakt_deel_uit_van',
+                'catalogus',
                 'informatieobjecttype_omschrijving_generiek',
             )
         }),

@@ -17,7 +17,7 @@ class EigenschapAPITests(APITestCase):
     def setUp(self):
         super().setUp()
 
-        self.zaaktype = ZaakTypeFactory.create(maakt_deel_uit_van=self.catalogus)
+        self.zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
 
         specificatie = EigenschapSpecificatieFactory.create(
             kardinaliteit='1',

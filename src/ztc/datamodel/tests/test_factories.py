@@ -23,7 +23,7 @@ class FactoryTests(TestCase):
         iot = InformatieObjectTypeFactory.create()
 
         self.assertIsNotNone(iot.informatieobjecttype_omschrijving_generiek_id)
-        self.assertIsNotNone(iot.maakt_deel_uit_van_id)
+        self.assertIsNotNone(iot.catalogus_id)
 
         InformatieObjectTypeOmschrijvingGeneriekFactory.create()
 

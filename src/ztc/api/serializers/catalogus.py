@@ -11,7 +11,7 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         source='zaaktype_set',
         view_name='zaaktype-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={'catalogus_uuid': 'maakt_deel_uit_van__uuid'},
+        parent_lookup_kwargs={'catalogus_uuid': 'catalogus__uuid'},
     )
 
     besluittypen = NestedHyperlinkedRelatedField(
@@ -29,7 +29,7 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         source='informatieobjecttype_set',
         view_name='informatieobjecttype-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={'catalogus_uuid': 'maakt_deel_uit_van__uuid'}
+        parent_lookup_kwargs={'catalogus_uuid': 'catalogus__uuid'}
     )
 
     class Meta:

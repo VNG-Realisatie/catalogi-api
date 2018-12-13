@@ -18,8 +18,8 @@ class ZaakTypeRelatieAPITests(APITestCase):
         super().setUp()
 
         self.zaaktyperelatie = ZaakTypenRelatieFactory.create(
-            zaaktype_van__maakt_deel_uit_van=self.catalogus,
-            zaaktype_naar__maakt_deel_uit_van=self.catalogus,
+            zaaktype_van__catalogus=self.catalogus,
+            zaaktype_naar__catalogus=self.catalogus,
             aard_relatie='aard relatie',
         )
 
@@ -71,8 +71,8 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         super().setUp()
 
         self.ziot = ZaakInformatieobjectTypeFactory.create(
-            zaaktype__maakt_deel_uit_van=self.catalogus,
-            informatie_object_type__maakt_deel_uit_van=self.catalogus,
+            zaaktype__catalogus=self.catalogus,
+            informatie_object_type__catalogus=self.catalogus,
             informatie_object_type__zaaktypes=None,
             volgnummer=1,
         )
@@ -126,8 +126,8 @@ class ZaakInformatieobjectTypeArchiefregimeAPITests(APITestCase):
         super().setUp()
 
         self.ziot = ZaakInformatieobjectTypeFactory.create(
-            zaaktype__maakt_deel_uit_van=self.catalogus,
-            informatie_object_type__maakt_deel_uit_van=self.catalogus,
+            zaaktype__catalogus=self.catalogus,
+            informatie_object_type__catalogus=self.catalogus,
             informatie_object_type__zaaktypes=None,
             volgnummer=1,
         )

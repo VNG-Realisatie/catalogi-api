@@ -15,7 +15,7 @@ class BesluitTypeSerializer(NestedHyperlinkedModelSerializer):
         view_name='informatieobjecttype-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+            'catalogus_uuid': 'catalogus__uuid',
         },
     )
 
@@ -25,7 +25,7 @@ class BesluitTypeSerializer(NestedHyperlinkedModelSerializer):
         view_name='zaaktype-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+            'catalogus_uuid': 'catalogus__uuid',
         }
     )
 

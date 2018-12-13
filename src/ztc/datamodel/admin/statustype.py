@@ -16,7 +16,7 @@ class StatusTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admi
     model = StatusType
 
     # List
-    list_display = ('statustype_omschrijving', 'statustypevolgnummer', 'is_van')
+    list_display = ('statustype_omschrijving', 'statustypevolgnummer', 'zaaktype')
 
     # Details
     fieldsets = (
@@ -33,7 +33,7 @@ class StatusTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admi
         }),
         (_('Relaties'), {
             'fields': (
-                'is_van',
+                'zaaktype',
                 'checklistitem',
                 'roltypen',
             )
@@ -43,4 +43,4 @@ class StatusTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admi
         'roltypen',
         'checklistitem',
     )
-    raw_id_fields = ('is_van', )
+    raw_id_fields = ('zaaktype', )

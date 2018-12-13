@@ -17,14 +17,14 @@ class MogelijkeBetrokkeneSerializer(serializers.ModelSerializer):
 class RolTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'zaaktype_uuid': 'zaaktype__uuid',
-        'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
+        'catalogus_uuid': 'zaaktype__catalogus__uuid',
     }
     zaaktype = NestedHyperlinkedRelatedField(
         read_only=True,
         view_name='zaaktype-detail',
         lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_uuid': 'maakt_deel_uit_van__uuid',
+            'catalogus_uuid': 'catalogus__uuid',
         },
     )
 
@@ -35,7 +35,7 @@ class RolTypeSerializer(NestedHyperlinkedModelSerializer):
     #     source='mag_zetten',
     #     view_name='api:statustype-detail',
     #     parent_lookup_kwargs={
-    #         'catalogus_uuid': 'zaaktype__maakt_deel_uit_van__uuid',
+    #         'catalogus_uuid': 'zaaktype__catalogus__uuid',
     #         'zaaktype_uuid': 'zaaktype__uuid',
     #     },
     # )

@@ -22,7 +22,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         zaaktype = ZaakTypeFactory.create()
         url = get_operation_url(
             'zaaktype_read',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             uuid=zaaktype.uuid
         )
 
@@ -60,7 +60,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         url = get_operation_url(
             'roltype_list',
-            catalogus_uuid=zaaktype.maakt_deel_uit_van.uuid,
+            catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid
         )
 

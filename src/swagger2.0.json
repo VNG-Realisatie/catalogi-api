@@ -2667,7 +2667,7 @@
                     "minLength": 1
                 },
                 "catalogus": {
-                    "title": "Catalogus",
+                    "title": "Maakt deel uit van",
                     "description": "De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.",
                     "type": "string",
                     "format": "uri"
@@ -2679,7 +2679,7 @@
                 "identificatie",
                 "omschrijving",
                 "doorlooptijd",
-                "maaktDeelUitVan"
+                "catalogus"
             ],
             "type": "object",
             "properties": {
@@ -2719,7 +2719,7 @@
                     "description": "De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s).",
                     "type": "string"
                 },
-                "maaktDeelUitVan": {
+                "catalogus": {
                     "title": "Maakt deel uit van",
                     "description": "De CATALOGUS waartoe dit ZAAKTYPE behoort.",
                     "type": "string",
@@ -3064,8 +3064,8 @@
                     "type": "string",
                     "maxLength": 1000
                 },
-                "isVan": {
-                    "title": "Is van",
+                "zaaktype": {
+                    "title": "Zaaktype",
                     "type": "string",
                     "format": "uri",
                     "readOnly": true

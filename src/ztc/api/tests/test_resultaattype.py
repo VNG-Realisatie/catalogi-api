@@ -16,7 +16,7 @@ class ResultaatTypeAPITests(APITestCase):
 
         self.resultaattype = ResultaatTypeFactory.create(
             resultaattypeomschrijving='Verleend',
-            is_relevant_voor__maakt_deel_uit_van=self.catalogus,
+            is_relevant_voor__catalogus=self.catalogus,
             bepaalt_afwijkend_archiefregime_van=None,
         )
         self.zaaktype = self.resultaattype.is_relevant_voor

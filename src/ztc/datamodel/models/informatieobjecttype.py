@@ -93,7 +93,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         _('toelichting'), max_length=1000, blank=True, null=True,
         help_text=_('Een eventuele toelichting op dit INFORMATIEOBJECTTYPE.'))
 
-    maakt_deel_uit_van = models.ForeignKey(
+    catalogus = models.ForeignKey(
         'datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
         on_delete=models.CASCADE, help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.')
     )
@@ -105,13 +105,13 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
 
     class Meta:
         mnemonic = 'DCT'
-        unique_together = ('maakt_deel_uit_van', 'informatieobjecttype_omschrijving')
+        unique_together = ('catalogus', 'informatieobjecttype_omschrijving')
         verbose_name = _('Informatieobjecttype')
         verbose_name_plural = _('Informatieobjecttypen')
         ordering = unique_together
 
         filter_fields = (
-            'maakt_deel_uit_van',
+            'catalogus',
             'informatieobjectcategorie',
         )
         ordering_fields = filter_fields
@@ -134,4 +134,4 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         super().clean()
 
     def __str__(self):
-        return '{} - {}'.format(self.maakt_deel_uit_van, self.informatieobjecttype_omschrijving)
+        return '{} - {}'.format(self.catalogus, self.informatieobjecttype_omschrijving)

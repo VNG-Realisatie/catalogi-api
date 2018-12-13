@@ -18,7 +18,7 @@ class RolTypeAPITests(APITestCase):
             omschrijving='Vergunningaanvrager',
             omschrijving_generiek=RolOmschrijving.initiator,
             soort_betrokkene=['Aanvrager'],
-            zaaktype__maakt_deel_uit_van=self.catalogus,
+            zaaktype__catalogus=self.catalogus,
         )
         self.zaaktype = self.rol_type.zaaktype
 
