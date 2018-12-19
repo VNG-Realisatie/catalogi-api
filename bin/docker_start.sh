@@ -31,5 +31,6 @@ uwsgi \
     --static-map /media=/app/media  \
     --chdir src \
     --processes 2 \
-    --threads 2
+    --threads 2 \
+    --buffer-size=32768
     # processes & threads are needed for concurrency without nginx sitting inbetween
