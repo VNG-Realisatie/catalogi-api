@@ -446,7 +446,11 @@ class ZaakType(GeldigheidMixin, models.Model):
     def clean(self):
         super().clean()
 
-        if self.servicenorm_behandeling and self.servicenorm_behandeling > self.doorlooptijd_behandeling:
+        # self.doorlooptijd_behandeling is empty if there are validation errors,
+        # which would trigger a TypeError on the comparison
+        if (self.doorlooptijd_behandeling
+            and self.servicenorm_behandeling  # noqa
+            and self.servicenorm_behandeling > self.doorlooptijd_behandeling):  # noqa
             raise ValidationError("'Servicenorm behandeling' periode mag niet langer zijn dan "
                                   "de periode van 'Doorlooptijd behandeling'.")
 
