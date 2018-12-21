@@ -6,6 +6,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
+from .views import DumpDataFixtureView, DumpDataView
+
 urlpatterns = [
     path('admin/password_reset/', auth_views.password_reset, name='admin_password_reset'),
     path('admin/password_reset/done/', auth_views.password_reset_done, name='password_reset_done'),
@@ -19,6 +21,8 @@ urlpatterns = [
 
     # Simply show the master template.
     path('', TemplateView.as_view(template_name='index.html')),
+    path('data/', DumpDataView.as_view(), name='dumpdata'),
+    path('data/fixture/', DumpDataFixtureView.as_view(), name='dumpdata-fixture'),
     path('ref/', include('zds_schema.urls')),
 ]
 
