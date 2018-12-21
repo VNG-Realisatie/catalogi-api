@@ -2,6 +2,29 @@
 Wijzigingen
 ===========
 
+0.7.0 (2018-12-21)
+==================
+
+API maturity update
+
+Breaking changes:
+
+* Renamed StatusType.is_van to StatusType.zaaktype
+* Renamed X.maaktDeelUitVan to X.catalogus
+
+New features:
+
+* Add download of fixture data and instructions on how to use it
+
+Bugfixes:
+
+* Don't compare datetimes with None
+
+0.6.7 (2018-12-19)
+==================
+
+Increase buffer size to accomodate large headers
+
 0.6.6 (2018-12-13)
 ==================
 
