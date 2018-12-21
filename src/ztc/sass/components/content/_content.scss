@@ -1,7 +1,12 @@
 @import '../../lib/typography';
+@import '../../lib/responsive';
 
+$content-max-width: $breakpoint-laptop-l;
 
 .content {
+  max-width: $content-max-width;
+  margin: 0 auto;
+
   h1 { @include h1() }
   h2 { @include h2() }
   h3 { @include h3() }
@@ -20,5 +25,7 @@
   code {
     @include body();
     @include monospace();
+    color: $color-code;
+    font-weight: bold;
   }
 }
