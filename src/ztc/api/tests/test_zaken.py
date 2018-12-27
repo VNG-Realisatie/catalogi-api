@@ -45,7 +45,6 @@ class ZaakTypeAPITests(APITestCase):
             'url': f'http://testserver{self.zaaktype_detail_url}',
             # 'ingangsdatumObject': '2018-01-01',
             # 'einddatumObject': None,
-            # 'vertrouwelijkheidAanduiding': '',
             'identificatie': self.zaaktype.zaaktype_identificatie,
             # 'product_dienst': [{
             #     'naam': self.zaaktype.product_dienst.get().naam,
@@ -71,6 +70,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'onderwerp': '',
             # 'publicatietekst': None,
             'omschrijvingGeneriek': '',
+            'vertrouwelijkheidaanduiding': '',
             # 'verantwoordingsrelatie': [],
             # 'isDeelzaaktypeVan': [],
             'servicenorm': None,

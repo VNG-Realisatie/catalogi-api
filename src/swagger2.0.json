@@ -2678,6 +2678,7 @@
             "required": [
                 "identificatie",
                 "omschrijving",
+                "vertrouwelijkheidaanduiding",
                 "doorlooptijd",
                 "catalogus"
             ],
@@ -2708,6 +2709,21 @@
                     "description": "Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE",
                     "type": "string",
                     "maxLength": 80
+                },
+                "vertrouwelijkheidaanduiding": {
+                    "title": "Vertrouwelijkheidaanduiding",
+                    "description": "Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.",
+                    "type": "string",
+                    "enum": [
+                        "openbaar",
+                        "beperkt openbaar",
+                        "intern",
+                        "zaakvertrouwelijk",
+                        "vertrouwelijk",
+                        "confidentieel",
+                        "geheim",
+                        "zeer geheim"
+                    ]
                 },
                 "doorlooptijd": {
                     "title": "Doorlooptijd",

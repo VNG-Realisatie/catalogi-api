@@ -6,7 +6,7 @@ from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from zds_schema.fields import DaysDurationField
+from zds_schema.fields import DaysDurationField, VertrouwelijkheidsAanduidingField
 
 from ..choices import (
     InternExtern, JaNee, ObjectTypen, VertrouwelijkheidAanduiding
@@ -276,6 +276,13 @@ class ZaakType(GeldigheidMixin, models.Model):
     zaaktype_omschrijving_generiek = models.CharField(
         _('omschrijving generiek'), max_length=80, blank=True, help_text=_(
             'Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE'))
+    vertrouwelijkheidaanduiding = VertrouwelijkheidsAanduidingField(
+        _("vertrouwelijkheidaanduiding"),
+        help_text=_("Aanduiding van de mate waarin zaakdossiers van ZAAKen van "
+                    "dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het "
+                    "aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.")
+    )
+
     # TODO [KING]: waardenverzameling zie Zaaktypecatalogus, is dat de
     # catalogus die bij dit zaaktype hoort? Wat is de categorie dan?
     zaakcategorie = models.CharField(_('zaakcategorie'), max_length=40, blank=True, null=True, help_text=_(
@@ -338,11 +345,6 @@ class ZaakType(GeldigheidMixin, models.Model):
         _('archiefclassificatiecode'), max_length=20, blank=True, null=True, help_text=_(
             'De systematische identificatie van zaakdossiers van dit ZAAKTYPE overeenkomstig logisch gestructureerde '
             'conventies, methoden en procedureregels.'))
-    vertrouwelijkheidaanduiding = models.CharField(
-        _('vertrouwelijkheidaanduiding'), max_length=20, choices=VertrouwelijkheidAanduiding.choices,
-        help_text=_('Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE '
-                    'voor de openbaarheid bestemd zijn.')
-    )
     # TODO [KING]: waardenverzameling heeft de volgende regel, momenteel valideren we hier niets,
     # maar wellicht kan het wel: Indien het om een zaaktype in een catalogus voor een specifieke organisatie gaat,
     # dan de naam van een Organisatorische eenheid of Medewerker overeenkomstig het RGBZ.
