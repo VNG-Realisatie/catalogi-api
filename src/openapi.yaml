@@ -2188,6 +2188,7 @@ components:
           title: Reactietermijn
           description: Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum,
             waarbinnen verweer tegen een besluit van het besluittype mogelijk is.
+            Specifieer de duur als 'DD 00:00'
           type: string
         publicatieIndicatie:
           title: Publicatie indicatie
@@ -2202,7 +2203,8 @@ components:
         publicatietermijn:
           title: Publicatietermijn
           description: Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum,
-            dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.
+            dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven. Specifieer
+            de duur als 'DD 00:00'
           type: string
         toelichting:
           title: Toelichting
@@ -2272,13 +2274,14 @@ components:
         doorlooptijd:
           title: Doorlooptijd
           description: De periode waarbinnen volgens wet- en regelgeving een ZAAK
-            van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen.
+            van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen. Specifieer
+            de duur als 'DD 00:00'
           type: string
         servicenorm:
           title: Servicenorm
           description: De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE
             afgerond wordt conform de geldende servicenormen van de zaakbehandelende
-            organisatie(s).
+            organisatie(s). Specifieer de duur als 'DD 00:00'
           type: string
         catalogus:
           title: Maakt deel uit van
