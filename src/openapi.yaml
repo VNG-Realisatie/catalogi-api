@@ -2570,7 +2570,7 @@ components:
           type: string
           maxLength: 1000
         zaaktype:
-          title: Zaaktype
+          title: is van
           type: string
           format: uri
           readOnly: true

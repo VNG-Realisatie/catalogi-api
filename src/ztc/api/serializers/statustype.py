@@ -37,6 +37,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
         parent_lookup_kwargs={
             'catalogus_uuid': 'catalogus__uuid',
         },
+        label=_('is van')
     )
 
     is_eindstatus = serializers.BooleanField(
