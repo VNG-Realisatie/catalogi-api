@@ -2,6 +2,14 @@
 Wijzigingen
 ===========
 
+0.7.1 (2019-01-07)
+==================
+
+Minor text fixes
+
+* Bumped to never zds-schema, which includes help-texts for durations
+* Fixed label of some resource/relations in API spec [semantics improvement]
+
 0.7.0 (2018-12-21)
 ==================
 
