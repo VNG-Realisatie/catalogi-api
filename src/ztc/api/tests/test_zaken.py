@@ -61,7 +61,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'verlengingstermijn': 30,
             # 'opschortingAanhouding': '',
             'catalogus': f'http://testserver{self.catalogus_detail_url}',
-            # 'indicatieInternOfExtern': '',
+            'indicatieInternOfExtern': self.zaaktype.indicatie_intern_of_extern,
             # 'verlengingmogelijk': '',
             # 'handelingBehandelaar': '',
             'doel': self.zaaktype.doel,

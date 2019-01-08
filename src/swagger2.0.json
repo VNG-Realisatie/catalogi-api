@@ -2681,6 +2681,7 @@
                 "vertrouwelijkheidaanduiding",
                 "doel",
                 "aanleiding",
+                "indicatieInternOfExtern",
                 "doorlooptijd",
                 "catalogus"
             ],
@@ -2743,6 +2744,15 @@
                     "title": "Toelichting",
                     "description": "Een eventuele toelichting op dit zaaktype, zoals een beschrijving van het procesverloop op de hoofdlijnen.",
                     "type": "string"
+                },
+                "indicatieInternOfExtern": {
+                    "title": "Indicatie intern of extern",
+                    "description": "Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn die Intern respectievelijk Extern ge\u00efnitieerd worden. Indien van beide sprake kan zijn, dan prevaleert de externe initiatie.",
+                    "type": "string",
+                    "enum": [
+                        "Intern",
+                        "Extern"
+                    ]
                 },
                 "doorlooptijd": {
                     "title": "Doorlooptijd",

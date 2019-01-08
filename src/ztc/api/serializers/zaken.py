@@ -219,7 +219,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'doel',
             'aanleiding',
             'toelichting',
-            # 'indicatieInternOfExtern',
+            'indicatie_intern_of_extern',
             # 'handelingInitiator',
             # 'onderwerp',
             # 'handelingBehandelaar',

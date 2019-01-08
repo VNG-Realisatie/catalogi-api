@@ -2246,6 +2246,7 @@ components:
       - vertrouwelijkheidaanduiding
       - doel
       - aanleiding
+      - indicatieInternOfExtern
       - doorlooptijd
       - catalogus
       type: object
@@ -2306,6 +2307,15 @@ components:
           description: Een eventuele toelichting op dit zaaktype, zoals een beschrijving
             van het procesverloop op de hoofdlijnen.
           type: string
+        indicatieInternOfExtern:
+          title: Indicatie intern of extern
+          description: "Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn\
+            \ die Intern respectievelijk Extern ge\xEFnitieerd worden. Indien van\
+            \ beide sprake kan zijn, dan prevaleert de externe initiatie."
+          type: string
+          enum:
+          - Intern
+          - Extern
         doorlooptijd:
           title: Doorlooptijd
           description: De periode waarbinnen volgens wet- en regelgeving een ZAAK

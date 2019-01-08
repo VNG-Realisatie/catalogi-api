@@ -1,7 +1,9 @@
 from datetime import date, timedelta
 
 import factory
+import factory.fuzzy
 
+from ztc.datamodel.choices import InternExtern
 from ztc.datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
     ZaakObjectType, ZaakType
@@ -70,7 +72,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     zaaktype_identificatie = factory.Sequence(lambda n: n)
     doel = factory.Faker('paragraph')
     aanleiding = factory.Faker('paragraph')
-
+    indicatie_intern_of_extern = factory.fuzzy.FuzzyChoice(choices=InternExtern.values)
     doorlooptijd_behandeling = timedelta(days=30)
     verlengingstermijn = 30
     trefwoord = []  # ArrayField has blank=True but not null=True

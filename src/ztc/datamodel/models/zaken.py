@@ -10,9 +10,7 @@ from zds_schema.fields import (
     DaysDurationField, VertrouwelijkheidsAanduidingField
 )
 
-from ..choices import (
-    InternExtern, JaNee, ObjectTypen, VertrouwelijkheidAanduiding
-)
+from ..choices import InternExtern, JaNee, ObjectTypen
 from .mixins import GeldigheidMixin
 
 
@@ -308,7 +306,8 @@ class ZaakType(GeldigheidMixin, models.Model):
     indicatie_intern_of_extern = models.CharField(
         _('indicatie intern of extern'), max_length=6, choices=InternExtern.choices,
         help_text=_('Een aanduiding waarmee onderscheid wordt gemaakt tussen '
-                    'ZAAKTYPEn die Intern respectievelijk Extern geïnitieerd worden.')
+                    'ZAAKTYPEn die Intern respectievelijk Extern geïnitieerd worden. '
+                    'Indien van beide sprake kan zijn, dan prevaleert de externe initiatie.')
     )
     handeling_initiator = models.CharField(
         _('handeling initiator'), max_length=20,
