@@ -2301,6 +2301,11 @@ components:
             van een ZAAK van dit ZAAKTYPE.
           type: string
           minLength: 1
+        toelichting:
+          title: Toelichting
+          description: Een eventuele toelichting op dit zaaktype, zoals een beschrijving
+            van het procesverloop op de hoofdlijnen.
+          type: string
         doorlooptijd:
           title: Doorlooptijd
           description: De periode waarbinnen volgens wet- en regelgeving een ZAAK

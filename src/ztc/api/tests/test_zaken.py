@@ -54,7 +54,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'publicatieIndicatie': '',
             # 'trefwoord': [],
             # 'zaakcategorie': None,
-            # 'toelichting': None,
+            'toelichting': '',
             # 'handelingInitiator': '',
             # 'bronzaaktype': None,
             'aanleiding': self.zaaktype.aanleiding,

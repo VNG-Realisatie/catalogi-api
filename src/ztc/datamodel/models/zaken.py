@@ -6,7 +6,9 @@ from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from zds_schema.fields import DaysDurationField, VertrouwelijkheidsAanduidingField
+from zds_schema.fields import (
+    DaysDurationField, VertrouwelijkheidsAanduidingField
+)
 
 from ..choices import (
     InternExtern, JaNee, ObjectTypen, VertrouwelijkheidAanduiding
@@ -298,8 +300,11 @@ class ZaakType(GeldigheidMixin, models.Model):
         "Een omschrijving van de gebeurtenis die leidt tot het "
         "starten van een ZAAK van dit ZAAKTYPE."
     ))
-    toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
-        'Een eventuele toelichting op dit zaaktype.'))
+    toelichting = models.TextField(
+        _('toelichting'), blank=True,
+        help_text=_('Een eventuele toelichting op dit zaaktype, zoals een beschrijving '
+                    'van het procesverloop op de hoofdlijnen.')
+    )
     indicatie_intern_of_extern = models.CharField(
         _('indicatie intern of extern'), max_length=6, choices=InternExtern.choices,
         help_text=_('Een aanduiding waarmee onderscheid wordt gemaakt tussen '
