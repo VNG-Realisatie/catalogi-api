@@ -63,7 +63,7 @@ class ZaakTypeAPITests(APITestCase):
             'catalogus': f'http://testserver{self.catalogus_detail_url}',
             'indicatieInternOfExtern': self.zaaktype.indicatie_intern_of_extern,
             # 'verlengingmogelijk': '',
-            # 'handelingBehandelaar': '',
+            'handelingBehandelaar': self.zaaktype.handeling_behandelaar,
             'doel': self.zaaktype.doel,
             # 'versiedatum': '2018-01-01',
             # 'formulier': [],

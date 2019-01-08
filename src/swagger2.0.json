@@ -2684,6 +2684,7 @@
                 "indicatieInternOfExtern",
                 "handelingInitiator",
                 "onderwerp",
+                "handelingBehandelaar",
                 "doorlooptijd",
                 "catalogus"
             ],
@@ -2768,6 +2769,13 @@
                     "description": "Het onderwerp van ZAAKen van dit ZAAKTYPE. In veel gevallen nauw gerelateerd aan de product- of dienstnaam uit de Producten- en Dienstencatalogus (PDC). Bijvoorbeeld: 'Evenementenvergunning', 'Geboorte', 'Klacht'. Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.onderwerp",
                     "type": "string",
                     "maxLength": 80,
+                    "minLength": 1
+                },
+                "handelingBehandelaar": {
+                    "title": "Handeling behandelaar",
+                    "description": "Werkwoord dat hoort bij de handeling die de behandelaar verricht bij het afdoen van ZAAKen van dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren', 'vaststellen' of 'onderhouden'. Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_behandelaar",
+                    "type": "string",
+                    "maxLength": 20,
                     "minLength": 1
                 },
                 "doorlooptijd": {

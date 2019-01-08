@@ -325,7 +325,9 @@ class ZaakType(GeldigheidMixin, models.Model):
     handeling_behandelaar = models.CharField(
         _('handeling behandelaar'), max_length=20,
         help_text=_("Werkwoord dat hoort bij de handeling die de behandelaar verricht bij het afdoen van ZAAKen van "
-                    "dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren', 'vaststellen' of 'onderhouden'.")
+                    "dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren', 'vaststellen' of 'onderhouden'. "
+                    "Zie ook het IOB model op "
+                    "https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_behandelaar")
     )
     doorlooptijd_behandeling = DaysDurationField(
         _('doorlooptijd behandeling'),

@@ -75,6 +75,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     indicatie_intern_of_extern = factory.fuzzy.FuzzyChoice(choices=InternExtern.values)
     handeling_initiator = factory.fuzzy.FuzzyChoice(['aanvragen', 'indienen', 'melden'])
     onderwerp = factory.fuzzy.FuzzyChoice(['Evenementvergunning', 'Geboorte', 'Klacht'])
+    handeling_behandelaar = factory.fuzzy.FuzzyChoice(['behandelen', 'uitvoeren', 'vaststellen', 'onderhouden'])
     doorlooptijd_behandeling = timedelta(days=30)
     verlengingstermijn = 30
     trefwoord = []  # ArrayField has blank=True but not null=True
