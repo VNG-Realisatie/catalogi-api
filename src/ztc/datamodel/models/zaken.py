@@ -312,7 +312,8 @@ class ZaakType(GeldigheidMixin, models.Model):
     handeling_initiator = models.CharField(
         _('handeling initiator'), max_length=20,
         help_text=_("Werkwoord dat hoort bij de handeling die de initiator verricht bij dit zaaktype. "
-                    "Meestal 'aanvragen', 'indienen' of 'melden'.")
+                    "Meestal 'aanvragen', 'indienen' of 'melden'. Zie ook het IOB model op "
+                    "https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_initiator")
     )
     onderwerp = models.CharField(
         _('onderwerp'), max_length=80,

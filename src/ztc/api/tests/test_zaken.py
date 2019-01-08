@@ -55,7 +55,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'trefwoord': [],
             # 'zaakcategorie': None,
             'toelichting': '',
-            # 'handelingInitiator': '',
+            'handelingInitiator': self.zaaktype.handeling_initiator,
             # 'bronzaaktype': None,
             'aanleiding': self.zaaktype.aanleiding,
             # 'verlengingstermijn': 30,
