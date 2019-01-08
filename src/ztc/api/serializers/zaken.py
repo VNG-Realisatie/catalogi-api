@@ -216,7 +216,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'omschrijving_generiek',
             'vertrouwelijkheidaanduiding',
             # 'zaakcategorie',
-            # 'doel',
+            'doel',
             # 'aanleiding',
             # 'toelichting',
             # 'indicatieInternOfExtern',

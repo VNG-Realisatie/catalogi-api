@@ -64,7 +64,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'indicatieInternOfExtern': '',
             # 'verlengingmogelijk': '',
             # 'handelingBehandelaar': '',
-            # 'doel': '',
+            'doel': '',
             # 'versiedatum': '2018-01-01',
             # 'formulier': [],
             # 'onderwerp': '',

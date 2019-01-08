@@ -2244,6 +2244,7 @@ components:
       - identificatie
       - omschrijving
       - vertrouwelijkheidaanduiding
+      - doel
       - doorlooptijd
       - catalogus
       type: object
@@ -2287,6 +2288,12 @@ components:
           - confidentieel
           - geheim
           - zeer geheim
+        doel:
+          title: Doel
+          description: Een omschrijving van hetgeen beoogd is te bereiken met een
+            zaak van dit zaaktype.
+          type: string
+          minLength: 1
         doorlooptijd:
           title: Doorlooptijd
           description: De periode waarbinnen volgens wet- en regelgeving een ZAAK
