@@ -285,6 +285,7 @@ class ZaakType(GeldigheidMixin, models.Model):
 
     # TODO [KING]: waardenverzameling zie Zaaktypecatalogus, is dat de
     # catalogus die bij dit zaaktype hoort? Wat is de categorie dan?
+    # see also: https://github.com/VNG-Realisatie/gemma-zaken/issues/695
     zaakcategorie = models.CharField(
         _("zaakcategorie"), max_length=40, blank=True,
         help_text=_("Typering van de aard van ZAAKen van het ZAAKTYPE.")
