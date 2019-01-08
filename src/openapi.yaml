@@ -2248,6 +2248,7 @@ components:
       - aanleiding
       - indicatieInternOfExtern
       - handelingInitiator
+      - onderwerp
       - doorlooptijd
       - catalogus
       type: object
@@ -2324,6 +2325,15 @@ components:
             het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_initiator
           type: string
           maxLength: 20
+          minLength: 1
+        onderwerp:
+          title: Onderwerp
+          description: 'Het onderwerp van ZAAKen van dit ZAAKTYPE. In veel gevallen
+            nauw gerelateerd aan de product- of dienstnaam uit de Producten- en Dienstencatalogus
+            (PDC). Bijvoorbeeld: ''Evenementenvergunning'', ''Geboorte'', ''Klacht''.
+            Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.onderwerp'
+          type: string
+          maxLength: 80
           minLength: 1
         doorlooptijd:
           title: Doorlooptijd

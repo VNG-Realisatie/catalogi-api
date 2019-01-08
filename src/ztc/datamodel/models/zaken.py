@@ -319,7 +319,8 @@ class ZaakType(GeldigheidMixin, models.Model):
         _('onderwerp'), max_length=80,
         help_text=_("Het onderwerp van ZAAKen van dit ZAAKTYPE. In veel gevallen nauw gerelateerd aan de product- of "
                     "dienstnaam uit de Producten- en Dienstencatalogus (PDC). Bijvoorbeeld: 'Evenementenvergunning', "
-                    "'Geboorte', 'Klacht'.")
+                    "'Geboorte', 'Klacht'. Zie ook het IOB model op "
+                    "https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.onderwerp")
     )
     handeling_behandelaar = models.CharField(
         _('handeling behandelaar'), max_length=20,

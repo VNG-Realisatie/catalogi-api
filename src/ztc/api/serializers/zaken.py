@@ -221,7 +221,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'toelichting',
             'indicatie_intern_of_extern',
             'handeling_initiator',
-            # 'onderwerp',
+            'onderwerp',
             # 'handelingBehandelaar',
             'doorlooptijd',
             'servicenorm',
