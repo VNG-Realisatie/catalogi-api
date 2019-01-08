@@ -2680,6 +2680,7 @@
                 "omschrijving",
                 "vertrouwelijkheidaanduiding",
                 "doel",
+                "aanleiding",
                 "doorlooptijd",
                 "catalogus"
             ],
@@ -2729,6 +2730,12 @@
                 "doel": {
                     "title": "Doel",
                     "description": "Een omschrijving van hetgeen beoogd is te bereiken met een zaak van dit zaaktype.",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "aanleiding": {
+                    "title": "Aanleiding",
+                    "description": "Een omschrijving van de gebeurtenis die leidt tot het starten van een ZAAK van dit ZAAKTYPE.",
                     "type": "string",
                     "minLength": 1
                 },

@@ -294,8 +294,10 @@ class ZaakType(GeldigheidMixin, models.Model):
     doel = models.TextField(_('doel'), help_text=_(
         'Een omschrijving van hetgeen beoogd is te bereiken met een zaak van dit zaaktype.')
     )
-    aanleiding = models.CharField(_('aanleiding'), max_length=1000, help_text=_(
-        'Een omschrijving van de gebeurtenis die leidt tot het starten van een ZAAK van dit ZAAKTYPE.'))
+    aanleiding = models.TextField(_('aanleiding'), help_text=_(
+        "Een omschrijving van de gebeurtenis die leidt tot het "
+        "starten van een ZAAK van dit ZAAKTYPE."
+    ))
     toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
         'Een eventuele toelichting op dit zaaktype.'))
     indicatie_intern_of_extern = models.CharField(

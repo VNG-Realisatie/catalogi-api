@@ -61,6 +61,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE | string | nee | C​R​U​D |
 | vertrouwelijkheidaanduiding | Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet. | string | ja | C​R​U​D |
 | doel | Een omschrijving van hetgeen beoogd is te bereiken met een zaak van dit zaaktype. | string | ja | C​R​U​D |
+| aanleiding | Een omschrijving van de gebeurtenis die leidt tot het starten van een ZAAK van dit ZAAKTYPE. | string | ja | C​R​U​D |
 | doorlooptijd | De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen. Specifieer de duur als &#39;DD 00:00&#39; | string | ja | C​R​U​D |
 | servicenorm | De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s). Specifieer de duur als &#39;DD 00:00&#39; | string | nee | C​R​U​D |
 | catalogus | De CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |

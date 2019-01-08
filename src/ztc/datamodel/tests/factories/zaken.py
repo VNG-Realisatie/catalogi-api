@@ -68,6 +68,9 @@ class BronZaakTypeFactory(factory.django.DjangoModelFactory):
 
 class ZaakTypeFactory(factory.django.DjangoModelFactory):
     zaaktype_identificatie = factory.Sequence(lambda n: n)
+    doel = factory.Faker('paragraph')
+    aanleiding = factory.Faker('paragraph')
+
     doorlooptijd_behandeling = timedelta(days=30)
     verlengingstermijn = 30
     trefwoord = []  # ArrayField has blank=True but not null=True
