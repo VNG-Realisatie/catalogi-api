@@ -388,9 +388,9 @@ class ZaakType(GeldigheidMixin, models.Model):
     )
     verantwoordingsrelatie = ArrayField(
         models.CharField(_('verantwoordingsrelatie'), max_length=40),
-        blank=True, help_text=_(
-            'De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording. '
-            '(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
+        blank=True, default=list,
+        help_text=_('De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording.')
+    )
     versiedatum = models.DateField(_('versiedatum'), help_text=_(
         'De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden'))
 

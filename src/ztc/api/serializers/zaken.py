@@ -234,12 +234,12 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # 'verantwoordelijke',
             'publicatie_indicatie',
             'publicatietekst',
+            'verantwoordingsrelatie',
 
             # # groepsattribuutsoorten
             # 'product_dienst',
             # 'formulier',
             # 'referentieproces',
-            # 'verantwoordingsrelatie',
             # 'broncatalogus',
             # 'bronzaaktype',
 

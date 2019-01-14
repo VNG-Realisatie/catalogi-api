@@ -71,7 +71,7 @@ class ZaakTypeAPITests(APITestCase):
             'publicatietekst': '',
             'omschrijvingGeneriek': '',
             'vertrouwelijkheidaanduiding': '',
-            # 'verantwoordingsrelatie': [],
+            'verantwoordingsrelatie': [],
             # 'isDeelzaaktypeVan': [],
             'servicenorm': None,
             # 'archiefclassificatiecode': None,

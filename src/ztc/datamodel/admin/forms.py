@@ -40,3 +40,4 @@ class ZaakTypeForm(forms.ModelForm):
         self.fields['publicatie_indicatie'].required = True
 
         self.fields['trefwoorden'].help_text += ' Gebruik een komma om waarden van elkaar te onderscheiden.'
+        self.fields['verantwoordingsrelatie'].help_text += ' Gebruik een komma om waarden van elkaar te onderscheiden.'

@@ -2390,6 +2390,15 @@ components:
           title: Publicatietekst
           description: De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.
           type: string
+        verantwoordingsrelatie:
+          description: "De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige\
+            \ en/of financi\xEBle verantwoording."
+          type: array
+          items:
+            title: Verantwoordingsrelatie
+            type: string
+            maxLength: 40
+            minLength: 1
         catalogus:
           title: Maakt deel uit van
           description: De CATALOGUS waartoe dit ZAAKTYPE behoort.
