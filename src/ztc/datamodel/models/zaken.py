@@ -355,10 +355,11 @@ class ZaakType(GeldigheidMixin, models.Model):
                     'ZAAKen van dit ZAAKTYPE kan worden verlengd.')
     )
 
-    trefwoord = ArrayField(
+    trefwoorden = ArrayField(
         models.CharField(_('trefwoord'), max_length=30),
-        blank=True, help_text=_('Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden '
-                                'gekarakteriseerd.(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
+        blank=True, default=list,
+        help_text=_('Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.')
+    )
     # TODO [KING]: ?? waardenverzameling: De classificatiecode in het gehanteerde
     # archiveringsclassificatiestelsel, gevolgd door een spatie en –
     # tussen haakjes - de gebruikelijke afkorting van de naam van het gehanteerde classificatiestelsel.

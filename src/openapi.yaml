@@ -2372,6 +2372,15 @@ components:
             ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als 'DD
             00:00'
           type: string
+        trefwoorden:
+          description: Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden
+            gekarakteriseerd.
+          type: array
+          items:
+            title: Trefwoord
+            type: string
+            maxLength: 30
+            minLength: 1
         publicatieIndicatie:
           title: Publicatie indicatie
           description: Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd

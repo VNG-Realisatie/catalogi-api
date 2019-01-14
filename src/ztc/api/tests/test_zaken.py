@@ -52,7 +52,7 @@ class ZaakTypeAPITests(APITestCase):
             # }],
             # 'broncatalogus': None,
             'publicatieIndicatie': self.zaaktype.publicatie_indicatie,
-            # 'trefwoord': [],
+            'trefwoorden': [],
             # 'zaakcategorie': None,
             'toelichting': '',
             'handelingInitiator': self.zaaktype.handeling_initiator,

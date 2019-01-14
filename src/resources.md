@@ -72,6 +72,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | opschortingEnAanhoudingMogelijk | Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE kunnen worden opgeschort en/of aangehouden. | boolean | nee | C​R​U​D |
 | verlengingMogelijk | Aanduiding die aangeeft of de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. | boolean | nee | C​R​U​D |
 | verlengingstermijn | De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als &#39;DD 00:00&#39; | string | nee | C​R​U​D |
+| trefwoorden | Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd. | array | nee | C​R​U​D |
 | publicatieIndicatie | Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden. | boolean | nee | C​R​U​D |
 | catalogus | De CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
 | statustypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |

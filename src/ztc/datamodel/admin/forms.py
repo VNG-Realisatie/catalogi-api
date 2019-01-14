@@ -38,3 +38,5 @@ class ZaakTypeForm(forms.ModelForm):
         self.fields['opschorting_en_aanhouding_mogelijk'].required = True
         self.fields['verlenging_mogelijk'].required = True
         self.fields['publicatie_indicatie'].required = True
+
+        self.fields['trefwoorden'].help_text += ' Gebruik een komma om waarden van elkaar te onderscheiden.'
