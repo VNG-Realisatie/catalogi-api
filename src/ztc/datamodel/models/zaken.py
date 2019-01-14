@@ -339,11 +339,16 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_('De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform '
                     'de geldende servicenormen van de zaakbehandelende organisatie(s).')
     )
-    opschorting_aanhouding_mogelijk = models.CharField(
-        _('opschorting/aanhouding mogelijk'), max_length=1, choices=JaNee.choices, help_text=_(
-            'Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE kunnen worden opgeschort en/of aangehouden.'))
-    verlenging_mogelijk = models.CharField(_('verlenging mogelijk'), max_length=1, choices=JaNee.choices, help_text=_(
-        'Aanduiding die aangeeft of de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.'))
+    opschorting_en_aanhouding_mogelijk = models.BooleanField(
+        _('opschorting/aanhouding mogelijk'),
+        help_text=_('Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE '
+                    'kunnen worden opgeschort en/of aangehouden.')
+    )
+    verlenging_mogelijk = models.BooleanField(
+        _('verlenging mogelijk'),
+        help_text=_('Aanduiding die aangeeft of de Doorlooptijd behandeling van '
+                    'ZAAKen van dit ZAAKTYPE kan worden verlengd.')
+    )
     # TODO [KING]: verlengingstermijn heeft kardinaliteit 1-1 en regel: mag alleen een waarde
     # bevatten als verlenging mogelijk de waarde 'J' heeft
     verlengingstermijn = models.PositiveSmallIntegerField(
@@ -371,9 +376,9 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_('De (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor '
                     'de uitvoering van zaken van het ZAAKTYPE.')
     )
-    publicatie_indicatie = models.CharField(
-        _('publicatie indicatie'), max_length=1, choices=JaNee.choices,
-        help_text=_('Aanduiding of (het starten van) een ZAAK van AN1 dit ZAAKTYPE gepubliceerd moet worden.')
+    publicatie_indicatie = models.BooleanField(
+        _('publicatie indicatie'),
+        help_text=_('Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden.')
     )
     publicatietekst = models.CharField(_('publicatietekst'), max_length=1000, blank=True, null=True, help_text=_(
         'De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.'))
@@ -440,7 +445,7 @@ class ZaakType(GeldigheidMixin, models.Model):
             'catalogus',
             'publicatie_indicatie',
             'verlenging_mogelijk',
-            'opschorting_aanhouding_mogelijk',
+            'opschorting_en_aanhouding_mogelijk',
             'indicatie_intern_of_extern',
             'vertrouwelijkheidaanduiding',
 

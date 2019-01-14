@@ -9,6 +9,7 @@ from ..models import (
     ZaakType, ZaakTypenRelatie
 )
 from .eigenschap import EigenschapAdmin
+from .forms import ZaakTypeForm
 from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 from .resultaattype import ResultaatTypeAdmin
 from .roltype import RolTypeAdmin
@@ -81,6 +82,7 @@ class ZaakTypenRelatieInline(admin.TabularInline):
 class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                     GeldigheidAdminMixin, admin.ModelAdmin):
     model = ZaakType
+    form = ZaakTypeForm
 
     # List
     list_display = ('zaaktype_identificatie', 'zaaktype_omschrijving', 'zaakcategorie', 'catalogus')
@@ -102,7 +104,7 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                 'handeling_behandelaar',
                 'doorlooptijd_behandeling',
                 'servicenorm_behandeling',
-                'opschorting_aanhouding_mogelijk',
+                'opschorting_en_aanhouding_mogelijk',
                 'verlenging_mogelijk',
                 'verlengingstermijn',
                 'trefwoord',

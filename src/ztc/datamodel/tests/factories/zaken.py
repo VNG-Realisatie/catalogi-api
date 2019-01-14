@@ -78,6 +78,9 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     handeling_behandelaar = factory.fuzzy.FuzzyChoice(['behandelen', 'uitvoeren', 'vaststellen', 'onderhouden'])
     doorlooptijd_behandeling = timedelta(days=30)
     verlengingstermijn = 30
+    opschorting_en_aanhouding_mogelijk = factory.Faker('pybool')
+    verlenging_mogelijk = factory.Faker('pybool')
+    publicatie_indicatie = factory.Faker('pybool')
     trefwoord = []  # ArrayField has blank=True but not null=True
     verantwoordingsrelatie = []  # ArrayField has blank=True but not null=True
     catalogus = factory.SubFactory(CatalogusFactory)

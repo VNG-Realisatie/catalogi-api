@@ -117,19 +117,19 @@ class HaaglandenMixin(object):
             # Publicatie (van indiening)
             #
             vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.openbaar,
-            publicatie_indicatie=JaNee.ja,  # Bij Wabo-aanvraag (reguliere procedure): ja
+            publicatie_indicatie=True,  # Bij Wabo-aanvraag (reguliere procedure): ja
             publicatietekst='N.t.b.',
 
             #
             # Opschorting / aanhouding
             #
-            opschorting_aanhouding_mogelijk=JaNee.ja,
+            opschorting_en_aanhouding_mogelijk=True,
             # toelichting: TODO: is in Haaglanden doc, not in the datamodel
 
             #
             # Verlenging
             #
-            verlenging_mogelijk=JaNee.ja,
+            verlenging_mogelijk=True,
             # toelichting: TODO: is in Haaglanden doc, not in the datamodel
 
             catalogus=self.catalogus,
