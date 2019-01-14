@@ -2356,6 +2356,21 @@ components:
             afgerond wordt conform de geldende servicenormen van de zaakbehandelende
             organisatie(s). Specifieer de duur als 'DD 00:00'
           type: string
+        opschortingEnAanhoudingMogelijk:
+          title: Opschorting/aanhouding mogelijk
+          description: Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE
+            kunnen worden opgeschort en/of aangehouden.
+          type: boolean
+        verlengingMogelijk:
+          title: Verlenging mogelijk
+          description: Aanduiding die aangeeft of de Doorlooptijd behandeling van
+            ZAAKen van dit ZAAKTYPE kan worden verlengd.
+          type: boolean
+        publicatieIndicatie:
+          title: Publicatie indicatie
+          description: Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd
+            moet worden.
+          type: boolean
         catalogus:
           title: Maakt deel uit van
           description: De CATALOGUS waartoe dit ZAAKTYPE behoort.

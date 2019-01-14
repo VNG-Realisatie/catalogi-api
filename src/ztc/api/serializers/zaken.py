@@ -225,14 +225,14 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'handeling_behandelaar',
             'doorlooptijd',
             'servicenorm',
-            # 'opschortingAanhouding',
-            # 'verlengingmogelijk',
+            'opschorting_en_aanhouding_mogelijk',
+            'verlenging_mogelijk',
             # 'verlengingstermijn',
             # 'trefwoord',
             # 'archiefclassificatiecode',
             # 'vertrouwelijkheidAanduiding',
             # 'verantwoordelijke',
-            # 'publicatieIndicatie',
+            'publicatie_indicatie',
             # 'publicatietekst',
 
             # # groepsattribuutsoorten
