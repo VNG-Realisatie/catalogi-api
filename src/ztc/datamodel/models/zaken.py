@@ -382,8 +382,10 @@ class ZaakType(GeldigheidMixin, models.Model):
         _('publicatie indicatie'),
         help_text=_('Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden.')
     )
-    publicatietekst = models.CharField(_('publicatietekst'), max_length=1000, blank=True, null=True, help_text=_(
-        'De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.'))
+    publicatietekst = models.TextField(
+        _('publicatietekst'), blank=True,
+        help_text=_('De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.')
+    )
     verantwoordingsrelatie = ArrayField(
         models.CharField(_('verantwoordingsrelatie'), max_length=40),
         blank=True, help_text=_(

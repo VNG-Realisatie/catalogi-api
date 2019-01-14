@@ -112,7 +112,6 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                 'vertrouwelijkheidaanduiding',
                 'verantwoordelijke',
 
-
                 'product_dienst',  # m2m
                 'formulier',  # m2m
 

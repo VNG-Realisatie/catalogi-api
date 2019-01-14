@@ -2818,6 +2818,11 @@
                     "description": "Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden.",
                     "type": "boolean"
                 },
+                "publicatietekst": {
+                    "title": "Publicatietekst",
+                    "description": "De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.",
+                    "type": "string"
+                },
                 "catalogus": {
                     "title": "Maakt deel uit van",
                     "description": "De CATALOGUS waartoe dit ZAAKTYPE behoort.",

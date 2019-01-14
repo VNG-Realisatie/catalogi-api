@@ -68,7 +68,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'versiedatum': '2018-01-01',
             # 'formulier': [],
             'onderwerp': self.zaaktype.onderwerp,
-            # 'publicatietekst': None,
+            'publicatietekst': '',
             'omschrijvingGeneriek': '',
             'vertrouwelijkheidaanduiding': '',
             # 'verantwoordingsrelatie': [],

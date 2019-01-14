@@ -233,7 +233,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # 'vertrouwelijkheidAanduiding',
             # 'verantwoordelijke',
             'publicatie_indicatie',
-            # 'publicatietekst',
+            'publicatietekst',
 
             # # groepsattribuutsoorten
             # 'product_dienst',
