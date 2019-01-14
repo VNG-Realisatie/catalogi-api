@@ -58,7 +58,7 @@ class ZaakTypeAPITests(APITestCase):
             'handelingInitiator': self.zaaktype.handeling_initiator,
             # 'bronzaaktype': None,
             'aanleiding': self.zaaktype.aanleiding,
-            # 'verlengingstermijn': 30,
+            'verlengingstermijn': None if not self.zaaktype.verlenging_mogelijk else 'P30D',
             'opschortingEnAanhoudingMogelijk': self.zaaktype.opschorting_en_aanhouding_mogelijk,
             'catalogus': f'http://testserver{self.catalogus_detail_url}',
             'indicatieInternOfExtern': self.zaaktype.indicatie_intern_of_extern,

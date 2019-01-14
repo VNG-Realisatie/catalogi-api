@@ -227,7 +227,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'servicenorm',
             'opschorting_en_aanhouding_mogelijk',
             'verlenging_mogelijk',
-            # 'verlengingstermijn',
+            'verlengingstermijn',
             # 'trefwoord',
             # 'archiefclassificatiecode',
             # 'vertrouwelijkheidAanduiding',

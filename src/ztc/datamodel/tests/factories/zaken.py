@@ -77,7 +77,6 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     onderwerp = factory.fuzzy.FuzzyChoice(['Evenementvergunning', 'Geboorte', 'Klacht'])
     handeling_behandelaar = factory.fuzzy.FuzzyChoice(['behandelen', 'uitvoeren', 'vaststellen', 'onderhouden'])
     doorlooptijd_behandeling = timedelta(days=30)
-    verlengingstermijn = 30
     opschorting_en_aanhouding_mogelijk = factory.Faker('pybool')
     verlenging_mogelijk = factory.Faker('pybool')
     publicatie_indicatie = factory.Faker('pybool')
@@ -94,6 +93,12 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = ZaakType
+
+    @factory.lazy_attribute
+    def verlengingstermijn(obj):
+        if not obj.verlenging_mogelijk:
+            return None
+        return timedelta(days=30)
 
     @factory.post_generation
     def is_deelzaaktype_van(self, create, extracted, **kwargs):

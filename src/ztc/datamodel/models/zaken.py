@@ -349,11 +349,12 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_('Aanduiding die aangeeft of de Doorlooptijd behandeling van '
                     'ZAAKen van dit ZAAKTYPE kan worden verlengd.')
     )
-    # TODO [KING]: verlengingstermijn heeft kardinaliteit 1-1 en regel: mag alleen een waarde
-    # bevatten als verlenging mogelijk de waarde 'J' heeft
-    verlengingstermijn = models.PositiveSmallIntegerField(
-        _('verlengingstermijn'), validators=[MaxValueValidator(999)], help_text=_(
-            'De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.'))
+    verlengingstermijn = DaysDurationField(
+        _('verlengingstermijn'), blank=True, null=True,
+        help_text=_('De termijn in dagen waarmee de Doorlooptijd behandeling van '
+                    'ZAAKen van dit ZAAKTYPE kan worden verlengd.')
+    )
+
     trefwoord = ArrayField(
         models.CharField(_('trefwoord'), max_length=30),
         blank=True, help_text=_('Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden '
@@ -464,6 +465,14 @@ class ZaakType(GeldigheidMixin, models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.catalogus, self.zaaktype_identificatie)
+
+    def save(self, *args, **kwargs):
+        if not self.verlenging_mogelijk:
+            self.verlengingstermijn = None
+        elif not self.verlengingstermijn:
+            raise ValueError("'verlengingstermijn' must be set if 'verlenging_mogelijk' is set.")
+
+        super().save(*args, **kwargs)
 
     def clean(self):
         super().clean()

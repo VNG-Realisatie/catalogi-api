@@ -2798,6 +2798,11 @@
                     "description": "Aanduiding die aangeeft of de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.",
                     "type": "boolean"
                 },
+                "verlengingstermijn": {
+                    "title": "Verlengingstermijn",
+                    "description": "De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als 'DD 00:00'",
+                    "type": "string"
+                },
                 "publicatieIndicatie": {
                     "title": "Publicatie indicatie",
                     "description": "Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden.",
