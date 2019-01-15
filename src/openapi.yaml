@@ -2505,6 +2505,7 @@ components:
         besluittypen:
           type: array
           items:
+            title: heeft relevante besluittypen
             type: string
             format: uri
           readOnly: true

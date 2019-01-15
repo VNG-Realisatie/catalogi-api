@@ -121,15 +121,6 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'zaaktype_pk': 'is_relevant_voor__pk',
     #     }
     # )
-    # heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_relevant_besluittype',
-    #     view_name='api:besluittype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'catalogus__pk'
-    #     }
-    # )
     gerelateerde_zaaktypen = ZaakTypenRelatieSerializer(
         many=True, source='zaaktypenrelaties',
         help_text="De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE."
@@ -200,6 +191,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     besluittypen = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
+        label=_("heeft relevante besluittypen"),
         source='besluittype_set',
         view_name='besluittype-detail',
         lookup_field='uuid',
@@ -256,7 +248,6 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'roltypen',
             'besluittypen',
             'gerelateerde_zaaktypen',
-            # # 'heeftRelevantBesluittype',
             # # 'heeftRelevantZaakObjecttype',
             # # 'heeftRelevantResultaattype',
             # # 'isDeelzaaktypeVan',
