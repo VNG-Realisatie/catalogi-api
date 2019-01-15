@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from zds_schema.descriptors import GegevensGroepType
 from zds_schema.fields import (
     DaysDurationField, VertrouwelijkheidsAanduidingField
 )
@@ -150,27 +151,6 @@ class Formulier(models.Model):
     class Meta:
         verbose_name = _('Formulier')
         verbose_name_plural = _('Formulieren')
-
-
-class ReferentieProces(models.Model):
-    """
-    Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.
-
-    De groepattribuutsoort verandert alleen van waarde
-    (materiële historie) cq. één of meer van de subattributen
-    veranderen van waarde op een datum die gelijk is aan een
-    Versiedatum van het zaaktype.
-    """
-    naam = models.CharField(_('naam'), max_length=80, help_text=_('De naam van het Referentieproces.'))
-    link = models.URLField(_('link'), blank=True, null=True, help_text=_(
-        'De URL naar de beschrijving van het Referentieproces'))
-
-    def __str__(self):
-        return self.naam
-
-    class Meta:
-        verbose_name = _('Referentieprocess')
-        verbose_name_plural = _('Referentieprocessen')
 
 
 class BronCatalogus(models.Model):
@@ -403,11 +383,20 @@ class ZaakType(GeldigheidMixin, models.Model):
         'datamodel.Formulier', verbose_name=_('formulier'), blank=True,
         help_text=_('Formulier Het formulier dat ZAAKen van dit ZAAKTYPE initieert.')
     )
-    referentieproces = models.ForeignKey(
-        'datamodel.ReferentieProces', verbose_name=_('referentieproces'),
-        help_text=_('Verwijzing naar een gelijknamig groepattribuutsoort.'),
-        on_delete=models.CASCADE
+
+    referentieproces_naam = models.CharField(
+        _('referentieprocesnaam'), max_length=80,
+        help_text=_('De naam van het Referentieproces.')
     )
+    referentieproces_link = models.URLField(
+        _('referentieproceslink'), blank=True,
+        help_text=_('De URL naar de beschrijving van het Referentieproces')
+    )
+    referentieproces = GegevensGroepType({
+        'naam': referentieproces_naam,
+        'link': referentieproces_link,
+    })
+
     broncatalogus = models.ForeignKey(
         'datamodel.BronCatalogus', verbose_name=_('broncatalogus'),
         blank=True, null=True, on_delete=models.CASCADE,

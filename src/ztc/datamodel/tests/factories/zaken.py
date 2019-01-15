@@ -5,8 +5,8 @@ import factory.fuzzy
 
 from ztc.datamodel.choices import InternExtern
 from ztc.datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
-    ZaakObjectType, ZaakType
+    BronCatalogus, BronZaakType, Formulier, ProductDienst, ZaakObjectType,
+    ZaakType
 )
 
 from .catalogus import CatalogusFactory
@@ -46,13 +46,6 @@ class FormulierFactory(factory.django.DjangoModelFactory):
         model = Formulier
 
 
-class ReferentieProcesFactory(factory.django.DjangoModelFactory):
-    naam = factory.Sequence(lambda n: 'ReferentieProces {}'.format(n))
-
-    class Meta:
-        model = ReferentieProces
-
-
 class BronCatalogusFactory(factory.django.DjangoModelFactory):
     domein = factory.Sequence(lambda n: chr((n % 26) + 65) * 5)  # AAAAA, BBBBB, etc. Repeat after ZZZZZ
     rsin = factory.Sequence(lambda n: '{}'.format(n + 100000000))  # charfield, that is 9 digit number
@@ -81,7 +74,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     verlenging_mogelijk = factory.Faker('pybool')
     publicatie_indicatie = factory.Faker('pybool')
     catalogus = factory.SubFactory(CatalogusFactory)
-    referentieproces = factory.SubFactory(ReferentieProcesFactory)
+    referentieproces_naam = factory.Sequence(lambda n: 'ReferentieProces {}'.format(n))
 
     datum_begin_geldigheid = date(2018, 1, 1)
     versiedatum = date(2018, 1, 1)

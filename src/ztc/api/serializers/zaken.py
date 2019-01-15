@@ -3,8 +3,8 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
-    ZaakObjectType, ZaakType
+    BronCatalogus, BronZaakType, Formulier, ProductDienst, ZaakObjectType,
+    ZaakType
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 
@@ -59,13 +59,6 @@ class ProductDienstSerializer(ModelSerializer):
 class FormulierSerializer(ModelSerializer):
     class Meta:
         model = Formulier
-        ref_name = None  # Inline
-        fields = ('naam', 'link')
-
-
-class ReferentieProcesSerializer(ModelSerializer):
-    class Meta:
-        model = ReferentieProces
         ref_name = None  # Inline
         fields = ('naam', 'link')
 

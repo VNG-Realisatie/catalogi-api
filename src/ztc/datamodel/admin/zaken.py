@@ -5,8 +5,8 @@ from ztc.utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 
 from ..models import (
     BronCatalogus, BronZaakType, Eigenschap, Formulier, ProductDienst,
-    ReferentieProces, ResultaatType, RolType, StatusType, ZaakObjectType,
-    ZaakType, ZaakTypenRelatie
+    ResultaatType, RolType, StatusType, ZaakObjectType, ZaakType,
+    ZaakTypenRelatie
 )
 from .eigenschap import EigenschapAdmin
 from .forms import ZaakTypeForm
@@ -117,16 +117,21 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
 
                 'verantwoordingsrelatie',
                 'versiedatum',  # ??
-                'referentieproces',
                 'broncatalogus',  #
                 'bronzaaktype',  # dit is het model
             )
+        }),
+        (_('Referentieproces'), {
+            'fields': (
+                'referentieproces_naam',
+                'referentieproces_link'
+            ),
         }),
         (_('Publicatie'), {
             'fields': (
                 'publicatie_indicatie',
                 'publicatietekst',
-            )
+            ),
         }),
         (_('Relaties'), {
             'fields': (
@@ -184,12 +189,6 @@ class ProductDienstAdmin(admin.ModelAdmin):
 
 @admin.register(Formulier)
 class FormulierAdmin(admin.ModelAdmin):
-    list_display = ['naam']
-    fields = ('naam', 'link')
-
-
-@admin.register(ReferentieProces)
-class ReferentieProcesAdmin(admin.ModelAdmin):
     list_display = ['naam']
     fields = ('naam', 'link')
 
