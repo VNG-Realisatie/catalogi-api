@@ -35,9 +35,9 @@ class ZaakTypeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['opschorting_en_aanhouding_mogelijk'].required = True
-        self.fields['verlenging_mogelijk'].required = True
-        self.fields['publicatie_indicatie'].required = True
+        self.fields['opschorting_en_aanhouding_mogelijk'].widget.required = True
+        self.fields['verlenging_mogelijk'].widget.required = True
+        self.fields['publicatie_indicatie'].widget.required = True
 
         self.fields['trefwoorden'].help_text += ' Gebruik een komma om waarden van elkaar te onderscheiden.'
         self.fields['verantwoordingsrelatie'].help_text += ' Gebruik een komma om waarden van elkaar te onderscheiden.'

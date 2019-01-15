@@ -72,9 +72,8 @@ class ResultaatTypeInline(EditInlineAdminMixin, admin.TabularInline):
 
 class ZaakTypenRelatieInline(admin.TabularInline):
     model = ZaakTypenRelatie
-    fk_name = 'zaaktype_van'
+    fk_name = 'zaaktype'
     extra = 1
-    raw_id_fields = ('zaaktype_naar', )
 
 
 @admin.register(ZaakType)
@@ -147,8 +146,12 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
     )
     raw_id_fields = ('catalogus', )
     inlines = (
-        ZaakTypenRelatieInline,  # heeft_gerelateerd
-        StatusTypeInline, ZaakObjectTypeInline, RolTypeInline, EigenschapInline, ResultaatTypeInline,
+        ZaakTypenRelatieInline,
+        StatusTypeInline,
+        ZaakObjectTypeInline,
+        RolTypeInline,
+        EigenschapInline,
+        ResultaatTypeInline,
     )
 
     def get_object_actions(self, obj):

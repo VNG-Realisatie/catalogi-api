@@ -78,16 +78,12 @@ class FactoryTests(TestCase):
         self.assertEqual(ZaakTypenRelatie.objects.count(), 0)
 
         zaaktype1 = ZaakTypeFactory.create()
-        zaaktype2 = ZaakTypeFactory.create()
 
-        self.assertEqual(ZaakType.objects.count(), 2)
+        self.assertEqual(ZaakType.objects.count(), 1)
         self.assertEqual(ZaakTypenRelatie.objects.count(), 0)
 
-        ZaakTypenRelatieFactory.create(
-            zaaktype_van=zaaktype1,
-            zaaktype_naar=zaaktype2,
-        )
-        self.assertEqual(ZaakType.objects.count(), 2)
+        ZaakTypenRelatieFactory.create(zaaktype=zaaktype1)
+        self.assertEqual(ZaakType.objects.count(), 1)
         self.assertEqual(ZaakTypenRelatie.objects.count(), 1)
 
-        self.assertEqual(zaaktype1.heeft_gerelateerd.all().count(), 1)
+        self.assertEqual(zaaktype1.zaaktypenrelaties.count(), 1)

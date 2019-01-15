@@ -49,6 +49,16 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | omschrijving | Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | string | ja | C​R​U​D |
 | catalogus | De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort. | string | ja | C​R​U​D |
 
+## ZaakTypenRelatie
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/zaaktypenrelatie)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| zaaktype | URL referentie naar het gerelateerde zaaktype, mogelijks in een extern ZTC. | string | ja | C​R​U​D |
+| aardRelatie | Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE | string | ja | C​R​U​D |
+| toelichting | Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN. | string | nee | C​R​U​D |
+
 ## ZaakType
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/zaaktype)
@@ -84,6 +94,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | informatieobjecttypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | roltypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| gerelateerdeZaaktypen | De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE. | array | ja | C​R​U​D |
 
 ## EigenschapSpecificatie
 

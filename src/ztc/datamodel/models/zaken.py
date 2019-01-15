@@ -392,11 +392,6 @@ class ZaakType(GeldigheidMixin, models.Model):
     #
     # relaties
     #
-    heeft_gerelateerd = models.ManyToManyField(
-        'datamodel.ZaakType', verbose_name=_('heeft gerelateerd'), blank=True,
-        related_name='zaak_typen_heeft_gerelateerd', through='datamodel.ZaakTypenRelatie',
-        help_text=_('De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.')
-    )
     is_deelzaaktype_van = models.ManyToManyField(
         'datamodel.ZaakType', verbose_name=_('is deelzaaktype van'), blank=True,
         related_name='zaak_typen_is_deelzaaktype_van',

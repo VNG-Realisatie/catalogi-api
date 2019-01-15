@@ -2258,6 +2258,35 @@ components:
           type: string
           format: uri
           maxLength: 200
+    ZaakTypenRelatie:
+      description: De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.
+      required:
+      - zaaktype
+      - aardRelatie
+      type: object
+      properties:
+        zaaktype:
+          title: Zaaktype
+          description: URL referentie naar het gerelateerde zaaktype, mogelijks in
+            een extern ZTC.
+          type: string
+          format: uri
+          maxLength: 200
+          minLength: 1
+        aardRelatie:
+          title: Aard relatie
+          description: Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE
+            tot zaken van het andere ZAAKTYPE
+          type: string
+          enum:
+          - vervolg
+          - bijdrage
+          - onderwerp
+        toelichting:
+          title: Toelichting
+          description: Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN.
+          type: string
+          maxLength: 255
     ZaakType:
       required:
       - identificatie
@@ -2273,6 +2302,7 @@ components:
       - productenOfDiensten
       - referentieproces
       - catalogus
+      - gerelateerdeZaaktypen
       type: object
       properties:
         url:
@@ -2479,6 +2509,12 @@ components:
             format: uri
           readOnly: true
           uniqueItems: true
+        gerelateerdeZaaktypen:
+          description: De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit
+            ZAAKTYPE.
+          type: array
+          items:
+            $ref: '#/components/schemas/ZaakTypenRelatie'
     EigenschapSpecificatie:
       title: Specificatie
       required:

@@ -6,7 +6,8 @@ from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from zds_schema.serializers import GegevensGroepSerializer
 
 from ...datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType
+    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,
+    ZaakTypenRelatie
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 
@@ -85,6 +86,19 @@ class ReferentieProcesSerializer(GegevensGroepSerializer):
         gegevensgroep = 'referentieproces'
 
 
+class ZaakTypenRelatieSerializer(ModelSerializer):
+    class Meta:
+        model = ZaakTypenRelatie
+        fields = (
+            'zaaktype',
+            'aard_relatie',
+            'toelichting'
+        )
+        extra_kwargs = {
+            'zaaktype': {'source': 'gerelateerd_zaaktype'},
+        }
+
+
 class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'catalogus_uuid': 'catalogus__uuid',
@@ -116,17 +130,10 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'catalogus_pk': 'catalogus__pk'
     #     }
     # )
-    # # TODO: currently only show one side of the relations for a ZaakType.
-    # heeftGerelateerd = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='zaaktypenrelatie_van',
-    #     view_name='api:zaaktypenrelatie-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype_van__catalogus__pk',
-    #         'zaaktype_pk': 'zaaktype_van__pk',
-    #     }
-    # )
+    gerelateerde_zaaktypen = ZaakTypenRelatieSerializer(
+        many=True, source='zaaktypenrelaties',
+        help_text="De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE."
+    )
     # isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -248,11 +255,11 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'informatieobjecttypen',
             'roltypen',
             'besluittypen',
+            'gerelateerde_zaaktypen',
             # # 'heeftRelevantBesluittype',
             # # 'heeftRelevantZaakObjecttype',
             # # 'heeftRelevantResultaattype',
             # # 'isDeelzaaktypeVan',
-            # # 'heeftGerelateerd',
         )
         extra_kwargs = {
             'url': {

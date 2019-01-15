@@ -4,63 +4,10 @@ from django.urls import reverse
 
 from ztc.datamodel.tests.factories import (
     ZaakInformatieobjectTypeArchiefregimeFactory,
-    ZaakInformatieobjectTypeFactory, ZaakTypenRelatieFactory
+    ZaakInformatieobjectTypeFactory
 )
 
 from .base import APITestCase
-
-
-@skip("Not MVP yet")
-class ZaakTypeRelatieAPITests(APITestCase):
-    maxDiff = None
-
-    def setUp(self):
-        super().setUp()
-
-        self.zaaktyperelatie = ZaakTypenRelatieFactory.create(
-            zaaktype_van__catalogus=self.catalogus,
-            zaaktype_naar__catalogus=self.catalogus,
-            aard_relatie='aard relatie',
-        )
-
-        self.zaaktype_van = self.zaaktyperelatie.zaaktype_van
-        self.zaaktype_naar = self.zaaktyperelatie.zaaktype_naar
-
-        self.zaaktyperelatie_list_url = reverse('api:zaaktypenrelatie-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype_van.pk
-        })
-
-        self.zaaktyperelatie_detail_url = reverse('api:zaaktypenrelatie-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype_van.pk,
-            'pk': self.zaaktyperelatie.pk,
-        })
-
-    def test_get_list(self):
-        response = self.api_client.get(self.zaaktyperelatie_list_url)
-        self.assertEqual(response.status_code, 200)
-
-        data = response.json()
-
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
-
-    def test_get_detail(self):
-        response = self.api_client.get(self.zaaktyperelatie_detail_url)
-        self.assertEqual(response.status_code, 200)
-
-        expected = {
-            'aardRelatie': 'aard relatie',
-            'toelichting': None,
-            'url': 'http://testserver{}'.format(self.zaaktyperelatie_detail_url),
-            'gerelateerde': 'http://testserver{}'.format(
-                reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype_naar.pk])
-            )
-        }
-        self.assertEqual(response.json(), expected)
 
 
 @skip("Not MVP yet")

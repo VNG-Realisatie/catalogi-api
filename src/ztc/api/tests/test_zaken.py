@@ -80,9 +80,9 @@ class ZaakTypeAPITests(APITestCase):
             'doorlooptijd': "P30D",
             # 'verantwoordelijke': '',
             'omschrijving': '',
-            # 'heeftGerelateerd': [],
-            'informatieobjecttypen': [],
             'eigenschappen': [],
+            'informatieobjecttypen': [],
+            'gerelateerdeZaaktypen': [],
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantResultaattype': [],
             # 'heeftRelevantZaakObjecttype': [],
@@ -92,44 +92,57 @@ class ZaakTypeAPITests(APITestCase):
         }
         self.assertEqual(expected, response.json())
 
+    @skip('Not implemented yet')
     def test_formulier(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_informatieobjecttype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_resultaattype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_besluittype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_zaakobjecttype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_eigenschap(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_roltype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_statustype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_gerelateerd(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_is_deelzaaktype_van(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_verantwoordingsrelatie(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_bronzaaktype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_broncatalogus(self):
-        pass
+        raise NotImplementedError()
 
 
 @skip("Not in current MVP")

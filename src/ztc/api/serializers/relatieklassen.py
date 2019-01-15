@@ -2,47 +2,14 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
-    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime,
-    ZaakTypenRelatie
+    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime
 )
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
 
-class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
-    parent_lookup_kwargs = {
-        'catalogus_pk': 'zaaktype_van__catalogus__pk',
-        'zaaktype_pk': 'zaaktype_van__pk',
-    }
-
-    gerelateerde = NestedHyperlinkedRelatedField(
-        read_only=True,
-        source='zaaktype_naar',
-        view_name='api:zaaktype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'catalogus__pk',
-        },
-    )
-
-    class Meta:
-        model = ZaakTypenRelatie
-        ref_name = model.__name__
-        source_mapping = {
-            'aardRelatie': 'aard_relatie',
-
-        }
-        fields = (
-            'url',
-            'gerelateerde',
-            'aardRelatie',
-            'toelichting',
-        )
-        extra_kwargs = {
-            'url': {'view_name': 'api:zaaktypenrelatie-detail'},
-        }
-
-
-class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
+                                             NestedHyperlinkedModelSerializer):
     """
     ZKTIOT-basis
 
@@ -81,7 +48,8 @@ class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMa
         }
 
 
-class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
+                                                      NestedHyperlinkedModelSerializer):
     """
     RSTIOTARC-basis
 

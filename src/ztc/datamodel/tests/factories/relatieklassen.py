@@ -28,8 +28,8 @@ class ZaakInformatieobjectTypeArchiefregimeFactory(factory.django.DjangoModelFac
 
 
 class ZaakTypenRelatieFactory(factory.django.DjangoModelFactory):
-    zaaktype_van = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
-    zaaktype_naar = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
+    zaaktype = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
+    gerelateerd_zaaktype = factory.Faker('url')
 
     class Meta:
         model = ZaakTypenRelatie
