@@ -2430,6 +2430,13 @@ components:
             format: uri
             maxLength: 200
             minLength: 1
+        selectielijstProcestype:
+          title: Selectielijst procestype
+          description: Een vanuit archiveringsoptiek onderkende groep processen met
+            dezelfde kenmerken. URL naar de referentielijsten API.
+          type: string
+          format: uri
+          maxLength: 200
         referentieproces:
           $ref: '#/components/schemas/ReferentieProces'
         catalogus:

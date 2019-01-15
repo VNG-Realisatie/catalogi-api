@@ -353,6 +353,13 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_("Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.")
     )
 
+    # TODO: validate shape & populate?
+    selectielijst_procestype = models.URLField(
+        _("selectielijst procestype"), blank=True,
+        help_text=_("Een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken. "
+                    "URL naar de referentielijsten API.")
+    )
+
     formulier = models.ManyToManyField(
         'datamodel.Formulier', verbose_name=_('formulier'), blank=True,
         help_text=_('Formulier Het formulier dat ZAAKen van dit ZAAKTYPE initieert.')

@@ -77,6 +77,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | publicatietekst | De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE. | string | nee | C​R​U​D |
 | verantwoordingsrelatie | De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording. | array | nee | C​R​U​D |
 | productenOfDiensten | Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht. | array | ja | C​R​U​D |
+| selectielijstProcestype | Een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken. URL naar de referentielijsten API. | string | nee | C​R​U​D |
 | catalogus | De CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
 | statustypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | eigenschappen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |

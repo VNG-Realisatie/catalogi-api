@@ -231,8 +231,8 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'publicatietekst',
             'verantwoordingsrelatie',
 
-            # # groepsattribuutsoorten
             'producten_of_diensten',
+            'selectielijst_procestype',
             # 'formulier',
             'referentieproces',
             # 'broncatalogus',
