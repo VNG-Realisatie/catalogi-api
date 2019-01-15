@@ -75,10 +75,10 @@ class ZaakTypeAPITests(APITestCase):
             # 'isDeelzaaktypeVan': [],
             'servicenorm': None,
             # 'archiefclassificatiecode': None,
-            # 'referentieproces': {
-            #     'link': None,
-            #     'naam': self.zaaktype.referentieproces.naam,
-            # },
+            'referentieproces': {
+                'naam': self.zaaktype.referentieproces_naam,
+                'link': '',
+            },
             'doorlooptijd': "P30D",
             # 'verantwoordelijke': '',
             'omschrijving': '',

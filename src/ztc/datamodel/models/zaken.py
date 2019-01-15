@@ -395,7 +395,7 @@ class ZaakType(GeldigheidMixin, models.Model):
     referentieproces = GegevensGroepType({
         'naam': referentieproces_naam,
         'link': referentieproces_link,
-    })
+    }, optional=('link',))
 
     broncatalogus = models.ForeignKey(
         'datamodel.BronCatalogus', verbose_name=_('broncatalogus'),

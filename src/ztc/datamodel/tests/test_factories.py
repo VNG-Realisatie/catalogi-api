@@ -11,9 +11,8 @@ from .factories import (
     EigenschapReferentieFactory, EigenschapSpecificatieFactory,
     FormulierFactory, InformatieObjectTypeFactory,
     InformatieObjectTypeOmschrijvingGeneriekFactory, ProductDienstFactory,
-    ReferentieProcesFactory, ResultaatTypeFactory, RolTypeFactory,
-    StatusTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory,
-    ZaakTypenRelatieFactory
+    ResultaatTypeFactory, RolTypeFactory, StatusTypeFactory,
+    ZaakObjectTypeFactory, ZaakTypeFactory, ZaakTypenRelatieFactory
 )
 
 
@@ -41,7 +40,6 @@ class FactoryTests(TestCase):
         ZaakObjectTypeFactory.create()
         ProductDienstFactory.create()
         FormulierFactory.create()
-        ReferentieProcesFactory.create()
         BronCatalogusFactory.create()
         BronZaakTypeFactory.create()
         CheckListItemFactory.create()

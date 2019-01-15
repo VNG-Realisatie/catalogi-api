@@ -10,8 +10,8 @@ from ..models import (
     BesluitType, BronCatalogus, BronZaakType, Catalogus, CheckListItem,
     Eigenschap, EigenschapReferentie, EigenschapSpecificatie, Formulier,
     InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek,
-    ProductDienst, ReferentieProces, ResultaatType, RolType, StatusType,
-    ZaakObjectType, ZaakType
+    ProductDienst, ResultaatType, RolType, StatusType, ZaakObjectType,
+    ZaakType
 )
 
 
@@ -34,7 +34,6 @@ class FactoryTests(HaaglandenMixin, TestCase):
         self.assertEqual(InformatieObjectTypeOmschrijvingGeneriek.objects.all().count(), 2)
         self.assertEqual(InformatieObjectType.objects.all().count(), 2)
         self.assertEqual(ProductDienst.objects.all().count(), 1)
-        self.assertEqual(ReferentieProces.objects.all().count(), 1)
         self.assertEqual(ResultaatType.objects.all().count(), 5)
         self.assertEqual(RolType.objects.all().count(), 7)
         self.assertEqual(StatusType.objects.all().count(), 5)

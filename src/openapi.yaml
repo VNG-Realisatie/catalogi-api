@@ -2239,6 +2239,25 @@ components:
           description: De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.
           type: string
           format: uri
+    ReferentieProces:
+      title: Referentieproces
+      description: Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.
+      required:
+      - naam
+      type: object
+      properties:
+        naam:
+          title: Referentieprocesnaam
+          description: De naam van het Referentieproces.
+          type: string
+          maxLength: 80
+          minLength: 1
+        link:
+          title: Referentieproceslink
+          description: De URL naar de beschrijving van het Referentieproces
+          type: string
+          format: uri
+          maxLength: 200
     ZaakType:
       required:
       - identificatie
@@ -2251,6 +2270,7 @@ components:
       - onderwerp
       - handelingBehandelaar
       - doorlooptijd
+      - referentieproces
       - catalogus
       type: object
       properties:
@@ -2399,6 +2419,8 @@ components:
             type: string
             maxLength: 40
             minLength: 1
+        referentieproces:
+          $ref: '#/components/schemas/ReferentieProces'
         catalogus:
           title: Maakt deel uit van
           description: De CATALOGUS waartoe dit ZAAKTYPE behoort.

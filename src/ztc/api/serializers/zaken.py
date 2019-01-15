@@ -1,6 +1,9 @@
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from zds_schema.serializers import GegevensGroepSerializer
 
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ProductDienst, ZaakObjectType,
@@ -84,6 +87,12 @@ class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
         )
 
 
+class ReferentieProcesSerializer(GegevensGroepSerializer):
+    class Meta:
+        model = ZaakType
+        gegevensgroep = 'referentieproces'
+
+
 class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'catalogus_uuid': 'catalogus__uuid',
@@ -91,7 +100,9 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
 
     # product_dienst = ProductDienstSerializer(many=True, read_only=True)
     # formulier = FormulierSerializer(many=True, read_only=True)
-    # referentieproces = ReferentieProcesSerializer(read_only=True)
+    referentieproces = ReferentieProcesSerializer(
+        required=True, help_text=_("Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.")
+    )
     # broncatalogus = BronCatalogusSerializer(read_only=True)
     # bronzaaktype = BronZaakTypeSerializer(read_only=True)
 
@@ -232,7 +243,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # # groepsattribuutsoorten
             # 'product_dienst',
             # 'formulier',
-            # 'referentieproces',
+            'referentieproces',
             # 'broncatalogus',
             # 'bronzaaktype',
 
