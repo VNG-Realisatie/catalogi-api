@@ -94,36 +94,6 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
         return '{} - {}{}'.format(self.is_relevant_voor, self.objecttype, self.ander_objecttype)
 
 
-class ProductDienst(models.Model):
-    """
-    Het product of de dienst die door ZAAKen van dit ZAAKTYPE
-    wordt voortgebracht.
-
-    regels:
-    De groepattribuutsoort verandert alleen van waarde
-    (materiële historie) cq. één of meer van de subattributen
-    veranderen van waarde op een datum die gelijk is aan een
-    Versiedatum van het zaaktype.
-
-    Toelichting
-    Met deze groepattribuutsoort kan de relatie worden gelegd naar één of meer producten en of
-    diensten die met ZAAKen van dit ZAAKTYPE worden geleverd. Omdat aan een product- of
-    dienstbeschrijving rechten kunnen worden ontleend, is het van belang dat bij - een versie van -
-    een ZAAKTYPE is vastgelegd welke - versie van - een productbeschrijving van toepassing is op
-    ZAAKen van dit ZAAKTYPE.
-    """
-    naam = models.CharField(_('naam'), max_length=80, help_text=_('De naam van het product of de dienst.'))
-    link = models.URLField(_('link'), blank=True, null=True, help_text=_(
-        'De URL naar de beschrijving van het product of de dienst.'))
-
-    def __str__(self):
-        return self.naam
-
-    class Meta:
-        verbose_name = _('Product / Dienst')
-        verbose_name_plural = _('Product / Diensten')
-
-
 class Formulier(models.Model):
     """
     Het formulier dat ZAAKen van dit ZAAKTYPE initieert.
@@ -377,8 +347,12 @@ class ZaakType(GeldigheidMixin, models.Model):
     #
     # groepsattribuutsoorten
     #
-    product_dienst = models.ManyToManyField('datamodel.ProductDienst', verbose_name=_('product/dienst'), help_text=_(
-        'Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.'))
+    # TODO: should have shape validator, because the API resources need to conform
+    producten_of_diensten = ArrayField(
+        models.URLField(_("URL naar product/dienst")),
+        help_text=_("Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.")
+    )
+
     formulier = models.ManyToManyField(
         'datamodel.Formulier', verbose_name=_('formulier'), blank=True,
         help_text=_('Formulier Het formulier dat ZAAKen van dit ZAAKTYPE initieert.')

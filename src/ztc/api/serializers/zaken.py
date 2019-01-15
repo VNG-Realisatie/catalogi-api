@@ -6,8 +6,7 @@ from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from zds_schema.serializers import GegevensGroepSerializer
 
 from ...datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ProductDienst, ZaakObjectType,
-    ZaakType
+    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 
@@ -52,13 +51,6 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
         }
 
 
-class ProductDienstSerializer(ModelSerializer):
-    class Meta:
-        model = ProductDienst
-        ref_name = None  # Inline
-        fields = ('naam', 'link')
-
-
 class FormulierSerializer(ModelSerializer):
     class Meta:
         model = Formulier
@@ -98,7 +90,6 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         'catalogus_uuid': 'catalogus__uuid',
     }
 
-    # product_dienst = ProductDienstSerializer(many=True, read_only=True)
     # formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(
         required=True, help_text=_("Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.")
@@ -241,7 +232,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'verantwoordingsrelatie',
 
             # # groepsattribuutsoorten
-            # 'product_dienst',
+            'producten_of_diensten',
             # 'formulier',
             'referentieproces',
             # 'broncatalogus',

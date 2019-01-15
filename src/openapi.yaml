@@ -2270,6 +2270,7 @@ components:
       - onderwerp
       - handelingBehandelaar
       - doorlooptijd
+      - productenOfDiensten
       - referentieproces
       - catalogus
       type: object
@@ -2418,6 +2419,16 @@ components:
             title: Verantwoordingsrelatie
             type: string
             maxLength: 40
+            minLength: 1
+        productenOfDiensten:
+          description: Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt
+            voortgebracht.
+          type: array
+          items:
+            title: URL naar product/dienst
+            type: string
+            format: uri
+            maxLength: 200
             minLength: 1
         referentieproces:
           $ref: '#/components/schemas/ReferentieProces'

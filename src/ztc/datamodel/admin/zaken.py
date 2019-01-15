@@ -4,9 +4,8 @@ from django.utils.translation import ugettext_lazy as _
 from ztc.utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 
 from ..models import (
-    BronCatalogus, BronZaakType, Eigenschap, Formulier, ProductDienst,
-    ResultaatType, RolType, StatusType, ZaakObjectType, ZaakType,
-    ZaakTypenRelatie
+    BronCatalogus, BronZaakType, Eigenschap, Formulier, ResultaatType, RolType,
+    StatusType, ZaakObjectType, ZaakType, ZaakTypenRelatie
 )
 from .eigenschap import EigenschapAdmin
 from .forms import ZaakTypeForm
@@ -112,7 +111,7 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                 'vertrouwelijkheidaanduiding',
                 'verantwoordelijke',
 
-                'product_dienst',  # m2m
+                'producten_of_diensten',
                 'formulier',  # m2m
 
                 'verantwoordingsrelatie',
@@ -144,7 +143,6 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
     )
     filter_horizontal = (
         'is_deelzaaktype_van',
-        'product_dienst',
         'formulier',
     )
     raw_id_fields = ('catalogus', )
@@ -181,11 +179,6 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
 #
 # models for ZaakType
 #
-@admin.register(ProductDienst)
-class ProductDienstAdmin(admin.ModelAdmin):
-    list_display = ['naam']
-    fields = ('naam', 'link')
-
 
 @admin.register(Formulier)
 class FormulierAdmin(admin.ModelAdmin):

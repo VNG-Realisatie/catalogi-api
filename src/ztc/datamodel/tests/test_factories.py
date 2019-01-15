@@ -10,9 +10,9 @@ from .factories import (
     CatalogusFactory, CheckListItemFactory, EigenschapFactory,
     EigenschapReferentieFactory, EigenschapSpecificatieFactory,
     FormulierFactory, InformatieObjectTypeFactory,
-    InformatieObjectTypeOmschrijvingGeneriekFactory, ProductDienstFactory,
-    ResultaatTypeFactory, RolTypeFactory, StatusTypeFactory,
-    ZaakObjectTypeFactory, ZaakTypeFactory, ZaakTypenRelatieFactory
+    InformatieObjectTypeOmschrijvingGeneriekFactory, ResultaatTypeFactory,
+    RolTypeFactory, StatusTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory,
+    ZaakTypenRelatieFactory
 )
 
 
@@ -38,7 +38,6 @@ class FactoryTests(TestCase):
         ResultaatTypeFactory.create()
         RolTypeFactory.create()
         ZaakObjectTypeFactory.create()
-        ProductDienstFactory.create()
         FormulierFactory.create()
         BronCatalogusFactory.create()
         BronZaakTypeFactory.create()

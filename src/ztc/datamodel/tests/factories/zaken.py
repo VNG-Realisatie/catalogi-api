@@ -5,8 +5,7 @@ import factory.fuzzy
 
 from ztc.datamodel.choices import InternExtern
 from ztc.datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ProductDienst, ZaakObjectType,
-    ZaakType
+    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType
 )
 
 from .catalogus import CatalogusFactory
@@ -30,13 +29,6 @@ ZAAKTYPEN = [
     'Incidentmelding behandelen',
     'Voorlopige voorziening behandelen',
 ]
-
-
-class ProductDienstFactory(factory.django.DjangoModelFactory):
-    naam = factory.Sequence(lambda n: 'ProductDienst {}'.format(n))
-
-    class Meta:
-        model = ProductDienst
 
 
 class FormulierFactory(factory.django.DjangoModelFactory):
@@ -75,6 +67,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     publicatie_indicatie = factory.Faker('pybool')
     catalogus = factory.SubFactory(CatalogusFactory)
     referentieproces_naam = factory.Sequence(lambda n: 'ReferentieProces {}'.format(n))
+    producten_of_diensten = ['https://example.com/product/123']
 
     datum_begin_geldigheid = date(2018, 1, 1)
     versiedatum = date(2018, 1, 1)
@@ -100,15 +93,6 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
         if extracted:
             for zaaktype in extracted:
                 self.is_deelzaaktype_van.add(zaaktype)
-
-    @factory.post_generation
-    def product_dienst(self, create, extracted, **kwargs):
-        # required M2M
-        if not extracted:
-            extracted = [ProductDienstFactory.create()]
-
-        for product_dienst in extracted:
-            self.product_dienst.add(product_dienst)
 
 
 class ZaakObjectTypeFactory(factory.django.DjangoModelFactory):

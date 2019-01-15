@@ -46,10 +46,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'ingangsdatumObject': '2018-01-01',
             # 'einddatumObject': None,
             'identificatie': self.zaaktype.zaaktype_identificatie,
-            # 'product_dienst': [{
-            #     'naam': self.zaaktype.product_dienst.get().naam,
-            #     'link': None
-            # }],
+            'productenOfDiensten': ['https://example.com/product/123'],
             # 'broncatalogus': None,
             'publicatieIndicatie': self.zaaktype.publicatie_indicatie,
             'trefwoorden': [],

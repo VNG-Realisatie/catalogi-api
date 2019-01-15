@@ -10,8 +10,8 @@ from ztc.datamodel.choices import (
 
 from .factories import (
     BesluitTypeFactory, CatalogusFactory, EigenschapFactory,
-    InformatieObjectTypeFactory, ProductDienstFactory, ResultaatTypeFactory,
-    RolTypeFactory, StatusTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory
+    InformatieObjectTypeFactory, ResultaatTypeFactory, RolTypeFactory,
+    StatusTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory
 )
 
 # TODO: Catalogus and ResultaatTypeFacory are not used yet. Currently all other factories will indirectly create
@@ -38,9 +38,6 @@ class HaaglandenMixin(object):
             rsin='123456789',
         )
 
-        self.product_dienst_vergunning_milieu = ProductDienstFactory.create(
-            naam='Vergunning voor milieu'
-        )
         self.zaaktype = ZaakTypeFactory.create(
             datum_begin_geldigheid=timezone.now().date(),
             zaaktype_omschrijving='Vergunningaanvraag regulier behandelen',
@@ -71,7 +68,6 @@ class HaaglandenMixin(object):
                 een vergunning, veelal naar aanleiding van een constatering tijdens de
                 uitvoering van een zaak van het type ‘Toezicht uitvoeren’.
                 Zie ook bovenstaande figuren.'''[:1000],
-            product_dienst=[self.product_dienst_vergunning_milieu],  # there are many more
             # TODO: is_deelzaaktype_van, Hoofdzaak (voor de ODH); deelzaak van de hoofdzaak ‘Behandelen
             # aanvraag vergunning’ bij de gemeente als bevoegd gezag
             handeling_initiator='Aanvragen',
