@@ -2904,6 +2904,15 @@
                     "readOnly": true,
                     "uniqueItems": true
                 },
+                "informatieobjecttypen": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                },
                 "roltypen": {
                     "type": "array",
                     "items": {

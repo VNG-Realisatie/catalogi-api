@@ -81,7 +81,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'verantwoordelijke': '',
             'omschrijving': '',
             # 'heeftGerelateerd': [],
-            # 'heeftRelevantInformatieobjecttype': [],
+            'informatieobjecttypen': [],
             'eigenschappen': [],
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantResultaattype': [],

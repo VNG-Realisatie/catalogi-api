@@ -409,7 +409,6 @@ class ZaakType(GeldigheidMixin, models.Model):
     )
 
     class Meta:
-        mnemonic = 'ZKT'
         unique_together = ('catalogus', 'zaaktype_identificatie')
         verbose_name = _('Zaaktype')
         verbose_name_plural = _('Zaaktypen')

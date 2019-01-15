@@ -136,16 +136,15 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'catalogus_pk': 'catalogus__pk'
     #     },
     # )
-    # heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='zaakinformatieobjecttype_set',
-    #     view_name='api:zktiot-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype__catalogus__pk',
-    #         'zaaktype_pk': 'zaaktype__pk',
-    #     }
-    # )
+    informatieobjecttypen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='heeft_relevant_informatieobjecttype',
+        view_name='informatieobjecttype-detail',
+        parent_lookup_kwargs={
+            'catalogus_uuid': 'catalogus__uuid',
+        }
+    )
     # heeftRelevantResultaattype = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -246,9 +245,9 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'catalogus',
             'statustypen',
             'eigenschappen',
+            'informatieobjecttypen',
             'roltypen',
             'besluittypen',
-            # # 'heeftRelevantInformatieobjecttype',
             # # 'heeftRelevantBesluittype',
             # # 'heeftRelevantZaakObjecttype',
             # # 'heeftRelevantResultaattype',

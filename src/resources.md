@@ -81,6 +81,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | catalogus | De CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
 | statustypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | eigenschappen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| informatieobjecttypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | roltypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
