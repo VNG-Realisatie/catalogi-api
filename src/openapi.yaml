@@ -2031,6 +2031,315 @@ paths:
       schema:
         type: string
         format: uuid
+  /zaaktype-informatieobjecttypen:
+    get:
+      operationId: zaakinformatieobjecttype_list
+      description: 'Een verzameling van ZAAKINFORMATIEOBJECTTYPEn.
+
+
+        Filteren van de gegevens kan middels de querystringparameters:
+
+        - zaaktype: URL van het zaaktype
+
+        - informatie_object_type: URL van het zaaktype
+
+        - richting: waarde van de richting (string)
+
+
+        Meerdere querystring-parameters tegelijk worden als een AND beschouwd.'
+      parameters:
+      - name: zaaktype
+        in: query
+        description: URL to the related resource
+        required: false
+        schema:
+          type: string
+          format: uri
+      - name: informatieObjectType
+        in: query
+        description: URL to the related resource
+        required: false
+        schema:
+          type: string
+          format: uri
+      - name: richting
+        in: query
+        description: Aanduiding van de richting van informatieobjecten van het gerelateerde
+          INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE.
+        required: false
+        schema:
+          type: string
+          enum:
+          - Inkomend
+          - Intern
+          - Uitgaand
+      responses:
+        '200':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
+        '400':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
+        '401':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '406':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '409':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '410':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '415':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '429':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+      tags:
+      - zaaktype-informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
+    parameters: []
+  /zaaktype-informatieobjecttypen/{uuid}:
+    get:
+      operationId: zaakinformatieobjecttype_read
+      description: Relatie met informatieobjecttype dat relevant is voor zaaktype.
+      responses:
+        '200':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
+        '401':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '403':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '404':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '406':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '409':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '410':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '415':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '429':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+        '500':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+      tags:
+      - zaaktype-informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zds.scopes.zaaktypes.lezen
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke resource identifier (UUID4)
+      required: true
+      schema:
+        type: string
+        format: uuid
 servers:
 - url: /api/v1
 components:
@@ -2786,4 +3095,46 @@ components:
           description: Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven
             is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer.
           type: boolean
+          readOnly: true
+    ZaakTypeInformatieObjectType:
+      required:
+      - volgnummer
+      - richting
+      type: object
+      properties:
+        url:
+          title: Url
+          type: string
+          format: uri
+          readOnly: true
+        zaaktype:
+          title: Zaaktype
+          type: string
+          format: uri
+          readOnly: true
+        informatieObjectType:
+          title: Informatie object type
+          type: string
+          format: uri
+          readOnly: true
+        volgnummer:
+          title: Volgnummer
+          description: Uniek volgnummer van het ZAAK-INFORMATIEOBJECT-TYPE binnen
+            het ZAAKTYPE.
+          type: integer
+          maximum: 999
+          minimum: 1
+        richting:
+          title: Richting
+          description: Aanduiding van de richting van informatieobjecten van het gerelateerde
+            INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE.
+          type: string
+          enum:
+          - Inkomend
+          - Intern
+          - Uitgaand
+        statusType:
+          title: Status type
+          type: string
+          format: uri
           readOnly: true

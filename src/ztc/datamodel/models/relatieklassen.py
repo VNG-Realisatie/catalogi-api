@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +15,11 @@ class ZaakInformatieobjectType(models.Model):
 
     Kenmerken van de relatie ZAAKTYPE heeft relevante INFORMATIEOBJECTTYPEn.
     """
+    uuid = models.UUIDField(
+        unique=True, default=uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
+
     zaaktype = models.ForeignKey('datamodel.Zaaktype', verbose_name=_('zaaktype'), on_delete=models.CASCADE)
     informatie_object_type = models.ForeignKey(
         'datamodel.InformatieObjectType', on_delete=models.CASCADE,
@@ -27,6 +34,7 @@ class ZaakInformatieobjectType(models.Model):
         'bij zaken van het gerelateerde ZAAKTYPE.'))
 
     # this is the relation that is described on StatusType in the specification
+    # TODO: validate that statustype is in fact a status type of self.zaaktype
     status_type = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
         on_delete=models.CASCADE,
