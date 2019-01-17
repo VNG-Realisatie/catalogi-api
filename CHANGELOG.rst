@@ -2,6 +2,41 @@
 Wijzigingen
 ===========
 
+0.8.0 (2019-01-??)
+==================
+
+API-maturity feature release
+
+* Expose more fields/attributes of ``ZaakType`` resource:
+    * ``ZaakType.vertrouwelijkheidaanduiding``
+    * ``ZaakType.doel``
+    * ``ZaakType.aanleiding``
+    * ``ZaakType.toelichting``
+    * ``ZaakType.indicatieInternOfExtern``
+    * ``ZaakType.handelingInitiator``
+    * ``ZaakType.onderwerp``
+    * ``ZaakType.handelingBehandelaar``
+    * ``ZaakType.opschorting``
+    * ``ZaakType.verlengingMogelijk``
+    * ``ZaakType.publicatieIndicatie``
+    * ``ZaakType.verlengingstermijn`` - ISO-8601 duration
+    * ``ZaakType.trefwoorden`` - list of keywords
+    * ``ZaakType.publicatietekst``
+    * ``ZaakType.verantwoordingsrelatie``
+    * ``ZaakType.referentieproces``
+    * ``ZaakType.productenOfDiensten`` - list of external URLs
+    * ``ZaakType.selectielijstProcestype`` - URL reference to
+      referentie/selectielijsten API
+    * ``ZaakType.informatieobjecttypen`` - list of URLs to
+      ``InformatieobjectType`` resources
+    * ``ZaakType.gerelateerdeZaaktypen`` - list of objects containing relation
+      information
+
+* Provide the ``ZaakTypeInformatieObjectType`` resource in the root of the API.
+  This allows clients to look up the relation information between ``ZaakType``
+  and ``InformatieobjectType``. Possibly we might *enforce* the usage of filter
+  parameters to anticipate performance challenges, or introduce pagination.
+
 0.7.1 (2019-01-07)
 ==================
 
