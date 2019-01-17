@@ -66,12 +66,12 @@ class FactoryTests(TestCase):
         self.assertEqual(ResultaatType.objects.count(), 1)
         self.assertEqual(ZaakInformatieobjectTypeArchiefregime.objects.count(), 1)
         # TODO: we might want to enforce that the same ZIT will be used. they currently belong to different ZaakTypes
-        self.assertEqual(ZaakInformatieobjectType.objects.count(), 2)
+        self.assertEqual(ZaakInformatieobjectType.objects.count(), 1)
 
         ResultaatTypeFactory.create(bepaalt_afwijkend_archiefregime_van=None)
         self.assertEqual(ResultaatType.objects.count(), 2)  # + 1
         self.assertEqual(ZaakInformatieobjectTypeArchiefregime.objects.count(), 1)  # stays the same
-        self.assertEqual(ZaakInformatieobjectType.objects.count(), 2)  # stay the same
+        self.assertEqual(ZaakInformatieobjectType.objects.count(), 1)  # stay the same
 
     def test_zaak_typen_relatie_factory(self):
         self.assertEqual(ZaakType.objects.count(), 0)
