@@ -2726,7 +2726,8 @@ components:
         verlengingstermijn:
           title: Verlengingstermijn
           description: De termijn in dagen waarmee de Doorlooptijd behandeling van
-            ZAAKen van dit ZAAKTYPE kan worden verlengd.
+            ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten
+            als verlenging mogelijk is.
           type: string
         trefwoorden:
           description: Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden

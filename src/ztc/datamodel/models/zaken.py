@@ -302,7 +302,8 @@ class ZaakType(GeldigheidMixin, models.Model):
     verlengingstermijn = DaysDurationField(
         _('verlengingstermijn'), blank=True, null=True,
         help_text=_('De termijn in dagen waarmee de Doorlooptijd behandeling van '
-                    'ZAAKen van dit ZAAKTYPE kan worden verlengd.')
+                    'ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde '
+                    'bevatten als verlenging mogelijk is.')
     )
 
     trefwoorden = ArrayField(
