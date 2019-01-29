@@ -6,11 +6,12 @@ from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from zds_schema.fields import DaysDurationField
-
-from ..choices import (
-    InternExtern, JaNee, ObjectTypen, VertrouwelijkheidAanduiding
+from zds_schema.descriptors import GegevensGroepType
+from zds_schema.fields import (
+    DaysDurationField, VertrouwelijkheidsAanduidingField
 )
+
+from ..choices import InternExtern, JaNee, ObjectTypen
 from .mixins import GeldigheidMixin
 
 
@@ -93,36 +94,6 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
         return '{} - {}{}'.format(self.is_relevant_voor, self.objecttype, self.ander_objecttype)
 
 
-class ProductDienst(models.Model):
-    """
-    Het product of de dienst die door ZAAKen van dit ZAAKTYPE
-    wordt voortgebracht.
-
-    regels:
-    De groepattribuutsoort verandert alleen van waarde
-    (materiële historie) cq. één of meer van de subattributen
-    veranderen van waarde op een datum die gelijk is aan een
-    Versiedatum van het zaaktype.
-
-    Toelichting
-    Met deze groepattribuutsoort kan de relatie worden gelegd naar één of meer producten en of
-    diensten die met ZAAKen van dit ZAAKTYPE worden geleverd. Omdat aan een product- of
-    dienstbeschrijving rechten kunnen worden ontleend, is het van belang dat bij - een versie van -
-    een ZAAKTYPE is vastgelegd welke - versie van - een productbeschrijving van toepassing is op
-    ZAAKen van dit ZAAKTYPE.
-    """
-    naam = models.CharField(_('naam'), max_length=80, help_text=_('De naam van het product of de dienst.'))
-    link = models.URLField(_('link'), blank=True, null=True, help_text=_(
-        'De URL naar de beschrijving van het product of de dienst.'))
-
-    def __str__(self):
-        return self.naam
-
-    class Meta:
-        verbose_name = _('Product / Dienst')
-        verbose_name_plural = _('Product / Diensten')
-
-
 class Formulier(models.Model):
     """
     Het formulier dat ZAAKen van dit ZAAKTYPE initieert.
@@ -150,27 +121,6 @@ class Formulier(models.Model):
     class Meta:
         verbose_name = _('Formulier')
         verbose_name_plural = _('Formulieren')
-
-
-class ReferentieProces(models.Model):
-    """
-    Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.
-
-    De groepattribuutsoort verandert alleen van waarde
-    (materiële historie) cq. één of meer van de subattributen
-    veranderen van waarde op een datum die gelijk is aan een
-    Versiedatum van het zaaktype.
-    """
-    naam = models.CharField(_('naam'), max_length=80, help_text=_('De naam van het Referentieproces.'))
-    link = models.URLField(_('link'), blank=True, null=True, help_text=_(
-        'De URL naar de beschrijving van het Referentieproces'))
-
-    def __str__(self):
-        return self.naam
-
-    class Meta:
-        verbose_name = _('Referentieprocess')
-        verbose_name_plural = _('Referentieprocessen')
 
 
 class BronCatalogus(models.Model):
@@ -276,36 +226,58 @@ class ZaakType(GeldigheidMixin, models.Model):
     zaaktype_omschrijving_generiek = models.CharField(
         _('omschrijving generiek'), max_length=80, blank=True, help_text=_(
             'Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE'))
+    vertrouwelijkheidaanduiding = VertrouwelijkheidsAanduidingField(
+        _("vertrouwelijkheidaanduiding"),
+        help_text=_("Aanduiding van de mate waarin zaakdossiers van ZAAKen van "
+                    "dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het "
+                    "aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.")
+    )
+
     # TODO [KING]: waardenverzameling zie Zaaktypecatalogus, is dat de
     # catalogus die bij dit zaaktype hoort? Wat is de categorie dan?
-    zaakcategorie = models.CharField(_('zaakcategorie'), max_length=40, blank=True, null=True, help_text=_(
-        'Typering van de aard van ZAAKen van het ZAAKTYPE.'))
-    doel = models.CharField(_('doel'), max_length=1000, help_text=_(
-        'Een omschrijving van hetgeen beoogd is te bereiken met een zaak van dit zaaktype.'))
-    aanleiding = models.CharField(_('aanleiding'), max_length=1000, help_text=_(
-        'Een omschrijving van de gebeurtenis die leidt tot het starten van een ZAAK van dit ZAAKTYPE.'))
-    toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
-        'Een eventuele toelichting op dit zaaktype.'))
+    # see also: https://github.com/VNG-Realisatie/gemma-zaken/issues/695
+    zaakcategorie = models.CharField(
+        _("zaakcategorie"), max_length=40, blank=True,
+        help_text=_("Typering van de aard van ZAAKen van het ZAAKTYPE.")
+    )
+
+    doel = models.TextField(_('doel'), help_text=_(
+        'Een omschrijving van hetgeen beoogd is te bereiken met een zaak van dit zaaktype.')
+    )
+    aanleiding = models.TextField(_('aanleiding'), help_text=_(
+        "Een omschrijving van de gebeurtenis die leidt tot het "
+        "starten van een ZAAK van dit ZAAKTYPE."
+    ))
+    toelichting = models.TextField(
+        _('toelichting'), blank=True,
+        help_text=_('Een eventuele toelichting op dit zaaktype, zoals een beschrijving '
+                    'van het procesverloop op de hoofdlijnen.')
+    )
     indicatie_intern_of_extern = models.CharField(
         _('indicatie intern of extern'), max_length=6, choices=InternExtern.choices,
         help_text=_('Een aanduiding waarmee onderscheid wordt gemaakt tussen '
-                    'ZAAKTYPEn die Intern respectievelijk Extern geïnitieerd worden.')
+                    'ZAAKTYPEn die Intern respectievelijk Extern geïnitieerd worden. '
+                    'Indien van beide sprake kan zijn, dan prevaleert de externe initiatie.')
     )
     handeling_initiator = models.CharField(
         _('handeling initiator'), max_length=20,
         help_text=_("Werkwoord dat hoort bij de handeling die de initiator verricht bij dit zaaktype. "
-                    "Meestal 'aanvragen', 'indienen' of 'melden'.")
+                    "Meestal 'aanvragen', 'indienen' of 'melden'. Zie ook het IOB model op "
+                    "https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_initiator")
     )
     onderwerp = models.CharField(
         _('onderwerp'), max_length=80,
         help_text=_("Het onderwerp van ZAAKen van dit ZAAKTYPE. In veel gevallen nauw gerelateerd aan de product- of "
                     "dienstnaam uit de Producten- en Dienstencatalogus (PDC). Bijvoorbeeld: 'Evenementenvergunning', "
-                    "'Geboorte', 'Klacht'.")
+                    "'Geboorte', 'Klacht'. Zie ook het IOB model op "
+                    "https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.onderwerp")
     )
     handeling_behandelaar = models.CharField(
         _('handeling behandelaar'), max_length=20,
         help_text=_("Werkwoord dat hoort bij de handeling die de behandelaar verricht bij het afdoen van ZAAKen van "
-                    "dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren', 'vaststellen' of 'onderhouden'.")
+                    "dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren', 'vaststellen' of 'onderhouden'. "
+                    "Zie ook het IOB model op "
+                    "https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_behandelaar")
     )
     doorlooptijd_behandeling = DaysDurationField(
         _('doorlooptijd behandeling'),
@@ -317,20 +289,28 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_('De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform '
                     'de geldende servicenormen van de zaakbehandelende organisatie(s).')
     )
-    opschorting_aanhouding_mogelijk = models.CharField(
-        _('opschorting/aanhouding mogelijk'), max_length=1, choices=JaNee.choices, help_text=_(
-            'Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE kunnen worden opgeschort en/of aangehouden.'))
-    verlenging_mogelijk = models.CharField(_('verlenging mogelijk'), max_length=1, choices=JaNee.choices, help_text=_(
-        'Aanduiding die aangeeft of de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.'))
-    # TODO [KING]: verlengingstermijn heeft kardinaliteit 1-1 en regel: mag alleen een waarde
-    # bevatten als verlenging mogelijk de waarde 'J' heeft
-    verlengingstermijn = models.PositiveSmallIntegerField(
-        _('verlengingstermijn'), validators=[MaxValueValidator(999)], help_text=_(
-            'De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.'))
-    trefwoord = ArrayField(
+    opschorting_en_aanhouding_mogelijk = models.BooleanField(
+        _('opschorting/aanhouding mogelijk'),
+        help_text=_('Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE '
+                    'kunnen worden opgeschort en/of aangehouden.')
+    )
+    verlenging_mogelijk = models.BooleanField(
+        _('verlenging mogelijk'),
+        help_text=_('Aanduiding die aangeeft of de Doorlooptijd behandeling van '
+                    'ZAAKen van dit ZAAKTYPE kan worden verlengd.')
+    )
+    verlengingstermijn = DaysDurationField(
+        _('verlengingstermijn'), blank=True, null=True,
+        help_text=_('De termijn in dagen waarmee de Doorlooptijd behandeling van '
+                    'ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde '
+                    'bevatten als verlenging mogelijk is.')
+    )
+
+    trefwoorden = ArrayField(
         models.CharField(_('trefwoord'), max_length=30),
-        blank=True, help_text=_('Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden '
-                                'gekarakteriseerd.(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
+        blank=True, default=list,
+        help_text=_('Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.')
+    )
     # TODO [KING]: ?? waardenverzameling: De classificatiecode in het gehanteerde
     # archiveringsclassificatiestelsel, gevolgd door een spatie en –
     # tussen haakjes - de gebruikelijke afkorting van de naam van het gehanteerde classificatiestelsel.
@@ -338,11 +318,6 @@ class ZaakType(GeldigheidMixin, models.Model):
         _('archiefclassificatiecode'), max_length=20, blank=True, null=True, help_text=_(
             'De systematische identificatie van zaakdossiers van dit ZAAKTYPE overeenkomstig logisch gestructureerde '
             'conventies, methoden en procedureregels.'))
-    vertrouwelijkheidaanduiding = models.CharField(
-        _('vertrouwelijkheidaanduiding'), max_length=20, choices=VertrouwelijkheidAanduiding.choices,
-        help_text=_('Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE '
-                    'voor de openbaarheid bestemd zijn.')
-    )
     # TODO [KING]: waardenverzameling heeft de volgende regel, momenteel valideren we hier niets,
     # maar wellicht kan het wel: Indien het om een zaaktype in een catalogus voor een specifieke organisatie gaat,
     # dan de naam van een Organisatorische eenheid of Medewerker overeenkomstig het RGBZ.
@@ -354,34 +329,56 @@ class ZaakType(GeldigheidMixin, models.Model):
         help_text=_('De (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor '
                     'de uitvoering van zaken van het ZAAKTYPE.')
     )
-    publicatie_indicatie = models.CharField(
-        _('publicatie indicatie'), max_length=1, choices=JaNee.choices,
-        help_text=_('Aanduiding of (het starten van) een ZAAK van AN1 dit ZAAKTYPE gepubliceerd moet worden.')
+    publicatie_indicatie = models.BooleanField(
+        _('publicatie indicatie'),
+        help_text=_('Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden.')
     )
-    publicatietekst = models.CharField(_('publicatietekst'), max_length=1000, blank=True, null=True, help_text=_(
-        'De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.'))
+    publicatietekst = models.TextField(
+        _('publicatietekst'), blank=True,
+        help_text=_('De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.')
+    )
     verantwoordingsrelatie = ArrayField(
         models.CharField(_('verantwoordingsrelatie'), max_length=40),
-        blank=True, help_text=_(
-            'De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording. '
-            '(Gebruik een komma om waarden van elkaar te onderscheiden.)'))
+        blank=True, default=list,
+        help_text=_('De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording.')
+    )
     versiedatum = models.DateField(_('versiedatum'), help_text=_(
         'De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden'))
 
     #
     # groepsattribuutsoorten
     #
-    product_dienst = models.ManyToManyField('datamodel.ProductDienst', verbose_name=_('product/dienst'), help_text=_(
-        'Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.'))
+    # TODO: should have shape validator, because the API resources need to conform
+    producten_of_diensten = ArrayField(
+        models.URLField(_("URL naar product/dienst"), max_length=1000),
+        help_text=_("Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.")
+    )
+
+    # TODO: validate shape & populate?
+    selectielijst_procestype = models.URLField(
+        _("selectielijst procestype"), blank=True,
+        help_text=_("Een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken. "
+                    "URL naar de referentielijsten API.")
+    )
+
     formulier = models.ManyToManyField(
         'datamodel.Formulier', verbose_name=_('formulier'), blank=True,
         help_text=_('Formulier Het formulier dat ZAAKen van dit ZAAKTYPE initieert.')
     )
-    referentieproces = models.ForeignKey(
-        'datamodel.ReferentieProces', verbose_name=_('referentieproces'),
-        help_text=_('Verwijzing naar een gelijknamig groepattribuutsoort.'),
-        on_delete=models.CASCADE
+
+    referentieproces_naam = models.CharField(
+        _('referentieprocesnaam'), max_length=80,
+        help_text=_('De naam van het Referentieproces.')
     )
+    referentieproces_link = models.URLField(
+        _('referentieproceslink'), blank=True,
+        help_text=_('De URL naar de beschrijving van het Referentieproces')
+    )
+    referentieproces = GegevensGroepType({
+        'naam': referentieproces_naam,
+        'link': referentieproces_link,
+    }, optional=('link',))
+
     broncatalogus = models.ForeignKey(
         'datamodel.BronCatalogus', verbose_name=_('broncatalogus'),
         blank=True, null=True, on_delete=models.CASCADE,
@@ -396,11 +393,6 @@ class ZaakType(GeldigheidMixin, models.Model):
     #
     # relaties
     #
-    heeft_gerelateerd = models.ManyToManyField(
-        'datamodel.ZaakType', verbose_name=_('heeft gerelateerd'), blank=True,
-        related_name='zaak_typen_heeft_gerelateerd', through='datamodel.ZaakTypenRelatie',
-        help_text=_('De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.')
-    )
     is_deelzaaktype_van = models.ManyToManyField(
         'datamodel.ZaakType', verbose_name=_('is deelzaaktype van'), blank=True,
         related_name='zaak_typen_is_deelzaaktype_van',
@@ -413,7 +405,6 @@ class ZaakType(GeldigheidMixin, models.Model):
     )
 
     class Meta:
-        mnemonic = 'ZKT'
         unique_together = ('catalogus', 'zaaktype_identificatie')
         verbose_name = _('Zaaktype')
         verbose_name_plural = _('Zaaktypen')
@@ -423,7 +414,7 @@ class ZaakType(GeldigheidMixin, models.Model):
             'catalogus',
             'publicatie_indicatie',
             'verlenging_mogelijk',
-            'opschorting_aanhouding_mogelijk',
+            'opschorting_en_aanhouding_mogelijk',
             'indicatie_intern_of_extern',
             'vertrouwelijkheidaanduiding',
 
@@ -442,6 +433,14 @@ class ZaakType(GeldigheidMixin, models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.catalogus, self.zaaktype_identificatie)
+
+    def save(self, *args, **kwargs):
+        if not self.verlenging_mogelijk:
+            self.verlengingstermijn = None
+        elif not self.verlengingstermijn:
+            raise ValueError("'verlengingstermijn' must be set if 'verlenging_mogelijk' is set.")
+
+        super().save(*args, **kwargs)
 
     def clean(self):
         super().clean()

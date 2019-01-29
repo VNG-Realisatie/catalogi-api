@@ -45,46 +45,44 @@ class ZaakTypeAPITests(APITestCase):
             'url': f'http://testserver{self.zaaktype_detail_url}',
             # 'ingangsdatumObject': '2018-01-01',
             # 'einddatumObject': None,
-            # 'vertrouwelijkheidAanduiding': '',
             'identificatie': self.zaaktype.zaaktype_identificatie,
-            # 'product_dienst': [{
-            #     'naam': self.zaaktype.product_dienst.get().naam,
-            #     'link': None
-            # }],
+            'productenOfDiensten': ['https://example.com/product/123'],
             # 'broncatalogus': None,
-            # 'publicatieIndicatie': '',
-            # 'trefwoord': [],
+            'publicatieIndicatie': self.zaaktype.publicatie_indicatie,
+            'trefwoorden': [],
             # 'zaakcategorie': None,
-            # 'toelichting': None,
-            # 'handelingInitiator': '',
+            'toelichting': '',
+            'handelingInitiator': self.zaaktype.handeling_initiator,
             # 'bronzaaktype': None,
-            # 'aanleiding': '',
-            # 'verlengingstermijn': 30,
-            # 'opschortingAanhouding': '',
+            'aanleiding': self.zaaktype.aanleiding,
+            'verlengingstermijn': None if not self.zaaktype.verlenging_mogelijk else 'P30D',
+            'opschortingEnAanhoudingMogelijk': self.zaaktype.opschorting_en_aanhouding_mogelijk,
             'catalogus': f'http://testserver{self.catalogus_detail_url}',
-            # 'indicatieInternOfExtern': '',
-            # 'verlengingmogelijk': '',
-            # 'handelingBehandelaar': '',
-            # 'doel': '',
+            'indicatieInternOfExtern': self.zaaktype.indicatie_intern_of_extern,
+            'verlengingMogelijk': self.zaaktype.verlenging_mogelijk,
+            'handelingBehandelaar': self.zaaktype.handeling_behandelaar,
+            'doel': self.zaaktype.doel,
             # 'versiedatum': '2018-01-01',
             # 'formulier': [],
-            # 'onderwerp': '',
-            # 'publicatietekst': None,
+            'onderwerp': self.zaaktype.onderwerp,
+            'publicatietekst': '',
             'omschrijvingGeneriek': '',
-            # 'verantwoordingsrelatie': [],
+            'vertrouwelijkheidaanduiding': '',
+            'verantwoordingsrelatie': [],
+            'selectielijstProcestype': self.zaaktype.selectielijst_procestype,
             # 'isDeelzaaktypeVan': [],
             'servicenorm': None,
             # 'archiefclassificatiecode': None,
-            # 'referentieproces': {
-            #     'link': None,
-            #     'naam': self.zaaktype.referentieproces.naam,
-            # },
+            'referentieproces': {
+                'naam': self.zaaktype.referentieproces_naam,
+                'link': '',
+            },
             'doorlooptijd': "P30D",
             # 'verantwoordelijke': '',
             'omschrijving': '',
-            # 'heeftGerelateerd': [],
-            # 'heeftRelevantInformatieobjecttype': [],
             'eigenschappen': [],
+            'informatieobjecttypen': [],
+            'gerelateerdeZaaktypen': [],
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantResultaattype': [],
             # 'heeftRelevantZaakObjecttype': [],
@@ -94,44 +92,57 @@ class ZaakTypeAPITests(APITestCase):
         }
         self.assertEqual(expected, response.json())
 
+    @skip('Not implemented yet')
     def test_formulier(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_informatieobjecttype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_resultaattype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_besluittype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_relevant_zaakobjecttype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_eigenschap(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_roltype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_statustype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_heeft_gerelateerd(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_is_deelzaaktype_van(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_verantwoordingsrelatie(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_bronzaaktype(self):
-        pass
+        raise NotImplementedError()
 
+    @skip('Not implemented yet')
     def test_broncatalogus(self):
-        pass
+        raise NotImplementedError()
 
 
 @skip("Not in current MVP")

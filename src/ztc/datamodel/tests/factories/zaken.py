@@ -1,10 +1,11 @@
 from datetime import date, timedelta
 
 import factory
+import factory.fuzzy
 
+from ztc.datamodel.choices import InternExtern
 from ztc.datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
-    ZaakObjectType, ZaakType
+    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType
 )
 
 from .catalogus import CatalogusFactory
@@ -30,25 +31,11 @@ ZAAKTYPEN = [
 ]
 
 
-class ProductDienstFactory(factory.django.DjangoModelFactory):
-    naam = factory.Sequence(lambda n: 'ProductDienst {}'.format(n))
-
-    class Meta:
-        model = ProductDienst
-
-
 class FormulierFactory(factory.django.DjangoModelFactory):
     naam = factory.Sequence(lambda n: 'Formulier {}'.format(n))
 
     class Meta:
         model = Formulier
-
-
-class ReferentieProcesFactory(factory.django.DjangoModelFactory):
-    naam = factory.Sequence(lambda n: 'ReferentieProces {}'.format(n))
-
-    class Meta:
-        model = ReferentieProces
 
 
 class BronCatalogusFactory(factory.django.DjangoModelFactory):
@@ -68,12 +55,19 @@ class BronZaakTypeFactory(factory.django.DjangoModelFactory):
 
 class ZaakTypeFactory(factory.django.DjangoModelFactory):
     zaaktype_identificatie = factory.Sequence(lambda n: n)
+    doel = factory.Faker('paragraph')
+    aanleiding = factory.Faker('paragraph')
+    indicatie_intern_of_extern = factory.fuzzy.FuzzyChoice(choices=InternExtern.values)
+    handeling_initiator = factory.fuzzy.FuzzyChoice(['aanvragen', 'indienen', 'melden'])
+    onderwerp = factory.fuzzy.FuzzyChoice(['Evenementvergunning', 'Geboorte', 'Klacht'])
+    handeling_behandelaar = factory.fuzzy.FuzzyChoice(['behandelen', 'uitvoeren', 'vaststellen', 'onderhouden'])
     doorlooptijd_behandeling = timedelta(days=30)
-    verlengingstermijn = 30
-    trefwoord = []  # ArrayField has blank=True but not null=True
-    verantwoordingsrelatie = []  # ArrayField has blank=True but not null=True
+    opschorting_en_aanhouding_mogelijk = factory.Faker('pybool')
+    verlenging_mogelijk = factory.Faker('pybool')
+    publicatie_indicatie = factory.Faker('pybool')
     catalogus = factory.SubFactory(CatalogusFactory)
-    referentieproces = factory.SubFactory(ReferentieProcesFactory)
+    referentieproces_naam = factory.Sequence(lambda n: 'ReferentieProces {}'.format(n))
+    producten_of_diensten = ['https://example.com/product/123']
 
     datum_begin_geldigheid = date(2018, 1, 1)
     versiedatum = date(2018, 1, 1)
@@ -84,6 +78,12 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ZaakType
 
+    @factory.lazy_attribute
+    def verlengingstermijn(obj):
+        if not obj.verlenging_mogelijk:
+            return None
+        return timedelta(days=30)
+
     @factory.post_generation
     def is_deelzaaktype_van(self, create, extracted, **kwargs):
         # optional M2M, do nothing when no arguments are passed
@@ -93,15 +93,6 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
         if extracted:
             for zaaktype in extracted:
                 self.is_deelzaaktype_van.add(zaaktype)
-
-    @factory.post_generation
-    def product_dienst(self, create, extracted, **kwargs):
-        # required M2M
-        if not extracted:
-            extracted = [ProductDienstFactory.create()]
-
-        for product_dienst in extracted:
-            self.product_dienst.add(product_dienst)
 
 
 class ZaakObjectTypeFactory(factory.django.DjangoModelFactory):

@@ -1,87 +1,63 @@
+from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import (
-    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime,
-    ZaakTypenRelatie
+    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime
 )
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
 
 
-class ZaakTypenRelatieSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
-    parent_lookup_kwargs = {
-        'catalogus_pk': 'zaaktype_van__catalogus__pk',
-        'zaaktype_pk': 'zaaktype_van__pk',
-    }
-
-    gerelateerde = NestedHyperlinkedRelatedField(
-        read_only=True,
-        source='zaaktype_naar',
-        view_name='api:zaaktype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'catalogus__pk',
-        },
-    )
-
-    class Meta:
-        model = ZaakTypenRelatie
-        ref_name = model.__name__
-        source_mapping = {
-            'aardRelatie': 'aard_relatie',
-
-        }
-        fields = (
-            'url',
-            'gerelateerde',
-            'aardRelatie',
-            'toelichting',
-        )
-        extra_kwargs = {
-            'url': {'view_name': 'api:zaaktypenrelatie-detail'},
-        }
-
-
-class ZaakTypeInformatieObjectTypeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
     """
-    ZKTIOT-basis
+    Represent a ZaakTypeInformatieObjectType.
 
     Relatie met informatieobjecttype dat relevant is voor zaaktype.
     """
-    parent_lookup_kwargs = {
-        'catalogus_pk': 'zaaktype__catalogus__pk',
-        'zaaktype_pk': 'zaaktype__pk',
-    }
-
-    gerelateerde = NestedHyperlinkedRelatedField(
+    zaaktype = NestedHyperlinkedRelatedField(
         read_only=True,
-        source='informatie_object_type',
-        view_name='api:informatieobjecttype-detail',
+        view_name='zaaktype-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
-            'catalogus_pk': 'catalogus__pk',
+            'catalogus_uuid': 'catalogus__uuid',
+        },
+    )
+    informatie_object_type = NestedHyperlinkedRelatedField(
+        read_only=True,
+        view_name='informatieobjecttype-detail',
+        lookup_field='uuid',
+        parent_lookup_kwargs={
+            'catalogus_uuid': 'catalogus__uuid',
+        },
+    )
+    status_type = NestedHyperlinkedRelatedField(
+        read_only=True,
+        view_name='statustype-detail',
+        lookup_field='uuid',
+        parent_lookup_kwargs={
+            'zaaktype_uuid': 'zaaktype__uuid',
+            'catalogus_uuid': 'zaaktype__catalogus__uuid',
         },
     )
 
     class Meta:
         model = ZaakInformatieobjectType
-        ref_name = model.__name__
-        source_mapping = {
-            'zdt.volgnummer': 'volgnummer',
-            'zdt.richting': 'richting',
-        }
-
         fields = (
             'url',
-            'gerelateerde',
-            'zdt.volgnummer',
-            'zdt.richting',
+            'zaaktype',
+            'informatie_object_type',
+            'volgnummer',
+            'richting',
+            'status_type',
         )
         extra_kwargs = {
-            'url': {'view_name': 'api:zktiot-detail'},
+            'url': {'lookup_field': 'uuid'},
         }
 
 
-class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
+                                                      NestedHyperlinkedModelSerializer):
     """
     RSTIOTARC-basis
 

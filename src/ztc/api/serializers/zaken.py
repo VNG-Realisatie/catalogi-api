@@ -1,10 +1,13 @@
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from zds_schema.serializers import GegevensGroepSerializer
 
 from ...datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ProductDienst, ReferentieProces,
-    ZaakObjectType, ZaakType
+    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,
+    ZaakTypenRelatie
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 
@@ -49,23 +52,9 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
         }
 
 
-class ProductDienstSerializer(ModelSerializer):
-    class Meta:
-        model = ProductDienst
-        ref_name = None  # Inline
-        fields = ('naam', 'link')
-
-
 class FormulierSerializer(ModelSerializer):
     class Meta:
         model = Formulier
-        ref_name = None  # Inline
-        fields = ('naam', 'link')
-
-
-class ReferentieProcesSerializer(ModelSerializer):
-    class Meta:
-        model = ReferentieProces
         ref_name = None  # Inline
         fields = ('naam', 'link')
 
@@ -91,14 +80,34 @@ class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
         )
 
 
+class ReferentieProcesSerializer(GegevensGroepSerializer):
+    class Meta:
+        model = ZaakType
+        gegevensgroep = 'referentieproces'
+
+
+class ZaakTypenRelatieSerializer(ModelSerializer):
+    class Meta:
+        model = ZaakTypenRelatie
+        fields = (
+            'zaaktype',
+            'aard_relatie',
+            'toelichting'
+        )
+        extra_kwargs = {
+            'zaaktype': {'source': 'gerelateerd_zaaktype'},
+        }
+
+
 class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     parent_lookup_kwargs = {
         'catalogus_uuid': 'catalogus__uuid',
     }
 
-    # product_dienst = ProductDienstSerializer(many=True, read_only=True)
     # formulier = FormulierSerializer(many=True, read_only=True)
-    # referentieproces = ReferentieProcesSerializer(read_only=True)
+    referentieproces = ReferentieProcesSerializer(
+        required=True, help_text=_("Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.")
+    )
     # broncatalogus = BronCatalogusSerializer(read_only=True)
     # bronzaaktype = BronZaakTypeSerializer(read_only=True)
 
@@ -112,26 +121,10 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'zaaktype_pk': 'is_relevant_voor__pk',
     #     }
     # )
-    # heeftRelevantBesluittype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_relevant_besluittype',
-    #     view_name='api:besluittype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'catalogus__pk'
-    #     }
-    # )
-    # # TODO: currently only show one side of the relations for a ZaakType.
-    # heeftGerelateerd = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='zaaktypenrelatie_van',
-    #     view_name='api:zaaktypenrelatie-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype_van__catalogus__pk',
-    #         'zaaktype_pk': 'zaaktype_van__pk',
-    #     }
-    # )
+    gerelateerde_zaaktypen = ZaakTypenRelatieSerializer(
+        many=True, source='zaaktypenrelaties',
+        help_text="De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE."
+    )
     # isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -141,16 +134,15 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'catalogus_pk': 'catalogus__pk'
     #     },
     # )
-    # heeftRelevantInformatieobjecttype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='zaakinformatieobjecttype_set',
-    #     view_name='api:zktiot-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype__catalogus__pk',
-    #         'zaaktype_pk': 'zaaktype__pk',
-    #     }
-    # )
+    informatieobjecttypen = NestedHyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        source='heeft_relevant_informatieobjecttype',
+        view_name='informatieobjecttype-detail',
+        parent_lookup_kwargs={
+            'catalogus_uuid': 'catalogus__uuid',
+        }
+    )
     # heeftRelevantResultaattype = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -199,6 +191,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     besluittypen = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
+        label=_("heeft relevante besluittypen"),
         source='besluittype_set',
         view_name='besluittype-detail',
         lookup_field='uuid',
@@ -214,31 +207,32 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'identificatie',
             'omschrijving',
             'omschrijving_generiek',
+            'vertrouwelijkheidaanduiding',
             # 'zaakcategorie',
-            # 'doel',
-            # 'aanleiding',
-            # 'toelichting',
-            # 'indicatieInternOfExtern',
-            # 'handelingInitiator',
-            # 'onderwerp',
-            # 'handelingBehandelaar',
+            'doel',
+            'aanleiding',
+            'toelichting',
+            'indicatie_intern_of_extern',
+            'handeling_initiator',
+            'onderwerp',
+            'handeling_behandelaar',
             'doorlooptijd',
             'servicenorm',
-            # 'opschortingAanhouding',
-            # 'verlengingmogelijk',
-            # 'verlengingstermijn',
-            # 'trefwoord',
+            'opschorting_en_aanhouding_mogelijk',
+            'verlenging_mogelijk',
+            'verlengingstermijn',
+            'trefwoorden',
             # 'archiefclassificatiecode',
             # 'vertrouwelijkheidAanduiding',
             # 'verantwoordelijke',
-            # 'publicatieIndicatie',
-            # 'publicatietekst',
+            'publicatie_indicatie',
+            'publicatietekst',
+            'verantwoordingsrelatie',
 
-            # # groepsattribuutsoorten
-            # 'product_dienst',
+            'producten_of_diensten',
+            'selectielijst_procestype',
             # 'formulier',
-            # 'referentieproces',
-            # 'verantwoordingsrelatie',
+            'referentieproces',
             # 'broncatalogus',
             # 'bronzaaktype',
 
@@ -250,14 +244,13 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'catalogus',
             'statustypen',
             'eigenschappen',
+            'informatieobjecttypen',
             'roltypen',
             'besluittypen',
-            # # 'heeftRelevantInformatieobjecttype',
-            # # 'heeftRelevantBesluittype',
+            'gerelateerde_zaaktypen',
             # # 'heeftRelevantZaakObjecttype',
             # # 'heeftRelevantResultaattype',
             # # 'isDeelzaaktypeVan',
-            # # 'heeftGerelateerd',
         )
         extra_kwargs = {
             'url': {

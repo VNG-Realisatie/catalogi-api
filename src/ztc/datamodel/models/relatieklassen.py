@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +15,11 @@ class ZaakInformatieobjectType(models.Model):
 
     Kenmerken van de relatie ZAAKTYPE heeft relevante INFORMATIEOBJECTTYPEn.
     """
+    uuid = models.UUIDField(
+        unique=True, default=uuid.uuid4,
+        help_text="Unieke resource identifier (UUID4)"
+    )
+
     zaaktype = models.ForeignKey('datamodel.Zaaktype', verbose_name=_('zaaktype'), on_delete=models.CASCADE)
     informatie_object_type = models.ForeignKey(
         'datamodel.InformatieObjectType', on_delete=models.CASCADE,
@@ -27,6 +34,7 @@ class ZaakInformatieobjectType(models.Model):
         'bij zaken van het gerelateerde ZAAKTYPE.'))
 
     # this is the relation that is described on StatusType in the specification
+    # TODO: validate that statustype is in fact a status type of self.zaaktype
     status_type = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
         on_delete=models.CASCADE,
@@ -118,26 +126,36 @@ class ZaakTypenRelatie(models.Model):
 
     Kenmerken van de relatie ZAAKTYPE heeft gerelateerde ZAAKTYPE.
     """
-    zaaktype_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('zaaktype van'),
-                                     related_name='zaaktypenrelatie_van', on_delete=models.CASCADE)
-    zaaktype_naar = models.ForeignKey('datamodel.ZaakType', verbose_name=_('zaaktype naar'),
-                                      related_name='zaaktypenrelatie_naar', on_delete=models.CASCADE)
+    zaaktype = models.ForeignKey(
+        'datamodel.ZaakType', verbose_name=_('zaaktype van'),
+        related_name='zaaktypenrelaties', on_delete=models.CASCADE
+    )
 
-    aard_relatie = models.CharField(_('aard relatie'), max_length=15, choices=AardRelatieChoices.choices, help_text=_(
-        'Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE'))
-    toelichting = models.CharField(_('toelichting'), max_length=255, blank=True, null=True, help_text=_(
-        'Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN.'))
+    # TODO: add (shape) validator
+    gerelateerd_zaaktype = models.URLField(
+        _("gerelateerd zaaktype"),
+        help_text=_("URL referentie naar het gerelateerde zaaktype, mogelijks in een extern ZTC.")
+    )
+    aard_relatie = models.CharField(
+        _('aard relatie'), max_length=15, choices=AardRelatieChoices.choices,
+        help_text=_('Omschrijving van de aard van de relatie van zaken van het '
+                    'ZAAKTYPE tot zaken van het andere ZAAKTYPE')
+    )
+    toelichting = models.CharField(
+        _('toelichting'), max_length=255, blank=True,
+        help_text=_('Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN.')
+    )
 
     class Meta:
         # NOTE: The uniqueness is not explicitly defined in specification:
-        unique_together = ('zaaktype_van', 'zaaktype_naar')
+        unique_together = ('zaaktype', 'gerelateerd_zaaktype')
         verbose_name = _('Zaaktypenrelatie')
         verbose_name_plural = _('Zaaktypenrelaties')
         ordering = ('pk', )
 
         filter_fields = (
-            'zaaktype_van',
-            'zaaktype_naar',
+            'zaaktype',
+            'gerelateerd_zaaktype',
             'aard_relatie',
         )
         ordering_fields = filter_fields
@@ -146,4 +164,4 @@ class ZaakTypenRelatie(models.Model):
         )
 
     def __str__(self):
-        return '{} - {}'.format('zaaktype_van', 'zaaktype_naar', )
+        return '{} - {}'.format('zaaktype', 'gerelateerd_zaaktype', )

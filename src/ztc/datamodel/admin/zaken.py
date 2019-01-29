@@ -4,11 +4,11 @@ from django.utils.translation import ugettext_lazy as _
 from ztc.utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 
 from ..models import (
-    BronCatalogus, BronZaakType, Eigenschap, Formulier, ProductDienst,
-    ReferentieProces, ResultaatType, RolType, StatusType, ZaakObjectType,
-    ZaakType, ZaakTypenRelatie
+    BronCatalogus, BronZaakType, Eigenschap, Formulier, ResultaatType, RolType,
+    StatusType, ZaakObjectType, ZaakType, ZaakTypenRelatie
 )
 from .eigenschap import EigenschapAdmin
+from .forms import ZaakTypeForm
 from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 from .resultaattype import ResultaatTypeAdmin
 from .roltype import RolTypeAdmin
@@ -72,15 +72,15 @@ class ResultaatTypeInline(EditInlineAdminMixin, admin.TabularInline):
 
 class ZaakTypenRelatieInline(admin.TabularInline):
     model = ZaakTypenRelatie
-    fk_name = 'zaaktype_van'
+    fk_name = 'zaaktype'
     extra = 1
-    raw_id_fields = ('zaaktype_naar', )
 
 
 @admin.register(ZaakType)
 class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                     GeldigheidAdminMixin, admin.ModelAdmin):
     model = ZaakType
+    form = ZaakTypeForm
 
     # List
     list_display = ('zaaktype_identificatie', 'zaaktype_omschrijving', 'zaakcategorie', 'catalogus')
@@ -102,30 +102,34 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                 'handeling_behandelaar',
                 'doorlooptijd_behandeling',
                 'servicenorm_behandeling',
-                'opschorting_aanhouding_mogelijk',
+                'opschorting_en_aanhouding_mogelijk',
                 'verlenging_mogelijk',
                 'verlengingstermijn',
-                'trefwoord',
+                'trefwoorden',
                 'archiefclassificatiecode',
                 'vertrouwelijkheidaanduiding',
                 'verantwoordelijke',
 
-
-                'product_dienst',  # m2m
+                'producten_of_diensten',
                 'formulier',  # m2m
 
                 'verantwoordingsrelatie',
                 'versiedatum',  # ??
-                'referentieproces',
                 'broncatalogus',  #
                 'bronzaaktype',  # dit is het model
             )
+        }),
+        (_('Referentieproces'), {
+            'fields': (
+                'referentieproces_naam',
+                'referentieproces_link'
+            ),
         }),
         (_('Publicatie'), {
             'fields': (
                 'publicatie_indicatie',
                 'publicatietekst',
-            )
+            ),
         }),
         (_('Relaties'), {
             'fields': (
@@ -138,13 +142,16 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
     )
     filter_horizontal = (
         'is_deelzaaktype_van',
-        'product_dienst',
         'formulier',
     )
     raw_id_fields = ('catalogus', )
     inlines = (
-        ZaakTypenRelatieInline,  # heeft_gerelateerd
-        StatusTypeInline, ZaakObjectTypeInline, RolTypeInline, EigenschapInline, ResultaatTypeInline,
+        ZaakTypenRelatieInline,
+        StatusTypeInline,
+        ZaakObjectTypeInline,
+        RolTypeInline,
+        EigenschapInline,
+        ResultaatTypeInline,
     )
 
     def get_object_actions(self, obj):
@@ -175,20 +182,9 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
 #
 # models for ZaakType
 #
-@admin.register(ProductDienst)
-class ProductDienstAdmin(admin.ModelAdmin):
-    list_display = ['naam']
-    fields = ('naam', 'link')
-
 
 @admin.register(Formulier)
 class FormulierAdmin(admin.ModelAdmin):
-    list_display = ['naam']
-    fields = ('naam', 'link')
-
-
-@admin.register(ReferentieProces)
-class ReferentieProcesAdmin(admin.ModelAdmin):
     list_display = ['naam']
     fields = ('naam', 'link')
 

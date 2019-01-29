@@ -10,7 +10,10 @@ from ...models import (
 
 class ZaakInformatieobjectTypeFactory(factory.django.DjangoModelFactory):
     zaaktype = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
-    informatie_object_type = factory.SubFactory('ztc.datamodel.tests.factories.InformatieObjectTypeFactory')
+    informatie_object_type = factory.SubFactory(
+        'ztc.datamodel.tests.factories.InformatieObjectTypeFactory',
+        zaaktypes=None
+    )
     volgnummer = factory.sequence(lambda x: x)
     richting = RichtingChoices.inkomend
 
@@ -28,8 +31,8 @@ class ZaakInformatieobjectTypeArchiefregimeFactory(factory.django.DjangoModelFac
 
 
 class ZaakTypenRelatieFactory(factory.django.DjangoModelFactory):
-    zaaktype_van = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
-    zaaktype_naar = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
+    zaaktype = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
+    gerelateerd_zaaktype = factory.Faker('url')
 
     class Meta:
         model = ZaakTypenRelatie

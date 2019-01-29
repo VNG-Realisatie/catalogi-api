@@ -1,8 +1,9 @@
 import uuid
 
-from django.core.validators import validate_integer
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+from zds_schema.fields import RSINField
 
 from ..validators import validate_uppercase
 
@@ -34,11 +35,8 @@ class Catalogus(models.Model):
         help_text=_("Een afkorting waarmee wordt aangegeven voor welk domein "
                     "in een CATALOGUS ZAAKTYPEn zijn uitgewerkt.")
     )
-    # TODO [KING]: rsin is gespecificeerd als N9, ivm voorloopnullen gekozen voor CharField.
-    # Geen waardenverzameling gedefinieerd
-    # TODO: dit moet ook zo in zrc!
-    rsin = models.CharField(
-        _('rsin'), max_length=9, validators=[validate_integer],
+    rsin = RSINField(
+        _('rsin'),
         help_text=_("Het door een kamer toegekend uniek nummer voor de INGESCHREVEN "
                     "NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS.")
     )
