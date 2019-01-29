@@ -2973,7 +2973,7 @@
                 },
                 "reactietermijn": {
                     "title": "Reactietermijn",
-                    "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is. Specifieer de duur als 'DD 00:00'",
+                    "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.",
                     "type": "string"
                 },
                 "publicatieIndicatie": {
@@ -2988,7 +2988,7 @@
                 },
                 "publicatietermijn": {
                     "title": "Publicatietermijn",
-                    "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven. Specifieer de duur als 'DD 00:00'",
+                    "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.",
                     "type": "string"
                 },
                 "toelichting": {
@@ -3202,12 +3202,12 @@
                 },
                 "doorlooptijd": {
                     "title": "Doorlooptijd",
-                    "description": "De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen. Specifieer de duur als 'DD 00:00'",
+                    "description": "De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen.",
                     "type": "string"
                 },
                 "servicenorm": {
                     "title": "Servicenorm",
-                    "description": "De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s). Specifieer de duur als 'DD 00:00'",
+                    "description": "De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s).",
                     "type": "string"
                 },
                 "opschortingEnAanhoudingMogelijk": {
@@ -3222,7 +3222,7 @@
                 },
                 "verlengingstermijn": {
                     "title": "Verlengingstermijn",
-                    "description": "De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als 'DD 00:00'",
+                    "description": "De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd.",
                     "type": "string"
                 },
                 "trefwoorden": {
