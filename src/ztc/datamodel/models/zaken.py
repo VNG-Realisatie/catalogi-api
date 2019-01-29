@@ -350,7 +350,7 @@ class ZaakType(GeldigheidMixin, models.Model):
     #
     # TODO: should have shape validator, because the API resources need to conform
     producten_of_diensten = ArrayField(
-        models.URLField(_("URL naar product/dienst")),
+        models.URLField(_("URL naar product/dienst"), max_length=1000),
         help_text=_("Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.")
     )
 

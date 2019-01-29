@@ -2764,7 +2764,7 @@ components:
             title: URL naar product/dienst
             type: string
             format: uri
-            maxLength: 200
+            maxLength: 1000
             minLength: 1
         selectielijstProcestype:
           title: Selectielijst procestype
