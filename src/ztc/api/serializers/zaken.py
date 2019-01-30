@@ -139,6 +139,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         read_only=True,
         source='heeft_relevant_informatieobjecttype',
         view_name='informatieobjecttype-detail',
+        lookup_field='uuid',
         parent_lookup_kwargs={
             'catalogus_uuid': 'catalogus__uuid',
         }

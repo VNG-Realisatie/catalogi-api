@@ -2,6 +2,11 @@
 Wijzigingen
 ===========
 
+0.8.1 (2019-01-30)
+==================
+
+Fixed bug in URL-resolution Zaaktype.informatieobjecttypen
+
 0.8.0 (2019-01-30)
 ==================
 
