@@ -2,7 +2,7 @@
 Wijzigingen
 ===========
 
-0.8.0 (2019-01-??)
+0.8.0 (2019-01-30)
 ==================
 
 API-maturity feature release
