@@ -1,7 +1,9 @@
+import uuid
 from unittest import skip
 
 from django.urls import reverse
 
+from rest_framework import status
 from zds_schema.tests import get_operation_url
 
 from ztc.datamodel.tests.factories import (
@@ -91,6 +93,23 @@ class ZaakTypeAPITests(APITestCase):
             'besluittypen': [],
         }
         self.assertEqual(expected, response.json())
+
+    def test_get_detail_404(self):
+        url = get_operation_url(
+            'zaaktype_read',
+            catalogus_uuid=uuid.uuid4(),
+            uuid=uuid.uuid4()
+        )
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.json(), {
+            'code': 'not_found',
+            'title': "Niet gevonden.",
+            'status': 404,
+            'detail': "Some detail message",
+        })
 
     @skip('Not implemented yet')
     def test_formulier(self):
