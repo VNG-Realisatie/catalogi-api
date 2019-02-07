@@ -2,6 +2,14 @@
 Wijzigingen
 ===========
 
+0.8.2 (2019-02-07)
+==================
+
+Bump dependencies to get latest bugfixes
+
+* Bump to zds-schema 0.20.6
+* Bump to Django 2.0.10
+
 0.8.1 (2019-01-30)
 ==================
 
