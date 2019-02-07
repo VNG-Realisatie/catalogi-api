@@ -104,11 +104,17 @@ class ZaakTypeAPITests(APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.json(), {
+
+        resp_data = response.json()
+        del resp_data['instance']
+        self.assertEqual(resp_data, {
             'code': 'not_found',
             'title': "Niet gevonden.",
             'status': 404,
-            'detail': "Some detail message",
+            'detail': "Niet gevonden.",
+            'type': "http://testserver{}".format(
+                reverse('zds_schema:error-detail', kwargs={'exception_class': 'NotFound'})
+            )
         })
 
     @skip('Not implemented yet')
