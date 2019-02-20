@@ -40,7 +40,8 @@ class ResultaatType(GeldigheidMixin, models.Model):
         help_text="Unieke resource identifier (UUID4)"
     )
     zaaktype = models.ForeignKey(
-        'datamodel.ZaakType', verbose_name=_("is relevant voor"), on_delete=models.CASCADE,
+        'datamodel.ZaakType', verbose_name=_("is relevant voor"),
+        on_delete=models.CASCADE, related_name='resultaattypen',
         help_text=_("Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.")
     )
 
