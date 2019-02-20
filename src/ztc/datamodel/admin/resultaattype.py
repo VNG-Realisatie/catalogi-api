@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from .mixins import GeldigheidAdminMixin
 
 
 class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):
@@ -11,37 +11,40 @@ class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):
 
 
 @admin.register(ResultaatType)
-class ResultaatTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
     model = ResultaatType
 
     # List
-    list_display = ('resultaattypeomschrijving', 'selectielijstklasse')
+    list_display = ('omschrijving', '_omschrijving_generiek', 'selectielijstklasse', 'uuid')
+    ordering = ('zaaktype', 'omschrijving')
+    search_fields = (
+        'omschrijving',
+        'omschrijving_generiek',
+        'selectielijstklasse',
+        'toelichting',
+        'uuid',
+    )
 
     # Details
     fieldsets = (
         (_('Algemeen'), {
             'fields': (
-                'resultaattypeomschrijving',
-                'resultaattypeomschrijving_generiek',
-                'selectielijstklasse',
-                'archiefnominatie',
-                'archiefactietermijn',
-                'brondatum_archiefprocedure',
+                'zaaktype',
+                'omschrijving',
                 'toelichting',
-                'heeft_voor_brondatum_archiefprocedure_relevante',
-                'is_relevant_voor'
             )
         }),
-        (_('Relaties'), {
+        (_('Gemeentelijke selectielijst'), {
             'fields': (
-                'heeft_verplichte_zot',
-                'heeft_verplichte_ziot'
+                'omschrijving_generiek',
+                'selectielijstklasse',
             )
         }),
+        # (_('Relaties'), {
+        #     'fields': (
+        #         'heeft_verplichte_zot',
+        #         'heeft_verplichte_ziot'
+        #     )
+        # }),
     )
-    filter_horizontal = (
-        'heeft_verplichte_zot',
-        'heeft_verplichte_ziot',
-    )
-    raw_id_fields = ('heeft_voor_brondatum_archiefprocedure_relevante', 'is_relevant_voor', )
-    inlines = (ZaakInformatieobjectTypeArchiefregimeInline,)  # 'bepaalt_afwijkend_archiefregime_van',
+    raw_id_fields = ('zaaktype',)
