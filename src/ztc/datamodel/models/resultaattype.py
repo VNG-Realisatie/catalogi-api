@@ -4,6 +4,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 import requests
+from zds_schema.constants import (
+    Archiefnominatie, BrondatumArchiefprocedureAfleidingswijze
+)
+from zds_schema.descriptors import GegevensGroepType
 
 from .mixins import GeldigheidMixin
 
@@ -68,7 +72,35 @@ class ResultaatType(GeldigheidMixin, models.Model):
                     "uit de selectielijst API")
     )
 
+    # derived fields from selectielijstklasse
+    # NOTE: pending choices in zds-schema in https://github.com/VNG-Realisatie/gemma-zaken-common/pull/3
+    _archiefnominatie = models.CharField(
+        _("archiefnominatie"), default='', choices=Archiefnominatie.choices,
+        max_length=20, editable=False,
+        help_text=_("Aanduiding die aangeeft of ZAAKen met een resultaat van "
+                    "dit RESULTAATTYPE blijvend moeten worden bewaard of "
+                    "(op termijn) moeten worden vernietigd .")
+    )
+    _archiefactietermijn = models.DurationField(
+        _("archiefactietermijn"), null=True, editable=False,
+        help_text=_("De termijn, na het vervallen van het bedrjfsvoeringsbelang, "
+                    "waarna het zaakdossier (de ZAAK met alle bijbehorende "
+                    "INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit "
+                    "RESULTAATTYPE vernietigd of overgebracht (naar een "
+                    "archiefbewaarplaats) moet worden.")
+    )
+
     # TODO: brondatum archiefprocedure -> groepattribuut
+    # TODO: validate dependencies between fields
+    brondatum_archiefprocedure_afleidingswijze = models.CharField(
+        _("afleidingswijze brondatum"), max_length=20,
+        choices=BrondatumArchiefprocedureAfleidingswijze.choices,
+        help_text=_("Wijze van bepalen van de brondatum.")
+    )
+
+    brondatum_archiefprocedure = GegevensGroepType({
+        'afleidingswijze': brondatum_archiefprocedure_afleidingswijze,
+    })
 
     # meta-information - this is mostly informative
     toelichting = models.TextField(
