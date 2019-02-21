@@ -22,7 +22,7 @@ django-filter
 djangorestframework-camel-case
 djangorestframework-filters
 drf-yasg==1.9.1
-zds-schema==0.21.0
+zds-schema==0.21.1
 
 drf-flex-fields
 django-cors-middleware

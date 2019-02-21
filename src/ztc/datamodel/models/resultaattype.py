@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import requests
 from zds_schema.constants import (
-    Archiefnominatie, BrondatumArchiefprocedureAfleidingswijze
+    Archiefnominatie, BrondatumArchiefprocedureAfleidingswijze, ObjectTypes
 )
 from zds_schema.descriptors import GegevensGroepType
 
@@ -73,7 +73,6 @@ class ResultaatType(GeldigheidMixin, models.Model):
     )
 
     # derived fields from selectielijstklasse
-    # NOTE: pending choices in zds-schema in https://github.com/VNG-Realisatie/gemma-zaken-common/pull/3
     _archiefnominatie = models.CharField(
         _("archiefnominatie"), default='', choices=Archiefnominatie.choices,
         max_length=20, editable=False,
@@ -90,17 +89,43 @@ class ResultaatType(GeldigheidMixin, models.Model):
                     "archiefbewaarplaats) moet worden.")
     )
 
-    # TODO: brondatum archiefprocedure -> groepattribuut
     # TODO: validate dependencies between fields
     brondatum_archiefprocedure_afleidingswijze = models.CharField(
         _("afleidingswijze brondatum"), max_length=20,
         choices=BrondatumArchiefprocedureAfleidingswijze.choices,
         help_text=_("Wijze van bepalen van de brondatum.")
     )
+    # TODO: this could/should be validated against a remote OAS 3.0!
+    brondatum_archiefprocedure_datumkenmerk = models.CharField(
+        _("datumkenmerk"), max_length=80, blank=True,
+        help_text=_("Naam van de attribuutsoort van het procesobject dat "
+                    "bepalend is voor het einde van de procestermijn.")
+    )
+    brondatum_archiefprocedure_einddatum_bekend = models.BooleanField(
+        _("einddatum bekend"), default=False,
+        help_text=_("Indicatie dat de einddatum van het procesobject gedurende "
+                    "de uitvoering van de zaak bekend moet worden. Indien deze "
+                    "nog niet bekend is en deze waarde staat op `true`, dan "
+                    "kan de zaak (nog) niet afgesloten worden.")
+    )
+    brondatum_archiefprocedure_objecttype = models.CharField(
+        _("objecttype"), max_length=80,
+        blank=True, choices=ObjectTypes.choices,
+        help_text=_("Het soort object in de registratie dat het procesobject representeert.")
+    )
+    # TODO: standardize content so that consumers understand this?
+    brondatum_archiefprocedure_registratie = models.CharField(
+        _("registratie"), max_length=80,
+        blank=True, help_text=_("De naam van de registratie waarvan het procesobject deel uit maakt.")
+    )
 
     brondatum_archiefprocedure = GegevensGroepType({
         'afleidingswijze': brondatum_archiefprocedure_afleidingswijze,
-    })
+        'datumkenmerk': brondatum_archiefprocedure_datumkenmerk,
+        'einddatum_bekend': brondatum_archiefprocedure_einddatum_bekend,
+        'objecttype': brondatum_archiefprocedure_objecttype,
+        'registratie': brondatum_archiefprocedure_registratie,
+    }, optional=('datumkenmerk', 'einddatum_bekend', 'objecttype', 'registratie'))
 
     # meta-information - this is mostly informative
     toelichting = models.TextField(

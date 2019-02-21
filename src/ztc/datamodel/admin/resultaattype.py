@@ -40,6 +40,15 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
                 'selectielijstklasse',
             )
         }),
+        (_('Bepaling brondatum archiefprocedure'), {
+            'fields': (
+                'brondatum_archiefprocedure_afleidingswijze',
+                'brondatum_archiefprocedure_datumkenmerk',
+                'brondatum_archiefprocedure_einddatum_bekend',
+                'brondatum_archiefprocedure_objecttype',
+                'brondatum_archiefprocedure_registratie',
+            ),
+        }),
         # (_('Relaties'), {
         #     'fields': (
         #         'heeft_verplichte_zot',
