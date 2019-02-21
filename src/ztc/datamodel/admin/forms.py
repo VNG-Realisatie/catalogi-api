@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+import requests
 from zds_schema.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
 )
@@ -55,10 +56,64 @@ class ResultaatTypeForm(forms.ModelForm):
     def clean(self):
         super().clean()
 
+        self._clean_brondatum_archiefprocedure_afleidingswijze()
         self._clean_brondatum_archiefprocedure()
 
     def _get_field_label(self, field: str) -> str:
         return self.fields[field].label
+
+    def _clean_brondatum_archiefprocedure_afleidingswijze(self):
+        """
+        Validate that the afleidingswijze matches the selectielijstklasse.
+
+        There's two cases that are determined, the rest cannot be checked
+        automatically:
+
+        * if the selectielijst.resultaat.procestermijn is nihil, afleidingswijze
+          must be 'afgehandeld'
+        * if the selectielijst.resultaat.procestermijn is a fixed period,
+          afleidingswijze must be 'termijn'
+        """
+        MAPPING = {
+            'nihil': Afleidingswijze.afgehandeld,
+            'ingeschatte_bestaansduur_procesobject': Afleidingswijze.termijn
+        }
+        REVERSE_MAPPING = {value: key for key, value in MAPPING.items()}
+
+        selectielijstklasse = self.cleaned_data.get('selectielijstklasse')
+        afleidingswijze = self.cleaned_data.get('brondatum_archiefprocedure_afleidingswijze')
+
+        # nothing to validate, exit early...
+        if not selectielijstklasse or not afleidingswijze:
+            return
+
+        response = requests.get(selectielijstklasse)
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            msg = _("URL %s for selectielijstklasse did not resolve") % selectielijstklasse
+            raise forms.ValidationError({'selectielijstklasse': msg}) from exc
+
+        procestermijn = response.json()['procestermijn']
+
+        # mapping selectielijst -> ZTC
+        forward_not_ok = procestermijn in MAPPING and selectielijstklasse != MAPPING[procestermijn]
+        if forward_not_ok:
+            value_label = Afleidingswijze.labels[MAPPING[procestermijn]]
+            msg = _("Invalide afleidingswijze gekozen, volgens de selectielijst moet dit %s zijn") % value_label
+            self.add_error(
+                'brondatum_archiefprocedure_afleidingswijze',
+                forms.ValidationError(msg, code='invalid')
+            )
+
+        # mapping ZTC -> selectielijst!
+        backward_not_ok = afleidingswijze in REVERSE_MAPPING and REVERSE_MAPPING[afleidingswijze] != procestermijn
+        if backward_not_ok:
+            msg = _("Invalide afleidingswijze gekozen volgens de selectielijst")
+            self.add_error(
+                'brondatum_archiefprocedure_afleidingswijze',
+                forms.ValidationError(msg, code='invalid')
+            )
 
     def _clean_brondatum_archiefprocedure(self):
         """
@@ -70,6 +125,9 @@ class ResultaatTypeForm(forms.ModelForm):
 
         More rules are described in https://www.gemmaonline.nl/index.php/Imztc_2.2/doc
         /attribuutsoort/resultaattype.brondatum_archiefprocedure.einddatum_bekend
+
+        TODO: validate that selectielijstklasse is a valid option for zaaktype.procestype
+        TODO: if afleidingswijze is 'termijn', this needs to be set on the ResultaatType
         """
 
         # these values of afleidingswijze forbid you to set values for
