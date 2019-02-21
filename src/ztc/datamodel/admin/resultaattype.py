@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
+from .forms import ResultaatTypeForm
 from .mixins import GeldigheidAdminMixin
 
 
@@ -13,6 +14,7 @@ class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):
 @admin.register(ResultaatType)
 class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
     model = ResultaatType
+    form = ResultaatTypeForm
 
     # List
     list_display = ('omschrijving', '_omschrijving_generiek', 'selectielijstklasse', 'uuid')

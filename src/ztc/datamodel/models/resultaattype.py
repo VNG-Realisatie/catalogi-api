@@ -5,7 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 
 import requests
 from zds_schema.constants import (
-    Archiefnominatie, BrondatumArchiefprocedureAfleidingswijze, ObjectTypes
+    Archiefnominatie,
+    BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze, ObjectTypes
 )
 from zds_schema.descriptors import GegevensGroepType
 
@@ -92,7 +93,7 @@ class ResultaatType(GeldigheidMixin, models.Model):
     # TODO: validate dependencies between fields
     brondatum_archiefprocedure_afleidingswijze = models.CharField(
         _("afleidingswijze brondatum"), max_length=20,
-        choices=BrondatumArchiefprocedureAfleidingswijze.choices,
+        choices=Afleidingswijze.choices,
         help_text=_("Wijze van bepalen van de brondatum.")
     )
     # TODO: this could/should be validated against a remote OAS 3.0!
