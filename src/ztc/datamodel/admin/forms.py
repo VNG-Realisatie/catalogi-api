@@ -56,11 +56,38 @@ class ResultaatTypeForm(forms.ModelForm):
     def clean(self):
         super().clean()
 
+        self._clean_selectielijstklasse()
         self._clean_brondatum_archiefprocedure_afleidingswijze()
         self._clean_brondatum_archiefprocedure()
 
     def _get_field_label(self, field: str) -> str:
         return self.fields[field].label
+
+    def _clean_selectielijstklasse(self):
+        """
+        Validate that the selectielijstklasse is relevant for the zaaktype.procestype
+        """
+        selectielijstklasse = self.cleaned_data.get('selectielijstklasse')
+        zaaktype = self.cleaned_data.get('zaaktype')
+
+        if not selectielijstklasse or not zaaktype:
+            # nothing to do
+            return
+
+        response = requests.get(selectielijstklasse)
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            msg = _("URL %s for selectielijstklasse did not resolve") % selectielijstklasse
+            raise forms.ValidationError({'selectielijstklasse': msg}) from exc
+
+        procestype = response.json()['procesType']
+        if procestype != zaaktype.selectielijst_procestype:
+            msg = _("De selectielijstklasse hoort niet bij het selectielijst procestype van het zaaktype")
+            self.add_error(
+                'selectielijstklasse',
+                forms.ValidationError(msg, code='invalid')
+            )
 
     def _clean_brondatum_archiefprocedure_afleidingswijze(self):
         """
@@ -88,12 +115,6 @@ class ResultaatTypeForm(forms.ModelForm):
             return
 
         response = requests.get(selectielijstklasse)
-        try:
-            response.raise_for_status()
-        except requests.HTTPError as exc:
-            msg = _("URL %s for selectielijstklasse did not resolve") % selectielijstklasse
-            raise forms.ValidationError({'selectielijstklasse': msg}) from exc
-
         procestermijn = response.json()['procestermijn']
 
         # mapping selectielijst -> ZTC
@@ -126,7 +147,6 @@ class ResultaatTypeForm(forms.ModelForm):
         More rules are described in https://www.gemmaonline.nl/index.php/Imztc_2.2/doc
         /attribuutsoort/resultaattype.brondatum_archiefprocedure.einddatum_bekend
 
-        TODO: validate that selectielijstklasse is a valid option for zaaktype.procestype
         TODO: if afleidingswijze is 'termijn', this needs to be set on the ResultaatType
         """
 
