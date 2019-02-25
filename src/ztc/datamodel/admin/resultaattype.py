@@ -49,6 +49,7 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
                 'brondatum_archiefprocedure_einddatum_bekend',
                 'brondatum_archiefprocedure_objecttype',
                 'brondatum_archiefprocedure_registratie',
+                'brondatum_archiefprocedure_procestermijn',
             ),
         }),
         # (_('Relaties'), {

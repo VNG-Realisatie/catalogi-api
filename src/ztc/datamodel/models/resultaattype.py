@@ -120,6 +120,13 @@ class ResultaatType(GeldigheidMixin, models.Model):
         _("registratie"), max_length=80,
         blank=True, help_text=_("De naam van de registratie waarvan het procesobject deel uit maakt.")
     )
+    brondatum_archiefprocedure_procestermijn = models.DurationField(
+        _("procestermijn"), null=True, blank=True,
+        help_text=_("De periode dat het zaakdossier na afronding van de zaak "
+                    "actief gebruikt en/of geraadpleegd wordt ter ondersteuning "
+                    "van de taakuitoefening van de organisatie. Enkel relevant "
+                    "indien de afleidingswijze 'termijn' is.")
+    )
 
     brondatum_archiefprocedure = GegevensGroepType(
         {
@@ -128,6 +135,7 @@ class ResultaatType(GeldigheidMixin, models.Model):
             'einddatum_bekend': brondatum_archiefprocedure_einddatum_bekend,
             'objecttype': brondatum_archiefprocedure_objecttype,
             'registratie': brondatum_archiefprocedure_registratie,
+            'procestermijn': brondatum_archiefprocedure_procestermijn,
         },
         optional=('datumkenmerk', 'einddatum_bekend', 'objecttype', 'registratie'),
         none_for_empty=True

@@ -3342,7 +3342,8 @@
                 "reactietermijn": {
                     "title": "Reactietermijn",
                     "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "duration"
                 },
                 "publicatieIndicatie": {
                     "title": "Publicatie indicatie",
@@ -3357,7 +3358,8 @@
                 "publicatietermijn": {
                     "title": "Publicatietermijn",
                     "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "duration"
                 },
                 "toelichting": {
                     "title": "Toelichting",
@@ -3571,12 +3573,14 @@
                 "doorlooptijd": {
                     "title": "Doorlooptijd",
                     "description": "De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "duration"
                 },
                 "servicenorm": {
                     "title": "Servicenorm",
                     "description": "De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s).",
-                    "type": "string"
+                    "type": "string",
+                    "format": "duration"
                 },
                 "opschortingEnAanhoudingMogelijk": {
                     "title": "Opschorting/aanhouding mogelijk",
@@ -3591,7 +3595,8 @@
                 "verlengingstermijn": {
                     "title": "Verlengingstermijn",
                     "description": "De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging mogelijk is.",
-                    "type": "string"
+                    "type": "string",
+                    "format": "duration"
                 },
                 "trefwoorden": {
                     "description": "Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.",
@@ -4040,7 +4045,8 @@
             "title": "Brondatum archiefprocedure",
             "description": "Specificatie voor het bepalen van de brondatum voor de start van de Archiefactietermijn (=brondatum) van het zaakdossier.",
             "required": [
-                "afleidingswijze"
+                "afleidingswijze",
+                "procestermijn"
             ],
             "type": "object",
             "properties": {
@@ -4085,6 +4091,12 @@
                     "description": "De naam van de registratie waarvan het procesobject deel uit maakt.",
                     "type": "string",
                     "maxLength": 80
+                },
+                "procestermijn": {
+                    "title": "Procestermijn",
+                    "description": "De periode dat het zaakdossier na afronding van de zaak actief gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening van de organisatie. Enkel relevant indien de afleidingswijze 'termijn' is.",
+                    "type": "string",
+                    "format": "duration"
                 }
             }
         },

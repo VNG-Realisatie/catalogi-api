@@ -2800,6 +2800,7 @@ components:
           description: Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum,
             waarbinnen verweer tegen een besluit van het besluittype mogelijk is.
           type: string
+          format: duration
         publicatieIndicatie:
           title: Publicatie indicatie
           description: Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten
@@ -2815,6 +2816,7 @@ components:
           description: Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum,
             dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.
           type: string
+          format: duration
         toelichting:
           title: Toelichting
           description: Een eventuele toelichting op dit BESLUITTYPE.
@@ -3009,12 +3011,14 @@ components:
           description: De periode waarbinnen volgens wet- en regelgeving een ZAAK
             van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen.
           type: string
+          format: duration
         servicenorm:
           title: Servicenorm
           description: De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE
             afgerond wordt conform de geldende servicenormen van de zaakbehandelende
             organisatie(s).
           type: string
+          format: duration
         opschortingEnAanhoudingMogelijk:
           title: Opschorting/aanhouding mogelijk
           description: Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE
@@ -3031,6 +3035,7 @@ components:
             ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten
             als verlenging mogelijk is.
           type: string
+          format: duration
         trefwoorden:
           description: Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden
             gekarakteriseerd.
@@ -3408,6 +3413,7 @@ components:
         de Archiefactietermijn (=brondatum) van het zaakdossier.
       required:
       - afleidingswijze
+      - procestermijn
       type: object
       properties:
         afleidingswijze:
@@ -3450,6 +3456,14 @@ components:
             maakt.
           type: string
           maxLength: 80
+        procestermijn:
+          title: Procestermijn
+          description: De periode dat het zaakdossier na afronding van de zaak actief
+            gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening
+            van de organisatie. Enkel relevant indien de afleidingswijze 'termijn'
+            is.
+          type: string
+          format: duration
     ResultaatType:
       required:
       - omschrijving

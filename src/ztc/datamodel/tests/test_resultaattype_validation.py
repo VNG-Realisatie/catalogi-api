@@ -285,6 +285,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
             'brondatum_archiefprocedure_datumkenmerk': 'foo',
             'brondatum_archiefprocedure_objecttype': 'besluit',  # FIXME - use ZaakObjectTypes
             'brondatum_archiefprocedure_registratie': 'ORC',
+            'brondatum_archiefprocedure_procestermijn': 'P30D',
         }
         data.update(kwargs)
         return ResultaatTypeForm(data=data)
@@ -310,6 +311,10 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
             errors['brondatum_archiefprocedure_registratie'][0].code,
             'invalid'
         )
+        self.assertEqual(
+            errors['brondatum_archiefprocedure_procestermijn'][0].code,
+            'invalid'
+        )
 
     @requests_mock.Mocker()
     def test_only_afleidingswijze_1(self, m):
@@ -323,12 +328,10 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         resultaat_url = RESULTAAT_URL.format(uuid='ebe82547-609d-464d-875e-7088bf5dc8aa')
 
         ONLY_AFLEIDINGSWIJZE = (
-            # Afleidingswijze.afgehandeld,
             Afleidingswijze.gerelateerde_zaak,
             Afleidingswijze.hoofdzaak,
             Afleidingswijze.ingangsdatum_besluit,
             Afleidingswijze.vervaldatum_besluit,
-            # Afleidingswijze.termijn,
         )
 
         # set up selectielijst API mock
@@ -343,7 +346,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
                 self.assertParameterFieldsForbidden(value, procestype, resultaat_url)
 
     @requests_mock.Mocker()
-    def test_only_afleidingswijze_2(self, m):
+    def test_only_afleidingswijze_afgehandeld(self, m):
         """
         Test the values that forbid any parameter fields
 
@@ -363,7 +366,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         self.assertParameterFieldsForbidden(Afleidingswijze.afgehandeld, procestype, resultaat_url)
 
     @requests_mock.Mocker()
-    def test_only_afleidingswijze_3(self, m):
+    def test_only_afleidingswijze_termijn(self, m):
         """
         Test the values that forbid any parameter fields
 
@@ -379,8 +382,32 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
             'procesType': procestype,
             'procestermijn': 'ingeschatte_bestaansduur_procesobject',
         })
+        zaaktype = ZaakTypeFactory.create(selectielijst_procestype=procestype)
+        form = self._get_form(Afleidingswijze.termijn, zaaktype, resultaat_url, **{
+            'brondatum_archiefprocedure_procestermijn': '',
+        })
 
-        self.assertParameterFieldsForbidden(Afleidingswijze.termijn, procestype, resultaat_url)
+        valid = form.is_valid()
+
+        self.assertFalse(valid)
+        errors = form.errors.as_data()
+
+        self.assertEqual(
+            errors['brondatum_archiefprocedure_datumkenmerk'][0].code,
+            'invalid'
+        )
+        self.assertEqual(
+            errors['brondatum_archiefprocedure_objecttype'][0].code,
+            'invalid'
+        )
+        self.assertEqual(
+            errors['brondatum_archiefprocedure_registratie'][0].code,
+            'invalid'
+        )
+        self.assertEqual(
+            errors['brondatum_archiefprocedure_procestermijn'][0].code,
+            'required'
+        )
 
     def test_einddatum_bekend_irrelevant(self):
         # For afgehandeld & termijn, the value of the checkbox doesn't matter,

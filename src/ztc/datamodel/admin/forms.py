@@ -147,8 +147,6 @@ class ResultaatTypeForm(forms.ModelForm):
 
         More rules are described in https://www.gemmaonline.nl/index.php/Imztc_2.2/doc
         /attribuutsoort/resultaattype.brondatum_archiefprocedure.einddatum_bekend
-
-        TODO: if afleidingswijze is 'termijn', this needs to be set on the ResultaatType
         """
 
         # these values of afleidingswijze forbid you to set values for
@@ -159,7 +157,6 @@ class ResultaatTypeForm(forms.ModelForm):
             Afleidingswijze.hoofdzaak,
             Afleidingswijze.ingangsdatum_besluit,
             Afleidingswijze.vervaldatum_besluit,
-            Afleidingswijze.termijn,
         )
 
         # these values of afleidingswijze make the value of einddatum_bekend
@@ -175,6 +172,7 @@ class ResultaatTypeForm(forms.ModelForm):
             'brondatum_archiefprocedure_datumkenmerk',
             'brondatum_archiefprocedure_objecttype',
             'brondatum_archiefprocedure_registratie',
+            'brondatum_archiefprocedure_procestermijn',
         )
 
         MSG_FIELD_FORBIDDEN = ("Het veld '{verbose_name}' mag niet ingevuld zijn als de afleidingswijze '{value}' is")
@@ -188,7 +186,6 @@ class ResultaatTypeForm(forms.ModelForm):
         afleidingswijze_label = Afleidingswijze.labels[afleidingswijze]
         einddatum_bekend = self.cleaned_data.get('brondatum_archiefprocedure_einddatum_bekend')
         datumkenmerk = self.cleaned_data.get('brondatum_archiefprocedure_datumkenmerk')
-        registratie = self.cleaned_data.get('brondatum_archiefprocedure_registratie')
 
         if afleidingswijze in ONLY_AFLEIDINGSWIJZE:
             for field in PARAMETER_FIELDS:
@@ -208,9 +205,36 @@ class ResultaatTypeForm(forms.ModelForm):
             )
             self.add_error('brondatum_archiefprocedure_einddatum_bekend', forms.ValidationError(msg, code='invalid'))
 
+        if afleidingswijze == Afleidingswijze.termijn:
+
+            for field in (
+                'brondatum_archiefprocedure_datumkenmerk',
+                'brondatum_archiefprocedure_objecttype',
+                'brondatum_archiefprocedure_registratie',
+            ):
+                value = self.cleaned_data.get(field)
+                if value:
+                    msg = MSG_FIELD_FORBIDDEN.format(
+                        verbose_name=self._get_field_label(field),
+                        value=afleidingswijze_label
+                    )
+                    self.add_error(field, forms.ValidationError(msg, code='invalid'))
+
+            termijn = self.cleaned_data.get('brondatum_archiefprocedure_procestermijn')
+            if not termijn:
+                msg = MSG_FIELD_REQUIRED.format(
+                    verbose_name=self._get_field_label('brondatum_archiefprocedure_procestermijn'),
+                    value=afleidingswijze_label
+                )
+                self.add_error('brondatum_archiefprocedure_procestermijn', forms.ValidationError(msg, code='required'))
+
         # eigenschap - only ZAAKen have eigenschappen, so objecttype/registratie are not relevant
         if afleidingswijze == Afleidingswijze.eigenschap:
-            for field in ('brondatum_archiefprocedure_objecttype', 'brondatum_archiefprocedure_registratie'):
+            for field in (
+                'brondatum_archiefprocedure_objecttype',
+                'brondatum_archiefprocedure_registratie',
+                'brondatum_archiefprocedure_procestermijn'
+            ):
                 value = self.cleaned_data.get(field)
                 if value:
                     msg = MSG_FIELD_FORBIDDEN.format(
@@ -231,12 +255,14 @@ class ResultaatTypeForm(forms.ModelForm):
         # the other two fields are required so that ZRC can filter on objectType to
         # get the correct object(s) and datumkenmerk to know which attribute to inspect
         if afleidingswijze == Afleidingswijze.zaakobject:
-            if registratie:
-                msg = MSG_FIELD_FORBIDDEN.format(
-                    verbose_name=self._get_field_label('brondatum_archiefprocedure_registratie'),
-                    value=afleidingswijze_label
-                )
-                self.add_error('brondatum_archiefprocedure_registratie', forms.ValidationError(msg, code='invalid'))
+            for field in ('brondatum_archiefprocedure_registratie', 'brondatum_archiefprocedure_procestermijn'):
+                value = self.cleaned_data.get(field)
+                if value:
+                    msg = MSG_FIELD_FORBIDDEN.format(
+                        verbose_name=self._get_field_label(field),
+                        value=afleidingswijze_label
+                    )
+                    self.add_error(field, forms.ValidationError(msg, code='invalid'))
 
             for field in ('brondatum_archiefprocedure_objecttype', 'brondatum_archiefprocedure_datumkenmerk'):
                 value = self.cleaned_data.get(field)

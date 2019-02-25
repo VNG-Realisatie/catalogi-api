@@ -72,6 +72,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()
+
         self.assertEqual(response_data, {
             'url': f'http://testserver{url}',
             'zaaktype': f'http://testserver{zaaktype_url}',
@@ -87,6 +88,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 'einddatumBekend': False,
                 'objecttype': None,
                 'registratie': None,
+                'procestermijn': None,
             }
         })
 
