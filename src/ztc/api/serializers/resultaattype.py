@@ -2,8 +2,18 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
+from zds_schema.constants import Archiefnominatie
+from zds_schema.serializers import (
+    GegevensGroepSerializer, add_choice_values_help_text
+)
 
 from ...datamodel.models import ResultaatType
+
+
+class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
+    class Meta:
+        model = ResultaatType
+        gegevensgroep = 'brondatum_archiefprocedure'
 
 
 class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,6 +32,12 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
         help_text=_("Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)")
     )
 
+    brondatum_archiefprocedure = BrondatumArchiefprocedureSerializer(
+        required=True,
+        help_text=("Specificatie voor het bepalen van de brondatum voor de "
+                   "start van de Archiefactietermijn (=brondatum) van het zaakdossier.")
+    )
+
     class Meta:
         model = ResultaatType
         fields = (
@@ -33,9 +49,15 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
             'selectielijstklasse',
             # TODO: procestermijn + bewaartermijn + archiefnominatie
             'toelichting',
+            'archiefnominatie',
+            'brondatum_archiefprocedure',
         )
         extra_kwargs = {
             'url': {
                 'lookup_field': 'uuid',
             },
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['archiefnominatie'].help_text += '\n\n{}'.format(add_choice_values_help_text(Archiefnominatie))

@@ -74,12 +74,13 @@ class ResultaatType(GeldigheidMixin, models.Model):
     )
 
     # derived fields from selectielijstklasse
-    _archiefnominatie = models.CharField(
+    archiefnominatie = models.CharField(
         _("archiefnominatie"), default='', choices=Archiefnominatie.choices,
-        max_length=20, editable=False,
+        max_length=20, blank=True,
         help_text=_("Aanduiding die aangeeft of ZAAKen met een resultaat van "
                     "dit RESULTAATTYPE blijvend moeten worden bewaard of "
-                    "(op termijn) moeten worden vernietigd .")
+                    "(op termijn) moeten worden vernietigd. Indien niet expliciet "
+                    "opgegeven wordt dit gevuld vanuit de selectielijst.")
     )
     _archiefactietermijn = models.DurationField(
         _("archiefactietermijn"), null=True, editable=False,

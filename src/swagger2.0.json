@@ -4036,11 +4036,64 @@
                 }
             }
         },
+        "BrondatumArchiefprocedure": {
+            "title": "Brondatum archiefprocedure",
+            "description": "Specificatie voor het bepalen van de brondatum voor de start van de Archiefactietermijn (=brondatum) van het zaakdossier.",
+            "required": [
+                "afleidingswijze"
+            ],
+            "type": "object",
+            "properties": {
+                "afleidingswijze": {
+                    "title": "Afleidingswijze brondatum",
+                    "description": "Wijze van bepalen van de brondatum.",
+                    "type": "string",
+                    "enum": [
+                        "afgehandeld",
+                        "ander_datumkenmerk",
+                        "eigenschap",
+                        "gerelateerde_zaak",
+                        "hoofdzaak",
+                        "ingangsdatum_besluit",
+                        "termijn",
+                        "vervaldatum_besluit",
+                        "zaakobject"
+                    ]
+                },
+                "datumkenmerk": {
+                    "title": "Datumkenmerk",
+                    "description": "Naam van de attribuutsoort van het procesobject dat bepalend is voor het einde van de procestermijn.",
+                    "type": "string",
+                    "maxLength": 80
+                },
+                "einddatumBekend": {
+                    "title": "Einddatum bekend",
+                    "description": "Indicatie dat de einddatum van het procesobject gedurende de uitvoering van de zaak bekend moet worden. Indien deze nog niet bekend is en deze waarde staat op `true`, dan kan de zaak (nog) niet afgesloten worden.",
+                    "type": "boolean"
+                },
+                "objecttype": {
+                    "title": "Objecttype",
+                    "description": "Het soort object in de registratie dat het procesobject representeert.",
+                    "type": "string",
+                    "enum": [
+                        "besluit",
+                        "zaak"
+                    ]
+                },
+                "registratie": {
+                    "title": "Registratie",
+                    "description": "De naam van de registratie waarvan het procesobject deel uit maakt.",
+                    "type": "string",
+                    "maxLength": 80
+                }
+            }
+        },
         "ResultaatType": {
             "required": [
                 "omschrijving",
                 "omschrijvingGeneriek",
-                "selectielijstklasse"
+                "selectielijstklasse",
+                "brondatumArchiefprocedure"
             ],
             "type": "object",
             "properties": {
@@ -4089,6 +4142,18 @@
                     "title": "Toelichting",
                     "description": "Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd.",
                     "type": "string"
+                },
+                "archiefnominatie": {
+                    "title": "Archiefnominatie",
+                    "description": "Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst.\n\nDe mapping van waarden naar weergave is als volgt:\n\n* `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.\n* `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden.",
+                    "type": "string",
+                    "enum": [
+                        "blijvend_bewaren",
+                        "vernietigen"
+                    ]
+                },
+                "brondatumArchiefprocedure": {
+                    "$ref": "#/definitions/BrondatumArchiefprocedure"
                 }
             }
         },
