@@ -171,7 +171,8 @@ class ResultaatType(GeldigheidMixin, models.Model):
     def clean(self):
         super().clean()
 
-        self._clean_geldigheid(self.zaaktype)
+        if self.zaaktype_id:
+            self._clean_geldigheid(self.zaaktype)
 
     def save(self, *args, **kwargs):
         """

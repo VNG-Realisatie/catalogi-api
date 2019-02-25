@@ -79,7 +79,8 @@ class ResultaatTypeForm(forms.ModelForm):
             response.raise_for_status()
         except requests.HTTPError as exc:
             msg = _("URL %s for selectielijstklasse did not resolve") % selectielijstklasse
-            raise forms.ValidationError({'selectielijstklasse': msg}) from exc
+            err = forms.ValidationError(msg, code='invalid')
+            raise forms.ValidationError({'selectielijstklasse': err}) from exc
 
         procestype = response.json()['procesType']
         if procestype != zaaktype.selectielijst_procestype:
@@ -118,7 +119,7 @@ class ResultaatTypeForm(forms.ModelForm):
         procestermijn = response.json()['procestermijn']
 
         # mapping selectielijst -> ZTC
-        forward_not_ok = procestermijn in MAPPING and selectielijstklasse != MAPPING[procestermijn]
+        forward_not_ok = procestermijn in MAPPING and afleidingswijze != MAPPING[procestermijn]
         if forward_not_ok:
             value_label = Afleidingswijze.labels[MAPPING[procestermijn]]
             msg = _("Invalide afleidingswijze gekozen, volgens de selectielijst moet dit %s zijn") % value_label
@@ -244,7 +245,7 @@ class ResultaatTypeForm(forms.ModelForm):
                         verbose_name=self._get_field_label(field),
                         value=afleidingswijze_label
                     )
-                    self.add_error(field, forms.ValidationError(msg, code='required=True'))
+                    self.add_error(field, forms.ValidationError(msg, code='required'))
 
         # ander datumkenmerk -> we need everything
         if afleidingswijze == Afleidingswijze.ander_datumkenmerk:
