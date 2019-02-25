@@ -4092,8 +4092,7 @@
             "required": [
                 "omschrijving",
                 "omschrijvingGeneriek",
-                "selectielijstklasse",
-                "brondatumArchiefprocedure"
+                "selectielijstklasse"
             ],
             "type": "object",
             "properties": {

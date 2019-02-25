@@ -5,7 +5,6 @@ This is tested using the admin-used form class, but can/should be refactored
 to validators when using serializer validation.
 """
 import uuid
-from datetime import timedelta
 
 from django.test import TestCase, tag
 
@@ -15,7 +14,7 @@ from zds_schema.constants import (
 )
 
 from ..admin.forms import ResultaatTypeForm
-from .factories import ResultaatTypeFactory, ZaakTypeFactory
+from .factories import ZaakTypeFactory
 
 RESULTAAT_URL = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/resultaten/{uuid}'
 PROCESTYPE_URL = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/procestypen/{uuid}'

@@ -3455,7 +3455,6 @@ components:
       - omschrijving
       - omschrijvingGeneriek
       - selectielijstklasse
-      - brondatumArchiefprocedure
       type: object
       properties:
         url:

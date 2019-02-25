@@ -121,13 +121,17 @@ class ResultaatType(GeldigheidMixin, models.Model):
         blank=True, help_text=_("De naam van de registratie waarvan het procesobject deel uit maakt.")
     )
 
-    brondatum_archiefprocedure = GegevensGroepType({
-        'afleidingswijze': brondatum_archiefprocedure_afleidingswijze,
-        'datumkenmerk': brondatum_archiefprocedure_datumkenmerk,
-        'einddatum_bekend': brondatum_archiefprocedure_einddatum_bekend,
-        'objecttype': brondatum_archiefprocedure_objecttype,
-        'registratie': brondatum_archiefprocedure_registratie,
-    }, optional=('datumkenmerk', 'einddatum_bekend', 'objecttype', 'registratie'))
+    brondatum_archiefprocedure = GegevensGroepType(
+        {
+            'afleidingswijze': brondatum_archiefprocedure_afleidingswijze,
+            'datumkenmerk': brondatum_archiefprocedure_datumkenmerk,
+            'einddatum_bekend': brondatum_archiefprocedure_einddatum_bekend,
+            'objecttype': brondatum_archiefprocedure_objecttype,
+            'registratie': brondatum_archiefprocedure_registratie,
+        },
+        optional=('datumkenmerk', 'einddatum_bekend', 'objecttype', 'registratie'),
+        none_for_empty=True
+    )
 
     # meta-information - this is mostly informative
     toelichting = models.TextField(
@@ -182,6 +186,13 @@ class ResultaatType(GeldigheidMixin, models.Model):
         if not self._omschrijving_generiek and self.omschrijving_generiek:
             response = requests.get(self.omschrijving_generiek).json()
             self._omschrijving_generiek = response['omschrijving']
+
+        # derive the default archiefnominatie
+        if not self.archiefnominatie and self.selectielijstklasse:
+            # selectielijstklasse should've been validated at this point by either
+            # forms or serializers
+            response = requests.get(self.selectielijstklasse).json()
+            self.archiefnominatie = response['waardering']
 
         super().save(*args, **kwargs)
 

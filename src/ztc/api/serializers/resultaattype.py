@@ -33,7 +33,8 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     brondatum_archiefprocedure = BrondatumArchiefprocedureSerializer(
-        required=True,
+        label=_("Brondatum archiefprocedure"),
+        required=False,
         help_text=("Specificatie voor het bepalen van de brondatum voor de "
                    "start van de Archiefactietermijn (=brondatum) van het zaakdossier.")
     )

@@ -30,6 +30,8 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 ('_omschrijvingGeneriek', str),
                 ('selectielijstklasse', str),
                 ('toelichting', str),
+                ('archiefnominatie', str),
+                ('brondatumArchiefprocedure', dict),
             )
         )
 
@@ -78,6 +80,14 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             '_omschrijvingGeneriek': resultaattype._omschrijving_generiek,
             'selectielijstklasse': resultaattype.selectielijstklasse,
             'toelichting': '',
+            'archiefnominatie': resultaattype.archiefnominatie,
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': None,
+                'datumkenmerk': None,
+                'einddatumBekend': False,
+                'objecttype': None,
+                'registratie': None,
+            }
         })
 
     def test_resultaattypen_embedded_zaaktype(self):
