@@ -6,7 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 import requests
 from zds_schema.constants import (
     Archiefnominatie,
-    BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze, ObjectTypes
+    BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
+    ZaakobjectTypes
 )
 from zds_schema.descriptors import GegevensGroepType
 
@@ -120,7 +121,7 @@ class ResultaatType(GeldigheidMixin, models.Model):
     )
     brondatum_archiefprocedure_objecttype = models.CharField(
         _("objecttype"), max_length=80,
-        blank=True, choices=ObjectTypes.choices,
+        blank=True, choices=ZaakobjectTypes.choices,
         help_text=_("Het soort object in de registratie dat het procesobject representeert.")
     )
     # TODO: standardize content so that consumers understand this?
