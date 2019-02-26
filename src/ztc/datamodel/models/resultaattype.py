@@ -6,8 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 import requests
 from zds_schema.constants import (
     Archiefnominatie,
-    BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze, ObjectTypes
+    ZaakobjectTypes as Afleidingswijze, ObjectTypes
 )
+
 from zds_schema.descriptors import GegevensGroepType
 
 from .mixins import GeldigheidMixin
