@@ -61,7 +61,8 @@ class GeldigheidMixin(models.Model):
             - begin De datum is gelijk aan de vroegste Versiedatum van het zaaktype.
             - eind  GEEN CHECK voor gerelateerd zaaktype
             EXTRA: veld 'versie datum'
-            De Versiedatum is gelijk aan of ligt na de Datum begin geldigheid zaaktype en is gelijk aan of ligt voor de Datum einde geldigheid zaaktype
+            De Versiedatum is gelijk aan of ligt na de Datum begin geldigheid zaaktype
+            en is gelijk aan of ligt voor de Datum einde geldigheid zaaktype
 
         """
         super().clean()
@@ -79,9 +80,18 @@ class GeldigheidMixin(models.Model):
         onder 'Datum begin geldigheid resultaattype’.
         De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
         """
+        if zaaktype is None:  # can't run any validation on nothing...
+            return
+
         if self.datum_begin_geldigheid != zaaktype.versiedatum:
-            raise ValidationError(_("De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het gerelateerde zaaktype."))
+            raise ValidationError(
+                _("De datum_begin_geldigheid moet gelijk zijn aan een "
+                  "Versiedatum van het gerelateerde zaaktype.")
+            )
 
         if self.datum_einde_geldigheid:
             if self.datum_einde_geldigheid + timedelta(days=1) != zaaktype.versiedatum:
-                raise ValidationError(_("'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum van het gerelateerde zaaktype."))
+                raise ValidationError(
+                    _("'Datum einde geldigheid' moet gelijk zijn aan de dag "
+                      "voor een Versiedatum van het gerelateerde zaaktype.")
+                )

@@ -412,29 +412,24 @@ class HaaglandenMixin(object):
         # Resultaten en bewaartermijnen
         #
         self.resultaattype_verleend = ResultaatTypeFactory.create(
-            resultaattypeomschrijving='Verleend',
-            is_relevant_voor=self.zaaktype,
-            bepaalt_afwijkend_archiefregime_van=None,
+            omschrijving='Verleend',
+            zaaktype=self.zaaktype,
         )
         self.resultaattype_geweigerd = ResultaatTypeFactory.create(
-            resultaattypeomschrijving='Geweigerd',
-            is_relevant_voor=self.zaaktype,
-            bepaalt_afwijkend_archiefregime_van=None,
+            omschrijving='Geweigerd',
+            zaaktype=self.zaaktype,
         )
         self.resultaattype_niet_ontvankelijk = ResultaatTypeFactory.create(
-            resultaattypeomschrijving='Niet ontvankelijk',
-            is_relevant_voor=self.zaaktype,
-            bepaalt_afwijkend_archiefregime_van=None,
+            omschrijving='Niet ontvankelijk',
+            zaaktype=self.zaaktype,
         )
         self.resultaattype_niet_nodig = ResultaatTypeFactory.create(
-            resultaattypeomschrijving='Niet nodig',
-            is_relevant_voor=self.zaaktype,
-            bepaalt_afwijkend_archiefregime_van=None,
+            omschrijving='Niet nodig',
+            zaaktype=self.zaaktype,
         )
         self.resultaattype_ingetrokken = ResultaatTypeFactory.create(
-            resultaattypeomschrijving='Ingetrokken',
-            is_relevant_voor=self.zaaktype,
-            bepaalt_afwijkend_archiefregime_van=None,
+            omschrijving='Ingetrokken',
+            zaaktype=self.zaaktype,
         )
 
         #

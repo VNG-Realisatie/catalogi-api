@@ -1,83 +1,111 @@
-from unittest import skip
+from rest_framework import status
+from zds_schema.tests import TypeCheckMixin, reverse, reverse_lazy
 
-from django.urls import reverse
-
-from ztc.datamodel.tests.factories import ResultaatTypeFactory
+from ztc.datamodel.models import ResultaatType
+from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
 
 from .base import APITestCase
 
 
-@skip("Not MVP yet")
-class ResultaatTypeAPITests(APITestCase):
+class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
     maxDiff = None
 
-    def setUp(self):
-        super().setUp()
-
-        self.resultaattype = ResultaatTypeFactory.create(
-            resultaattypeomschrijving='Verleend',
-            is_relevant_voor__catalogus=self.catalogus,
-            bepaalt_afwijkend_archiefregime_van=None,
-        )
-        self.zaaktype = self.resultaattype.is_relevant_voor
-
-        self.resultaattype_list_url = reverse('api:resultaattype-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk
-        })
-        self.resultaattype_detail_url = reverse('api:resultaattype-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
-            'pk': self.resultaattype.pk,
-        })
+    list_url = reverse_lazy(ResultaatType)
 
     def test_get_list(self):
-        response = self.api_client.get(self.resultaattype_list_url)
-        self.assertEqual(response.status_code, 200)
+        ResultaatTypeFactory.create_batch(3)
 
+        response = self.api_client.get(self.list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
+        self.assertEqual(len(data), 3)
+        self.assertResponseTypes(
+            data[0],
+            (
+                ('url', str),
+                ('zaaktype', str),
+                ('omschrijving', str),
+                ('resultaattypeomschrijving', str),
+                ('omschrijvingGeneriek', str),
+                ('selectielijstklasse', str),
+                ('toelichting', str),
+                ('archiefnominatie', str),
+                ('archiefactietermijn', str),
+                ('brondatumArchiefprocedure', dict),
+            )
+        )
 
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
+    def test_filter_on_zaaktype(self):
+        zt1, zt2 = ZaakTypeFactory.create_batch(2)
+        rt1 = ResultaatTypeFactory.create(zaaktype=zt1)
+        rt1_url = f'http://testserver{reverse(rt1)}'
+        rt2 = ResultaatTypeFactory.create(zaaktype=zt2)
+        rt2_url = f'http://testserver{reverse(rt2)}'
+        zt1_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
+            'uuid': zt1.uuid,
+            'catalogus_uuid': zt1.catalogus.uuid,
+        }))
+        zt2_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
+            'uuid': zt2.uuid,
+            'catalogus_uuid': zt2.catalogus.uuid,
+        }))
+
+        response = self.client.get(self.list_url, {'zaaktype': zt1_url})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data[0]['url'], rt1_url)
+        self.assertEqual(response_data[0]['zaaktype'], zt1_url)
+        self.assertNotEqual(response_data[0]['url'], rt2_url)
+        self.assertNotEqual(response_data[0]['zaaktype'], zt2_url)
 
     def test_get_detail(self):
-        response = self.api_client.get(self.resultaattype_detail_url)
-        self.assertEqual(response.status_code, 200)
+        resultaattype = ResultaatTypeFactory.create()
+        url = reverse(resultaattype)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': resultaattype.zaaktype.uuid,
+            'catalogus_uuid': resultaattype.zaaktype.catalogus.uuid,
+        })
 
-        expected = {
-            'archiefactietermijn': 14,
-            'archiefnominatie': '',
-            'bepaaltAfwijkendArchiefRegimeVan': [],
-            'brondatumProcedure': 'eigenschap',
-            'einddatumObject': None,
-            'heeftVerplichtDocumentype': [],
-            'heeftVerplichteZaakobjecttype': [],
-            'heeftVoorBrondatumArchiefprocedureRelevante': None,
-            'ingangsdatumObject': '2018-01-01',
-            'isRelevantVoor': 'http://testserver{}'.format(
-                reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
-            'leidtTot': [],
-            'omschrijving': 'Verleend',
-            'omschrijvingGeneriek': '',
-            'selectielijstklasse': None,
-            'toelichting': None,
-            'url': 'http://testserver{}'.format(self.resultaattype_detail_url)
-        }
-        self.assertEqual(expected, response.json())
+        response = self.client.get(url)
 
-    def test_bepaalt_afwijkend_archiefregime_van(self):
-        pass
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
 
-    def test_heeft_verplichte_zaakobjecttype(self):
-        pass
+        self.assertEqual(response_data, {
+            'url': f'http://testserver{url}',
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': resultaattype.omschrijving,
+            'resultaattypeomschrijving': resultaattype.resultaattypeomschrijving,
+            'omschrijvingGeneriek': resultaattype.omschrijving_generiek,
+            'selectielijstklasse': resultaattype.selectielijstklasse,
+            'toelichting': '',
+            'archiefnominatie': resultaattype.archiefnominatie,
+            'archiefactietermijn': 'P3650D',  # TODO -> P10Y
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': None,
+                'datumkenmerk': None,
+                'einddatumBekend': False,
+                'objecttype': None,
+                'registratie': None,
+                'procestermijn': None,
+            }
+        })
 
-    def test_heeft_verplicht_documenttype(self):
-        pass
+    def test_resultaattypen_embedded_zaaktype(self):
+        resultaattype = ResultaatTypeFactory.create()
+        url = f'http://testserver{reverse(resultaattype)}'
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': resultaattype.zaaktype.uuid,
+            'catalogus_uuid': resultaattype.zaaktype.catalogus.uuid,
+        })
 
-    def test_heeft_voor_brondatum_archiefprocedure_revelante(self):
-        pass
+        response = self.client.get(zaaktype_url)
 
-    def test_leidt_tot(self):
-        pass
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.json()['resultaattypen'],
+            [url]
+        )

@@ -17,6 +17,7 @@ src/ztc/static/fonts
 src/ztc/static/css/screen.css
 
 # Coverage reports
+.coverage
 /reports/
 /htmlcov/
 

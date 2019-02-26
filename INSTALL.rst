@@ -133,7 +133,6 @@ forward to set up.
 
        $ python src/manage.py collectstatic --link
        $ python src/manage.py migrate
-       $ python src/manage.py loaddata admin_index groups
 
 #. Create a super user:
 
