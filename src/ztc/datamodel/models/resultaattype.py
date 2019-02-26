@@ -84,13 +84,19 @@ class ResultaatType(GeldigheidMixin, models.Model):
                     "(op termijn) moeten worden vernietigd. Indien niet expliciet "
                     "opgegeven wordt dit gevuld vanuit de selectielijst.")
     )
-    _archiefactietermijn = models.DurationField(
-        _("archiefactietermijn"), null=True, editable=False,
+    # pending https://github.com/VNG-Realisatie/VNG-referentielijsten/pull/2 - we should
+    # switch to more precise durations as well
+    archiefactietermijn = models.DurationField(
+        _("archiefactietermijn"), null=True, blank=True,
         help_text=_("De termijn, na het vervallen van het bedrjfsvoeringsbelang, "
                     "waarna het zaakdossier (de ZAAK met alle bijbehorende "
                     "INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit "
                     "RESULTAATTYPE vernietigd of overgebracht (naar een "
-                    "archiefbewaarplaats) moet worden.")
+                    "archiefbewaarplaats) moet worden. Voor te vernietigen "
+                    "dossiers betreft het de in die Selectielijst genoemde "
+                    "bewaartermjn. Voor blijvend te bewaren zaakdossiers "
+                    "betreft het de termijn vanaf afronding van de zaak tot "
+                    "overbrenging (de procestermijn is dan nihil).")
     )
 
     # TODO: validate dependencies between fields
@@ -199,12 +205,23 @@ class ResultaatType(GeldigheidMixin, models.Model):
 
         # derive the default archiefnominatie
         if not self.archiefnominatie and self.selectielijstklasse:
-            # selectielijstklasse should've been validated at this point by either
-            # forms or serializers
-            response = requests.get(self.selectielijstklasse).json()
-            self.archiefnominatie = response['waardering']
+            selectielijstklasse = self.get_selectielijstklasse()
+            self.archiefnominatie = selectielijstklasse['waardering']
+
+        if not self.archiefactietermijn and self.selectielijstklasse:
+            selectielijstklasse = self.get_selectielijstklasse()
+            self.archiefactietermijn = selectielijstklasse['bewaartermijn']
 
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.zaaktype} - {self.omschrijving}'
+
+    def get_selectielijstklasse(self):
+        if not hasattr(self, '_selectielijstklasse'):
+            # selectielijstklasse should've been validated at this point by either
+            # forms or serializers
+            response = requests.get(self.selectielijstklasse)
+            response.raise_for_status()
+            self._selectielijstklasse = response.json()
+        return self._selectielijstklasse

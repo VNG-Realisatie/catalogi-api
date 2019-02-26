@@ -44,7 +44,6 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
             'resultaattypeomschrijving',
             'omschrijving_generiek',
             'selectielijstklasse',
-            # TODO: procestermijn + bewaartermijn + archiefnominatie
             'toelichting',
             'archiefnominatie',
             'brondatum_archiefprocedure',
