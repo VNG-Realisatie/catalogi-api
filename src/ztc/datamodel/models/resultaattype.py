@@ -55,13 +55,15 @@ class ResultaatType(GeldigheidMixin, models.Model):
         _('omschrijving'), max_length=20,
         help_text=_('Omschrijving van de aard van resultaten van het RESULTAATTYPE.')
     )
-    omschrijving_generiek = models.URLField(
-        _("omschrijving generiek"), max_length=1000,
+    resultaattypeomschrijving = models.URLField(
+        _("resultaattypeomschrijving"), max_length=1000,
         help_text=_("Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. "
-                    "Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen.")
+                    "Dit moet een URL-referentie zijn naar de referenlijst van generieke "
+                    "resultaattypeomschrijvingen. Im ImZTC heet dit 'omschrijving generiek'")
     )
-    _omschrijving_generiek = models.CharField(
-        _("Cached value of 'omschrijving generiek' field"), max_length=20, blank=True
+    omschrijving_generiek = models.CharField(
+        _("omschrijving generiek"), max_length=20, blank=True, editable=False,
+        help_text=_("Gecachete tekstuele waarde van de generieke resultaattypeomschrijving.")
     )
 
     # TODO: validate that this matches the Zaaktype.procestype
@@ -191,9 +193,9 @@ class ResultaatType(GeldigheidMixin, models.Model):
         """
         Save some derived fields into local object as a means of caching.
         """
-        if not self._omschrijving_generiek and self.omschrijving_generiek:
-            response = requests.get(self.omschrijving_generiek).json()
-            self._omschrijving_generiek = response['omschrijving']
+        if not self.omschrijving_generiek and self.resultaattypeomschrijving:
+            response = requests.get(self.resultaattypeomschrijving).json()
+            self.omschrijving_generiek = response['omschrijving']
 
         # derive the default archiefnominatie
         if not self.archiefnominatie and self.selectielijstklasse:

@@ -28,10 +28,6 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
         label=_('is van')
     )
 
-    _omschrijving_generiek = serializers.ReadOnlyField(
-        help_text=_("Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)")
-    )
-
     brondatum_archiefprocedure = BrondatumArchiefprocedureSerializer(
         label=_("Brondatum archiefprocedure"),
         required=False,
@@ -45,8 +41,8 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'zaaktype',
             'omschrijving',
+            'resultaattypeomschrijving',
             'omschrijving_generiek',
-            '_omschrijving_generiek',
             'selectielijstklasse',
             # TODO: procestermijn + bewaartermijn + archiefnominatie
             'toelichting',
@@ -57,6 +53,10 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
             'url': {
                 'lookup_field': 'uuid',
             },
+            'omschrijving_generiek': {
+                'read_only': True,
+                'help_text': _("Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)"),
+            }
         }
 
     def __init__(self, *args, **kwargs):

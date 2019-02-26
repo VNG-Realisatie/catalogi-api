@@ -4103,7 +4103,7 @@
         "ResultaatType": {
             "required": [
                 "omschrijving",
-                "omschrijvingGeneriek",
+                "resultaattypeomschrijving",
                 "selectielijstklasse"
             ],
             "type": "object",
@@ -4127,19 +4127,20 @@
                     "maxLength": 20,
                     "minLength": 1
                 },
-                "omschrijvingGeneriek": {
-                    "title": "Omschrijving generiek",
-                    "description": "Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen.",
+                "resultaattypeomschrijving": {
+                    "title": "Resultaattypeomschrijving",
+                    "description": "Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit 'omschrijving generiek'",
                     "type": "string",
                     "format": "uri",
                     "maxLength": 1000,
                     "minLength": 1
                 },
-                "_omschrijvingGeneriek": {
-                    "title": " omschrijving generiek",
+                "omschrijvingGeneriek": {
+                    "title": "Omschrijving generiek",
                     "description": "Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)",
                     "type": "string",
-                    "readOnly": true
+                    "readOnly": true,
+                    "minLength": 1
                 },
                 "selectielijstklasse": {
                     "title": "Selectielijstklasse",

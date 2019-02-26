@@ -17,7 +17,7 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
     form = ResultaatTypeForm
 
     # List
-    list_display = ('omschrijving', '_omschrijving_generiek', 'selectielijstklasse', 'uuid')
+    list_display = ('omschrijving', 'omschrijving_generiek', 'selectielijstklasse', 'uuid')
     ordering = ('zaaktype', 'omschrijving')
     search_fields = (
         'omschrijving',
@@ -38,8 +38,9 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
         }),
         (_('Gemeentelijke selectielijst'), {
             'fields': (
-                'omschrijving_generiek',
+                'resultaattypeomschrijving',
                 'selectielijstklasse',
+                'omschrijving_generiek',
             )
         }),
         (_('Bepaling brondatum archiefprocedure'), {
