@@ -46,6 +46,7 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
             'selectielijstklasse',
             'toelichting',
             'archiefnominatie',
+            'archiefactietermijn',
             'brondatum_archiefprocedure',
         )
         extra_kwargs = {

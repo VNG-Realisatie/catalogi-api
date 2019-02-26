@@ -177,6 +177,7 @@ De mapping van waarden naar weergave is als volgt:
 
 * `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.
 * `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden. | string | nee | C​R​U​D |
+| archiefactietermijn | De termijn, na het vervallen van het bedrjfsvoeringsbelang, waarna het zaakdossier (de ZAAK met alle bijbehorende INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit RESULTAATTYPE vernietigd of overgebracht (naar een archiefbewaarplaats) moet worden. Voor te vernietigen dossiers betreft het de in die Selectielijst genoemde bewaartermjn. Voor blijvend te bewaren zaakdossiers betreft het de termijn vanaf afronding van de zaak tot overbrenging (de procestermijn is dan nihil). | string | nee | C​R​U​D |
 
 
 * Create, Read, Update, Delete
