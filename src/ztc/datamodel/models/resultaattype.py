@@ -9,7 +9,6 @@ from zds_schema.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
     ZaakobjectTypes
 )
-
 from zds_schema.descriptors import GegevensGroepType
 
 from .mixins import GeldigheidMixin
