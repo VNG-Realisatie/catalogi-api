@@ -1,3 +1,5 @@
+from unittest import skip
+
 from django.test import TestCase
 
 from ztc.datamodel.models import (
@@ -56,6 +58,7 @@ class FactoryTests(TestCase):
         self.assertEqual(ZaakInformatieobjectType.objects.count(), 1)
         self.assertEqual(ZaakType.objects.count(), 1)
 
+    @skip('ZaakInformatieobjectTypeArchiefregime is disabled at the moment')
     def test_zaak_informatieobject_type_archiefregime_factory(self):
         self.assertEqual(ResultaatType.objects.count(), 0)
         self.assertEqual(ZaakInformatieobjectTypeArchiefregime.objects.count(), 0)

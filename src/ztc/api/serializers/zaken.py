@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import HyperlinkedRelatedField, ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from zds_schema.serializers import GegevensGroepSerializer
@@ -144,16 +144,7 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'catalogus_uuid': 'catalogus__uuid',
         }
     )
-    # heeftRelevantResultaattype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='resultaattype_set',
-    #     view_name='api:resultaattype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_relevant_voor__catalogus__pk',
-    #         'zaaktype_pk': 'is_relevant_voor__pk',
-    #     }
-    # )
+
     statustypen = NestedHyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -163,6 +154,13 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'catalogus_uuid': 'zaaktype__catalogus__uuid',
             'zaaktype_uuid': 'zaaktype__uuid',
         }
+    )
+
+    resultaattypen = HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='resultaattype-detail',
+        lookup_field='uuid',
     )
 
     eigenschappen = NestedHyperlinkedRelatedField(
@@ -244,13 +242,13 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             # relaties
             'catalogus',
             'statustypen',
+            'resultaattypen',
             'eigenschappen',
             'informatieobjecttypen',
             'roltypen',
             'besluittypen',
             'gerelateerde_zaaktypen',
             # # 'heeftRelevantZaakObjecttype',
-            # # 'heeftRelevantResultaattype',
             # # 'isDeelzaaktypeVan',
         )
         extra_kwargs = {

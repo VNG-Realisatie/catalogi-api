@@ -2,6 +2,19 @@
 Wijzigingen
 ===========
 
+0.9.0 (2019-02-27)
+==================
+
+Archiving feature release
+
+* added read-only ``Resultaattype`` resource to API
+* added ``Zaaktype.resultaattypen`` list of URLs
+* added ``brondatumArchiefProcedure`` as part of ``Resultaattype`` resource
+  * contains strategy on how to determine ``brondatum``
+  * validated against 'Gemeentelijke Selectielijst 2017' where possible
+* ``Resultaattype`` is linked to GS 2017 + validations implemented
+* added ``format: duration`` to duration-attributes
+
 0.8.2 (2019-02-07)
 ==================
 

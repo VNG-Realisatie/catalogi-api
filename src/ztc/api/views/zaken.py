@@ -34,7 +34,16 @@ class ZaakTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     list:
     Een verzameling van ZAAKTYPEn.
     """
-    queryset = ZaakType.objects.all()
+    queryset = ZaakType.objects.prefetch_related(
+        'statustypen',
+        'zaaktypenrelaties',
+        'heeft_relevant_informatieobjecttype',
+        'statustypen',
+        'resultaattypen',
+        'eigenschap_set',
+        'roltype_set',
+        'besluittype_set',
+    )
     serializer_class = ZaakTypeSerializer
     pagination_class = None
     lookup_field = 'uuid'

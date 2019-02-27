@@ -90,6 +90,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | selectielijstProcestype | Een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken. URL naar de referentielijsten API. | string | nee | C​R​U​D |
 | catalogus | De CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
 | statustypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| resultaattypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | eigenschappen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | informatieobjecttypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | roltypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
@@ -156,6 +157,27 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | zaaktype |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | volgnummer | Een volgnummer voor statussen van het STATUSTYPE binnen een zaak. | integer | ja | C​R​U​D |
 | isEindstatus | Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
+
+## ResultaatType
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/resultaattype)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| zaaktype |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| omschrijving | Omschrijving van de aard van resultaten van het RESULTAATTYPE. | string | ja | C​R​U​D |
+| resultaattypeomschrijving | Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit &#39;omschrijving generiek&#39; | string | ja | C​R​U​D |
+| omschrijvingGeneriek | Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`) | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| selectielijstklasse | Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, categorie in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie. Dit is een URL-referentie naar een resultaat uit de selectielijst API | string | ja | C​R​U​D |
+| toelichting | Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd. | string | nee | C​R​U​D |
+| archiefnominatie | Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst.
+
+De mapping van waarden naar weergave is als volgt:
+
+* `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.
+* `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden. | string | nee | C​R​U​D |
+| archiefactietermijn | De termijn, na het vervallen van het bedrjfsvoeringsbelang, waarna het zaakdossier (de ZAAK met alle bijbehorende INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit RESULTAATTYPE vernietigd of overgebracht (naar een archiefbewaarplaats) moet worden. Voor te vernietigen dossiers betreft het de in die Selectielijst genoemde bewaartermjn. Voor blijvend te bewaren zaakdossiers betreft het de termijn vanaf afronding van de zaak tot overbrenging (de procestermijn is dan nihil). | string | nee | C​R​U​D |
 
 
 * Create, Read, Update, Delete

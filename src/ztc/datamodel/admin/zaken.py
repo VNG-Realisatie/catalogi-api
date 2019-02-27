@@ -67,7 +67,6 @@ class EigenschapInline(EditInlineAdminMixin, admin.TabularInline):
 class ResultaatTypeInline(EditInlineAdminMixin, admin.TabularInline):
     model = ResultaatType
     fields = ResultaatTypeAdmin.list_display
-    fk_name = 'is_relevant_voor'
 
 
 class ZaakTypenRelatieInline(admin.TabularInline):
@@ -117,6 +116,11 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
                 'versiedatum',  # ??
                 'broncatalogus',  #
                 'bronzaaktype',  # dit is het model
+            )
+        }),
+        (_('Gemeentelijke selectielijst'), {
+            'fields': (
+                'selectielijst_procestype',
             )
         }),
         (_('Referentieproces'), {
