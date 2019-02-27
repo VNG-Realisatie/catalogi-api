@@ -4082,8 +4082,9 @@
                     "description": "Het soort object in de registratie dat het procesobject representeert.",
                     "type": "string",
                     "enum": [
-                        "besluit",
-                        "zaak"
+                        "VerblijfsObject",
+                        "MeldingOpenbareRuimte",
+                        "InzageVerzoek"
                     ]
                 },
                 "registratie": {

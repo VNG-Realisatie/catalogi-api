@@ -3448,8 +3448,9 @@ components:
           description: Het soort object in de registratie dat het procesobject representeert.
           type: string
           enum:
-          - besluit
-          - zaak
+          - VerblijfsObject
+          - MeldingOpenbareRuimte
+          - InzageVerzoek
         registratie:
           title: Registratie
           description: De naam van de registratie waarvan het procesobject deel uit
