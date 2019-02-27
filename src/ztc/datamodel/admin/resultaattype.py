@@ -40,7 +40,6 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
             'fields': (
                 'resultaattypeomschrijving',
                 'selectielijstklasse',
-                'omschrijving_generiek',
             )
         }),
         (_('Bepaling brondatum archiefprocedure'), {
