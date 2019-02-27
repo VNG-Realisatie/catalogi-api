@@ -16,6 +16,7 @@ django-markup
 django-rosetta
 django-redis
 django_admin_index
+django-relativedelta
 
 djangorestframework
 django-filter

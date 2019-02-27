@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 import requests
+from relativedeltafield import RelativeDeltaField
 from zds_schema.constants import (
     Archiefnominatie,
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
@@ -85,9 +86,8 @@ class ResultaatType(GeldigheidMixin, models.Model):
                     "(op termijn) moeten worden vernietigd. Indien niet expliciet "
                     "opgegeven wordt dit gevuld vanuit de selectielijst.")
     )
-    # pending https://github.com/VNG-Realisatie/VNG-referentielijsten/pull/2 - we should
-    # switch to more precise durations as well
-    archiefactietermijn = models.DurationField(
+
+    archiefactietermijn = RelativeDeltaField(
         _("archiefactietermijn"), null=True, blank=True,
         help_text=_("De termijn, na het vervallen van het bedrjfsvoeringsbelang, "
                     "waarna het zaakdossier (de ZAAK met alle bijbehorende "
@@ -129,7 +129,7 @@ class ResultaatType(GeldigheidMixin, models.Model):
         _("registratie"), max_length=80,
         blank=True, help_text=_("De naam van de registratie waarvan het procesobject deel uit maakt.")
     )
-    brondatum_archiefprocedure_procestermijn = models.DurationField(
+    brondatum_archiefprocedure_procestermijn = RelativeDeltaField(
         _("procestermijn"), null=True, blank=True,
         help_text=_("De periode dat het zaakdossier na afronding van de zaak "
                     "actief gebruikt en/of geraadpleegd wordt ter ondersteuning "

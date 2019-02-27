@@ -1,12 +1,9 @@
-from datetime import timedelta
-
 import factory
 import factory.fuzzy
+from dateutil.relativedelta import relativedelta
 
-from ...models import ResultaatType
 from .zaken import ZaakTypeFactory
-
-TEN_YEARS = 10 * 365
+from ...models import ResultaatType
 
 
 class ResultaatTypeFactory(factory.django.DjangoModelFactory):
@@ -16,7 +13,7 @@ class ResultaatTypeFactory(factory.django.DjangoModelFactory):
     omschrijving_generiek = factory.Faker('word')
     selectielijstklasse = factory.Faker('url')
     archiefnominatie = factory.fuzzy.FuzzyChoice(['blijvend_bewaren', 'vernietigen'])
-    archiefactietermijn = timedelta(days=TEN_YEARS)
+    archiefactietermijn = relativedelta(years=10)
 
     datum_begin_geldigheid = factory.SelfAttribute('zaaktype.datum_begin_geldigheid')
 
