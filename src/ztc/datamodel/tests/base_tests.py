@@ -2,10 +2,10 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from zds_schema.constants import RolOmschrijving
+from zds_schema.constants import RolOmschrijving, VertrouwelijkheidsAanduiding as VertrouwelijkheidAanduiding
 
 from ztc.datamodel.choices import (
-    JaNee, ObjectTypen, VertrouwelijkheidAanduiding
+    JaNee, ObjectTypen
 )
 
 from .factories import (

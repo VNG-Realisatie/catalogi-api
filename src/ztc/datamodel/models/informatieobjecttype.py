@@ -4,8 +4,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from zds_schema.fields import VertrouwelijkheidsAanduidingField
 
-from ..choices import VertrouwelijkheidAanduiding
 from .mixins import GeldigheidMixin
 
 
@@ -79,9 +79,9 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         models.CharField(_('trefwoord'), max_length=30),
         blank=True, help_text=_('Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden '
                                 'gekarakteriseerd. (Gebruik een komma om waarden van elkaar te onderscheiden.)'))
-    vertrouwelijkheidaanduiding = models.CharField(
-        _('vertrouwelijkheidaanduiding'), max_length=20, blank=True, null=True,
-        choices=VertrouwelijkheidAanduiding.choices, help_text=_(
+    vertrouwelijkheidaanduiding = VertrouwelijkheidsAanduidingField(
+        _('vertrouwelijkheidaanduiding'),
+        help_text=_(
             'Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de '
             'openbaarheid bestemd zijn.'))
     model = ArrayField(

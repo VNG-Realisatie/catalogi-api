@@ -60,7 +60,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             # 'toelichting': None,
             # 'trefwoord': ['abc', 'def'],
             'url': 'http://testserver{}'.format(self.informatieobjecttype_detail_url),
-            # 'vertrouwelijkAanduiding': None,
+            'vertrouwelijkheidaanduiding': '',
             # 'isRelevantVoor': [],
         }
         self.assertEqual(expected, response.json())

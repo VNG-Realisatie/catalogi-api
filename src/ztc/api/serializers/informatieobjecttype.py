@@ -77,6 +77,7 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
             'catalogus',
             # 'isRelevantVoor',
             # 'isVastleggingVoor',
+            'vertrouwelijkheidaanduiding',
         )
 
     # expandable_fields = {
