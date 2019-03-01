@@ -4,6 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 from zds_schema.fields import VertrouwelijkheidsAanduidingField
 
 from .mixins import GeldigheidMixin

@@ -4,9 +4,9 @@ from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
-from ...datamodel.models import InformatieObjectType
 from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
 from ..utils.serializers import SourceMappingSerializerMixin
+from ...datamodel.models import InformatieObjectType
 
 
 class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
