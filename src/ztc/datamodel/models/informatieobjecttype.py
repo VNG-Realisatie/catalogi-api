@@ -1,7 +1,6 @@
 import uuid as _uuid
 
 from django.contrib.postgres.fields import ArrayField
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -31,7 +30,8 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         help_text=_('Nauwkeurige beschrijving van het generieke type informatieobject'))
     herkomst_informatieobjecttype_omschrijving_generiek = models.CharField(
         _('herkomst'), max_length=12,
-        help_text=_('De naam van de waardenverzameling, of van de beherende organisatie daarvan, waaruit de waarde is overgenomen.'))
+        help_text=_('De naam van de waardenverzameling, of van de beherende '
+                    'organisatie daarvan, waaruit de waarde is overgenomen.'))
     hierarchie_informatieobjecttype_omschrijving_generiek = models.CharField(
         _('hierarchie'), max_length=80,
         help_text=_('De plaats in de rangorde van het informatieobjecttype.'))
@@ -129,7 +129,8 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         - De datum is gelijk aan een Versiedatum van een gerelateerd zaaktype.
 
         Voor datum_einde_geldigheid geldt:
-        - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid informatieobjecttype’.
+        - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder
+          'Datum begin geldigheid informatieobjecttype’.
         - De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
         """
         super().clean()
