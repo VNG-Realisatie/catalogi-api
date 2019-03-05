@@ -23,7 +23,7 @@ class FactoryTests(TestCase):
     def test_factories(self):
         iot = InformatieObjectTypeFactory.create()
 
-        self.assertIsNotNone(iot.informatieobjecttype_omschrijving_generiek_id)
+        self.assertIsNotNone(iot.omschrijving_generiek_id)
         self.assertIsNotNone(iot.catalogus_id)
 
         InformatieObjectTypeOmschrijvingGeneriekFactory.create()

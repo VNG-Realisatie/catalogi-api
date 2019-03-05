@@ -24,17 +24,6 @@ class FormaatChoices(DjangoChoices):
     datum_tijd = ChoiceItem('datum/tijd (jjjjmmdduummss)', _('datum/tijd'))
 
 
-class VertrouwelijkheidAanduiding(DjangoChoices):
-    zeer_geheim = ChoiceItem('ZEER GEHEIM', _('zeer geheim'))
-    geheim = ChoiceItem('GEHEIM', _('geheim'))
-    confidentieel = ChoiceItem('CONFIDENTIEEL', _('confidentieel'))
-    vertrouwelijk = ChoiceItem('VERTROUWELIJK', _('vertrouwelijk'))
-    zaakvertrouwelijk = ChoiceItem('ZAAKVERTROUWELIJK', _('zaakvertrouwelijk'))
-    intern = ChoiceItem('INTERN', _('intern'))
-    beperkt_openbaar = ChoiceItem('BEPERKT OPENBAAR', _('beperkt openbaar'))
-    openbaar = ChoiceItem('OPENBAAR', _('openbaar'))
-
-
 class ArchiefNominaties(DjangoChoices):
     blijvend_bewaren = ChoiceItem('Blijvend bewaren', _('blijvend bewaren'))
     vernietigen = ChoiceItem('vernietigen', _('vernietigen'))

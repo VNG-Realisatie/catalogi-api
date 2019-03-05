@@ -5,7 +5,7 @@ from ..models import (
     InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek,
     ZaakInformatieobjectType
 )
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from .mixins import GeldigheidAdminMixin
 
 
 class ZaakInformatieobjectTypeInline(admin.TabularInline):
@@ -41,19 +41,19 @@ class InformatieObjectTypeOmschrijvingGeneriekAdmin(GeldigheidAdminMixin, admin.
 
 
 @admin.register(InformatieObjectType)
-class InformatieObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
-    model = InformatieObjectType
-
-    # List
-    list_display = ('catalogus', 'informatieobjecttype_omschrijving', 'informatieobjectcategorie', )
+class InformatieObjectTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+    list_display = ('catalogus', 'omschrijving', 'informatieobjectcategorie', )
+    list_filter = ('catalogus', 'informatieobjectcategorie')
+    search_fields = ('omschrijving', 'informatieobjectcategorie', 'trefwoord', 'toelichting')
+    ordering = ('catalogus', 'omschrijving')
 
     # Details
     fieldsets = (
         (_('Algemeen'), {
             'fields': (
-                'informatieobjecttype_omschrijving',
+                'omschrijving',
                 'informatieobjectcategorie',
-                'informatieobjecttypetrefwoord',
+                'trefwoord',
                 'vertrouwelijkheidaanduiding',
                 'model',
                 'toelichting',
@@ -62,7 +62,7 @@ class InformatieObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminM
         (_('Relaties'), {
             'fields': (
                 'catalogus',
-                'informatieobjecttype_omschrijving_generiek',
+                'omschrijving_generiek',
             )
         }),
     )
