@@ -7,18 +7,22 @@ from dateutil.relativedelta import relativedelta
 
 def convert_days_to_years(period_field):
     # base = 365 days
+    res = period_field
     if period_field:
         quotient, remainder = divmod(period_field.days, 365)
         if remainder == 0 and quotient > 0:
-            period_field = relativedelta(years=quotient)
-            period_field.save()
+            res = relativedelta(years=quotient)
+    return res
 
 
 def update_interval(apps, schema_editor):
     Resultaattype = apps.get_model('datamodel', 'resultaattype')
     for resultaattype in Resultaattype.objects.all():
-        convert_days_to_years(resultaattype.archiefactietermijn)
-        convert_days_to_years(resultaattype.brondatum_archiefprocedure_procestermijn)
+        resultaattype.archiefactietermijn = convert_days_to_years(resultaattype.archiefactietermijn)
+        resultaattype.brondatum_archiefprocedure_procestermijn = convert_days_to_years(
+            resultaattype.brondatum_archiefprocedure_procestermijn
+        )
+        resultaattype.save()
 
 
 class Migration(migrations.Migration):
