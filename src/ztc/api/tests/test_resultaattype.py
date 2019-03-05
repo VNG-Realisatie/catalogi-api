@@ -83,7 +83,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             'selectielijstklasse': resultaattype.selectielijstklasse,
             'toelichting': '',
             'archiefnominatie': resultaattype.archiefnominatie,
-            'archiefactietermijn': 'P3650D',  # TODO -> P10Y
+            'archiefactietermijn': 'P10Y',
             'brondatumArchiefprocedure': {
                 'afleidingswijze': None,
                 'datumkenmerk': None,

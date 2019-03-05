@@ -1,5 +1,5 @@
 pip-tools
-psycopg2-binary
+psycopg2
 python-dotenv
 python-dateutil
 pytz
@@ -16,6 +16,7 @@ django-markup
 django-rosetta
 django-redis
 django_admin_index
+django-relativedelta
 
 djangorestframework
 django-filter
