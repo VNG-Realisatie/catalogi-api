@@ -375,10 +375,9 @@ class HaaglandenMixin(object):
         #
         # NOTE: the haaglanden doc calls it documenten, I use this as InformatieObjectType
         self.document_vergunningaanvraag = InformatieObjectTypeFactory.create(
-            informatieobjecttype_omschrijving='Vergunningsaanvraag',
-            informatieobjecttype_omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Aanvraag',
+            omschrijving='Vergunningsaanvraag',
+            omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Aanvraag',
             informatieobjectcategorie='Aanvraag',
-            informatieobjecttypetrefwoord=[],  # ArrayField
             vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
             zaaktypes=[self.zaaktype],
@@ -391,10 +390,9 @@ class HaaglandenMixin(object):
             catalogus=self.catalogus,
         )
         self.document_ontvangstbevestiging = InformatieObjectTypeFactory.create(
-            informatieobjecttype_omschrijving='Ontvangstbevestiging',
-            informatieobjecttype_omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Brief',
+            omschrijving='Ontvangstbevestiging',
+            omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Brief',
             informatieobjectcategorie='Brief',
-            informatieobjecttypetrefwoord=[],  # ArrayField
             vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
             zaaktypes=[self.zaaktype],

@@ -1,15 +1,9 @@
-from django.utils.translation import ugettext_lazy as _
-
-from rest_framework import serializers
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import InformatieObjectType
-from ..utils.rest_flex_fields import FlexFieldsSerializerMixin
-from ..utils.serializers import SourceMappingSerializerMixin
 
 
-class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
+class InformatieObjectTypeSerializer(NestedHyperlinkedModelSerializer):
     """
     Serializer based on ``IOT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
@@ -46,14 +40,6 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
 
     class Meta:
         model = InformatieObjectType
-        source_mapping = {
-            'omschrijving': 'informatieobjecttype_omschrijving',
-            # 'categorie': 'informatieobjectcategorie',
-            # 'trefwoord': 'informatieobjecttypetrefwoord',
-            # 'vertrouwelijkAanduiding': 'vertrouwelijkheidaanduiding',
-            # 'ingangsdatumObject': 'datum_begin_geldigheid',
-            # 'einddatumObject': 'datum_einde_geldigheid',
-        }
         extra_kwargs = {
             'url': {
                 'lookup_field': 'uuid',
@@ -65,7 +51,9 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
         fields = (
             'url',
 
+            'catalogus',
             'omschrijving',
+            'vertrouwelijkheidaanduiding',
             # 'omschrijvingGeneriek',
             # 'categorie',
             # 'trefwoord',
@@ -74,14 +62,6 @@ class InformatieObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperli
             # 'toelichting',
             # 'ingangsdatumObject',
             # 'einddatumObject',
-            'catalogus',
             # 'isRelevantVoor',
             # 'isVastleggingVoor',
-            'vertrouwelijkheidaanduiding',
         )
-
-    # expandable_fields = {
-    #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
-    #     'isRelevantVoor': ('ztc.api.serializers.InformatieObjectTypeZaakTypeSerializer', {'source': 'zaakinformatieobjecttype_set'}),
-    #     'isVastleggingVoor': ('ztc.api.serializers.BesluitTypeSerializer', {'source': 'besluittype_set', 'many': True})
-    # }
