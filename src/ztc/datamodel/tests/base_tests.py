@@ -3,8 +3,7 @@ from datetime import timedelta
 from django.utils import timezone
 
 from zds_schema.constants import (
-    RolOmschrijving,
-    VertrouwelijkheidsAanduiding as VertrouwelijkheidAanduiding
+    RolOmschrijving, VertrouwelijkheidsAanduiding
 )
 
 from ztc.datamodel.choices import JaNee, ObjectTypen
@@ -113,7 +112,7 @@ class HaaglandenMixin(object):
             #
             # Publicatie (van indiening)
             #
-            vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.openbaar,
+            vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.openbaar,
             publicatie_indicatie=True,  # Bij Wabo-aanvraag (reguliere procedure): ja
             publicatietekst='N.t.b.',
 
@@ -380,7 +379,7 @@ class HaaglandenMixin(object):
             informatieobjecttype_omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Aanvraag',
             informatieobjectcategorie='Aanvraag',
             informatieobjecttypetrefwoord=[],  # ArrayField
-            vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.zaakvertrouwelijk,
+            vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
             zaaktypes=[self.zaaktype],
 
@@ -396,7 +395,7 @@ class HaaglandenMixin(object):
             informatieobjecttype_omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Brief',
             informatieobjectcategorie='Brief',
             informatieobjecttypetrefwoord=[],  # ArrayField
-            vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.zaakvertrouwelijk,
+            vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
             zaaktypes=[self.zaaktype],
 
