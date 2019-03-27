@@ -7,11 +7,19 @@ if [[ -z "$WORKSPACE" ]]; then
     export WORKSPACE=$(pwd)
 fi
 
-# use the Jenkins specific override
-cp bin/docker-compose.override.yml docker-compose.override.yml
+docker stop gemma-zaaktypecatalogus-pr-tests_db_1
+docker stop gemma-zaaktypecatalogus-stable_db_1
+docker stop gemma-zaaktypecatalogus-develop_db_1
 
-docker-compose build tests
-docker-compose run tests
+exit 1
 
-# cleanup
-git reset --hard
+
+
+# # use the Jenkins specific override
+# cp bin/docker-compose.override.yml docker-compose.override.yml
+
+# docker-compose build tests
+# docker-compose run tests
+
+# # cleanup
+# git reset --hard
