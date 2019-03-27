@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from zds_schema.constants import (
+from vng_api_common.constants import (
     RolOmschrijving, VertrouwelijkheidsAanduiding
 )
 

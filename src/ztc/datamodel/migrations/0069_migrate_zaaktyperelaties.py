@@ -3,7 +3,7 @@
 from django.db import migrations
 from django.urls import reverse
 
-from zds_schema.utils import get_resource_for_path
+from vng_api_common.utils import get_resource_for_path
 
 
 def migrate_to_url(apps, _):

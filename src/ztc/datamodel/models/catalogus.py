@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from zds_schema.fields import RSINField
+from vng_api_common.fields import RSINField
 
 from ..validators import validate_uppercase
 

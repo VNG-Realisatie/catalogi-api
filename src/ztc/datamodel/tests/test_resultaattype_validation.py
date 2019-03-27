@@ -9,7 +9,7 @@ import uuid
 from django.test import TestCase, tag
 
 import requests_mock
-from zds_schema.constants import (
+from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
 )
 

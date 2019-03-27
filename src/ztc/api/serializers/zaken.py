@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework.serializers import HyperlinkedRelatedField, ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
-from zds_schema.serializers import GegevensGroepSerializer
+from vng_api_common.serializers import GegevensGroepSerializer
 
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,

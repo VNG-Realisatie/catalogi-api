@@ -1,5 +1,5 @@
 from rest_framework import status
-from zds_schema.tests import TypeCheckMixin, reverse, reverse_lazy
+from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
 
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory

@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from zds_schema.viewsets import CheckQueryParamsMixin, NestedViewSetMixin
+from vng_api_common.viewsets import CheckQueryParamsMixin, NestedViewSetMixin
 
 from ...datamodel.models import RolType
 from ..filters import RolTypeFilter

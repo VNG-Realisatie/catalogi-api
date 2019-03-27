@@ -2,8 +2,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from zds_schema.constants import Archiefnominatie
-from zds_schema.serializers import (
+from vng_api_common.constants import Archiefnominatie
+from vng_api_common.serializers import (
     GegevensGroepSerializer, add_choice_values_help_text
 )
 

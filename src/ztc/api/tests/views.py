@@ -4,7 +4,7 @@ Dummy views to use in unit tests.
 
 from rest_framework import authentication, exceptions, permissions
 from rest_framework.views import APIView
-from zds_schema.exceptions import Conflict, Gone, PreconditionFailed
+from vng_api_common.exceptions import Conflict, Gone, PreconditionFailed
 
 
 class BaseErrorView(APIView):

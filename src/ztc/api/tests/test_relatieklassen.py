@@ -1,7 +1,7 @@
 from unittest import skip
 
 from rest_framework import status
-from zds_schema.tests import reverse, reverse_lazy
+from vng_api_common.tests import reverse, reverse_lazy
 
 from ztc.datamodel.models import ZaakInformatieobjectType
 from ztc.datamodel.tests.factories import (

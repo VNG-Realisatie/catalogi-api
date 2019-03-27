@@ -4,7 +4,7 @@ Defines the scopes used in the ZTC component.
 We keep things extremely simple - you can either read or write. Currently
 writes are not supported yet in the API.
 """
-from zds_schema.scopes import Scope
+from vng_api_common.scopes import Scope
 
 SCOPE_ZAAKTYPES_READ = Scope(
     'zds.scopes.zaaktypes.lezen',

@@ -4,7 +4,7 @@ from django.test import TestCase
 
 import requests_mock
 from dateutil.relativedelta import relativedelta
-from zds_schema.constants import Archiefnominatie
+from vng_api_common.constants import Archiefnominatie
 
 from .factories import ResultaatTypeFactory, ZaakTypeFactory
 

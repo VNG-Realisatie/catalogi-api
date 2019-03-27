@@ -42,7 +42,7 @@ faker==0.8.17             # via factory-boy
 first==2.0.1
 freezegun==0.3.10
 future==0.16.0
-gemma-zds-client==0.9.3
+gemma-zds-client==0.9.4
 idna==2.6
 inflection==0.3.1
 iso-639==0.4.5
@@ -80,8 +80,9 @@ text-unidecode==1.2       # via faker
 unidecode==1.0.22
 uritemplate==3.0.0
 urllib3==1.24.1
+vng-api-common==0.35.2
 waitress==1.1.0           # via webtest
 webob==1.8.2              # via webtest
 webtest==2.0.30
 wrapt==1.10.11            # via astroid
-zds-schema==0.21.6
+zds-schema==0.22.0

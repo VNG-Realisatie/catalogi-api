@@ -5,12 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 
 import requests
 from relativedeltafield import RelativeDeltaField
-from zds_schema.constants import (
+from vng_api_common.constants import (
     Archiefnominatie,
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
     ZaakobjectTypes
 )
-from zds_schema.descriptors import GegevensGroepType
+from vng_api_common.descriptors import GegevensGroepType
 
 from .mixins import GeldigheidMixin
 

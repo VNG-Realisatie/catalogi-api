@@ -43,7 +43,7 @@ info = openapi.Info(
 )
 
 
-# TODO: move to zds_schema
+# TODO: move to vng_api_common
 class DjangoFilterDescriptionInspector(CoreAPICompatInspector):
     """
     Simple filter inspector to set an appropriate description for filter fields.
