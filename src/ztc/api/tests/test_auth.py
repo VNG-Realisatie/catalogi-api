@@ -4,7 +4,7 @@ Guarantee that the proper authorization amchinery is in place.
 import uuid
 
 from rest_framework.test import APITestCase
-from zds_schema.tests import AuthCheckMixin
+from vng_api_common.tests import AuthCheckMixin
 
 from .utils import reverse
 

@@ -1,7 +1,7 @@
 import uuid
 
 from rest_framework import status
-from zds_schema.constants import RolOmschrijving
+from vng_api_common.constants import RolOmschrijving
 
 from ...datamodel.tests.factories import RolTypeFactory
 from .base import APITestCase

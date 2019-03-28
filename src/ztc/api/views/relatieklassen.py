@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from zds_schema.viewsets import NestedViewSetMixin
+from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import (
     ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime

@@ -6,8 +6,8 @@ from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from zds_schema.descriptors import GegevensGroepType
-from zds_schema.fields import (
+from vng_api_common.descriptors import GegevensGroepType
+from vng_api_common.fields import (
     DaysDurationField, VertrouwelijkheidsAanduidingField
 )
 

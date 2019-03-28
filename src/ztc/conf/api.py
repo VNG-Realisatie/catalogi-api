@@ -1,9 +1,9 @@
-from zds_schema.conf.api import *  # noqa - imports white-listed
+from vng_api_common.conf.api import *  # noqa - imports white-listed
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
 REST_FRAMEWORK.update({
     'DEFAULT_PERMISSION_CLASSES': (
-        'zds_schema.permissions.ActionScopesRequired',
+        'vng_api_common.permissions.ActionScopesRequired',
     ),
     'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
     # Filtering

@@ -3,7 +3,7 @@ import uuid as _uuid
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from zds_schema.fields import DaysDurationField
+from vng_api_common.fields import DaysDurationField
 
 from .mixins import GeldigheidMixin
 

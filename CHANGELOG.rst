@@ -2,6 +2,19 @@
 Wijzigingen
 ===========
 
+0.10.0 (2019-03-28)
+==================
+
+Quality of life update
+
+* replaced duration fields ``archiefactietermijn``, ``brondatum_archiefprocedure_procestermijn``
+  to be more precise (years, months...) instead of being limited to days
+* added URL to license (gemma-zaken#820)
+* added ``InformatieObjectType.vertrouwelijkheidaanduiding``, which is a *required*
+  field
+* replaced zds-schema with vng-api-common. Make sure to run
+  ``python manage.py migrate_from_zds_schema`` to migrate the database contents
+
 0.9.1 (2019-03-04)
 ==================
 

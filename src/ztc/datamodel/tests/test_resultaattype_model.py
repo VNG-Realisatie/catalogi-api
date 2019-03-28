@@ -1,10 +1,10 @@
 import uuid
-from datetime import timedelta
 
 from django.test import TestCase
 
 import requests_mock
-from zds_schema.constants import Archiefnominatie
+from dateutil.relativedelta import relativedelta
+from vng_api_common.constants import Archiefnominatie
 
 from .factories import ResultaatTypeFactory, ZaakTypeFactory
 
@@ -74,16 +74,14 @@ class ResultaattypeTests(TestCase):
         m.register_uri('GET', resultaat_url, json={
             'url': resultaat_url,
             'procesType': resultaat.zaaktype.selectielijst_procestype,
-            # TODO: use more precise P10Y instead, see lib used in
-            # https://github.com/VNG-Realisatie/VNG-referentielijsten/pull/2
-            'bewaartermijn': 'P3650D',
+            'bewaartermijn': 'P10Y',
         })
 
         # save the thing, which should derive it from resultaat
         resultaat.save()
 
         resultaat.refresh_from_db()
-        self.assertEqual(resultaat.archiefactietermijn, timedelta(days=3650))
+        self.assertEqual(resultaat.archiefactietermijn, relativedelta(years=10))
 
     def test_explicitly_provided_bewaartermijn(self, m):
         """
@@ -94,7 +92,7 @@ class ResultaattypeTests(TestCase):
         resultaat = ResultaatTypeFactory.build(
             zaaktype=zaaktype,
             selectielijstklasse=resultaat_url,
-            archiefactietermijn=timedelta(days=5 * 365),
+            archiefactietermijn=relativedelta(years=5),
         )
         m.register_uri('GET', resultaat_url, json={
             'url': resultaat_url,
@@ -106,4 +104,4 @@ class ResultaattypeTests(TestCase):
         resultaat.save()
 
         resultaat.refresh_from_db()
-        self.assertEqual(resultaat.archiefactietermijn, timedelta(days=5 * 365))
+        self.assertEqual(resultaat.archiefactietermijn, relativedelta(years=5))

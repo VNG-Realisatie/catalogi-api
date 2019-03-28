@@ -4,7 +4,7 @@ from unittest import skip
 from django.urls import reverse
 
 from rest_framework import status
-from zds_schema.tests import get_operation_url
+from vng_api_common.tests import get_operation_url
 
 from ztc.datamodel.tests.factories import (
     ZaakObjectTypeFactory, ZaakTypeFactory
@@ -113,7 +113,7 @@ class ZaakTypeAPITests(APITestCase):
             'status': 404,
             'detail': "Niet gevonden.",
             'type': "http://testserver{}".format(
-                reverse('zds_schema:error-detail', kwargs={'exception_class': 'NotFound'})
+                reverse('vng_api_common:error-detail', kwargs={'exception_class': 'NotFound'})
             )
         })
 

@@ -1,6 +1,6 @@
 import factory
 import factory.fuzzy
-from zds_schema.constants import RolOmschrijving, RolTypes
+from vng_api_common.constants import RolOmschrijving, RolTypes
 
 from ...models import RolType
 from .zaken import ZaakTypeFactory

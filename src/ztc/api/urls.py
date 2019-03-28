@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from django.urls import include, path
 
-from zds_schema import routers
-from zds_schema.schema import SchemaView
+from vng_api_common import routers
+from vng_api_common.schema import SchemaView
 
 from .views import (
     BesluitTypeViewSet, CatalogusViewSet, EigenschapViewSet,
@@ -39,6 +39,6 @@ urlpatterns = [
         url(r'^', include(router.urls)),
 
         # should not be picked up by drf-yasg
-        path('', include('zds_schema.api.urls')),
+        path('', include('vng_api_common.api.urls')),
     ])),
 ]

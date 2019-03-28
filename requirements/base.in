@@ -1,5 +1,5 @@
 pip-tools
-psycopg2-binary
+psycopg2
 python-dotenv
 python-dateutil
 pytz
@@ -16,13 +16,17 @@ django-markup
 django-rosetta
 django-redis
 django_admin_index
+django-relativedelta
 
 djangorestframework
 django-filter
 djangorestframework-camel-case
 djangorestframework-filters
 drf-yasg==1.9.1
-zds-schema==0.21.4
+vng-api-common==0.35.2
 
 drf-flex-fields
 django-cors-middleware
+
+
+zds-schema==0.22.0

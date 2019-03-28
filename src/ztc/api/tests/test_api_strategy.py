@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.settings import api_settings
 from rest_framework.test import APILiveServerTestCase, APIRequestFactory
-from zds_schema.tests import get_operation_url
+from vng_api_common.tests import get_operation_url
 
 from . import views
 from ...datamodel.models import Catalogus

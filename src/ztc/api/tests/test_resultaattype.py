@@ -1,5 +1,5 @@
 from rest_framework import status
-from zds_schema.tests import TypeCheckMixin, reverse, reverse_lazy
+from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
 
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
@@ -83,7 +83,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             'selectielijstklasse': resultaattype.selectielijstklasse,
             'toelichting': '',
             'archiefnominatie': resultaattype.archiefnominatie,
-            'archiefactietermijn': 'P3650D',  # TODO -> P10Y
+            'archiefactietermijn': 'P10Y',
             'brondatumArchiefprocedure': {
                 'afleidingswijze': None,
                 'datumkenmerk': None,

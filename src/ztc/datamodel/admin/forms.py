@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 import requests
-from zds_schema.constants import (
+from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
 )
 

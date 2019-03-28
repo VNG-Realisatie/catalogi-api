@@ -1,7 +1,7 @@
 import warnings
 
 from rest_framework.test import APITestCase as _APITestCase
-from zds_schema.tests import JWTScopesMixin, get_operation_url
+from vng_api_common.tests import JWTScopesMixin, get_operation_url
 
 from ...datamodel.tests.factories import CatalogusFactory
 from ..scopes import SCOPE_ZAAKTYPES_READ

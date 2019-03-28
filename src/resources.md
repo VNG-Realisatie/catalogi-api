@@ -46,8 +46,9 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
 | url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| omschrijving | Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | string | ja | C​R​U​D |
 | catalogus | De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort. | string | ja | C​R​U​D |
+| omschrijving | Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | string | ja | C​R​U​D |
+| vertrouwelijkheidaanduiding | Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn. | string | ja | C​R​U​D |
 
 ## ZaakTypenRelatie
 

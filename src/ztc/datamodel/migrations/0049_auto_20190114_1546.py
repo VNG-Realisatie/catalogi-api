@@ -2,7 +2,7 @@
 
 from django.db import migrations
 
-import zds_schema.fields
+import vng_api_common.fields
 
 
 class Migration(migrations.Migration):
@@ -20,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='zaaktype',
             name='verlengingstermijn',
-            field=zds_schema.fields.DaysDurationField(blank=True, help_text="De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als 'DD 00:00'", max_duration=999, min_duration=1, null=True, verbose_name='verlengingstermijn'),
+            field=vng_api_common.fields.DaysDurationField(blank=True, help_text="De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als 'DD 00:00'", max_duration=999, min_duration=1, null=True, verbose_name='verlengingstermijn'),
         ),
     ]

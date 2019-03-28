@@ -4,7 +4,7 @@ Zie: https://github.com/VNG-Realisatie/gemma-zaken/issues/351
 """
 from rest_framework import status
 from rest_framework.test import APITestCase
-from zds_schema.tests import TypeCheckMixin, get_operation_url
+from vng_api_common.tests import TypeCheckMixin, get_operation_url
 
 from ztc.api.tests.base import ClientAPITestMixin
 from ztc.datamodel.tests.factories import (

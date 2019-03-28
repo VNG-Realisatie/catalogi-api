@@ -2,11 +2,11 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from zds_schema.constants import RolOmschrijving
-
-from ztc.datamodel.choices import (
-    JaNee, ObjectTypen, VertrouwelijkheidAanduiding
+from vng_api_common.constants import (
+    RolOmschrijving, VertrouwelijkheidsAanduiding
 )
+
+from ztc.datamodel.choices import JaNee, ObjectTypen
 
 from .factories import (
     BesluitTypeFactory, CatalogusFactory, EigenschapFactory,
@@ -112,7 +112,7 @@ class HaaglandenMixin(object):
             #
             # Publicatie (van indiening)
             #
-            vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.openbaar,
+            vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.openbaar,
             publicatie_indicatie=True,  # Bij Wabo-aanvraag (reguliere procedure): ja
             publicatietekst='N.t.b.',
 
@@ -375,11 +375,10 @@ class HaaglandenMixin(object):
         #
         # NOTE: the haaglanden doc calls it documenten, I use this as InformatieObjectType
         self.document_vergunningaanvraag = InformatieObjectTypeFactory.create(
-            informatieobjecttype_omschrijving='Vergunningsaanvraag',
-            informatieobjecttype_omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Aanvraag',
+            omschrijving='Vergunningsaanvraag',
+            omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Aanvraag',
             informatieobjectcategorie='Aanvraag',
-            informatieobjecttypetrefwoord=[],  # ArrayField
-            vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.zaakvertrouwelijk,
+            vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
             zaaktypes=[self.zaaktype],
 
@@ -391,11 +390,10 @@ class HaaglandenMixin(object):
             catalogus=self.catalogus,
         )
         self.document_ontvangstbevestiging = InformatieObjectTypeFactory.create(
-            informatieobjecttype_omschrijving='Ontvangstbevestiging',
-            informatieobjecttype_omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Brief',
+            omschrijving='Ontvangstbevestiging',
+            omschrijving_generiek__informatieobjecttype_omschrijving_generiek='Brief',
             informatieobjectcategorie='Brief',
-            informatieobjecttypetrefwoord=[],  # ArrayField
-            vertrouwelijkheidaanduiding=VertrouwelijkheidAanduiding.zaakvertrouwelijk,
+            vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
             zaaktypes=[self.zaaktype],
 

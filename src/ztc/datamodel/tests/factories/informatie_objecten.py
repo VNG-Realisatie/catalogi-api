@@ -17,12 +17,12 @@ class InformatieObjectTypeOmschrijvingGeneriekFactory(factory.django.DjangoModel
 
 
 class InformatieObjectTypeFactory(factory.django.DjangoModelFactory):
-    informatieobjecttype_omschrijving = factory.Sequence(lambda n: 'Informatie object type {}'.format(n))
-    informatieobjecttype_omschrijving_generiek = factory.SubFactory(
+    omschrijving = factory.Sequence(lambda n: 'Informatie object type {}'.format(n))
+    omschrijving_generiek = factory.SubFactory(
         InformatieObjectTypeOmschrijvingGeneriekFactory,
         # datum_begin_geldigheid=factory.SelfAttribute('.datum_begin_geldigheid')
     )
-    informatieobjecttypetrefwoord = []  # ArrayField has blank=True but not null=True
+    trefwoord = []  # ArrayField has blank=True but not null=True
     model = []  # ArrayField has blank=True but not null=True
     informatieobjectcategorie = 'informatieobjectcategorie'
     catalogus = factory.SubFactory(CatalogusFactory)

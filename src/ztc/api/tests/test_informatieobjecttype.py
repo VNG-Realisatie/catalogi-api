@@ -2,7 +2,7 @@ from unittest import skip
 
 from django.urls import reverse
 
-from zds_schema.tests import get_operation_url
+from vng_api_common.tests import get_operation_url
 
 from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
@@ -21,7 +21,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             catalogus=self.catalogus,
             zaaktypes=None,
             model=['http://www.example.com'],
-            informatieobjecttypetrefwoord=['abc', 'def']
+            trefwoord=['abc', 'def']
         )
 
         self.informatieobjecttype_list_url = get_operation_url(
@@ -55,12 +55,12 @@ class InformatieObjectTypeAPITests(APITestCase):
             # 'isVastleggingVoor': [],
             'catalogus': 'http://testserver{}'.format(self.catalogus_detail_url),
             # 'model': ['http://www.example.com'],
-            'omschrijving': self.informatieobjecttype.informatieobjecttype_omschrijving,
+            'omschrijving': self.informatieobjecttype.omschrijving,
             # 'omschrijvingGeneriek': '',
             # 'toelichting': None,
             # 'trefwoord': ['abc', 'def'],
             'url': 'http://testserver{}'.format(self.informatieobjecttype_detail_url),
-            # 'vertrouwelijkAanduiding': None,
+            'vertrouwelijkheidaanduiding': '',
             # 'isRelevantVoor': [],
         }
         self.assertEqual(expected, response.json())

@@ -50,7 +50,9 @@ INSTALLED_APPS += [
     'ztc.tests',
     'django_jenkins',
 ]
+
 PROJECT_APPS = [app for app in INSTALLED_APPS if app.startswith('ztc.')]
+PROJECT_APPS.remove("ztc.zds_schema.ZDSSchemaConfig")
 
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pylint',

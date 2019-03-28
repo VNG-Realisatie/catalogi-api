@@ -23,7 +23,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('data/', DumpDataView.as_view(), name='dumpdata'),
     path('data/fixture/', DumpDataFixtureView.as_view(), name='dumpdata-fixture'),
-    path('ref/', include('zds_schema.urls')),
+    path('ref/', include('vng_api_common.urls')),
 ]
 
 # NOTE: The staticfiles_urlpatterns also discovers static files (ie. no need to run collectstatic). Both the static
