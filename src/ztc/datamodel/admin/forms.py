@@ -19,7 +19,7 @@ class BooleanRadio(forms.RadioSelect):
         super().__init__(attrs, choices)
 
     def value_from_datadict(self, data, files, name):
-        value = data[name]
+        value = data.get(name, False)
         return {
             True: True,
             'True': True,
