@@ -23,10 +23,7 @@ django-filter
 djangorestframework-camel-case
 djangorestframework-filters
 drf-yasg==1.9.1
-vng-api-common==0.35.2
+vng-api-common==0.35.6
 
 drf-flex-fields
 django-cors-middleware
-
-
-zds-schema==0.22.0

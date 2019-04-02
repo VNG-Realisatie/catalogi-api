@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'vng_api_common',  # before drf_yasg to override the management command
-    'ztc.zds_schema.ZDSSchemaConfig',
     'drf_yasg',
     'rest_framework',
     'rest_framework_filters',

@@ -123,7 +123,9 @@ class StatusType(GeldigheidMixin, models.Model):
         """
         super().clean()
 
-        self._clean_geldigheid(self.zaaktype)
+        # on invalid selections, accessing self.zaaktype raises RelatedObjectDoesNotExist
+        if self.zaaktype_id:
+            self._clean_geldigheid(self.zaaktype)
 
     def is_eindstatus(self):
         """
