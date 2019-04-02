@@ -445,6 +445,9 @@ class ZaakType(GeldigheidMixin, models.Model):
     def clean(self):
         super().clean()
 
+        if self.verlenging_mogelijk and not self.verlengingstermijn:
+            raise ValidationError("'verlengingstermijn' moet ingevuld zijn als 'verlenging_mogelijk' gezet is.")
+
         # self.doorlooptijd_behandeling is empty if there are validation errors,
         # which would trigger a TypeError on the comparison
         if (self.doorlooptijd_behandeling

@@ -69,7 +69,10 @@ class RolType(GeldigheidMixin, models.Model):
     def clean(self):
         super().clean()
 
-        self._clean_geldigheid(self.zaaktype)
+        # see https://sentry.maykinmedia.nl/maykin-media/ztc-tst/issues/253332/
+        # on invalid selections, accessing self.zaaktype raises RelatedObjectDoesNotExist
+        if self.zaaktype_id:
+            self._clean_geldigheid(self.zaaktype)
 
     def __str__(self):
         return '{} - {}'.format(self.zaaktype, self.omschrijving)
