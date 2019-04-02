@@ -2,6 +2,11 @@
 Wijzigingen
 ===========
 
+0.10.2 (2019-04-02)
+===================
+
+Fixed str representation of InformatieObjectType
+
 0.10.1 (2019-04-02)
 ===================
 
