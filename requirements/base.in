@@ -27,6 +27,3 @@ vng-api-common==0.35.2
 
 drf-flex-fields
 django-cors-middleware
-
-
-zds-schema==0.22.0
