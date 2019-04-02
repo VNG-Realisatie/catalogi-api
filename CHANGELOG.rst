@@ -2,8 +2,18 @@
 Wijzigingen
 ===========
 
+0.10.1 (2019-04-02)
+===================
+
+Bugfixes in the admin interface
+
+* Fixed crash when ``RolType.zaaktype`` was an invalid choice
+* Fixed crash when ``StatusType.zaaktype`` was an invalid choice
+* Fixed crash when no ``BooleanRadioField`` choice was selected
+* Fixed crash when no ``scopes`` key was present in the JWT claims
+
 0.10.0 (2019-03-28)
-==================
+===================
 
 Quality of life update
 
