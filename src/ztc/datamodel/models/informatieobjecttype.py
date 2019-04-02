@@ -113,4 +113,4 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         verbose_name_plural = _('Informatieobjecttypen')
 
     def __str__(self):
-        return '{} - {}'.format(self.catalogus, self.informatieobjecttype_omschrijving)
+        return '{} - {}'.format(self.catalogus, self.omschrijving)
