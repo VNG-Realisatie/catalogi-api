@@ -1,8 +1,12 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from relativedeltafield import RelativeDeltaField
+
 from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
-from .forms import ResultaatTypeForm
+from .forms import (
+    RelativeDeltaField as RelativeDeltaFormField, ResultaatTypeForm
+)
 from .mixins import GeldigheidAdminMixin
 
 
@@ -60,3 +64,8 @@ class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
         # }),
     )
     raw_id_fields = ('zaaktype',)
+
+    def formfield_for_dbfield(self, db_field, request, **kwargs):
+        if isinstance(db_field, RelativeDeltaField):
+            kwargs['form_class'] = RelativeDeltaFormField
+        return super().formfield_for_dbfield(db_field, request, **kwargs)

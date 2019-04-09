@@ -283,3 +283,13 @@ class ResultaatTypeForm(forms.ModelForm):
                         value=afleidingswijze_label
                     )
                     self.add_error(field, forms.ValidationError(msg, code='required'))
+
+
+class RelativeDeltaField(forms.CharField):
+    empty_strings_allowed = False
+    # empty_values = [None, '']
+
+    def __init__(self, *args, **kwargs):
+        assert 'empty_value' not in kwargs, "empty_value may not be provided"
+        kwargs['empty_value'] = None
+        super().__init__(*args, **kwargs)
