@@ -2,6 +2,11 @@
 Wijzigingen
 ===========
 
+0.10.3 (2019-04-09)
+===================
+
+Fixed the admin interface for Resultaattype
+
 0.10.2 (2019-04-02)
 ===================
 
