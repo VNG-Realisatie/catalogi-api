@@ -10,11 +10,7 @@ from vng_api_common.validators import ResourceValidator
 
 from ..models import ResultaatType, ZaakType
 
-# Define a resource validator for the Resultaat resource
-resultaat_validator = ResourceValidator(
-    'Resultaat',
-    'https://ref.tst.vng.cloud/referentielijsten/api/v1/schema/openapi.yaml?v=3',
-)
+API_SPEC = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/schema/openapi.yaml?v=3'
 
 class BooleanRadio(forms.RadioSelect):
 
@@ -91,7 +87,7 @@ class ResultaatTypeForm(forms.ModelForm):
 
         try:
             # Check whether the url points to a Resultaat
-            resultaat_validator(selectielijstklasse)
+            ResourceValidator('Resultaat', API_SPEC)(selectielijstklasse)
         except ValidationError as exc:
             err = forms.ValidationError(exc.detail[0], code=exc.detail[0].code)
             raise forms.ValidationError({'selectielijstklasse': err}) from exc
