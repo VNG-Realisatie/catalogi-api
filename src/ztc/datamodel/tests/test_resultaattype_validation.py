@@ -5,8 +5,9 @@ This is tested using the admin-used form class, but can/should be refactored
 to validators when using serializer validation.
 """
 import uuid
+from unittest.mock import patch
 
-from django.test import TestCase, tag
+from django.test import TestCase, override_settings, tag
 
 import requests_mock
 from vng_api_common.constants import (
@@ -21,12 +22,14 @@ PROCESTYPE_URL = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/procestypen
 
 
 @tag('resultaattype')
+@patch('vng_api_common.validators.fetcher')
+@patch('vng_api_common.validators.obj_has_shape', return_value=True)
 class ResultaattypeSelectielijstlasseValidationTests(TestCase):
     """
     Test the validation on Resultaattype.selectielijstklasse.
     """
 
-    def test_not_a_url(self):
+    def test_not_a_url(self, mock_has_shape, mock_fetcher):
         form = ResultaatTypeForm(data={
             'selectielijstklasse': 'not a url',
         })
@@ -37,7 +40,7 @@ class ResultaattypeSelectielijstlasseValidationTests(TestCase):
         error = form.errors.as_data()['selectielijstklasse'][0]
         self.assertEqual(error.code, 'invalid')
 
-    def test_404_url(self):
+    def test_404_url(self, mock_has_shape, mock_fetcher):
         zaaktype = ZaakTypeFactory.create()
         bad_url = RESULTAAT_URL.format(uuid='5d4b7dac-4452-41b9-ac26-a0c5a1abef9c')
         form = ResultaatTypeForm(data={
@@ -53,7 +56,7 @@ class ResultaattypeSelectielijstlasseValidationTests(TestCase):
         error = form.errors.as_data()['selectielijstklasse'][0]
         self.assertEqual(error.code, 'invalid')
 
-    def test_mismatch_procestype(self):
+    def test_mismatch_procestype(self, mock_has_shape, mock_fetcher):
         procestype = PROCESTYPE_URL.format(uuid='e1b73b12-b2f6-4c4e-8929-94f84dd2a57d')
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=procestype)
         bad_resultaat_url = RESULTAAT_URL.format(uuid='ebe82547-609d-464d-875e-7088bf5dc8aa')
@@ -75,7 +78,7 @@ class ResultaattypeSelectielijstlasseValidationTests(TestCase):
         error = form.errors.as_data()['selectielijstklasse'][0]
         self.assertEqual(error.code, 'invalid')
 
-    def test_match_procestype(self):
+    def test_match_procestype(self, mock_has_shape, mock_fetcher):
         procestype = PROCESTYPE_URL.format(uuid='e1b73b12-b2f6-4c4e-8929-94f84dd2a57d')
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=procestype)
         good_resultaat_url = RESULTAAT_URL.format(uuid='ebe82547-609d-464d-875e-7088bf5dc8aa')
@@ -94,15 +97,57 @@ class ResultaattypeSelectielijstlasseValidationTests(TestCase):
 
         self.assertNotIn('selectielijstklasse', form.errors.as_data())
 
+    def test_selectielijstklasse_url_pointing_to_incorrect_resource_raises_error(self, mock_has_shape, mock_fetcher):
+        procestype = PROCESTYPE_URL.format(uuid='e1b73b12-b2f6-4c4e-8929-94f84dd2a57d')
+        zaaktype = ZaakTypeFactory.create(selectielijst_procestype=procestype)
+
+        # For selectielijstklasse, fill in a url that does not point to a
+        # selectielijstklasse, but to a procestype
+        form = ResultaatTypeForm(data={
+            'selectielijstklasse': procestype,
+            'zaaktype': zaaktype.id,
+            'datum_begin_geldigheid': zaaktype.versiedatum
+        })
+
+        # Overwrite mock for obj_has_shape, ensure that it returns False,
+        # indicating that the form validation should fail
+        with patch('vng_api_common.validators.obj_has_shape', return_value=False):
+            with requests_mock.Mocker() as m:
+                # Mock the request of the procestype url, return a response of a
+                # form that would be expected from a procestype
+                m.register_uri('GET', procestype, json={
+                    'url': procestype,
+                    'nummer': 1,
+                    'naam': 'some name',
+                    'omschrijving': 'some omschrijving',
+                    'toelichting': 'some toelichting',
+                    'procesobject': 'test'
+                })
+                valid = form.is_valid()
+
+        self.assertFalse(valid)
+
+        error_data = form.errors.as_data()
+
+        # Verify that an error is shown for the field selectielijstklasse
+        self.assertIn('selectielijstklasse', error_data)
+
+        error = error_data['selectielijstklasse'][0]
+
+        # Verify that the error code indicates an invalid resource
+        self.assertEqual(error.code, 'invalid-resource')
+
 
 @tag('resultaattype')
+@patch('vng_api_common.validators.fetcher')
+@patch('vng_api_common.validators.obj_has_shape', return_value=True)
 class ResultaattypeAfleidingswijzeSelectielijstValidationTests(TestCase):
     """
     Test the validation where afleidingswijze is restricted by the selected selectielijstklasse.
     """
 
     @requests_mock.Mocker()
-    def test_procestermijn_nihil(self, m):
+    def test_procestermijn_nihil(self, mock_has_shape, mock_fetcher, m):
         """
         Validate that the afleidingswijze is fixed for 'nihil' values.
 
@@ -137,7 +182,7 @@ class ResultaattypeAfleidingswijzeSelectielijstValidationTests(TestCase):
                 error = form.errors.as_data()['brondatum_archiefprocedure_afleidingswijze'][0]
                 self.assertEqual(error.code, 'invalid')
 
-    def test_procestermijn_nihil_reverse(self):
+    def test_procestermijn_nihil_reverse(self, mock_has_shape, mock_fetcher):
         """
         Validate that the afleidingswijze is fixed for 'nihil' values.
 
@@ -181,7 +226,7 @@ class ResultaattypeAfleidingswijzeSelectielijstValidationTests(TestCase):
                     self.assertEqual(error.code, 'invalid')
 
     @requests_mock.Mocker()
-    def test_procestermijn_ingeschatte_bestaansduur_procesobject(self, m):
+    def test_procestermijn_ingeschatte_bestaansduur_procesobject(self, mock_has_shape, mock_fetcher, m):
         """
         Validate that the afleidingswijze is fixed for 'ingeschatte_bestaansduur_procesobject' values.
 
@@ -216,7 +261,7 @@ class ResultaattypeAfleidingswijzeSelectielijstValidationTests(TestCase):
                 error = form.errors.as_data()['brondatum_archiefprocedure_afleidingswijze'][0]
                 self.assertEqual(error.code, 'invalid')
 
-    def test_procestermijn_ingeschatte_bestaansduur_procesobject_reverse(self):
+    def test_procestermijn_ingeschatte_bestaansduur_procesobject_reverse(self, mock_has_shape, mock_fetcher):
         """
         Validate that the afleidingswijze is fixed for 'nihil' values.
 
@@ -261,6 +306,8 @@ class ResultaattypeAfleidingswijzeSelectielijstValidationTests(TestCase):
 
 
 @tag('resultaattype')
+@patch('vng_api_common.validators.fetcher')
+@patch('vng_api_common.validators.obj_has_shape', return_value=True)
 class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
     """
     Validate the dependencies between afleidingswijze and paramter fields
@@ -317,7 +364,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         )
 
     @requests_mock.Mocker()
-    def test_only_afleidingswijze_1(self, m):
+    def test_only_afleidingswijze_1(self, mock_has_shape, mock_fetcher, m):
         """
         Test the values that forbid any parameter fields
 
@@ -346,7 +393,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
                 self.assertParameterFieldsForbidden(value, procestype, resultaat_url)
 
     @requests_mock.Mocker()
-    def test_only_afleidingswijze_afgehandeld(self, m):
+    def test_only_afleidingswijze_afgehandeld(self, mock_has_shape, mock_fetcher, m):
         """
         Test the values that forbid any parameter fields
 
@@ -366,7 +413,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         self.assertParameterFieldsForbidden(Afleidingswijze.afgehandeld, procestype, resultaat_url)
 
     @requests_mock.Mocker()
-    def test_only_afleidingswijze_termijn(self, m):
+    def test_only_afleidingswijze_termijn(self, mock_has_shape, mock_fetcher, m):
         """
         Test the values that forbid any parameter fields
 
@@ -409,7 +456,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
             'required'
         )
 
-    def test_einddatum_bekend_irrelevant(self):
+    def test_einddatum_bekend_irrelevant(self, mock_has_shape, mock_fetcher):
         # For afgehandeld & termijn, the value of the checkbox doesn't matter,
         # so it may not be set to True.
         procestype = PROCESTYPE_URL.format(uuid='e1b73b12-b2f6-4c4e-8929-94f84dd2a57d')
@@ -443,7 +490,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
                     )
 
     @requests_mock.Mocker()
-    def test_afleidingswijze_eigenschap(self, m):
+    def test_afleidingswijze_eigenschap(self, mock_has_shape, mock_fetcher, m):
         """
         Assert that registratie and objecttype are forbidden and datumkenmerk required
         """
@@ -479,7 +526,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         )
 
     @requests_mock.Mocker()
-    def test_afleidingswijze_zaakobject(self, m):
+    def test_afleidingswijze_zaakobject(self, mock_has_shape, mock_fetcher, m):
         """
         Assert that registratie and objecttype are forbidden and datumkenmerk required
         """
@@ -515,7 +562,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         )
 
     @requests_mock.Mocker()
-    def test_afleidingswijze_ander_datumkenmerk(self, m):
+    def test_afleidingswijze_ander_datumkenmerk(self, mock_has_shape, mock_fetcher, m):
         """
         Assert that registratie and objecttype are forbidden and datumkenmerk required
         """
