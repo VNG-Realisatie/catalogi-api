@@ -292,7 +292,9 @@ SESSION_COOKIE_NAME = 'ztc_sessionid'
 #
 # Custom settings
 #
-PROJECT_NAME = 'ztc'
+PROJECT_NAME = 'Zaaktypen'
+SITE_TITLE = 'Zaaktypecatalogus (ZTC)'
+
 ENVIRONMENT = None
 SHOW_ALERT = True
 
