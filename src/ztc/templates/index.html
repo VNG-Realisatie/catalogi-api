@@ -1,17 +1,23 @@
-{% extends "master.html" %}
-{% load staticfiles %}
+{% extends "vng_api_common/index.html" %}
 
 
-{% block content %}
-<article class="index">
+{% block extra_content %}
+  <h2>Extra</h2>
 
-    <a href="{% url 'schema-redoc' version=1 %}" class="link-block">API spec</a>
+  <div class="row justify-content-md-center">
 
-    <a href="{% url 'vng_api_common:scopes' %}" class="link-block">scopes</a>
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fab fa-python"></i> Catalogus importeren</h5>
+          <p class="card-text">Catalogus data van vng.cloud importeren in eigen catalogus.</p>
+          <a href="{% url 'dumpdata' %}" class="btn btn-primary">Catalogus importeren</a>
+        </div>
+      </div>
 
-    <a href="{% url 'admin:index' %}" class="link-block">admin</a>
+    </div>
 
-    <a href="{% url 'dumpdata' %}" class="link-block">testdata</a>
+  </div>
+  <p></p>
 
-</article>
 {% endblock %}
