@@ -42,7 +42,7 @@ faker==0.8.17             # via factory-boy
 first==2.0.1
 freezegun==0.3.10
 future==0.16.0
-gemma-zds-client==0.9.4
+gemma-zds-client==0.9.5
 idna==2.6
 inflection==0.3.1
 iso-639==0.4.5
