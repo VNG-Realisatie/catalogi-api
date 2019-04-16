@@ -1,8 +1,15 @@
-{% extends "master.html" %}
+{% extends "vng_api_common/master.html" %}
 {% load markup_tags %}
 
 {% block content %}
-<div class="content">
+
+  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ settings.PROJECT_NAME }} importeren</h1>
+    <p class="lead">{{ settings.SITE_TITLE }}</p>
+  </div>
+
+  <div class="container">
+
 {% filter apply_markup:"markdown" %}
 # Catalogus data downloaden en importeren
 

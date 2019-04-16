@@ -31,7 +31,7 @@ class CatalogusAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin
     model = Catalogus
 
     # List
-    list_display = ('domein', 'rsin', )
+    list_display = ('domein', 'rsin', 'uuid')
 
     # Details
     fieldsets = (

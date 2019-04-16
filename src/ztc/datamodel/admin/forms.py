@@ -2,12 +2,15 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 import requests
+from rest_framework.exceptions import ValidationError
 from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
 )
+from vng_api_common.validators import ResourceValidator
 
 from ..models import ResultaatType, ZaakType
 
+API_SPEC = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/schema/openapi.yaml?v=3'
 
 class BooleanRadio(forms.RadioSelect):
 
@@ -80,6 +83,13 @@ class ResultaatTypeForm(forms.ModelForm):
         except requests.HTTPError as exc:
             msg = _("URL %s for selectielijstklasse did not resolve") % selectielijstklasse
             err = forms.ValidationError(msg, code='invalid')
+            raise forms.ValidationError({'selectielijstklasse': err}) from exc
+
+        try:
+            # Check whether the url points to a Resultaat
+            ResourceValidator('Resultaat', API_SPEC)(selectielijstklasse)
+        except ValidationError as exc:
+            err = forms.ValidationError(exc.detail[0], code=exc.detail[0].code)
             raise forms.ValidationError({'selectielijstklasse': err}) from exc
 
         procestype = response.json()['procesType']
