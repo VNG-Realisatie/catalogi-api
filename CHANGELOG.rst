@@ -2,6 +2,17 @@
 Wijzigingen
 ===========
 
+0.11.0 (2019-04-16)
+===================
+
+API-lab release
+
+* Improved homepage layout, using vng-api-common boilerplate
+* Bumped to latest bugfix release of gemma-zds-client
+* ``Resultaattype.selectielijstklasse`` now has resource validation with better
+  error feedback in the admin
+* Some UUIDs are now exposed in the admin interface
+
 0.10.3 (2019-04-09)
 ===================
 
