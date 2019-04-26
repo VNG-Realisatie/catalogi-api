@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 import requests
-from relativedeltafield import RelativeDeltaField
+from relativedeltafield import RelativeDeltaField, format_relativedelta
 from vng_api_common.constants import (
     Archiefnominatie,
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
@@ -226,3 +226,6 @@ class ResultaatType(GeldigheidMixin, models.Model):
             response.raise_for_status()
             self._selectielijstklasse = response.json()
         return self._selectielijstklasse
+
+    def convert_procestermijn(self):
+        return format_relativedelta(self.brondatum_archiefprocedure_procestermijn)
