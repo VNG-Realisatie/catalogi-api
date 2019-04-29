@@ -1,7 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
 from relativedeltafield import format_relativedelta
-
 from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from vng_api_common.constants import Archiefnominatie
