@@ -1,5 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 
+from relativedeltafield import format_relativedelta
+
 from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from vng_api_common.constants import Archiefnominatie
@@ -14,6 +16,15 @@ class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
     class Meta:
         model = ResultaatType
         gegevensgroep = 'brondatum_archiefprocedure'
+
+
+    def to_representation(self, instance) -> dict:
+        """
+        Output the result of accessing the descriptor.
+        """
+        if instance.get('procestermijn'):
+            instance['procestermijn'] = format_relativedelta(instance['procestermijn'])
+        return instance
 
 
 class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
