@@ -58,7 +58,7 @@ class ResultaatTypeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ResultaatTypeForm, self).__init__(*args, **kwargs)
-        self.initial['brondatum_archiefprocedure_procestermijn'] = self.instance.convert_procestermijn()
+        self.initial['brondatum_archiefprocedure_procestermijn'] = self.instance.format_procestermijn()
 
     def clean(self):
         super().clean()

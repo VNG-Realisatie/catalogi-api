@@ -227,5 +227,6 @@ class ResultaatType(GeldigheidMixin, models.Model):
             self._selectielijstklasse = response.json()
         return self._selectielijstklasse
 
-    def convert_procestermijn(self):
-        return format_relativedelta(self.brondatum_archiefprocedure_procestermijn)
+    def format_procestermijn(self):
+        if hasattr(self, '_brondatum_archiefprocedure_procestermijn'):
+            return format_relativedelta(self.brondatum_archiefprocedure_procestermijn)
