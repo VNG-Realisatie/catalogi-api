@@ -12,6 +12,7 @@ from ..models import ResultaatType, ZaakType
 
 API_SPEC = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/schema/openapi.yaml?v=3'
 
+
 class BooleanRadio(forms.RadioSelect):
 
     def __init__(self, attrs=None):
