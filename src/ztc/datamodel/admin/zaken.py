@@ -82,7 +82,11 @@ class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
     form = ZaakTypeForm
 
     # List
-    list_display = ('zaaktype_identificatie', 'zaaktype_omschrijving', 'zaakcategorie', 'catalogus', 'uuid')
+    list_display = (
+        'zaaktype_identificatie', 'zaaktype_omschrijving',
+        'zaakcategorie', 'catalogus', 'uuid',
+        'get_absolute_api_url'
+    )
 
     # Details
     fieldsets = (

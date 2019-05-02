@@ -109,3 +109,24 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             response.json()['resultaattypen'],
             [url]
         )
+
+    def test_resultaattype_afleidingswijze_procestermijn(self):
+        resultaattype = ResultaatTypeFactory.create(
+            brondatum_archiefprocedure_afleidingswijze='procestermijn',
+            brondatum_archiefprocedure_procestermijn='P5Y',
+        )
+
+        url = reverse(resultaattype)
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        brondatumArchiefprocedure = response.json()['brondatumArchiefprocedure']
+
+        afleidingswijze = resultaattype.brondatum_archiefprocedure_afleidingswijze
+        procestermijn = resultaattype.brondatum_archiefprocedure_procestermijn
+
+        self.assertEqual(brondatumArchiefprocedure['afleidingswijze'], afleidingswijze)
+
+        # Verify that the procestermijn was serialized correctly
+        self.assertEqual(brondatumArchiefprocedure['procestermijn'], procestermijn)

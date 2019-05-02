@@ -2,6 +2,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 import requests
+from dateutil.relativedelta import relativedelta
+from relativedeltafield import format_relativedelta
 from rest_framework.exceptions import ValidationError
 from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
@@ -11,6 +13,7 @@ from vng_api_common.validators import ResourceValidator
 from ..models import ResultaatType, ZaakType
 
 API_SPEC = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/schema/openapi.yaml?v=3'
+
 
 class BooleanRadio(forms.RadioSelect):
 
@@ -295,9 +298,17 @@ class ResultaatTypeForm(forms.ModelForm):
                     self.add_error(field, forms.ValidationError(msg, code='required'))
 
 
+# TODO: somehow move this to vng-api-common
+class RelativeDeltaWidget(forms.TextInput):
+    def format_value(self, value):
+        if isinstance(value, relativedelta):
+            return format_relativedelta(value)
+        return super().format_value(value)
+
+
 class RelativeDeltaField(forms.CharField):
+    widget = RelativeDeltaWidget
     empty_strings_allowed = False
-    # empty_values = [None, '']
 
     def __init__(self, *args, **kwargs):
         assert 'empty_value' not in kwargs, "empty_value may not be provided"

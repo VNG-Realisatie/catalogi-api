@@ -2,6 +2,15 @@
 Wijzigingen
 ===========
 
+0.11.1 (2019-05-02)
+===================
+
+Bugfix & convenience release
+
+* Fixed serialization of ``relativedelta`` fields
+* Fixed editing/representation of ``relativedelta`` fields
+* Made ``zaaktype`` URL-path copy-pasteable in the admin
+
 0.11.0 (2019-04-16)
 ===================
 
