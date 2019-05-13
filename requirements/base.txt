@@ -62,4 +62,4 @@ six==1.11.0               # via django-compat, django-markup, django-rosetta, dr
 unidecode==1.0.22         # via vng-api-common
 uritemplate==3.0.0        # via coreapi, drf-yasg
 urllib3==1.24.1           # via requests
-vng-api-common==0.41.1
+vng-api-common==0.46.2
