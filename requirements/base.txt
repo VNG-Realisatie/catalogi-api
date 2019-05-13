@@ -40,7 +40,7 @@ inflection==0.3.1         # via drf-yasg
 iso-639==0.4.5            # via vng-api-common
 isodate==0.6.0            # via vng-api-common
 itypes==1.1.0             # via coreapi
-jinja2==2.10              # via coreschema
+jinja2==2.10.1            # via coreschema
 markdown==3.0.1
 markupsafe==1.0           # via jinja2
 microsofttranslator==0.8  # via django-rosetta
@@ -61,5 +61,5 @@ ruamel.yaml==0.15.54      # via drf-yasg
 six==1.11.0               # via django-compat, django-markup, django-rosetta, drf-yasg, isodate, microsofttranslator, pip-tools, python-dateutil
 unidecode==1.0.22         # via vng-api-common
 uritemplate==3.0.0        # via coreapi, drf-yasg
-urllib3==1.24.1           # via requests
+urllib3==1.24.3           # via requests
 vng-api-common==0.46.2
