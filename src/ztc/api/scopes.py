@@ -7,7 +7,7 @@ writes are not supported yet in the API.
 from vng_api_common.scopes import Scope
 
 SCOPE_ZAAKTYPES_READ = Scope(
-    'zds.scopes.zaaktypes.lezen',
+    'zaaktypes.lezen',
     description="""
 **Laat toe om**:
 
@@ -16,7 +16,7 @@ SCOPE_ZAAKTYPES_READ = Scope(
 )
 
 SCOPE_ZAAKTYPES_WRITE = Scope(
-    'zds.scopes.zaaktypes.schrijven',
+    'zaaktypes.schrijven',
     description="""
 **Laat toe om**:
 

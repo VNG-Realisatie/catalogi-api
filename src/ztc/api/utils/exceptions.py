@@ -20,12 +20,13 @@ def exception_handler(exc, context):
         ])
 
         if isinstance(exc, exceptions.ValidationError):
-            response.data['invalid-params'] = [
+            response.data['invalid_params'] = [
                 OrderedDict([
                     ('type', exc.__class__.__name__),
                     ('name', field_name),
                     ('reason', '; '.join(message))
                 ])
-            for field_name, message in exc.detail.items()]
+                for field_name, message in exc.detail.items()
+            ]
 
     return response

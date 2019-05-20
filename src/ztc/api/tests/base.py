@@ -1,13 +1,13 @@
 import warnings
 
 from rest_framework.test import APITestCase as _APITestCase
-from vng_api_common.tests import JWTScopesMixin, get_operation_url
+from vng_api_common.tests import JWTAuthMixin, get_operation_url
 
 from ...datamodel.tests.factories import CatalogusFactory
 from ..scopes import SCOPE_ZAAKTYPES_READ
 
 
-class ClientAPITestMixin(JWTScopesMixin):
+class ClientAPITestMixin(JWTAuthMixin):
 
     scopes = [
         SCOPE_ZAAKTYPES_READ
