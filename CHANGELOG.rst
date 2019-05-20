@@ -2,6 +2,17 @@
 Wijzigingen
 ===========
 
+0.12.0 (2019-05-20)
+===================
+
+Migrated to new auth machinery
+
+* this is a breaking change - old JWTs with scopes included will continue to
+  work for a short time if the authorization is defined in the AC
+* You need to configure the AC to use
+* Renamed the scope labels - the ``zds.scopes`` prefix was dropped
+* Bumped various dependencies so that security fixes are applied
+
 0.11.1 (2019-05-02)
 ===================
 
