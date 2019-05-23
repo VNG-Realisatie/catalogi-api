@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'vng_api_common',  # before drf_yasg to override the management command
     'vng_api_common.authorizations',
+    'vng_api_common.notifications',
     'solo',
     'drf_yasg',
     'rest_framework',
