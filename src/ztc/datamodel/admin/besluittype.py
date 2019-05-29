@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from ..models import BesluitType
 from .mixins import GeldigheidAdminMixin
+from ..models import BesluitType
 
 
 @admin.register(BesluitType)

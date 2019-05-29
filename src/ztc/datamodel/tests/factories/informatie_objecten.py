@@ -2,11 +2,11 @@ from datetime import date
 
 import factory
 
+from .catalogus import CatalogusFactory
+from .relatieklassen import ZaakInformatieobjectTypeFactory
 from ...models import (
     InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek
 )
-from .catalogus import CatalogusFactory
-from .relatieklassen import ZaakInformatieobjectTypeFactory
 
 
 class InformatieObjectTypeOmschrijvingGeneriekFactory(factory.django.DjangoModelFactory):

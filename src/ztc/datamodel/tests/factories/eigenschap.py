@@ -1,7 +1,7 @@
 import factory
 
-from ...models import Eigenschap, EigenschapReferentie, EigenschapSpecificatie
 from .zaken import ZaakTypeFactory
+from ...models import Eigenschap, EigenschapReferentie, EigenschapSpecificatie
 
 
 class EigenschapSpecificatieFactory(factory.django.DjangoModelFactory):

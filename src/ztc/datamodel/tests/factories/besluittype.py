@@ -2,10 +2,10 @@ from datetime import date, timedelta
 
 import factory
 
-from ...models import BesluitType
 from .catalogus import CatalogusFactory
 from .resultaattype import ResultaatTypeFactory
 from .zaken import ZaakTypeFactory
+from ...models import BesluitType
 
 
 class BesluitTypeFactory(factory.django.DjangoModelFactory):

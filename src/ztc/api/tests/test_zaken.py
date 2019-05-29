@@ -1,11 +1,13 @@
 import uuid
 from unittest import skip
 
+from django.db.models import Q
 from django.urls import reverse
 
 from rest_framework import status
 from vng_api_common.tests import get_operation_url
 
+from ztc.datamodel.models import ZaakType
 from ztc.datamodel.tests.factories import (
     ZaakObjectTypeFactory, ZaakTypeFactory
 )
@@ -116,6 +118,22 @@ class ZaakTypeAPITests(APITestCase):
                 reverse('vng_api_common:error-detail', kwargs={'exception_class': 'NotFound'})
             )
         })
+
+    def test_zaaktype_unique(self):
+        zaaktype2 = ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktype_omschrijving=self.zaaktype.zaaktype_omschrijving
+        )
+        query = ZaakType.objects.filter(
+            Q(catalogus=self.catalogus),
+            Q(zaaktype_omschrijving=self.zaaktype.zaaktype_omschrijving),
+            Q(datum_einde_geldigheid=None)
+            | Q(datum_einde_geldigheid__gte=self.zaaktype.datum_begin_geldigheid)
+        )
+        if self.zaaktype.datum_einde_geldigheid is not None:
+            query = query.filter(datum_begin_geldigheid__lte=self.zaaktype.datum_einde_geldigheid)
+        zaaktypes = query.exclude(pk=zaaktype2.pk).all()
+        print('zaaktypes=', zaaktypes)
 
     @skip('Not implemented yet')
     def test_formulier(self):
