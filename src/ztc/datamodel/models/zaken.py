@@ -457,11 +457,14 @@ class ZaakType(APIMixin, GeldigheidMixin, models.Model):
             raise ValidationError("'Servicenorm behandeling' periode mag niet langer zijn dan "
                                   "de periode van 'Doorlooptijd behandeling'.")
 
+        # TODO: if the resouce becomes writable unique constraint should be added to Validator
         if self.catalogus_id:
             # regel voor zaaktype omschrijving
             if ZaakType.objects.filter(
                 catalogus=self.catalogus,
-                zaaktype_omschrijving=self.zaaktype_omschrijving
+                zaaktype_omschrijving=self.zaaktype_omschrijving,
+                datum_einde_geldigheid__gte=self.datum_begin_geldigheid,
+                datum_begin_geldigheid__lte=self.datum_einde_geldigheid
             ).exclude(pk=self.pk).exists():
                 raise ValidationError("Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS.")
 
