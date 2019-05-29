@@ -4,6 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.descriptors import GegevensGroepType
@@ -12,8 +13,8 @@ from vng_api_common.fields import (
 )
 from vng_api_common.models import APIMixin
 
-from ..choices import InternExtern, JaNee, ObjectTypen
 from .mixins import GeldigheidMixin
+from ..choices import InternExtern, JaNee, ObjectTypen
 
 
 class ZaakObjectType(GeldigheidMixin, models.Model):
@@ -458,14 +459,20 @@ class ZaakType(APIMixin, GeldigheidMixin, models.Model):
                                   "de periode van 'Doorlooptijd behandeling'.")
 
         # TODO: if the resouce becomes writable unique constraint should be added to Validator
+        print(self.catalogus_id)
         if self.catalogus_id:
+            query = ZaakType.objects.filter(
+                Q(catalogus=self.catalogus),
+                Q(zaaktype_omschrijving=self.zaaktype_omschrijving),
+                Q(datum_einde_geldigheid=None)
+                | Q(datum_einde_geldigheid__gte=self.datum_begin_geldigheid)
+            )
+            if self.datum_einde_geldigheid is not None:
+                query = query.filter(datum_begin_geldigheid__lte=self.datum_einde_geldigheid)
+
+            print('query=', query.all())
             # regel voor zaaktype omschrijving
-            if ZaakType.objects.filter(
-                catalogus=self.catalogus,
-                zaaktype_omschrijving=self.zaaktype_omschrijving,
-                datum_einde_geldigheid__gte=self.datum_begin_geldigheid,
-                datum_begin_geldigheid__lte=self.datum_einde_geldigheid
-            ).exclude(pk=self.pk).exists():
+            if query.exclude(pk=self.pk).exists():
                 raise ValidationError("Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS.")
 
         self._clean_geldigheid(self)
