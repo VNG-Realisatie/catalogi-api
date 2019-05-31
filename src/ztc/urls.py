@@ -6,6 +6,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
+from vng_api_common.views import ViewConfigView
+
 from .views import DumpDataFixtureView, DumpDataView
 
 urlpatterns = [
@@ -24,6 +26,7 @@ urlpatterns = [
     path('data/', DumpDataView.as_view(), name='dumpdata'),
     path('data/fixture/', DumpDataFixtureView.as_view(), name='dumpdata-fixture'),
     path('ref/', include('vng_api_common.urls')),
+    path('view-config/', ViewConfigView.as_view(), name='view-config'),
 ]
 
 # NOTE: The staticfiles_urlpatterns also discovers static files (ie. no need to run collectstatic). Both the static
