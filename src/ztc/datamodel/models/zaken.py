@@ -459,7 +459,6 @@ class ZaakType(APIMixin, GeldigheidMixin, models.Model):
                                   "de periode van 'Doorlooptijd behandeling'.")
 
         # TODO: if the resouce becomes writable unique constraint should be added to Validator
-        print(self.catalogus_id)
         if self.catalogus_id:
             query = ZaakType.objects.filter(
                 Q(catalogus=self.catalogus),
@@ -470,7 +469,6 @@ class ZaakType(APIMixin, GeldigheidMixin, models.Model):
             if self.datum_einde_geldigheid is not None:
                 query = query.filter(datum_begin_geldigheid__lte=self.datum_einde_geldigheid)
 
-            print('query=', query.all())
             # regel voor zaaktype omschrijving
             if query.exclude(pk=self.pk).exists():
                 raise ValidationError("Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS.")
