@@ -2,6 +2,23 @@
 Wijzigingen
 ===========
 
+0.13.0 (2019-05-31)
+===================
+
+Quality of life update
+
+* Enabled notifications application so that ZTC can subscribe to
+  ``autorisaties`` channel
+* Fixed bunch of translations
+* Added ``Zaaktype.beginGeldigheid`` and ``Zaaktype.eindGeldigheid`` in the
+  admin. These are now taken into account when creating ``Zaaktype`` objects,
+  so you can have multiple zaaktypen in the same catalogus as long as the
+  date ranges do not overlap.
+* Pinned the dev dependencies to prevent ``isort`` versions from creating
+  chaos. We don't like chaos, or at least not that kind.
+* Added a page to check the (authorization) configuration for the provider.
+  This should make it easier to pinpoint mis-configuration.
+
 0.12.0 (2019-05-20)
 ===================
 

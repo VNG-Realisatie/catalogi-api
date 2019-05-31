@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'vng_api_common',  # before drf_yasg to override the management command
     'vng_api_common.authorizations',
+    'vng_api_common.notifications',
     'solo',
     'drf_yasg',
     'rest_framework',
@@ -347,3 +348,6 @@ if SENTRY_DSN:
             'dsn': RAVEN_CONFIG['dsn']
         },
     })
+
+
+IS_HTTPS = os.getenv('IS_HTTPS', '1').lower() in ['true', '1', 'yes']
