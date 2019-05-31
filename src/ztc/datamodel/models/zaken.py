@@ -13,8 +13,8 @@ from vng_api_common.fields import (
 )
 from vng_api_common.models import APIMixin
 
-from .mixins import GeldigheidMixin
 from ..choices import InternExtern, JaNee, ObjectTypen
+from .mixins import GeldigheidMixin
 
 
 class ZaakObjectType(GeldigheidMixin, models.Model):

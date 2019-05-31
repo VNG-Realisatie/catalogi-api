@@ -1,10 +1,10 @@
 from rest_framework import viewsets
 from vng_api_common.viewsets import CheckQueryParamsMixin, NestedViewSetMixin
 
+from ...datamodel.models import RolType
 from ..filters import RolTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import RolTypeSerializer
-from ...datamodel.models import RolType
 
 
 class RolTypeViewSet(CheckQueryParamsMixin, NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):

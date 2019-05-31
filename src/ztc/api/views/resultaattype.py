@@ -1,10 +1,10 @@
 from rest_framework import viewsets
 from vng_api_common.viewsets import NestedViewSetMixin
 
+from ...datamodel.models import ResultaatType
 from ..filters import ResultaatTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import ResultaatTypeSerializer
-from ...datamodel.models import ResultaatType
 
 
 class ResultaatTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):

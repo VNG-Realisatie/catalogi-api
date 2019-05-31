@@ -9,12 +9,12 @@ from rest_framework.settings import api_settings
 from rest_framework.test import APILiveServerTestCase, APIRequestFactory
 from vng_api_common.tests import get_operation_url
 
-from . import views
-from .base import APITestCase, CatalogusAPITestMixin
 from ...datamodel.models import Catalogus
 from ...datamodel.tests.factories import (
     BesluitTypeFactory, InformatieObjectTypeFactory, ZaakTypeFactory
 )
+from . import views
+from .base import APITestCase, CatalogusAPITestMixin
 
 
 class RestfulPrinciplesAPITests(APITestCase):

@@ -2,8 +2,8 @@ import factory
 import factory.fuzzy
 from dateutil.relativedelta import relativedelta
 
-from .zaken import ZaakTypeFactory
 from ...models import ResultaatType
+from .zaken import ZaakTypeFactory
 
 
 class ResultaatTypeFactory(factory.django.DjangoModelFactory):

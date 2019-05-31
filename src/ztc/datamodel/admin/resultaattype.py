@@ -3,11 +3,11 @@ from django.utils.translation import ugettext_lazy as _
 
 from relativedeltafield import RelativeDeltaField
 
+from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
 from .forms import (
     RelativeDeltaField as RelativeDeltaFormField, ResultaatTypeForm
 )
 from .mixins import GeldigheidAdminMixin
-from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
 
 
 class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):

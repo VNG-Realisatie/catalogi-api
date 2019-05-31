@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 from ..models import MogelijkeBetrokkene, RolType
+from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 
 
 class MogelijkeBetrokkeneInline(admin.TabularInline):

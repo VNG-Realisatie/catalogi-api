@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from ...utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
+from ..models import BesluitType, Catalogus, InformatieObjectType, ZaakType
 from .besluittype import BesluitTypeAdmin
 from .informatieobjecttype import InformatieObjectTypeAdmin
 from .mixins import FilterSearchOrderingAdminMixin
 from .zaken import ZaakTypeAdmin
-from ..models import BesluitType, Catalogus, InformatieObjectType, ZaakType
-from ...utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 
 
 class ZaakTypeInline(EditInlineAdminMixin, admin.TabularInline):

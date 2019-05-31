@@ -1,9 +1,9 @@
 from rest_framework import viewsets
 from vng_api_common.viewsets import NestedViewSetMixin
 
+from ...datamodel.models import BesluitType
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import BesluitTypeSerializer
-from ...datamodel.models import BesluitType
 
 
 class BesluitTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):

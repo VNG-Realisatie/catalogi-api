@@ -1,6 +1,6 @@
+from ...datamodel.tests.factories import BesluitTypeFactory
 from .base import APITestCase
 from .utils import reverse
-from ...datamodel.tests.factories import BesluitTypeFactory
 
 
 class BesluitTypeAPITests(APITestCase):
