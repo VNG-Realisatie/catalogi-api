@@ -2,7 +2,7 @@ coverage
 django-webtest
 factory_boy
 freezegun
-isort
+isort==4.3.20
 pep8
 pylint==1.9.2
 pyquery
