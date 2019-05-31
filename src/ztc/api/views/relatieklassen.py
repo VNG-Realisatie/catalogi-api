@@ -1,9 +1,6 @@
 from rest_framework import viewsets
 from vng_api_common.viewsets import NestedViewSetMixin
 
-from ...datamodel.models import (
-    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime
-)
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import (
@@ -12,6 +9,9 @@ from ..serializers import (
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from ...datamodel.models import (
+    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime
+)
 
 
 class ZaakTypeInformatieObjectTypeViewSet(viewsets.ReadOnlyModelViewSet):

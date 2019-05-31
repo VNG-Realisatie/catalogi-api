@@ -6,12 +6,12 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from .mixins import GeldigheidMixin
 from ..choices import FormaatChoices
 from ..validators import (
     validate_kardinaliteit, validate_letters_numbers_underscores,
     validate_letters_numbers_underscores_spaces
 )
-from .mixins import GeldigheidMixin
 
 
 class EigenschapSpecificatie(models.Model):

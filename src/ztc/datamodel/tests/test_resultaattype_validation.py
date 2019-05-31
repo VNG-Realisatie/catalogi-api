@@ -14,8 +14,8 @@ from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
 )
 
-from ..admin.forms import ResultaatTypeForm
 from .factories import ZaakTypeFactory
+from ..admin.forms import ResultaatTypeForm
 
 RESULTAAT_URL = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/resultaten/{uuid}'
 PROCESTYPE_URL = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/procestypen/{uuid}'

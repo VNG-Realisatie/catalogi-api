@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from ..models import CheckListItem, StatusType
 from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from ..models import CheckListItem, StatusType
 
 
 @admin.register(CheckListItem)

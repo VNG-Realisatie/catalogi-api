@@ -5,8 +5,8 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
-from ...datamodel.models import CheckListItem, StatusType
 from ..utils.serializers import SourceMappingSerializerMixin
+from ...datamodel.models import CheckListItem, StatusType
 
 
 class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):

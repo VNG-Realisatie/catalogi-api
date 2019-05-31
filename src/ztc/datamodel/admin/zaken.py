@@ -3,16 +3,16 @@ from django.utils.translation import ugettext_lazy as _
 
 from ztc.utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 
-from ..models import (
-    BronCatalogus, BronZaakType, Eigenschap, Formulier, ResultaatType, RolType,
-    StatusType, ZaakObjectType, ZaakType, ZaakTypenRelatie
-)
 from .eigenschap import EigenschapAdmin
 from .forms import ZaakTypeForm
 from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 from .resultaattype import ResultaatTypeAdmin
 from .roltype import RolTypeAdmin
 from .statustype import StatusTypeAdmin
+from ..models import (
+    BronCatalogus, BronZaakType, Eigenschap, Formulier, ResultaatType, RolType,
+    StatusType, ZaakObjectType, ZaakType, ZaakTypenRelatie
+)
 
 
 @admin.register(ZaakObjectType)

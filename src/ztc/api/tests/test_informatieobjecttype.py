@@ -4,11 +4,11 @@ from django.urls import reverse
 
 from vng_api_common.tests import get_operation_url
 
+from .base import APITestCase
 from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory
 )
-from .base import APITestCase
 
 
 class InformatieObjectTypeAPITests(APITestCase):

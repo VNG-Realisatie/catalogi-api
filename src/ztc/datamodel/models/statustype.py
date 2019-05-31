@@ -5,8 +5,8 @@ from django.db import models
 from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
-from ..choices import JaNee
 from .mixins import GeldigheidMixin
+from ..choices import JaNee
 
 
 class CheckListItem(models.Model):

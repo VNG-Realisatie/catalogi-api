@@ -3,9 +3,9 @@ import uuid
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
 
-from ...datamodel.tests.factories import RolTypeFactory
 from .base import APITestCase
 from .utils import reverse
+from ...datamodel.tests.factories import RolTypeFactory
 
 
 class RolTypeAPITests(APITestCase):

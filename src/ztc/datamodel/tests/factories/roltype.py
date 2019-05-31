@@ -2,8 +2,8 @@ import factory
 import factory.fuzzy
 from vng_api_common.constants import RolOmschrijving, RolTypes
 
-from ...models import RolType
 from .zaken import ZaakTypeFactory
+from ...models import RolType
 
 
 class RolTypeFactory(factory.django.DjangoModelFactory):

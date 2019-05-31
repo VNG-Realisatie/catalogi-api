@@ -5,11 +5,11 @@ from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from vng_api_common.serializers import GegevensGroepSerializer
 
+from ..utils.serializers import SourceMappingSerializerMixin
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,
     ZaakTypenRelatie
 )
-from ..utils.serializers import SourceMappingSerializerMixin
 
 
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):

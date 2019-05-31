@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from .mixins import GeldigheidAdminMixin
 from ..models import (
     InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek,
     ZaakInformatieobjectType
 )
-from .mixins import GeldigheidAdminMixin
 
 
 class ZaakInformatieobjectTypeInline(admin.TabularInline):
