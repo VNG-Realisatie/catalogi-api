@@ -91,6 +91,8 @@ class ZaakTypeAPITests(APITestCase):
             'resultaattypen': [],
             'roltypen': [],
             'besluittypen': [],
+            'beginGeldigheid': '2018-01-01',
+            'eindeGeldigheid': None,
         }
         self.assertEqual(expected, response.json())
 
