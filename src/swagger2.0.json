@@ -3495,7 +3495,8 @@
                 "productenOfDiensten",
                 "referentieproces",
                 "catalogus",
-                "gerelateerdeZaaktypen"
+                "gerelateerdeZaaktypen",
+                "beginGeldigheid"
             ],
             "type": "object",
             "properties": {
@@ -3733,6 +3734,18 @@
                     "items": {
                         "$ref": "#/definitions/ZaakTypenRelatie"
                     }
+                },
+                "beginGeldigheid": {
+                    "title": "Begin geldigheid",
+                    "description": "De datum waarop het is ontstaan.",
+                    "type": "string",
+                    "format": "date"
+                },
+                "eindeGeldigheid": {
+                    "title": "Einde geldigheid",
+                    "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date"
                 }
             }
         },

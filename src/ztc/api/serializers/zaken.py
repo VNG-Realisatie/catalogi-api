@@ -250,6 +250,8 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             'gerelateerde_zaaktypen',
             # # 'heeftRelevantZaakObjecttype',
             # # 'isDeelzaaktypeVan',
+            'begin_geldigheid',
+            'einde_geldigheid',
         )
         extra_kwargs = {
             'url': {
@@ -272,6 +274,12 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
             },
             'servicenorm': {
                 'source': 'servicenorm_behandeling',
+            },
+            'begin_geldigheid': {
+                'source': 'datum_begin_geldigheid'
+            },
+            'einde_geldigheid': {
+                'source': 'datum_einde_geldigheid'
             },
         }
 
