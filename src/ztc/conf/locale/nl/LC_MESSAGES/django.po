@@ -1,0 +1,1909 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-05 15:22+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/ztc/accounts/models.py:14
+msgid "username"
+msgstr ""
+
+#: src/ztc/accounts/models.py:15
+msgid "Required. 150 characters or fewer."
+msgstr ""
+
+#: src/ztc/accounts/models.py:17
+msgid "A user with that username already exists."
+msgstr ""
+
+#: src/ztc/accounts/models.py:20
+msgid "first name"
+msgstr ""
+
+#: src/ztc/accounts/models.py:21
+msgid "last name"
+msgstr ""
+
+#: src/ztc/accounts/models.py:22
+msgid "email address"
+msgstr ""
+
+#: src/ztc/accounts/models.py:24
+msgid "staff status"
+msgstr ""
+
+#: src/ztc/accounts/models.py:25
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: src/ztc/accounts/models.py:28
+msgid "active"
+msgstr ""
+
+#: src/ztc/accounts/models.py:30
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: src/ztc/accounts/models.py:34
+msgid "date joined"
+msgstr ""
+
+#: src/ztc/accounts/models.py:42
+msgid "user"
+msgstr ""
+
+#: src/ztc/accounts/models.py:43
+msgid "users"
+msgstr ""
+
+#: src/ztc/api/serializers/resultaattype.py:28
+#: src/ztc/api/serializers/statustype.py:40
+#: src/ztc/datamodel/models/eigenschap.py:198
+#: src/ztc/datamodel/models/roltype.py:50
+#: src/ztc/datamodel/models/statustype.py:52
+msgid "is van"
+msgstr ""
+
+#: src/ztc/api/serializers/resultaattype.py:32
+msgid "Brondatum archiefprocedure"
+msgstr ""
+
+#: src/ztc/api/serializers/resultaattype.py:58
+msgid ""
+"Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)"
+msgstr ""
+
+#: src/ztc/api/serializers/statustype.py:45
+msgid ""
+"Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid "
+"uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer."
+msgstr ""
+
+#: src/ztc/api/serializers/zaken.py:109
+msgid "Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/api/serializers/zaken.py:193
+msgid "heeft relevante besluittypen"
+msgstr ""
+
+#: src/ztc/api/tests/test_api_strategy.py:658
+msgid "Authentication credentials were not provided."
+msgstr ""
+
+#: src/ztc/api/tests/test_api_strategy.py:675
+msgid "Not found."
+msgstr ""
+
+#: src/ztc/datamodel/admin/besluittype.py:15
+#: src/ztc/datamodel/admin/catalogus.py:38
+#: src/ztc/datamodel/admin/eigenschap.py:17
+#: src/ztc/datamodel/admin/eigenschap.py:50
+#: src/ztc/datamodel/admin/eigenschap.py:74
+#: src/ztc/datamodel/admin/informatieobjecttype.py:31
+#: src/ztc/datamodel/admin/informatieobjecttype.py:52
+#: src/ztc/datamodel/admin/resultaattype.py:36
+#: src/ztc/datamodel/admin/roltype.py:23
+#: src/ztc/datamodel/admin/statustype.py:23 src/ztc/datamodel/admin/zaken.py:27
+#: src/ztc/datamodel/admin/zaken.py:93
+msgid "Algemeen"
+msgstr ""
+
+#: src/ztc/datamodel/admin/besluittype.py:24
+#: src/ztc/datamodel/admin/zaken.py:136
+msgid "Publicatie"
+msgstr ""
+
+#: src/ztc/datamodel/admin/besluittype.py:31
+#: src/ztc/datamodel/admin/eigenschap.py:24
+#: src/ztc/datamodel/admin/informatieobjecttype.py:62
+#: src/ztc/datamodel/admin/roltype.py:30
+#: src/ztc/datamodel/admin/statustype.py:34 src/ztc/datamodel/admin/zaken.py:35
+#: src/ztc/datamodel/admin/zaken.py:142
+msgid "Relaties"
+msgstr ""
+
+#: src/ztc/datamodel/admin/catalogus.py:44
+msgid "Contactpersoon beheer"
+msgstr ""
+
+#: src/ztc/datamodel/admin/catalogus.py:59
+#: src/ztc/datamodel/admin/catalogus.py:63
+#: src/ztc/datamodel/admin/catalogus.py:67 src/ztc/datamodel/admin/zaken.py:168
+#: src/ztc/datamodel/admin/zaken.py:172 src/ztc/datamodel/admin/zaken.py:176
+#: src/ztc/datamodel/admin/zaken.py:180 src/ztc/datamodel/admin/zaken.py:184
+msgid "Toon {}"
+msgstr ""
+
+#: src/ztc/datamodel/admin/forms.py:22
+msgid "Yes"
+msgstr ""
+
+#: src/ztc/datamodel/admin/forms.py:23
+msgid "No"
+msgstr ""
+
+#: src/ztc/datamodel/admin/forms.py:87
+#, python-format
+msgid "URL %s for selectielijstklasse did not resolve"
+msgstr ""
+
+#: src/ztc/datamodel/admin/forms.py:100
+msgid ""
+"De selectielijstklasse hoort niet bij het selectielijst procestype van het "
+"zaaktype"
+msgstr ""
+
+#: src/ztc/datamodel/admin/forms.py:138
+#, python-format
+msgid ""
+"Invalide afleidingswijze gekozen, volgens de selectielijst moet dit %s zijn"
+msgstr ""
+
+#: src/ztc/datamodel/admin/forms.py:147
+msgid "Invalide afleidingswijze gekozen volgens de selectielijst"
+msgstr ""
+
+#: src/ztc/datamodel/admin/mixins.py:12
+msgid "Geldigheid"
+msgstr ""
+
+#: src/ztc/datamodel/admin/resultaattype.py:43
+#: src/ztc/datamodel/admin/zaken.py:125
+msgid "Gemeentelijke selectielijst"
+msgstr ""
+
+#: src/ztc/datamodel/admin/resultaattype.py:49
+msgid "Bepaling brondatum archiefprocedure"
+msgstr ""
+
+#: src/ztc/datamodel/admin/zaken.py:130
+msgid "Referentieproces"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:16
+msgid "Ja"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:17
+msgid "Nee"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:21
+msgid "tekst"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:22
+msgid "getal"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:23
+msgid "datum"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:24
+msgid "datum/tijd"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:28
+msgid "blijvend bewaren"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:29
+msgid "vernietigen"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:33
+msgid "afgehandeld"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:34
+msgid "ingangsdatum besluit"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:35
+msgid "vervaldatum besluit"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:36
+msgid "eigenschap"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:37
+msgid "ander datumkenmerk"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:45
+msgid "ander natuurlijk persoon"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:46
+msgid "ander buitenlands niet natuurlijk persoon"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:47
+msgid "appartementsrecht"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:48
+msgid "besluit"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:49
+msgid "buurt"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:50
+msgid "enkelvoudig informatieobject"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:51
+msgid "gemeente"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:52
+msgid "gemeentelijkeopenbare ruimte"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:53
+msgid "huishouden"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:54
+msgid "ingeschreven niet natuurlijk persoon"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:55
+msgid "ingezetene"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:56
+msgid "inrichtingselement"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:57
+msgid "kadastraal perceel"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:58
+msgid "kunstwerkdeel"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:59
+msgid "ligplaats"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:60
+msgid "maatschappelijke activiteit"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:61
+msgid "medewerker"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:62
+msgid "niet ingezetene"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:63
+msgid "nummeraanduiding"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:64
+msgid "openbare ruimte"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:65
+msgid "organisatorische eenheid"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:66
+msgid "overige adresseerbaar objectaanduiding"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:67
+msgid "overig gebouwd object"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:68
+msgid "overig terrein"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:69
+msgid "pand"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:70
+msgid "samengesteld informatieobject"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:71
+msgid "spoorbaandeel"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:72
+msgid "standplaats"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:73
+msgid "status"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:74
+msgid "terreindeel"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:75
+msgid "verblijfsobject"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:76
+msgid "vestiging"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:77
+msgid "waterdeel"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:78
+msgid "wegdeel"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:79
+msgid "wijk"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:80
+msgid "woonplaats"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:81
+msgid "woz deelobject"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:82
+msgid "woz object"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:83
+msgid "woz waarde"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:84
+msgid "zakelijk recht"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:88
+msgid "intern"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:89
+msgid "extern"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:93
+msgid "Inkomend"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:94
+msgid "Intern"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:95
+msgid "Uitgaand"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:99
+msgid "Blijvend bewaren"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:100
+msgid "Vernietigen"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:104
+msgid "vervolg"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:105
+msgid "bijdrage"
+msgstr ""
+
+#: src/ztc/datamodel/choices.py:106 src/ztc/datamodel/models/zaken.py:271
+msgid "onderwerp"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:29
+#: src/ztc/datamodel/models/informatieobjecttype.py:70
+#: src/ztc/datamodel/models/resultaattype.py:57
+#: src/ztc/datamodel/models/roltype.py:36
+#: src/ztc/datamodel/models/statustype.py:58
+#: src/ztc/datamodel/models/zaken.py:225
+msgid "omschrijving"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:30
+msgid "Omschrijving van de aard van BESLUITen van het BESLUITTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:34
+#: src/ztc/datamodel/models/informatieobjecttype.py:73
+#: src/ztc/datamodel/models/resultaattype.py:67
+#: src/ztc/datamodel/models/roltype.py:40
+#: src/ztc/datamodel/models/statustype.py:63
+#: src/ztc/datamodel/models/zaken.py:229
+msgid "omschrijving generiek"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:35
+msgid ""
+"Algemeen gehanteerde omschrijving van de aard van BESLUITen van het "
+"BESLUITTYPE"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:40
+msgid "besluitcategorie"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:41
+msgid "Typering van de aard van BESLUITen van het BESLUITTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:45
+msgid "reactietermijn"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:46
+msgid ""
+"Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen "
+"verweer tegen een besluit van het besluittype mogelijk is."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:51
+#: src/ztc/datamodel/models/zaken.py:335
+msgid "publicatie indicatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:52
+msgid "Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten worden."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:56
+#: src/ztc/datamodel/models/zaken.py:339
+msgid "publicatietekst"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:57
+msgid "De generieke tekst van de publicatie van BESLUITen van dit BESLUITTYPE"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:61
+msgid "publicatietermijn"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:62
+msgid ""
+"Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat "
+"BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:67
+#: src/ztc/datamodel/models/eigenschap.py:186
+#: src/ztc/datamodel/models/informatieobjecttype.py:95
+#: src/ztc/datamodel/models/relatieklassen.py:145
+#: src/ztc/datamodel/models/resultaattype.py:155
+#: src/ztc/datamodel/models/statustype.py:30
+#: src/ztc/datamodel/models/statustype.py:88
+#: src/ztc/datamodel/models/zaken.py:254
+msgid "toelichting"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:68
+msgid "Een eventuele toelichting op dit BESLUITTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:73
+#: src/ztc/datamodel/models/catalogus.py:61
+msgid "catalogus"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:73
+msgid "De CATALOGUS waartoe dit BESLUITTYPE behoort."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:78
+msgid "informatieobjecttype"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:79
+msgid ""
+"Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit "
+"BESLUITTYPE worden vastgelegd."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:85
+msgid "is resultaat van"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:86
+msgid ""
+"(inverse van:) Het BESLUITTYPE van besluiten die gepaard gaan met resultaten "
+"van het RESULTAATTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:92
+#: src/ztc/datamodel/models/informatieobjecttype.py:104
+msgid "zaaktypes"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:93
+msgid "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:97
+msgid "besluittype"
+msgstr ""
+
+#: src/ztc/datamodel/models/besluittype.py:98
+msgid "besluittypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:34
+#: src/ztc/datamodel/models/zaken.py:147
+msgid "domein"
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:35
+msgid ""
+"Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS "
+"ZAAKTYPEn zijn uitgewerkt."
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:39
+#: src/ztc/datamodel/models/zaken.py:150
+msgid "rsin"
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:40
+msgid ""
+"Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-"
+"NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS."
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:44
+#: src/ztc/datamodel/models/zaken.py:117
+msgid "naam"
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:45
+msgid ""
+"De naam van de contactpersoon die verantwoordelijk is voor het beheer van de "
+"CATALOGUS."
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:48
+msgid "telefoonnummer"
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:49
+msgid ""
+"Het telefoonnummer van de contactpersoon die verantwoordelijk is voor het "
+"beheer van de CATALOGUS."
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:54
+msgid "emailadres"
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:55
+msgid ""
+"Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer "
+"van de CATALOGUS."
+msgstr ""
+
+#: src/ztc/datamodel/models/catalogus.py:62
+msgid "catalogussen"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:25
+msgid "groep"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:26
+msgid ""
+"Benaming van het object of groepattribuut waarvan de EIGENSCHAP een "
+"inhoudelijk gegeven specificeert."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:30
+msgid "formaat"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:31
+msgid ""
+"Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:32
+msgid "lengte"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:33
+msgid ""
+"Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden "
+"vastgelegd."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:34
+msgid "kardinaliteit"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:35
+msgid ""
+"Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak "
+"van het ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:38
+msgid "waardenverzameling"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:39
+msgid ""
+"Waarden die deze EIGENSCHAP kan hebben (Gebruik een komma om waarden van "
+"elkaar te onderscheiden.)"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:44
+msgid "Eigenschap specificatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:45
+msgid "Eigenschap specificaties"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:63
+msgid "Als formaat tekst is, moet de lengte een getal tussen de 0 en 255 zijn."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:69
+msgid "Als formaat getal is, moet de lengte een (kommagescheiden) getal zijn."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:73
+msgid "Als formaat datum is, moet de lengte 8 zijn."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:77
+msgid "Als formaat datum/tijd is, moet de lengte 14 zijn."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:92
+#: src/ztc/datamodel/models/resultaattype.py:123
+#: src/ztc/datamodel/models/zaken.py:35
+msgid "objecttype"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:93
+msgid ""
+"De naam van het objecttype waarbij de eigenschap is gemodelleerd in het "
+"informatiemodel waarvan het objecttype deel uit maakt."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:96
+msgid "informatiemodel"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:97
+msgid ""
+"De naam en de versie van het informatiemodel waarin de eigenschap is "
+"gemodelleerd."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:98
+msgid "namespace"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:99
+msgid "De naam van het schema waarin de eigenschap is opgenomen."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:100
+msgid "schemalocatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:101
+msgid "De locatie van het XML-schema behorend bij de Namespace"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:102
+msgid "x path element"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:103
+msgid ""
+"De naam van de eigenschap en het pad daarnaar toe in het XML-schema behorend "
+"bij de namespace."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:104
+msgid "entiteittype"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:105
+msgid ""
+"De naam van de XML-constructie in het XML-schema behorend bij de namespace "
+"die afgeleid is van de naam van het objecttype en waarin de eigenschap is "
+"opgenomen."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:109
+msgid "Eigenschap referentie"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:110
+msgid "Eigenschap referenties"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:172
+msgid "eigenschapnaam"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:172
+msgid "De naam van de EIGENSCHAP"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:173
+#: src/ztc/datamodel/models/informatieobjecttype.py:29
+msgid "definitie"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:174
+msgid "De beschrijving van de betekenis van deze EIGENSCHAP"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:176
+msgid "specificatie van eigenschap"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:177
+msgid "Attribuutkenmerken van de eigenschap"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:181
+msgid "referentie naar eigenschap"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:183
+msgid "Verwijzing naar de standaard waarin de eigenschap is gespecificeerd"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:187
+msgid ""
+"Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit "
+"ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:192
+#: src/ztc/datamodel/models/relatieklassen.py:39
+#: src/ztc/datamodel/models/zaken.py:43
+msgid "status type"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:195
+msgid ""
+"Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een STATUS "
+"van het STATUSTYPE kan worden gezet."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:199
+msgid "Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is."
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:206
+msgid "Eigenschap"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:207
+msgid "Eigenschappen"
+msgstr ""
+
+#: src/ztc/datamodel/models/eigenschap.py:231
+msgid ""
+"Één van twee groepen attributen is verplicht: specificatie van eigenschap of "
+"referentie naar eigenschap"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:26
+msgid "informatieobjecttype omschrijving generiek"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:27
+msgid "Algemeen gehanteerde omschrijving van het type informatieobject."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:30
+msgid "Nauwkeurige beschrijving van het generieke type informatieobject"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:32
+msgid "herkomst"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:33
+msgid ""
+"De naam van de waardenverzameling, of van de beherende organisatie daarvan, "
+"waaruit de waarde is overgenomen."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:36
+msgid "hierarchie"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:37
+msgid "De plaats in de rangorde van het informatieobjecttype."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:39
+msgid "opmerking"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:40
+msgid "Zinvolle toelichting bij het informatieobjecttype"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:44
+msgid "Generieke informatieobjecttype-omschrijving"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:45
+msgid "Generieke informatieobjecttype-omschrijvingen"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:71
+msgid ""
+"Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:75
+msgid "Algemeen gehanteerde omschrijving van het INFORMATIEOBJECTTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:77
+msgid "categorie"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:78
+msgid ""
+"Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:80
+#: src/ztc/datamodel/models/zaken.py:312
+msgid "trefwoord"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:81
+msgid ""
+"Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen "
+"worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar te "
+"onderscheiden.)"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:84
+#: src/ztc/datamodel/models/zaken.py:232
+msgid "vertrouwelijkheidaanduiding"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:86
+msgid ""
+"Aanduiding van de mate waarin informatieobjecten van dit "
+"INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:90
+msgid "model"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:92
+msgid ""
+"De URL naar het model / sjabloon dat wordt gebruikt voor de creatie van "
+"informatieobjecten van dit INFORMATIEOBJECTTYPE. (Gebruik een komma om "
+"waarden van elkaar te onderscheiden.)"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:96
+msgid "Een eventuele toelichting op dit INFORMATIEOBJECTTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:99
+#: src/ztc/datamodel/models/zaken.py:405
+msgid "maakt deel uit van"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:107
+msgid ""
+"ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit INFORMATIEOBJECTTYPE"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:112
+msgid "Informatieobjecttype"
+msgstr ""
+
+#: src/ztc/datamodel/models/informatieobjecttype.py:113
+msgid "Informatieobjecttypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/mixins.py:10
+msgid "datum begin geldigheid"
+msgstr ""
+
+#: src/ztc/datamodel/models/mixins.py:10
+msgid "De datum waarop het is ontstaan."
+msgstr ""
+
+#: src/ztc/datamodel/models/mixins.py:12
+msgid "datum einde geldigheid"
+msgstr ""
+
+#: src/ztc/datamodel/models/mixins.py:12
+msgid "De datum waarop het is opgeheven."
+msgstr ""
+
+#: src/ztc/datamodel/models/mixins.py:72
+msgid ""
+"Datum einde geldigheid is gelijk aan of gelegen na de datum zoals opgenomen "
+"onder Datum begin geldigheid."
+msgstr ""
+
+#: src/ztc/datamodel/models/mixins.py:88
+msgid ""
+"De datum_begin_geldigheid moet gelijk zijn aan een Versiedatum van het "
+"gerelateerde zaaktype."
+msgstr ""
+
+#: src/ztc/datamodel/models/mixins.py:95
+msgid ""
+"'Datum einde geldigheid' moet gelijk zijn aan de dag voor een Versiedatum "
+"van het gerelateerde zaaktype."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:23
+msgid "zaaktype"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:26
+msgid "informatie object type"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:30
+msgid "volgnummer"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:31
+msgid ""
+"Uniek volgnummer van het ZAAK-INFORMATIEOBJECT-TYPE binnen het ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:32
+msgid "richting"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:33
+msgid ""
+"Aanduiding van de richting van informatieobjecten van het gerelateerde "
+"INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:42
+msgid ""
+"De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het "
+"STATUSTYPE gerelateerde ZAAKTYPE waarvoor geldt dat deze verplicht aanwezig "
+"moeten zijn bij een zaak van het gerelateerde ZAAKTYPE voordat de status van "
+"dit STATUSTYPE kan worden gezet bij die zaak."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:49
+msgid "Zaak-Informatieobject-Type"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:50
+msgid "Zaak-Informatieobject-Typen"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:77
+msgid "zaakinformatie object type"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:80
+#: src/ztc/datamodel/models/resultaattype.py:190
+msgid "resultaattype"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:86
+#: src/ztc/datamodel/models/resultaattype.py:73
+msgid "selectielijstklasse"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:87
+msgid ""
+"Verwijzing naar de voor het ZAAKINFORMATIEOBJECTTYPE bij het RESULTAATTYPE "
+"relevante passage in de Selectielijst Archiefbescheiden van de voor het "
+"ZAAKTYPE verantwoordelijke overheidsorganisatie."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:91
+#: src/ztc/datamodel/models/resultaattype.py:82
+msgid "archiefnominatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:92
+msgid ""
+"Aanduiding die aangeeft of informatieobjecten, van het INFORMATIEOBJECTTYPE "
+"bij zaken van het ZAAKTYPE met een resultaat van het RESULTAATTYPE, blijvend "
+"moeten worden bewaard of (op termijn) moeten worden vernietigd."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:96
+#: src/ztc/datamodel/models/resultaattype.py:91
+msgid "archiefactietermijn"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:97
+msgid ""
+"De termijn waarna informatieobjecten, van het INFORMATIEOBJECTTYPE bij zaken "
+"van het ZAAKTYPE met een resultaat van het RESULTAATTYPE, vernietigd of "
+"overgebracht (naar een archiefbewaarplaats) moeten worden."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:105
+msgid "Zaak-Informatieobject-Type Archiefregime"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:106
+msgid "Zaak-Informatieobject-Type Archiefregimes"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:130
+msgid "zaaktype van"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:136
+msgid "gerelateerd zaaktype"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:137
+msgid ""
+"URL referentie naar het gerelateerde zaaktype, mogelijks in een extern ZTC."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:140
+msgid "aard relatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:141
+msgid ""
+"Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken "
+"van het andere ZAAKTYPE"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:146
+msgid "Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN."
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:152
+msgid "Zaaktypenrelatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/relatieklassen.py:153
+msgid "Zaaktypenrelaties"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:50
+msgid "is relevant voor"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:52
+msgid ""
+"Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt "
+"kunnen worden."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:58
+msgid "Omschrijving van de aard van resultaten van het RESULTAATTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:61
+msgid "resultaattypeomschrijving"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:62
+msgid ""
+"Algemeen gehanteerde omschrijving van de aard van resultaten van het "
+"RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van "
+"generieke resultaattypeomschrijvingen. Im ImZTC heet dit 'omschrijving "
+"generiek'"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:68
+msgid "Gecachete tekstuele waarde van de generieke resultaattypeomschrijving."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:74
+msgid ""
+"Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, "
+"categorie in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE "
+"verantwoordelijke overheidsorganisatie. Dit is een URL-referentie naar een "
+"resultaat uit de selectielijst API"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:84
+msgid ""
+"Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE "
+"blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. "
+"Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:92
+msgid ""
+"De termijn, na het vervallen van het bedrjfsvoeringsbelang, waarna het "
+"zaakdossier (de ZAAK met alle bijbehorende INFORMATIEOBJECTen) van een ZAAK "
+"met een resultaat van dit RESULTAATTYPE vernietigd of overgebracht (naar een "
+"archiefbewaarplaats) moet worden. Voor te vernietigen dossiers betreft het "
+"de in die Selectielijst genoemde bewaartermjn. Voor blijvend te bewaren "
+"zaakdossiers betreft het de termijn vanaf afronding van de zaak tot "
+"overbrenging (de procestermijn is dan nihil)."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:105
+msgid "afleidingswijze brondatum"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:107
+msgid "Wijze van bepalen van de brondatum."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:111
+msgid "datumkenmerk"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:112
+msgid ""
+"Naam van de attribuutsoort van het procesobject dat bepalend is voor het "
+"einde van de procestermijn."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:116
+msgid "einddatum bekend"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:117
+msgid ""
+"Indicatie dat de einddatum van het procesobject gedurende de uitvoering van "
+"de zaak bekend moet worden. Indien deze nog niet bekend is en deze waarde "
+"staat op `true`, dan kan de zaak (nog) niet afgesloten worden."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:125
+msgid "Het soort object in de registratie dat het procesobject representeert."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:129
+msgid "registratie"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:130
+msgid "De naam van de registratie waarvan het procesobject deel uit maakt."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:133
+msgid "procestermijn"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:134
+msgid ""
+"De periode dat het zaakdossier na afronding van de zaak actief gebruikt en/"
+"of geraadpleegd wordt ter ondersteuning van de taakuitoefening van de "
+"organisatie. Enkel relevant indien de afleidingswijze 'termijn' is."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:156
+msgid ""
+"Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen "
+"waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:163
+msgid "bepaalt afwijkend archiefregime van"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:166
+msgid ""
+"Informatieobjecten van een ZAAKINFORMATIEOBJECTTYPE bij zaken van een "
+"ZAAKTYPE waarvan, op grond van resultaten van een RESULTAATTYPE bij dat "
+"ZAAKTYPE, de archiveringskenmerken afwijken van de archiveringskenmerken van "
+"het ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:170
+msgid "heeft verplichte"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:171
+msgid ""
+"De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit "
+"ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:175
+msgid "heeft verplichte zaakinformatie objecttype"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:178
+msgid ""
+"De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het "
+"zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van dit "
+"RESULTAATTYPE kan worden gezet."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:183
+msgid "heeft voor brondatum archiefprocedure relevante"
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:185
+msgid ""
+"De EIGENSCHAP die bepalend is voor het moment waarop de Archiefactietermijn "
+"start voor een ZAAK met een resultaat van dit RESULTAATTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/resultaattype.py:191
+msgid "resultaattypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:37
+msgid "Omschrijving van de aard van de ROL."
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:41
+msgid "Algemeen gehanteerde omschrijving van de aard van de ROL."
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:44
+msgid "soort betrokkene"
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:45
+msgid ""
+"De (soort) betrokkene die een rol van dit roltype mag uitoefenen. (Gebruik "
+"een komma om waarden van elkaar te onderscheiden.)"
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:51
+msgid ""
+"De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit "
+"ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:56
+msgid "Roltype"
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:57
+msgid "Roltypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:89
+msgid "mogelijke betrokkene"
+msgstr ""
+
+#: src/ztc/datamodel/models/roltype.py:90
+msgid "mogelijke betrokkenen"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:22
+msgid "itemnaam"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:23
+msgid "De betekenisvolle benaming van het checklistitem"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:24
+msgid "vraagstelling"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:25
+msgid ""
+"Een betekenisvolle vraag waaruit blijkt waarop het aandachtspunt "
+"gecontroleerd moet worden."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:27
+msgid "verplicht"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:28
+msgid ""
+"Het al dan niet verplicht zijn van controle van het aandachtspunt "
+"voorafgaand aan het bereiken van de status van het gerelateerde STATUSTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:31
+msgid ""
+"Beschrijving van de overwegingen bij het controleren van het aandachtspunt"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:53
+msgid ""
+"Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen "
+"worden."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:59
+msgid ""
+"Een korte, voor de initiator van de zaak relevante, omschrijving van de aard "
+"van de STATUS van zaken van een ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:64
+msgid ""
+"Algemeen gehanteerde omschrijving van de aard van STATUSsen van het "
+"STATUSTYPE"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:67
+msgid "statustypevolgnummer"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:68
+msgid "Een volgnummer voor statussen van het STATUSTYPE binnen een zaak."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:70
+msgid "doorlooptijd status"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:71
+msgid ""
+"De door de zaakbehandelende organisatie(s) gestelde norm voor de "
+"doorlooptijd voor het bereiken van statussen van dit STATUSTYPE bij het "
+"desbetreffende ZAAKTYPE, vanaf het bereiken van de voorafgaande status"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:76
+msgid "checklistitem"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:77
+msgid ""
+"Te controleren aandachtspunt voorafgaand aan het bereiken van een status van "
+"het STATUSTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:79
+msgid "informeren"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:80
+msgid ""
+"Aanduiding die aangeeft of na het zetten van een STATUS van dit STATUSTYPE "
+"de Initiator moet worden geïnformeerd over de statusovergang."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:84
+msgid "statustekst"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:85
+msgid ""
+"De tekst die wordt gebruikt om de Initiator te informeren over het bereiken "
+"van een STATUS van dit STATUSTYPE bij het desbetreffende ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:89
+msgid "Een eventuele toelichting op dit STATUSTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:95
+msgid "roltypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:96
+msgid ""
+"De STATUSTYPEn die een betrokkene in een rol van dit ROLTYPE mag zetten."
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:100
+msgid "Statustype"
+msgstr ""
+
+#: src/ztc/datamodel/models/statustype.py:101
+msgid "Statustypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:36
+msgid ""
+"De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE "
+"betrekking hebben."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:37
+msgid "ander objecttype"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:38
+msgid ""
+"Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE een ander, niet in "
+"RSGB en RGBZ voorkomend, objecttype betreft"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:39
+msgid "relatieomschrijving"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:40
+msgid ""
+"Omschrijving van de betrekking van het Objecttype op zaken van het "
+"gerelateerde ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:46
+msgid ""
+"TODO: dit is de related helptext: De ZAAKOBJECTTYPEn die verplicht "
+"gerelateerd moeten zijn aan ZAAKen van het ZAAKTYPE voordat een STATUS van "
+"dit STATUSTYPE kan worden gezet"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:50
+msgid "is_relevant_voor"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:51
+msgid ""
+"Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant "
+"zijn."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:58
+msgid "Zaakobjecttype"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:59
+msgid "Zaakobjecttypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:88
+msgid ""
+"Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit "
+"het RSGB of het RGBZ. Bekende objecttypen zijn: {}"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:117
+msgid "De naam van het formulier."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:118
+msgid "link"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:118
+msgid "De URL naar het formulier."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:124
+msgid "Formulier"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:125
+msgid "Formulieren"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:148
+msgid "Het domein van de CATALOGUS waaraan het ZAAKTYPE is ontleend."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:151
+msgid ""
+"Het RSIN van de INGESCHREVEN NIET-NATUURLIJK PERSOON die beheerder is van de "
+"CATALOGUS waaraan het ZAAKTYPE is ontleend."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:157
+msgid "Bron catalogus"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:158
+msgid "Bron catalogussen"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:185
+msgid "zaaktype identificatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:186
+msgid "De Zaaktype-identificatie van het bronzaaktype binnen de CATALOGUS."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:187
+msgid "zaaktype omschrijving"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:188
+msgid ""
+"De Zaaktype-omschrijving van het bronzaaktype, zoals gehanteerd in de "
+"Broncatalogus."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:194
+msgid "Bron zaaktype"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:195
+msgid "Bron zaaktypen"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:223
+msgid "identificatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:224
+msgid ""
+"Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het "
+"ZAAKTYPE voorkomt."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:226
+msgid "Omschrijving van de aard van ZAAKen van het ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:230
+msgid ""
+"Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:233
+msgid ""
+"Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor "
+"de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen "
+"vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:242
+msgid "zaakcategorie"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:243
+msgid "Typering van de aard van ZAAKen van het ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:246
+msgid "doel"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:247
+msgid ""
+"Een omschrijving van hetgeen beoogd is te bereiken met een zaak van dit "
+"zaaktype."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:249
+msgid "aanleiding"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:250
+msgid ""
+"Een omschrijving van de gebeurtenis die leidt tot het starten van een ZAAK "
+"van dit ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:255
+msgid ""
+"Een eventuele toelichting op dit zaaktype, zoals een beschrijving van het "
+"procesverloop op de hoofdlijnen."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:259
+msgid "indicatie intern of extern"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:260
+msgid ""
+"Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn die Intern "
+"respectievelijk Extern geïnitieerd worden. Indien van beide sprake kan zijn, "
+"dan prevaleert de externe initiatie."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:265
+msgid "handeling initiator"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:266
+msgid ""
+"Werkwoord dat hoort bij de handeling die de initiator verricht bij dit "
+"zaaktype. Meestal 'aanvragen', 'indienen' of 'melden'. Zie ook het IOB model "
+"op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/"
+"zaaktype.handeling_initiator"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:272
+msgid ""
+"Het onderwerp van ZAAKen van dit ZAAKTYPE. In veel gevallen nauw gerelateerd "
+"aan de product- of dienstnaam uit de Producten- en Dienstencatalogus (PDC). "
+"Bijvoorbeeld: 'Evenementenvergunning', 'Geboorte', 'Klacht'. Zie ook het IOB "
+"model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/"
+"zaaktype.onderwerp"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:278
+msgid "handeling behandelaar"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:279
+msgid ""
+"Werkwoord dat hoort bij de handeling die de behandelaar verricht bij het "
+"afdoen van ZAAKen van dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren', "
+"'vaststellen' of 'onderhouden'. Zie ook het IOB model op https://www."
+"gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype."
+"handeling_behandelaar"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:285
+msgid "doorlooptijd behandeling"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:286
+msgid ""
+"De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE "
+"afgerond dient te zijn, in kalenderdagen."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:290
+msgid "servicenorm behandeling"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:291
+msgid ""
+"De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond "
+"wordt conform de geldende servicenormen van de zaakbehandelende "
+"organisatie(s)."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:295
+msgid "opschorting/aanhouding mogelijk"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:296
+msgid ""
+"Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE kunnen worden "
+"opgeschort en/of aangehouden."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:300
+msgid "verlenging mogelijk"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:301
+msgid ""
+"Aanduiding die aangeeft of de Doorlooptijd behandeling van ZAAKen van dit "
+"ZAAKTYPE kan worden verlengd."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:305
+msgid "verlengingstermijn"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:306
+msgid ""
+"De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit "
+"ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging "
+"mogelijk is."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:314
+msgid ""
+"Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:320
+msgid "archiefclassificatiecode"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:321
+msgid ""
+"De systematische identificatie van zaakdossiers van dit ZAAKTYPE "
+"overeenkomstig logisch gestructureerde conventies, methoden en "
+"procedureregels."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:330
+msgid "verantwoordelijke"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:331
+msgid ""
+"De (soort) organisatorische eenheid of (functie van) medewerker die "
+"verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:336
+msgid ""
+"Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet "
+"worden."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:340
+msgid "De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:343
+msgid "verantwoordingsrelatie"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:345
+msgid ""
+"De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of "
+"financiële verantwoording."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:347
+msgid "versiedatum"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:348
+msgid ""
+"De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn "
+"geworden"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:355
+msgid "URL naar product/dienst"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:356
+msgid ""
+"Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt "
+"voortgebracht."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:361
+msgid "selectielijst procestype"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:362
+msgid ""
+"Een vanuit archiveringsoptiek onderkende groep processen met dezelfde "
+"kenmerken. URL naar de referentielijsten API."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:367
+msgid "formulier"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:368
+msgid "Formulier Het formulier dat ZAAKen van dit ZAAKTYPE initieert."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:372
+msgid "referentieprocesnaam"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:373
+msgid "De naam van het Referentieproces."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:376
+msgid "referentieproceslink"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:377
+msgid "De URL naar de beschrijving van het Referentieproces"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:385
+msgid "broncatalogus"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:387
+msgid "De CATALOGUS waaraan het ZAAKTYPE is ontleend."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:392
+msgid "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:399
+msgid "is deelzaaktype van"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:401
+msgid ""
+"De ZAAKTYPEn (van de hoofdzaken) waaronder ZAAKen van dit ZAAKTYPE als "
+"deelzaak kunnen voorkomen."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:406
+msgid "De CATALOGUS waartoe dit ZAAKTYPE behoort."
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:411
+msgid "Zaaktype"
+msgstr ""
+
+#: src/ztc/datamodel/models/zaken.py:412
+msgid "Zaaktypen"
+msgstr ""
+
+#: src/ztc/datamodel/validators.py:24
+msgid "Gebruik gehele getallen groter dan 0 of 'N' voor ongelimiteerd"
+msgstr ""
+
+#: src/ztc/datamodel/validators.py:32
+msgid "Voer alleen hoofdletters in."
+msgstr ""
+
+#: src/ztc/datamodel/validators.py:43
+msgid "Voer alleen letters, cijfers en/of liggende streepjes in."
+msgstr ""
+
+#: src/ztc/datamodel/validators.py:57
+msgid "Voer alleen letters, cijfers, liggende streepjes en/of spaties in."
+msgstr ""
+
+#: src/ztc/utils/admin.py:52
+#: src/ztc/utils/templates/admin/edit_inline/tabular_add_and_edit.html:22
+msgid "Acties"
+msgstr ""
+
+#: src/ztc/utils/templates/admin/edit_inline/tabular_add_and_edit.html:24
+msgid "Delete?"
+msgstr ""
+
+#: src/ztc/utils/templates/admin/edit_inline/tabular_add_and_edit.html:40
+#: src/ztc/utils/templates/admin/edit_inline/tabular_add_and_edit.html:77
+msgid "Change"
+msgstr ""
+
+#: src/ztc/utils/templates/admin/edit_inline/tabular_add_and_edit.html:43
+msgid "View on site"
+msgstr ""
+
+#: src/ztc/utils/templates/admin/edit_inline/tabular_add_and_edit.html:88
+#, python-format
+msgid "Voeg een %(model_name)s toe"
+msgstr ""
