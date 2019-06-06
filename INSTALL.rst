@@ -87,6 +87,15 @@ settings.
 
     $ docker exec -it ztc /app/src/manage.py createsuperuser
 
+Loading initial data
+--------------------
+
+The container will load any fixtures it can find at startup time. The default
+location is ``/app/fixtures``, so you can mount a volume containing JSON
+fixtures to populate your database initially.
+
+You can override this location through the ``FIXTURES_DIR`` environment
+variable. Only ``*.json`` files are considered.
 
 Developers
 ==========

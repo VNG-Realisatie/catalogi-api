@@ -22,6 +22,17 @@ done
 >&2 echo "Apply database migrations"
 python src/manage.py migrate
 
+# Load any JSON fixtures present
+if [ -d $fixtures_dir ]; then
+    echo "Loading fixtures from $fixtures_dir"
+
+    for fixture in $(ls "$fixtures_dir/"*.json)
+    do
+        echo "Loading fixture $fixture"
+        src/manage.py loaddata $fixture
+    done
+fi
+
 # Start server
 >&2 echo "Starting server"
 uwsgi \
