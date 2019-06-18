@@ -1,7 +1,7 @@
-from ...datamodel.tests.factories import BesluitTypeFactory, ZaakTypeFactory
+from ...datamodel.tests.factories import BesluitTypeFactory
 from .base import APITestCase
 from .utils import reverse
-from ...datamodel.models import ZaakType, ResultaatType, InformatieObjectType
+
 
 class BesluitTypeAPITests(APITestCase):
     maxDiff = None
