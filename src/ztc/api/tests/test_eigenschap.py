@@ -1,13 +1,12 @@
 from unittest import skip
 
-from .utils import reverse
-
 from ztc.datamodel.tests.factories import (
     EigenschapFactory, EigenschapReferentieFactory,
     EigenschapSpecificatieFactory, ZaakTypeFactory
 )
 
 from .base import APITestCase
+from .utils import reverse
 
 
 @skip("Not MVP yet")

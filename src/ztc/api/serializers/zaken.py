@@ -1,6 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework.serializers import HyperlinkedRelatedField, ModelSerializer, HyperlinkedModelSerializer
+from rest_framework.serializers import (
+    HyperlinkedModelSerializer, HyperlinkedRelatedField, ModelSerializer
+)
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from vng_api_common.serializers import GegevensGroepSerializer
