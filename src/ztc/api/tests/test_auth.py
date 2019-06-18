@@ -19,54 +19,30 @@ class ReadTests(AuthCheckMixin, APITestCase):
             reverse('catalogus-detail', kwargs={'uuid': dummy_uuid}),
 
             # nested one level
-            reverse('zaaktype-list', kwargs={
-                'catalogus_uuid': dummy_uuid
-            }),
+            reverse('zaaktype-list', ),
             reverse('zaaktype-detail', kwargs={
-                'catalogus_uuid': dummy_uuid,
                 'uuid': dummy_uuid,
             }),
-            reverse('informatieobjecttype-list', kwargs={
-                'catalogus_uuid': dummy_uuid
-            }),
+            reverse('informatieobjecttype-list'),
             reverse('informatieobjecttype-detail', kwargs={
-                'catalogus_uuid': dummy_uuid,
                 'uuid': dummy_uuid,
             }),
-            reverse('besluittype-list', kwargs={
-                'catalogus_uuid': dummy_uuid
-            }),
+            reverse('besluittype-list'),
             reverse('besluittype-detail', kwargs={
-                'catalogus_uuid': dummy_uuid,
                 'uuid': dummy_uuid,
             }),
 
             # nested two levels
-            reverse('statustype-list', kwargs={
-                'catalogus_uuid': dummy_uuid,
-                'zaaktype_uuid': dummy_uuid,
-            }),
+            reverse('statustype-list'),
             reverse('statustype-detail', kwargs={
-                'catalogus_uuid': dummy_uuid,
-                'zaaktype_uuid': dummy_uuid,
                 'uuid': dummy_uuid,
             }),
-            reverse('eigenschap-list', kwargs={
-                'catalogus_uuid': dummy_uuid,
-                'zaaktype_uuid': dummy_uuid,
-            }),
+            reverse('eigenschap-list'),
             reverse('eigenschap-detail', kwargs={
-                'catalogus_uuid': dummy_uuid,
-                'zaaktype_uuid': dummy_uuid,
                 'uuid': dummy_uuid,
             }),
-            reverse('roltype-list', kwargs={
-                'catalogus_uuid': dummy_uuid,
-                'zaaktype_uuid': dummy_uuid,
-            }),
+            reverse('roltype-list'),
             reverse('roltype-detail', kwargs={
-                'catalogus_uuid': dummy_uuid,
-                'zaaktype_uuid': dummy_uuid,
                 'uuid': dummy_uuid,
             }),
 

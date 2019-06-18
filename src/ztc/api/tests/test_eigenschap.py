@@ -1,6 +1,6 @@
 from unittest import skip
 
-from django.urls import reverse
+from .utils import reverse
 
 from ztc.datamodel.tests.factories import (
     EigenschapFactory, EigenschapReferentieFactory,
@@ -40,21 +40,11 @@ class EigenschapAPITests(APITestCase):
             referentie_naar_eigenschap=referentie
         )
 
-        self.eigenschap_list_url = reverse('api:eigenschap-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk
-        })
+        self.eigenschap_list_url = reverse('api:eigenschap-list')
         self.eigenschap_one_detail_url = reverse('api:eigenschap-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
             'pk': self.eigenschap_one.pk
         })
         self.eigenschap_two_detail_url = reverse('api:eigenschap-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
             'pk': self.eigenschap_two.pk
         })
 
