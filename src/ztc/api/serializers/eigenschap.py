@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
@@ -21,7 +21,7 @@ from ztc.datamodel.models import Eigenschap, EigenschapSpecificatie
 #         )
 
 
-class EigenschapSpecificatieSerializer(ModelSerializer):
+class EigenschapSpecificatieSerializer(serializers.ModelSerializer):
     class Meta:
         model = EigenschapSpecificatie
         fields = (
@@ -33,24 +33,10 @@ class EigenschapSpecificatieSerializer(ModelSerializer):
         )
 
 
-class EigenschapSerializer(NestedHyperlinkedModelSerializer):
-    parent_lookup_kwargs = {
-        'zaaktype_uuid': 'is_van__uuid',
-        'catalogus_uuid': 'is_van__catalogus__uuid',
-    }
+class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
 
     specificatie = EigenschapSpecificatieSerializer(read_only=True, source='specificatie_van_eigenschap')
     # referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
-
-    zaaktype = NestedHyperlinkedRelatedField(
-        read_only=True,
-        source='is_van',
-        view_name='zaaktype-detail',
-        lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        },
-    )
 
     class Meta:
         model = Eigenschap
@@ -76,5 +62,9 @@ class EigenschapSerializer(NestedHyperlinkedModelSerializer):
             },
             'naam': {
                 'source': 'eigenschapnaam',
+            },
+            'zaaktype': {
+                'lookup_field': 'uuid',
+                'source': 'is_van'
             }
         }

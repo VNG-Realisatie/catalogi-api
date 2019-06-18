@@ -1,12 +1,11 @@
 from rest_framework import viewsets
-from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import BesluitType
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import BesluitTypeSerializer
 
 
-class BesluitTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class BesluitTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een besluit.

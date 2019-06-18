@@ -1,12 +1,11 @@
 from rest_framework import viewsets
-from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import InformatieObjectType
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import InformatieObjectTypeSerializer
 
 
-class InformatieObjectTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class InformatieObjectTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Aanduiding van de aard van INFORMATIEOBJECTTYPEn zoals gehanteerd door de zaakbehandelende organisatie.

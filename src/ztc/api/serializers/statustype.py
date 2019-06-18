@@ -2,8 +2,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import CheckListItem, StatusType
 from ..utils.serializers import SourceMappingSerializerMixin
@@ -24,22 +22,7 @@ class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
         )
 
 
-class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
-    parent_lookup_kwargs = {
-        'zaaktype_uuid': 'zaaktype__uuid',
-        'catalogus_uuid': 'zaaktype__catalogus__uuid',
-    }
-
-    zaaktype = NestedHyperlinkedRelatedField(
-        read_only=True,
-        view_name='zaaktype-detail',
-        lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        },
-        label=_('is van')
-    )
-
+class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
     is_eindstatus = serializers.BooleanField(
         read_only=True,
         help_text=_('Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit '
@@ -116,4 +99,7 @@ class StatusTypeSerializer(NestedHyperlinkedModelSerializer):
             'volgnummer': {
                 'source': 'statustypevolgnummer',
             },
+            'zaaktype': {
+                'lookup_field': 'uuid',
+            }
         }

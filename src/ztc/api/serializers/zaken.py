@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework.serializers import HyperlinkedRelatedField, ModelSerializer
+from rest_framework.serializers import HyperlinkedRelatedField, ModelSerializer, HyperlinkedModelSerializer
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from vng_api_common.serializers import GegevensGroepSerializer
@@ -99,10 +99,7 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         }
 
 
-class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
-    parent_lookup_kwargs = {
-        'catalogus_uuid': 'catalogus__uuid',
-    }
+class ZaakTypeSerializer(HyperlinkedModelSerializer):
 
     # formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(
@@ -134,26 +131,19 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
     #         'catalogus_pk': 'catalogus__pk'
     #     },
     # )
-    informatieobjecttypen = NestedHyperlinkedRelatedField(
+    informatieobjecttypen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='heeft_relevant_informatieobjecttype',
         view_name='informatieobjecttype-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        }
     )
 
-    statustypen = NestedHyperlinkedRelatedField(
+    statustypen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
         view_name='statustype-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'zaaktype__catalogus__uuid',
-            'zaaktype_uuid': 'zaaktype__uuid',
-        }
     )
 
     resultaattypen = HyperlinkedRelatedField(
@@ -163,40 +153,29 @@ class ZaakTypeSerializer(NestedHyperlinkedModelSerializer):
         lookup_field='uuid',
     )
 
-    eigenschappen = NestedHyperlinkedRelatedField(
+    eigenschappen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='eigenschap_set',
         view_name='eigenschap-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'is_van__catalogus__uuid',
-            'zaaktype_uuid': 'is_van__uuid'
-        },
     )
 
-    roltypen = NestedHyperlinkedRelatedField(
+    roltypen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
         source='roltype_set',
         view_name='roltype-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'zaaktype__catalogus__uuid',
-            'zaaktype_uuid': 'zaaktype__uuid'
-        },
     )
 
-    besluittypen = NestedHyperlinkedRelatedField(
+    besluittypen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
         label=_("heeft relevante besluittypen"),
         source='besluittype_set',
         view_name='besluittype-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        }
     )
 
     class Meta:

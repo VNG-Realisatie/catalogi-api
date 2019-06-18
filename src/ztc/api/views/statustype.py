@@ -1,12 +1,11 @@
 from rest_framework import viewsets
-from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import StatusType
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import StatusTypeSerializer
 
 
-class StatusTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class StatusTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een status.

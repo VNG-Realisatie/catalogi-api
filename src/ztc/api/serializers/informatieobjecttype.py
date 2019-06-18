@@ -1,15 +1,12 @@
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from rest_framework import serializers
 
 from ...datamodel.models import InformatieObjectType
 
 
-class InformatieObjectTypeSerializer(NestedHyperlinkedModelSerializer):
+class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializer based on ``IOT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
-    parent_lookup_kwargs = {
-        'catalogus_uuid': 'catalogus__uuid',
-    }
 
     # This is needed because spanning relations is not done correctly when specifying the ``source`` attribute later,
     # as is done by the ``Meta.source_mapping`` property.

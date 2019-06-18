@@ -26,7 +26,7 @@ class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin
     }
 
 
-class ZaakTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
