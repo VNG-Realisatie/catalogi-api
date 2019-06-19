@@ -1,13 +1,14 @@
-from rest_framework import viewsets
-from vng_api_common.viewsets import NestedViewSetMixin
+from rest_framework import viewsets, mixins
 
 from ...datamodel.models import ResultaatType
 from ..filters import ResultaatTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ResultaatTypeSerializer
 
 
-class ResultaatTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class ResultaatTypeViewSet(mixins.CreateModelMixin,
+                           mixins.DestroyModelMixin,
+                           viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Het betreft de indeling of groepering van resultaten van zaken van hetzelfde
@@ -23,4 +24,6 @@ class ResultaatTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }

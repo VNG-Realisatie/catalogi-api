@@ -1,13 +1,15 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
 from ztc.datamodel.models import Eigenschap
 
 from ..filters import EigenschapFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import EigenschapSerializer
 
 
-class EigenschapViewSet(viewsets.ReadOnlyModelViewSet):
+class EigenschapViewSet(mixins.CreateModelMixin,
+                        mixins.DestroyModelMixin,
+                        viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
@@ -24,4 +26,6 @@ class EigenschapViewSet(viewsets.ReadOnlyModelViewSet):
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }

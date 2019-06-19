@@ -1,12 +1,14 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
 from ...datamodel.models import InformatieObjectType
 from ..filters import InformatieObjectTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import InformatieObjectTypeSerializer
 
 
-class InformatieObjectTypeViewSet(viewsets.ReadOnlyModelViewSet):
+class InformatieObjectTypeViewSet(mixins.CreateModelMixin,
+                                  mixins.DestroyModelMixin,
+                                  viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Aanduiding van de aard van INFORMATIEOBJECTTYPEn zoals gehanteerd door de zaakbehandelende organisatie.
@@ -22,4 +24,6 @@ class InformatieObjectTypeViewSet(viewsets.ReadOnlyModelViewSet):
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }

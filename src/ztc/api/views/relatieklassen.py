@@ -1,11 +1,11 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import (
     ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime
 )
 from ..filters import ZaakInformatieobjectTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import (
     ZaakInformatieobjectTypeArchiefregimeSerializer,
     ZaakTypeInformatieObjectTypeSerializer
@@ -14,7 +14,9 @@ from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
 
 
-class ZaakTypeInformatieObjectTypeViewSet(viewsets.ReadOnlyModelViewSet):
+class ZaakTypeInformatieObjectTypeViewSet(mixins.CreateModelMixin,
+                                          mixins.DestroyModelMixin,
+                                          viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Relatie met informatieobjecttype dat relevant is voor zaaktype.
@@ -37,6 +39,8 @@ class ZaakTypeInformatieObjectTypeViewSet(viewsets.ReadOnlyModelViewSet):
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }
 
 

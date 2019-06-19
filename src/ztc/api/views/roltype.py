@@ -1,13 +1,16 @@
-from rest_framework import viewsets
-from vng_api_common.viewsets import CheckQueryParamsMixin, NestedViewSetMixin
+from rest_framework import viewsets, mixins
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import RolType
 from ..filters import RolTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import RolTypeSerializer
 
 
-class RolTypeViewSet(CheckQueryParamsMixin, NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class RolTypeViewSet(CheckQueryParamsMixin,
+                     mixins.CreateModelMixin,
+                     mixins.DestroyModelMixin,
+                     viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE.
@@ -23,4 +26,6 @@ class RolTypeViewSet(CheckQueryParamsMixin, NestedViewSetMixin, viewsets.ReadOnl
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }
