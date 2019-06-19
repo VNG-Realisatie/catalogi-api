@@ -11,7 +11,6 @@ class RolTypeFactory(factory.django.DjangoModelFactory):
 
     omschrijving = factory.Faker('text', max_nb_chars=20)
     omschrijving_generiek = factory.fuzzy.FuzzyChoice(choices=RolOmschrijving.values)
-    datum_begin_geldigheid = factory.SelfAttribute('zaaktype.datum_begin_geldigheid')
 
     class Meta:
         model = RolType

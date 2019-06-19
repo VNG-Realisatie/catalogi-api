@@ -33,8 +33,6 @@ class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
             'omschrijving',
             'omschrijving_generiek',
             'mogelijke_betrokkenen',
-            'datum_begin_geldigheid'
-
             # 'ingangsdatumObject',
             # 'einddatumObject',
             # 'soortBetrokkene',

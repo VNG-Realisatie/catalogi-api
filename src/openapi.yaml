@@ -5312,7 +5312,6 @@ components:
       required:
       - naam
       - definitie
-      - ingangsdatumObject
       - zaaktype
       type: object
       properties:
@@ -5341,16 +5340,6 @@ components:
             zaken van dit ZAAKTYPE.
           type: string
           maxLength: 1000
-        ingangsdatumObject:
-          title: Ingangsdatum object
-          description: De datum waarop het is ontstaan.
-          type: string
-          format: date
-        einddatumObject:
-          title: Einddatum object
-          description: De datum waarop het is opgeheven.
-          type: string
-          format: date
         zaaktype:
           title: Is van
           description: Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang

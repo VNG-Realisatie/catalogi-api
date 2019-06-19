@@ -29,7 +29,6 @@ class StatusTypeAPITests(APITestCase):
         status_type = StatusTypeFactory.create(
             statustype_omschrijving='Besluit genomen',
             zaaktype__catalogus=self.catalogus,
-            datum_begin_geldigheid='2019-01-01'
         )
         statustype_detail_url = reverse('statustype-detail', kwargs={
             'uuid': status_type.uuid,
@@ -51,7 +50,6 @@ class StatusTypeAPITests(APITestCase):
             'zaaktype': 'http://testserver{}'.format(zaaktype_url),
             'volgnummer': status_type.statustypevolgnummer,
             'isEindstatus': True,
-            'datumBeginGeldigheid': '2019-01-01'
         }
 
         self.assertEqual(expected, response.json())
@@ -68,7 +66,6 @@ class StatusTypeAPITests(APITestCase):
             'statustekst': '',
             'zaaktype': 'http://testserver{}'.format(zaaktype_url),
             'volgnummer': 2,
-            'datumBeginGeldigheid': '2019-01-01'
         }
         response = self.client.post(statustype_list_url, data)
 

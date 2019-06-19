@@ -61,8 +61,6 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | naam | De naam van de EIGENSCHAP | string | ja | C​R​U​D |
 | definitie | De beschrijving van de betekenis van deze EIGENSCHAP | string | ja | C​R​U​D |
 | toelichting | Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE. | string | nee | C​R​U​D |
-| ingangsdatumObject | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
-| einddatumObject | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
 | zaaktype | Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is. | string | ja | C​R​U​D |
 
 ## InformatieObjectType

@@ -74,7 +74,6 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             'volgnummer',
 
             'is_eindstatus',
-            'datum_begin_geldigheid',
             # 'doorlooptijd',
             # 'checklistitem',
             # 'informeren',

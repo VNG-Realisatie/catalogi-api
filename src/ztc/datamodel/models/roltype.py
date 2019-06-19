@@ -6,10 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.constants import RolOmschrijving, RolTypes
 
-from .mixins import GeldigheidMixin
 
-
-class RolType(GeldigheidMixin, models.Model):
+class RolType(models.Model):
     """
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
     uitoefenen in ZAAKen van een ZAAKTYPE.
@@ -65,14 +63,6 @@ class RolType(GeldigheidMixin, models.Model):
         #     'roltypeomschrijving',
         #     'roltypeomschrijving_generiek',
         # )
-
-    def clean(self):
-        super().clean()
-
-        # see https://sentry.maykinmedia.nl/maykin-media/ztc-tst/issues/253332/
-        # on invalid selections, accessing self.zaaktype raises RelatedObjectDoesNotExist
-        if self.zaaktype_id:
-            self._clean_geldigheid(self.zaaktype)
 
     def __str__(self):
         return '{} - {}'.format(self.zaaktype, self.omschrijving)

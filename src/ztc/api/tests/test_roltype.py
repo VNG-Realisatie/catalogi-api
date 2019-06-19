@@ -35,7 +35,6 @@ class RolTypeAPITests(APITestCase):
             omschrijving_generiek=RolOmschrijving.initiator,
             soort_betrokkene=['Aanvrager'],
             zaaktype__catalogus=self.catalogus,
-            datum_begin_geldigheid='2019-01-01'
         )
         zaaktype = rol_type.zaaktype
         rol_type_detail_url = reverse('roltype-detail', kwargs={
@@ -59,7 +58,6 @@ class RolTypeAPITests(APITestCase):
             'mogelijkeBetrokkenen': [],
             # 'soortBetrokkene': ['Aanvrager'],
             # 'magZetten': [],
-            'datumBeginGeldigheid': '2019-01-01'
         }
         self.assertEqual(expected, response.json())
 
@@ -77,7 +75,6 @@ class RolTypeAPITests(APITestCase):
             'omschrijving': 'Vergunningaanvrager',
             'omschrijvingGeneriek': RolOmschrijving.initiator,
             'mogelijkeBetrokkenen': [],
-            'datumBeginGeldigheid': '2019-01-01'
         }
 
         response = self.client.post(rol_type_list_url, data)

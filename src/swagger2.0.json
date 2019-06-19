@@ -6432,7 +6432,6 @@
             "required": [
                 "naam",
                 "definitie",
-                "ingangsdatumObject",
                 "zaaktype"
             ],
             "type": "object",
@@ -6465,18 +6464,6 @@
                     "description": "Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.",
                     "type": "string",
                     "maxLength": 1000
-                },
-                "ingangsdatumObject": {
-                    "title": "Ingangsdatum object",
-                    "description": "De datum waarop het is ontstaan.",
-                    "type": "string",
-                    "format": "date"
-                },
-                "einddatumObject": {
-                    "title": "Einddatum object",
-                    "description": "De datum waarop het is opgeheven.",
-                    "type": "string",
-                    "format": "date"
                 },
                 "zaaktype": {
                     "title": "Is van",

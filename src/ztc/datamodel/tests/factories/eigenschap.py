@@ -19,7 +19,6 @@ class EigenschapReferentieFactory(factory.django.DjangoModelFactory):
 class EigenschapFactory(factory.django.DjangoModelFactory):
     eigenschapnaam = factory.Sequence(lambda n: 'eigenschap {}'.format(n))
     zaaktype = factory.SubFactory(ZaakTypeFactory)
-    datum_begin_geldigheid = factory.SelfAttribute('zaaktype.datum_begin_geldigheid')
 
     class Meta:
         model = Eigenschap
