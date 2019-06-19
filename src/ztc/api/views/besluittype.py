@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 
 from ...datamodel.models import BesluitType
+from ..filters import BesluitTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import BesluitTypeSerializer
 
@@ -16,6 +17,7 @@ class BesluitTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = BesluitType.objects.all()
     serializer_class = BesluitTypeSerializer
+    filterset_class = BesluitTypeFilter
     pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {

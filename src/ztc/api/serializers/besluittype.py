@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from ...datamodel.models import BesluitType, InformatieObjectType
+from ...datamodel.models import BesluitType
 
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
     informatieobjecttypes = serializers.HyperlinkedRelatedField(
-        view_name = 'informatieobjecttype-detail',
+        view_name='informatieobjecttype-detail',
         many=True,
         lookup_field='uuid',
         read_only=True

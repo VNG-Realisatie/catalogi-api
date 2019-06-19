@@ -63,6 +63,14 @@ paths:
         van het
 
         zaakgericht werken van de behandelende organisatie(s).'
+      parameters:
+      - name: catalogus
+        in: query
+        description: URL naar de/het gerelateerde catalogus
+        required: false
+        schema:
+          type: string
+          format: uri
       responses:
         '200':
           description: ''
@@ -78,6 +86,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BesluitType'
+        '400':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
         '401':
           description: ''
           headers:
@@ -582,6 +602,14 @@ paths:
     get:
       operationId: eigenschap_list
       description: Een verzameling van EIGENSCHAPpen.
+      parameters:
+      - name: isVan
+        in: query
+        description: URL naar de/het gerelateerde is_van
+        required: false
+        schema:
+          type: string
+          format: uri
       responses:
         '200':
           description: ''
@@ -597,6 +625,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Eigenschap'
+        '400':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
         '401':
           description: ''
           headers:
@@ -844,6 +884,14 @@ paths:
     get:
       operationId: informatieobjecttype_list
       description: Een verzameling van INFORMATIEOBJECTTYPEn.
+      parameters:
+      - name: catalogus
+        in: query
+        description: URL naar de/het gerelateerde catalogus
+        required: false
+        schema:
+          type: string
+          format: uri
       responses:
         '200':
           description: ''
@@ -859,6 +907,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/InformatieObjectType'
+        '400':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
         '401':
           description: ''
           headers:
@@ -1407,6 +1467,13 @@ paths:
       operationId: roltype_list
       description: Een verzameling van ROLTYPEn.
       parameters:
+      - name: zaaktype
+        in: query
+        description: URL naar de/het gerelateerde zaaktype
+        required: false
+        schema:
+          type: string
+          format: uri
       - name: omschrijvingGeneriek
         in: query
         description: Algemeen gehanteerde omschrijving van de aard van de ROL.
@@ -1693,6 +1760,14 @@ paths:
     get:
       operationId: statustype_list
       description: Een verzameling van STATUSTYPEn.
+      parameters:
+      - name: zaaktype
+        in: query
+        description: URL naar de/het gerelateerde zaaktype
+        required: false
+        schema:
+          type: string
+          format: uri
       responses:
         '200':
           description: ''
@@ -1708,6 +1783,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StatusType'
+        '400':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
         '401':
           description: ''
           headers:
@@ -2261,6 +2348,14 @@ paths:
     get:
       operationId: zaaktype_list
       description: Een verzameling van ZAAKTYPEn.
+      parameters:
+      - name: catalogus
+        in: query
+        description: URL naar de/het gerelateerde catalogus
+        required: false
+        schema:
+          type: string
+          format: uri
       responses:
         '200':
           description: ''
@@ -2276,6 +2371,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ZaakType'
+        '400':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
         '401':
           description: ''
           headers:
@@ -2636,6 +2743,71 @@ components:
             Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
           type: string
           minLength: 1
+    FieldValidationError:
+      required:
+      - name
+      - code
+      - reason
+      type: object
+      properties:
+        name:
+          title: Name
+          description: Naam van het veld met ongeldige gegevens
+          type: string
+          minLength: 1
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        reason:
+          title: Reason
+          description: Uitleg wat er precies fout is met de gegevens
+          type: string
+          minLength: 1
+    ValidatieFout:
+      required:
+      - code
+      - title
+      - status
+      - detail
+      - instance
+      - invalidParams
+      type: object
+      properties:
+        type:
+          title: Type
+          description: URI referentie naar het type fout, bedoeld voor developers
+          type: string
+        code:
+          title: Code
+          description: Systeemcode die het type fout aangeeft
+          type: string
+          minLength: 1
+        title:
+          title: Title
+          description: Generieke titel voor het type fout
+          type: string
+          minLength: 1
+        status:
+          title: Status
+          description: De HTTP status code
+          type: integer
+        detail:
+          title: Detail
+          description: Extra informatie bij de fout, indien beschikbaar
+          type: string
+          minLength: 1
+        instance:
+          title: Instance
+          description: URI met referentie naar dit specifiek voorkomen van de fout.
+            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
+          type: string
+          minLength: 1
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldValidationError'
     Catalogus:
       required:
       - domein
@@ -2984,71 +3156,6 @@ components:
           format: duration
         brondatumArchiefprocedure:
           $ref: '#/components/schemas/BrondatumArchiefprocedure'
-    FieldValidationError:
-      required:
-      - name
-      - code
-      - reason
-      type: object
-      properties:
-        name:
-          title: Name
-          description: Naam van het veld met ongeldige gegevens
-          type: string
-          minLength: 1
-        code:
-          title: Code
-          description: Systeemcode die het type fout aangeeft
-          type: string
-          minLength: 1
-        reason:
-          title: Reason
-          description: Uitleg wat er precies fout is met de gegevens
-          type: string
-          minLength: 1
-    ValidatieFout:
-      required:
-      - code
-      - title
-      - status
-      - detail
-      - instance
-      - invalidParams
-      type: object
-      properties:
-        type:
-          title: Type
-          description: URI referentie naar het type fout, bedoeld voor developers
-          type: string
-        code:
-          title: Code
-          description: Systeemcode die het type fout aangeeft
-          type: string
-          minLength: 1
-        title:
-          title: Title
-          description: Generieke titel voor het type fout
-          type: string
-          minLength: 1
-        status:
-          title: Status
-          description: De HTTP status code
-          type: integer
-        detail:
-          title: Detail
-          description: Extra informatie bij de fout, indien beschikbaar
-          type: string
-          minLength: 1
-        instance:
-          title: Instance
-          description: URI met referentie naar dit specifiek voorkomen van de fout.
-            Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.
-          type: string
-          minLength: 1
-        invalidParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldValidationError'
     MogelijkeBetrokkene:
       required:
       - betrokkene

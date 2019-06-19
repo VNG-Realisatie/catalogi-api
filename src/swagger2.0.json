@@ -37,7 +37,16 @@
             "get": {
                 "operationId": "besluittype_list",
                 "description": "Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het\nzaakgericht werken van de behandelende organisatie(s).",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "catalogus",
+                        "in": "query",
+                        "description": "URL naar de/het gerelateerde catalogus",
+                        "required": false,
+                        "type": "string",
+                        "format": "uri"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
@@ -46,6 +55,20 @@
                             "items": {
                                 "$ref": "#/definitions/BesluitType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
                         },
                         "headers": {
                             "API-version": {
@@ -673,7 +696,16 @@
             "get": {
                 "operationId": "eigenschap_list",
                 "description": "Een verzameling van EIGENSCHAPpen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "isVan",
+                        "in": "query",
+                        "description": "URL naar de/het gerelateerde is_van",
+                        "required": false,
+                        "type": "string",
+                        "format": "uri"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
@@ -682,6 +714,20 @@
                             "items": {
                                 "$ref": "#/definitions/Eigenschap"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
                         },
                         "headers": {
                             "API-version": {
@@ -991,7 +1037,16 @@
             "get": {
                 "operationId": "informatieobjecttype_list",
                 "description": "Een verzameling van INFORMATIEOBJECTTYPEn.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "catalogus",
+                        "in": "query",
+                        "description": "URL naar de/het gerelateerde catalogus",
+                        "required": false,
+                        "type": "string",
+                        "format": "uri"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
@@ -1000,6 +1055,20 @@
                             "items": {
                                 "$ref": "#/definitions/InformatieObjectType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
                         },
                         "headers": {
                             "API-version": {
@@ -1679,6 +1748,14 @@
                 "description": "Een verzameling van ROLTYPEn.",
                 "parameters": [
                     {
+                        "name": "zaaktype",
+                        "in": "query",
+                        "description": "URL naar de/het gerelateerde zaaktype",
+                        "required": false,
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    {
                         "name": "omschrijvingGeneriek",
                         "in": "query",
                         "description": "Algemeen gehanteerde omschrijving van de aard van de ROL.",
@@ -2026,7 +2103,16 @@
             "get": {
                 "operationId": "statustype_list",
                 "description": "Een verzameling van STATUSTYPEn.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "zaaktype",
+                        "in": "query",
+                        "description": "URL naar de/het gerelateerde zaaktype",
+                        "required": false,
+                        "type": "string",
+                        "format": "uri"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
@@ -2035,6 +2121,20 @@
                             "items": {
                                 "$ref": "#/definitions/StatusType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
                         },
                         "headers": {
                             "API-version": {
@@ -2705,7 +2805,16 @@
             "get": {
                 "operationId": "zaaktype_list",
                 "description": "Een verzameling van ZAAKTYPEn.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "catalogus",
+                        "in": "query",
+                        "description": "URL naar de/het gerelateerde catalogus",
+                        "required": false,
+                        "type": "string",
+                        "format": "uri"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
@@ -2714,6 +2823,20 @@
                             "items": {
                                 "$ref": "#/definitions/ZaakType"
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
                         },
                         "headers": {
                             "API-version": {
@@ -3151,6 +3274,87 @@
                 }
             }
         },
+        "FieldValidationError": {
+            "required": [
+                "name",
+                "code",
+                "reason"
+            ],
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "description": "Naam van het veld met ongeldige gegevens",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "code": {
+                    "title": "Code",
+                    "description": "Systeemcode die het type fout aangeeft",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "reason": {
+                    "title": "Reason",
+                    "description": "Uitleg wat er precies fout is met de gegevens",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
+        "ValidatieFout": {
+            "required": [
+                "code",
+                "title",
+                "status",
+                "detail",
+                "instance",
+                "invalidParams"
+            ],
+            "type": "object",
+            "properties": {
+                "type": {
+                    "title": "Type",
+                    "description": "URI referentie naar het type fout, bedoeld voor developers",
+                    "type": "string"
+                },
+                "code": {
+                    "title": "Code",
+                    "description": "Systeemcode die het type fout aangeeft",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "title": {
+                    "title": "Title",
+                    "description": "Generieke titel voor het type fout",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "status": {
+                    "title": "Status",
+                    "description": "De HTTP status code",
+                    "type": "integer"
+                },
+                "detail": {
+                    "title": "Detail",
+                    "description": "Extra informatie bij de fout, indien beschikbaar",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "instance": {
+                    "title": "Instance",
+                    "description": "URI met referentie naar dit specifiek voorkomen van de fout. Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "invalidParams": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FieldValidationError"
+                    }
+                }
+            }
+        },
         "Catalogus": {
             "required": [
                 "domein",
@@ -3516,87 +3720,6 @@
                 },
                 "brondatumArchiefprocedure": {
                     "$ref": "#/definitions/BrondatumArchiefprocedure"
-                }
-            }
-        },
-        "FieldValidationError": {
-            "required": [
-                "name",
-                "code",
-                "reason"
-            ],
-            "type": "object",
-            "properties": {
-                "name": {
-                    "title": "Name",
-                    "description": "Naam van het veld met ongeldige gegevens",
-                    "type": "string",
-                    "minLength": 1
-                },
-                "code": {
-                    "title": "Code",
-                    "description": "Systeemcode die het type fout aangeeft",
-                    "type": "string",
-                    "minLength": 1
-                },
-                "reason": {
-                    "title": "Reason",
-                    "description": "Uitleg wat er precies fout is met de gegevens",
-                    "type": "string",
-                    "minLength": 1
-                }
-            }
-        },
-        "ValidatieFout": {
-            "required": [
-                "code",
-                "title",
-                "status",
-                "detail",
-                "instance",
-                "invalidParams"
-            ],
-            "type": "object",
-            "properties": {
-                "type": {
-                    "title": "Type",
-                    "description": "URI referentie naar het type fout, bedoeld voor developers",
-                    "type": "string"
-                },
-                "code": {
-                    "title": "Code",
-                    "description": "Systeemcode die het type fout aangeeft",
-                    "type": "string",
-                    "minLength": 1
-                },
-                "title": {
-                    "title": "Title",
-                    "description": "Generieke titel voor het type fout",
-                    "type": "string",
-                    "minLength": 1
-                },
-                "status": {
-                    "title": "Status",
-                    "description": "De HTTP status code",
-                    "type": "integer"
-                },
-                "detail": {
-                    "title": "Detail",
-                    "description": "Extra informatie bij de fout, indien beschikbaar",
-                    "type": "string",
-                    "minLength": 1
-                },
-                "instance": {
-                    "title": "Instance",
-                    "description": "URI met referentie naar dit specifiek voorkomen van de fout. Deze kan gebruikt worden in combinatie met server logs, bijvoorbeeld.",
-                    "type": "string",
-                    "minLength": 1
-                },
-                "invalidParams": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/FieldValidationError"
-                    }
                 }
             }
         },

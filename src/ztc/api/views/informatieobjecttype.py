@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 
 from ...datamodel.models import InformatieObjectType
+from ..filters import InformatieObjectTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import InformatieObjectTypeSerializer
 
@@ -15,6 +16,7 @@ class InformatieObjectTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = InformatieObjectType.objects.all()
     serializer_class = InformatieObjectTypeSerializer
+    filterset_class = InformatieObjectTypeFilter
     pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {

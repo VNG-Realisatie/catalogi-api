@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 
 from ...datamodel.models import StatusType
+from ..filters import StatusTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import StatusTypeSerializer
 
@@ -15,6 +16,7 @@ class StatusTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = StatusType.objects.all()
     serializer_class = StatusTypeSerializer
+    filterset_class = StatusTypeFilter
     pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
