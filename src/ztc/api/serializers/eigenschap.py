@@ -65,6 +65,5 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             },
             'zaaktype': {
                 'lookup_field': 'uuid',
-                'source': 'is_van'
             }
         }

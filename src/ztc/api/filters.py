@@ -45,7 +45,7 @@ class EigenschapFilter(FilterSet):
     class Meta:
         model = Eigenschap
         fields = (
-            'is_van',
+            'zaaktype',
         )
 
 

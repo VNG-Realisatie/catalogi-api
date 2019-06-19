@@ -195,20 +195,20 @@ class Eigenschap(GeldigheidMixin, models.Model):
             'Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een '
             'STATUS van het STATUSTYPE kan worden gezet.')
     )
-    is_van = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
+    zaaktype = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
         'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'),
         on_delete=models.CASCADE
     )
 
     class Meta:
         mnemonic = 'EIG'
-        unique_together = ('is_van', 'eigenschapnaam')
+        unique_together = ('zaaktype', 'eigenschapnaam')
         verbose_name = _('Eigenschap')
         verbose_name_plural = _('Eigenschappen')
         ordering = unique_together
 
         filter_fields = (
-            'is_van',
+            'zaaktype',
             'eigenschapnaam'
         )
         ordering_fields = filter_fields
@@ -232,7 +232,7 @@ class Eigenschap(GeldigheidMixin, models.Model):
                   'van eigenschap of referentie naar eigenschap')
             )
 
-        self._clean_geldigheid(self.is_van)
+        self._clean_geldigheid(self.zaaktype)
 
     def __str__(self):
-        return '{} - {}'.format(self.is_van, self.eigenschapnaam)
+        return '{} - {}'.format(self.zaaktype, self.eigenschapnaam)

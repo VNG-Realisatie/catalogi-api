@@ -10,7 +10,7 @@ class EigenschapAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admi
     model = Eigenschap
 
     # List
-    list_display = ('eigenschapnaam', 'is_van')
+    list_display = ('eigenschapnaam', 'zaaktype')
 
     # Details
     fieldsets = (
@@ -23,7 +23,7 @@ class EigenschapAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admi
         }),
         (_('Relaties'), {
             'fields': (
-                'is_van',
+                'zaaktype',
                 'specificatie_van_eigenschap',
                 'referentie_naar_eigenschap',
             )

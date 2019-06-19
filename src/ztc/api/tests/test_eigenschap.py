@@ -25,7 +25,7 @@ class EigenschapAPITests(APITestCase):
         )
         self.eigenschap_one = EigenschapFactory.create(
             eigenschapnaam='Beoogd product',
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
             specificatie_van_eigenschap=specificatie
         )
 
@@ -35,7 +35,7 @@ class EigenschapAPITests(APITestCase):
         )
         self.eigenschap_two = EigenschapFactory.create(
             eigenschapnaam='Aard product',
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
             referentie_naar_eigenschap=referentie
         )
 
