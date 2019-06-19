@@ -407,10 +407,9 @@ class ZaakType(APIMixin, GeldigheidMixin, models.Model):
     )
 
     class Meta:
-        unique_together = ('catalogus', 'zaaktype_identificatie')
         verbose_name = _('Zaaktype')
         verbose_name_plural = _('Zaaktypen')
-        ordering = unique_together
+        ordering = ('catalogus', 'zaaktype_identificatie')
 
         filter_fields = (
             'catalogus',
