@@ -1,79 +1,79 @@
-from unittest import skip
+from rest_framework import status
+from .utils import reverse
 
-from django.urls import reverse
-
-from ztc.datamodel.tests.factories import StatusTypeFactory
+from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
+from ztc.datamodel.models import StatusType
 
 from .base import APITestCase
 
 
-@skip("Not MVP yet")
 class StatusTypeAPITests(APITestCase):
     maxDiff = None
 
-    def setUp(self):
-        super().setUp()
-
-        self.status_type = StatusTypeFactory.create(
-            statustype_omschrijving='Besluit genomen',
-            is_van__catalogus=self.catalogus,
-        )
-
-        self.zaaktype = self.status_type.is_van
-
-        self.statustype_list_url = reverse('api:statustype-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk
-        })
-        self.statustype_detail_url = reverse('api:statustype-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
-            'pk': self.status_type.pk,
-        })
-
     def test_get_list(self):
-        response = self.api_client.get(self.statustype_list_url)
+        StatusTypeFactory.create(
+            statustype_omschrijving='Besluit genomen',
+            zaaktype__catalogus=self.catalogus,
+        )
+        statustype_list_url = reverse('statustype-list')
+
+        response = self.api_client.get(statustype_list_url)
+
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
+        self.assertEqual(len(data), 1)
 
     def test_get_detail(self):
-        response = self.api_client.get(self.statustype_detail_url)
+        status_type = StatusTypeFactory.create(
+            statustype_omschrijving='Besluit genomen',
+            zaaktype__catalogus=self.catalogus,
+            datum_begin_geldigheid='2019-01-01'
+        )
+        statustype_detail_url = reverse('statustype-detail', kwargs={
+            'uuid': status_type.uuid,
+        })
+        zaaktype = status_type.zaaktype
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+
+        response = self.api_client.get(statustype_detail_url)
+
         self.assertEqual(response.status_code, 200)
 
         expected = {
-            'doorlooptijd': None,
-            'informeren': '',
-            'toelichting': None,
+            'url': 'http://testserver{}'.format(statustype_detail_url),
             'omschrijving': 'Besluit genomen',
-            'volgnummer': self.status_type.statustypevolgnummer,
-            'checklistitem': [],
-            'ingangsdatumObject': '2018-01-01',
-            'einddatumObject': None,
-            'heeftVerplichteEigenschap': [],
-            'heeftVerplichteZaakObjecttype': [],
-            'url': 'http://testserver{}'.format(self.statustype_detail_url),
-            'statustekst': None,
-            'isVan': 'http://testserver{}'.format(
-                reverse('api:zaaktype-detail', args=[self.API_VERSION, self.catalogus.pk, self.zaaktype.pk])),
-            'omschrijvingGeneriek': None,
-            'heeftVerplichteInformatieobjecttype': [],
+            'omschrijvingGeneriek': '',
+            'statustekst': '',
+            'zaaktype': 'http://testserver{}'.format(zaaktype_url),
+            'volgnummer': status_type.statustypevolgnummer,
+            'isEindstatus': True,
+            'datumBeginGeldigheid': '2019-01-01'
         }
+
         self.assertEqual(expected, response.json())
 
-    def test_checklistitem(self):
-        pass
+    def test_create_statustype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        statustype_list_url = reverse('statustype-list')
+        data = {
+            'omschrijving': 'Besluit genomen',
+            'omschrijvingGeneriek': '',
+            'statustekst': '',
+            'zaaktype': 'http://testserver{}'.format(zaaktype_url),
+            'volgnummer': 2,
+            'datumBeginGeldigheid': '2019-01-01'
+        }
+        response = self.client.post(statustype_list_url, data)
 
-    def test_heeft_verplichte_eigenschap(self):
-        pass
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_heeft_verplichte_zaakobjecttype(self):
-        pass
+        statustype = StatusType.objects.get()
 
-    def test_heeft_verplichte_informatieobjecttype(self):
-        pass
+        self.assertEqual(statustype.statustype_omschrijving, 'Besluit genomen')

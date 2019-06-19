@@ -1,9 +1,8 @@
-import uuid
-
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
 
-from ...datamodel.tests.factories import RolTypeFactory
+from ...datamodel.tests.factories import RolTypeFactory, ZaakTypeFactory
+from ...datamodel.models import RolType
 from .base import APITestCase
 from .utils import reverse
 
@@ -11,24 +10,16 @@ from .utils import reverse
 class RolTypeAPITests(APITestCase):
     maxDiff = None
 
-    def setUp(self):
-        super().setUp()
-
-        self.rol_type = RolTypeFactory.create(
+    def test_get_list(self):
+        RolTypeFactory.create(
             omschrijving='Vergunningaanvrager',
             omschrijving_generiek=RolOmschrijving.initiator,
             soort_betrokkene=['Aanvrager'],
             zaaktype__catalogus=self.catalogus,
         )
-        self.zaaktype = self.rol_type.zaaktype
+        rol_type_list_url = reverse('roltype-list')
 
-        self.rol_type_list_url = reverse('roltype-list')
-        self.rol_type_detail_url = reverse('roltype-detail', kwargs={
-            'uuid': self.rol_type.uuid,
-        })
-
-    def test_get_list(self):
-        response = self.api_client.get(self.rol_type_list_url)
+        response = self.client.get(rol_type_list_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -39,15 +30,27 @@ class RolTypeAPITests(APITestCase):
         self.assertEqual(len(data), 1)
 
     def test_get_detail(self):
-        response = self.api_client.get(self.rol_type_detail_url)
-        self.assertEqual(response.status_code, 200)
-
+        rol_type = RolTypeFactory.create(
+            omschrijving='Vergunningaanvrager',
+            omschrijving_generiek=RolOmschrijving.initiator,
+            soort_betrokkene=['Aanvrager'],
+            zaaktype__catalogus=self.catalogus,
+            datum_begin_geldigheid='2019-01-01'
+        )
+        zaaktype = rol_type.zaaktype
+        rol_type_detail_url = reverse('roltype-detail', kwargs={
+            'uuid': rol_type.uuid,
+        })
         zaaktype_url = reverse('zaaktype-detail', kwargs={
-            'uuid': self.zaaktype.uuid,
+            'uuid': zaaktype.uuid,
         })
 
+        response = self.client.get(rol_type_detail_url)
+
+        self.assertEqual(response.status_code, 200)
+
         expected = {
-            'url': f'http://testserver{self.rol_type_detail_url}',
+            'url': f'http://testserver{rol_type_detail_url}',
             # 'ingangsdatumObject': '2018-01-01',
             # 'einddatumObject': None,
             'zaaktype': f'http://testserver{zaaktype_url}',
@@ -56,11 +59,33 @@ class RolTypeAPITests(APITestCase):
             'mogelijkeBetrokkenen': [],
             # 'soortBetrokkene': ['Aanvrager'],
             # 'magZetten': [],
+            'datumBeginGeldigheid': '2019-01-01'
         }
         self.assertEqual(expected, response.json())
 
     def test_mag_zetten(self):
         pass
+
+    def test_create_roltype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        rol_type_list_url = reverse('roltype-list')
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'Vergunningaanvrager',
+            'omschrijvingGeneriek': RolOmschrijving.initiator,
+            'mogelijkeBetrokkenen': [],
+            'datumBeginGeldigheid': '2019-01-01'
+        }
+
+        response = self.client.post(rol_type_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        roltype = RolType.objects.get()
+        self.assertEqual(roltype.omschrijving, 'Vergunningaanvrager')
 
 
 class FilterValidationTests(APITestCase):

@@ -33,6 +33,7 @@ class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
             'omschrijving',
             'omschrijving_generiek',
             'mogelijke_betrokkenen',
+            'datum_begin_geldigheid'
 
             # 'ingangsdatumObject',
             # 'einddatumObject',
@@ -47,3 +48,12 @@ class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
                 'lookup_field': 'uuid'
             }
         }
+
+    def create(self, validated_data):
+        mogelijke_betrokkenen_data = validated_data.pop('mogelijkebetrokkene_set', None)
+        roltype = super().create(validated_data)
+
+        if mogelijke_betrokkenen_data:
+            for mogelijke_betrokkenen in mogelijke_betrokkenen_data:
+                MogelijkeBetrokkene.objects.create(**mogelijke_betrokkenen, roltype=roltype)
+        return roltype
