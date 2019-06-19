@@ -5,7 +5,6 @@ from ...datamodel.models import BesluitType, InformatieObjectType
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
     informatieobjecttypes = serializers.HyperlinkedRelatedField(
-        source='catalogus.informatieobjecttype_set',
         view_name = 'informatieobjecttype-detail',
         many=True,
         lookup_field='uuid',
@@ -13,7 +12,6 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     zaaktypes = serializers.HyperlinkedRelatedField(
-        source='catalogus.zaaktype_set',
         many=True,
         read_only=True,
         view_name='zaaktype-detail',
