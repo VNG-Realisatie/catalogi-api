@@ -97,6 +97,8 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | roltypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | gerelateerdeZaaktypen | De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE. | array | ja | C​R​U​D |
+| beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
+| eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
 
 ## EigenschapSpecificatie
 

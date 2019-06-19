@@ -2,6 +2,21 @@
 Wijzigingen
 ===========
 
+0.14.0 (2019-06-18)
+===================
+
+Zaaktype-versioning & small features release
+
+* Added ``Zaaktype.beginGeldigheid`` and ``Zaaktype.eindGeldigheid``, which
+  determine when a ``Zaaktype`` is 'active'
+* Dropped unique constraint on ``(catalogus, identificatie)`` and added a check
+  on ``beginGeldigheid`` - ``eindGeldigheid`` ranges. They may not overlap for
+  a given ``(catalogus, identificatie)`` combination. This effectively allows
+  you to create new versions of ``Zaaktype``.
+* Bumped dependencies to latest security releases
+* Translated API specs
+* Added fixture loading to container startup script
+
 0.13.0 (2019-05-31)
 ===================
 
