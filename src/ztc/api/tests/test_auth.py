@@ -19,7 +19,7 @@ class ReadTests(AuthCheckMixin, APITestCase):
             reverse('catalogus-detail', kwargs={'uuid': dummy_uuid}),
 
             # nested one level
-            reverse('zaaktype-list', ),
+            reverse('zaaktype-list'),
             reverse('zaaktype-detail', kwargs={
                 'uuid': dummy_uuid,
             }),
