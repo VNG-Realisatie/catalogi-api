@@ -11,16 +11,14 @@ from .views import (
 )
 
 router = routers.DefaultRouter()
-router.register(r'catalogussen', CatalogusViewSet, [
-    routers.nested('zaaktypen', ZaakTypeViewSet, [
-        routers.nested('statustypen', StatusTypeViewSet),
-        routers.nested('eigenschappen', EigenschapViewSet),
-        routers.nested('roltypen', RolTypeViewSet),
-    ]),
-    routers.nested('informatieobjecttypen', InformatieObjectTypeViewSet),
-    routers.nested('besluittypen', BesluitTypeViewSet),
-])
-router.register(r'resultaattypen', ResultaatTypeViewSet),
+router.register(r'catalogussen', CatalogusViewSet)
+router.register(r'zaaktypen', ZaakTypeViewSet)
+router.register(r'statustypen', StatusTypeViewSet)
+router.register(r'eigenschappen', EigenschapViewSet)
+router.register(r'roltypen', RolTypeViewSet)
+router.register(r'informatieobjecttypen', InformatieObjectTypeViewSet)
+router.register(r'besluittypen', BesluitTypeViewSet)
+router.register(r'resultaattypen', ResultaatTypeViewSet)
 router.register(r'zaaktype-informatieobjecttypen', ZaakTypeInformatieObjectTypeViewSet)
 
 

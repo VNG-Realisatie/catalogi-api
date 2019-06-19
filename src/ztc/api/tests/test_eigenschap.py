@@ -1,13 +1,12 @@
 from unittest import skip
 
-from django.urls import reverse
-
 from ztc.datamodel.tests.factories import (
     EigenschapFactory, EigenschapReferentieFactory,
     EigenschapSpecificatieFactory, ZaakTypeFactory
 )
 
 from .base import APITestCase
+from .utils import reverse
 
 
 @skip("Not MVP yet")
@@ -26,7 +25,7 @@ class EigenschapAPITests(APITestCase):
         )
         self.eigenschap_one = EigenschapFactory.create(
             eigenschapnaam='Beoogd product',
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
             specificatie_van_eigenschap=specificatie
         )
 
@@ -36,25 +35,15 @@ class EigenschapAPITests(APITestCase):
         )
         self.eigenschap_two = EigenschapFactory.create(
             eigenschapnaam='Aard product',
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
             referentie_naar_eigenschap=referentie
         )
 
-        self.eigenschap_list_url = reverse('api:eigenschap-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk
-        })
+        self.eigenschap_list_url = reverse('api:eigenschap-list')
         self.eigenschap_one_detail_url = reverse('api:eigenschap-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
             'pk': self.eigenschap_one.pk
         })
         self.eigenschap_two_detail_url = reverse('api:eigenschap-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
             'pk': self.eigenschap_two.pk
         })
 

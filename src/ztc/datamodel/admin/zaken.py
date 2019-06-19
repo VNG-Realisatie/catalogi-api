@@ -61,7 +61,7 @@ class RolTypeInline(EditInlineAdminMixin, admin.TabularInline):
 class EigenschapInline(EditInlineAdminMixin, admin.TabularInline):
     model = Eigenschap
     fields = EigenschapAdmin.list_display
-    fk_name = 'is_van'
+    fk_name = 'zaaktype'
 
 
 class ResultaatTypeInline(EditInlineAdminMixin, admin.TabularInline):

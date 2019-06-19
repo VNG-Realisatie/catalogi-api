@@ -20,6 +20,7 @@ from .base import APITestCase, CatalogusAPITestMixin
 class RestfulPrinciplesAPITests(APITestCase):
     """Section 2.6.1 of the DSO: API strategy"""
 
+    @skip('API structure is flat. There are no nested resources now')
     def test_nested_resources(self):
         """DSO: API-09 (nested resources)
 

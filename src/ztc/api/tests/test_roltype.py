@@ -22,13 +22,8 @@ class RolTypeAPITests(APITestCase):
         )
         self.zaaktype = self.rol_type.zaaktype
 
-        self.rol_type_list_url = reverse('roltype-list', kwargs={
-            'catalogus_uuid': self.catalogus.uuid,
-            'zaaktype_uuid': self.zaaktype.uuid
-        })
+        self.rol_type_list_url = reverse('roltype-list')
         self.rol_type_detail_url = reverse('roltype-detail', kwargs={
-            'catalogus_uuid': self.catalogus.uuid,
-            'zaaktype_uuid': self.zaaktype.uuid,
             'uuid': self.rol_type.uuid,
         })
 
@@ -48,8 +43,6 @@ class RolTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         zaaktype_url = reverse('zaaktype-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_uuid': self.catalogus.uuid,
             'uuid': self.zaaktype.uuid,
         })
 
@@ -73,10 +66,7 @@ class RolTypeAPITests(APITestCase):
 class FilterValidationTests(APITestCase):
 
     def test_invalid_filters(self):
-        url = reverse('roltype-list', kwargs={
-            'catalogus_uuid': str(uuid.uuid4()),
-            'zaaktype_uuid': str(uuid.uuid4()),
-        })
+        url = reverse('roltype-list')
 
         invalid_filters = {
             'omschrijvingGeneriek': 'invalid-option',  # bestaat niet

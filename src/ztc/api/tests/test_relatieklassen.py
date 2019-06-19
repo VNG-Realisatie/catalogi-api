@@ -28,10 +28,9 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
     def test_get_detail(self):
         ztiot = ZaakInformatieobjectTypeFactory.create()
         url = reverse(ztiot)
-        zaaktype_url = reverse(ztiot.zaaktype, kwargs={'catalogus_uuid': ztiot.zaaktype.catalogus.uuid})
+        zaaktype_url = reverse(ztiot.zaaktype)
         informatie_object_type_url = reverse(
             ztiot.informatie_object_type,
-            kwargs={'catalogus_uuid': ztiot.informatie_object_type.catalogus.uuid}
         )
 
         response = self.client.get(url)
@@ -50,12 +49,8 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
     def test_filter_zaaktype(self):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(2)
         url = f'http://testserver{reverse(ztiot1)}'
-        zaaktype1_url = reverse(ztiot1.zaaktype, kwargs={
-            'catalogus_uuid': ztiot1.zaaktype.catalogus.uuid
-        })
-        zaaktype2_url = reverse(ztiot2.zaaktype, kwargs={
-            'catalogus_uuid': ztiot2.zaaktype.catalogus.uuid
-        })
+        zaaktype1_url = reverse(ztiot1.zaaktype)
+        zaaktype2_url = reverse(ztiot2.zaaktype)
 
         zaaktype1_url = f'http://testserver{zaaktype1_url}'
         zaaktype2_url = f'http://testserver{zaaktype2_url}'
@@ -70,12 +65,8 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
     def test_filter_informatieobjecttype(self):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(2)
         url = f'http://testserver{reverse(ztiot1)}'
-        informatie_object_type1_url = reverse(ztiot1.informatie_object_type, kwargs={
-            'catalogus_uuid': ztiot1.informatie_object_type.catalogus.uuid
-        })
-        informatie_object_type2_url = reverse(ztiot2.informatie_object_type, kwargs={
-            'catalogus_uuid': ztiot2.informatie_object_type.catalogus.uuid
-        })
+        informatie_object_type1_url = reverse(ztiot1.informatie_object_type)
+        informatie_object_type2_url = reverse(ztiot2.informatie_object_type)
 
         informatie_object_type1_url = f'http://testserver{informatie_object_type1_url}'
         informatie_object_type2_url = f'http://testserver{informatie_object_type2_url}'

@@ -16,12 +16,9 @@ class BesluitTypeAPITests(APITestCase):
         self.zaaktype = self.besluittype.zaaktypes.get()
         self.resultaattype = self.besluittype.resultaattypes.get()
 
-        self.besluittype_list_url = reverse('besluittype-list', kwargs={
-            'catalogus_uuid': self.catalogus.uuid,
-        })
+        self.besluittype_list_url = reverse('besluittype-list')
 
         self.besluittype_detail_url = reverse('besluittype-detail', kwargs={
-            'catalogus_uuid': self.catalogus.uuid,
             'uuid': self.besluittype.uuid
         })
 
@@ -38,7 +35,6 @@ class BesluitTypeAPITests(APITestCase):
     def test_get_detail(self):
         """Retrieve the details of a single `BesluitType` object."""
         zaaktype_url = reverse('zaaktype-detail', kwargs={
-            'catalogus_uuid': self.catalogus.uuid,
             'uuid': self.zaaktype.uuid,
         })
         # resultaattype_url = reverse('resultaattype-detail', kwargs={

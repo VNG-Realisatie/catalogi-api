@@ -362,12 +362,12 @@ class HaaglandenMixin(object):
             # specificatie_van_eigenschap= fk EigenschapSpecificatie
             # referentie_naar_eigenschap= fk EigenschapReferentie
             # status_type=fk StatusType
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
         self.eigenschap_aard_product = EigenschapFactory.create(
             eigenschapnaam='Aard product',
             toelichting='Nieuw / Verandering / Ambtshalve wijziging / Ontheffing / Intrekking',
-            is_van=self.zaaktype,
+            zaaktype=self.zaaktype,
         )
 
         #

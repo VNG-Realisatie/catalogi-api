@@ -44,11 +44,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         rt2_url = f'http://testserver{reverse(rt2)}'
         zt1_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
             'uuid': zt1.uuid,
-            'catalogus_uuid': zt1.catalogus.uuid,
         }))
         zt2_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
             'uuid': zt2.uuid,
-            'catalogus_uuid': zt2.catalogus.uuid,
         }))
 
         response = self.client.get(self.list_url, {'zaaktype': zt1_url})
@@ -66,7 +64,6 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         url = reverse(resultaattype)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': resultaattype.zaaktype.uuid,
-            'catalogus_uuid': resultaattype.zaaktype.catalogus.uuid,
         })
 
         response = self.client.get(url)
@@ -99,7 +96,6 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         url = f'http://testserver{reverse(resultaattype)}'
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': resultaattype.zaaktype.uuid,
-            'catalogus_uuid': resultaattype.zaaktype.catalogus.uuid,
         })
 
         response = self.client.get(zaaktype_url)
