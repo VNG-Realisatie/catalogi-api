@@ -11,6 +11,7 @@ from ..validators import (
     validate_kardinaliteit, validate_letters_numbers_underscores,
     validate_letters_numbers_underscores_spaces
 )
+from .mixins import DraftMixin
 
 
 class EigenschapSpecificatie(models.Model):
@@ -76,7 +77,7 @@ class EigenschapSpecificatie(models.Model):
                 raise ValidationError(_("Als formaat datum/tijd is, moet de lengte 14 zijn."))
 
 
-class EigenschapReferentie(models.Model):
+class EigenschapReferentie(DraftMixin, models.Model):
     """
     Met de ‘subattributen’ (van deze groepattribuutsoort) Objecttype, Informatiemodel, Namespace, Schemalocatie, X-path
     element en Entiteittype wordt een eigenschap gespecificeerd door te refereren naar een berichtenmodel cq. namespace

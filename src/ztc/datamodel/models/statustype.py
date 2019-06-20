@@ -6,6 +6,7 @@ from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
 from ..choices import JaNee
+from .mixins import DraftMixin
 
 
 class CheckListItem(models.Model):
@@ -30,7 +31,7 @@ class CheckListItem(models.Model):
         'Beschrijving van de overwegingen bij het controleren van het aandachtspunt'))
 
 
-class StatusType(models.Model):
+class StatusType(DraftMixin, models.Model):
     """
     Generieke aanduiding van de aard van een STATUS
 

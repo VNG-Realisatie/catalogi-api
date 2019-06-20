@@ -71,3 +71,12 @@ class GeldigheidMixin(models.Model):
                     _("'Datum einde geldigheid' moet gelijk zijn aan de dag "
                       "voor een Versiedatum van het gerelateerde zaaktype.")
                 )
+
+
+class DraftMixin(models.Model):
+    draft = models.BooleanField(
+        _('draft'), default=True, help_text=_('Flag indicating the object is a draft')
+    )
+
+    class Meta:
+        abstract = True
