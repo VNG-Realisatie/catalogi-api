@@ -1,42 +1,28 @@
 from unittest import skip
 
 from django.urls import reverse
-
+from rest_framework import status
 from vng_api_common.tests import get_operation_url
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 
 from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory
 )
+from ...datamodel.models import InformatieObjectType
 from .base import APITestCase
 
 
 class InformatieObjectTypeAPITests(APITestCase):
     maxDiff = None
 
-    def setUp(self):
-        super().setUp()
-
-        self.informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=self.catalogus,
-            zaaktypes=None,
-            model=['http://www.example.com'],
-            trefwoord=['abc', 'def']
-        )
-
-        self.informatieobjecttype_list_url = get_operation_url(
-            'informatieobjecttype_list',
-            catalogus_uuid=self.catalogus.uuid
-        )
-        self.informatieobjecttype_detail_url = get_operation_url(
-            'informatieobjecttype_read',
-            catalogus_uuid=self.catalogus.uuid,
-            uuid=self.informatieobjecttype.uuid
-        )
-
     def test_get_list(self):
         """Retrieve a list of `InformatieObjectType` objects."""
-        response = self.api_client.get(self.informatieobjecttype_list_url)
+        InformatieObjectTypeFactory.create()
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url)
+
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -45,7 +31,21 @@ class InformatieObjectTypeAPITests(APITestCase):
 
     def test_get_detail(self):
         """Retrieve the details of a single `InformatieObjectType` object."""
-        response = self.api_client.get(self.informatieobjecttype_detail_url)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktypes=None,
+            model=['http://www.example.com'],
+            trefwoord=['abc', 'def'],
+            datum_begin_geldigheid='2019-01-01',
+        )
+        informatieobjecttype_detail_url = get_operation_url(
+            'informatieobjecttype_read',
+            uuid=informatieobjecttype.uuid
+        )
+
+        response = self.client.get(informatieobjecttype_detail_url)
+
         self.assertEqual(response.status_code, 200)
 
         expected = {
@@ -55,28 +55,42 @@ class InformatieObjectTypeAPITests(APITestCase):
             # 'isVastleggingVoor': [],
             'catalogus': 'http://testserver{}'.format(self.catalogus_detail_url),
             # 'model': ['http://www.example.com'],
-            'omschrijving': self.informatieobjecttype.omschrijving,
+            'omschrijving': informatieobjecttype.omschrijving,
             # 'omschrijvingGeneriek': '',
             # 'toelichting': None,
             # 'trefwoord': ['abc', 'def'],
-            'url': 'http://testserver{}'.format(self.informatieobjecttype_detail_url),
+            'url': 'http://testserver{}'.format(informatieobjecttype_detail_url),
             'vertrouwelijkheidaanduiding': '',
             # 'isRelevantVoor': [],
+            'beginGeldigheid': '2019-01-01',
+            'eindeGeldigheid': None
         }
         self.assertEqual(expected, response.json())
 
     @skip("Not MVP yet")
     def test_is_relevant_voor(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktypes=None,
+            model=['http://www.example.com'],
+            trefwoord=['abc', 'def']
+        )
+        informatieobjecttype_detail_url = get_operation_url(
+            'informatieobjecttype_read',
+            catalogus_uuid=self.catalogus.uuid,
+            uuid=informatieobjecttype.uuid
+        )
+
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
 
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype,
-            informatie_object_type=self.informatieobjecttype,
+            informatie_object_type=informatieobjecttype,
             volgnummer=1,
             richting='richting',
         )
 
-        response = self.api_client.get(self.informatieobjecttype_detail_url)
+        response = self.client.get(informatieobjecttype_detail_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -85,11 +99,30 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(len(data['isRelevantVoor']), 1)
         self.assertEqual(
             data['isRelevantVoor'][0],
-            'http://testserver{}'.format(reverse('api:zktiot-detail', args=[
-                self.API_VERSION, self.catalogus.pk, zaaktype.pk, ziot.pk
+            'http://testserver{}'.format(reverse('zktiot-detail', args=[
+                zaaktype.pk, ziot.pk
             ]))
         )
 
     @skip("Not MVP yet")
     def test_is_vastlegging_voor(self):
         pass
+
+    def test_create_informatieobjecttype(self):
+        data = {
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'omschrijving': 'test',
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'beginGeldigheid': '2019-01-01'
+        }
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.post(informatieobjecttype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        informatieobjecttype = InformatieObjectType.objects.get()
+
+        self.assertEqual(informatieobjecttype.omschrijving, 'test')
+        self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
+

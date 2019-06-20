@@ -1,4 +1,5 @@
-import unittest
+from rest_framework import status
+from ztc.datamodel.models import Catalogus
 
 from .base import APITestCase
 
@@ -8,7 +9,7 @@ class CatalogusAPITests(APITestCase):
 
     def test_get_list(self):
         """Retrieve a list of `Catalog` objects."""
-        response = self.api_client.get(self.catalogus_list_url)
+        response = self.client.get(self.catalogus_list_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -17,7 +18,7 @@ class CatalogusAPITests(APITestCase):
 
     def test_get_detail(self):
         """Retrieve the details of a single `Catalog` object."""
-        response = self.api_client.get(self.catalogus_detail_url)
+        response = self.client.get(self.catalogus_detail_url)
         self.assertEqual(response.status_code, 200)
 
         expected = {
@@ -33,14 +34,19 @@ class CatalogusAPITests(APITestCase):
         }
         self.assertEqual(response.json(), expected)
 
-    @unittest.expectedFailure
-    def test_bestaatuit_informatieobjecttype(self):
-        raise NotImplementedError
+    def test_create_catalogus(self):
+        data = {
+            'domein': 'TEST',
+            'contactpersoonBeheerTelefoonnummer': '0612345679',
+            'rsin': '100000009',
+            'contactpersoonBeheerNaam': 'test',
+            'contactpersoonBeheerEmailadres': 'test@test.com',
+        }
 
-    @unittest.expectedFailure
-    def test_bestaatuit_zaaktype(self):
-        raise NotImplementedError
+        response = self.client.post(self.catalogus_list_url, data)
 
-    @unittest.expectedFailure
-    def test_bestaatuit_besluittype(self):
-        raise NotImplementedError
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        catalog = Catalogus.objects.get(domein='TEST')
+
+        self.assertEqual(catalog.rsin, '100000009')

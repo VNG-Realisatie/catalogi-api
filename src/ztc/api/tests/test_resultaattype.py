@@ -1,5 +1,7 @@
 from rest_framework import status
+import requests_mock
 from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
+from vng_api_common.constants import BrondatumArchiefprocedureAfleidingswijze
 
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
@@ -126,3 +128,43 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
         # Verify that the procestermijn was serialized correctly
         self.assertEqual(brondatumArchiefprocedure['procestermijn'], procestermijn)
+
+    def test_create_resultaattype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'illum',
+            'resultaattypeomschrijving': resultaattypeomschrijving_url,
+            'selectielijstklasse': 'https://garcia.org/',
+            'archiefnominatie': 'blijvend_bewaren',
+            'archiefactietermijn': 'P10Y',
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                'einddatumBekend': False,
+                'procestermijn': 'P10Y',
+                'datumkenmerk': '',
+                'objecttype': '',
+                'registratie': '',
+            }
+        }
+
+        with requests_mock.Mocker() as m:
+            m.register_uri('GET', resultaattypeomschrijving_url, json={
+                'omschrijving': 'test'
+            })
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        resultaattype = ResultaatType.objects.get()
+
+        self.assertEqual(resultaattype.omschrijving_generiek, 'test')
+        self.assertEqual(resultaattype.zaaktype, zaaktype)
+        self.assertEqual(
+            resultaattype.brondatum_archiefprocedure_afleidingswijze,
+            BrondatumArchiefprocedureAfleidingswijze.afgehandeld
+        )

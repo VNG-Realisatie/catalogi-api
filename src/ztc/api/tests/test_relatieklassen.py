@@ -6,9 +6,9 @@ from vng_api_common.tests import reverse, reverse_lazy
 from ztc.datamodel.models import ZaakInformatieobjectType
 from ztc.datamodel.tests.factories import (
     ZaakInformatieobjectTypeArchiefregimeFactory,
-    ZaakInformatieobjectTypeFactory
+    ZaakInformatieobjectTypeFactory, ZaakTypeFactory, InformatieObjectTypeFactory
 )
-
+from ztc.datamodel.choices import RichtingChoices
 from .base import APITestCase
 
 
@@ -77,6 +77,27 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.json()[0]['url'], url)
         self.assertEqual(response.json()[0]['informatieObjectType'], informatie_object_type1_url)
         self.assertNotEqual(response.json()[0]['informatieObjectType'], informatie_object_type2_url)
+
+    def test_create_ziot(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse(informatieobjecttype)
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'informatieObjectType': f'http://testserver{informatieobjecttype_url}',
+            'volgnummer': 13,
+            'richting': RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        ziot = ZaakInformatieobjectType.objects.get(volgnummer=13)
+
+        self.assertEqual(ziot.zaaktype, zaaktype)
+        self.assertEqual(ziot.informatie_object_type, informatieobjecttype)
 
 
 @skip("Not MVP yet")
