@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from vng_api_common.constants import Archiefnominatie
 from vng_api_common.serializers import (
-    GegevensGroepSerializer, add_choice_values_help_text
+    GegevensGroepSerializer, add_choice_values_help_text, NestedGegevensGroepMixin
 )
 
 from ...datamodel.models import ResultaatType
@@ -15,7 +15,7 @@ class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
         gegevensgroep = 'brondatum_archiefprocedure'
 
 
-class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
+class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer):
 
     brondatum_archiefprocedure = BrondatumArchiefprocedureSerializer(
         label=_("Brondatum archiefprocedure"),

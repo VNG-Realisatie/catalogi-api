@@ -5,11 +5,11 @@ from rest_framework.serializers import (
 )
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
-from vng_api_common.serializers import GegevensGroepSerializer
+from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
 
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,
-    ZaakTypenRelatie
+    ZaakTypenRelatie, StatusType, RolType, ResultaatType, Eigenschap, InformatieObjectType, BesluitType
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 
@@ -101,7 +101,7 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         }
 
 
-class ZaakTypeSerializer(HyperlinkedModelSerializer):
+class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
 
     # formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(
@@ -173,11 +173,11 @@ class ZaakTypeSerializer(HyperlinkedModelSerializer):
 
     besluittypen = HyperlinkedRelatedField(
         many=True,
-        read_only=True,
         label=_("heeft relevante besluittypen"),
         source='besluittype_set',
         view_name='besluittype-detail',
         lookup_field='uuid',
+        queryset=BesluitType.objects.all(),
     )
 
     class Meta:
@@ -233,6 +233,7 @@ class ZaakTypeSerializer(HyperlinkedModelSerializer):
             # # 'isDeelzaaktypeVan',
             'begin_geldigheid',
             'einde_geldigheid',
+            'versiedatum',
         )
         extra_kwargs = {
             'url': {
@@ -267,3 +268,15 @@ class ZaakTypeSerializer(HyperlinkedModelSerializer):
         # expandable_fields = {
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
+
+    def create(self, validated_data):
+        zaaktypen_relaties_data = validated_data.pop('zaaktypenrelaties', None)
+
+        zaaktype = super().create(validated_data)
+
+        if zaaktypen_relaties_data:
+            for zaaktypen_relaties in zaaktypen_relaties_data:
+                ZaakTypenRelatie.objects.create(**zaaktypen_relaties, zaaktype=zaaktype)
+
+        return zaaktype
+

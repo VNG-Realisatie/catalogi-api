@@ -44,6 +44,12 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             'catalogus': {
                 'lookup_field': 'uuid',
             },
+            'begin_geldigheid': {
+                'source': 'datum_begin_geldigheid'
+            },
+            'einde_geldigheid': {
+                'source': 'datum_einde_geldigheid'
+            },
         }
         fields = (
             'url',
@@ -51,6 +57,8 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             'catalogus',
             'omschrijving',
             'vertrouwelijkheidaanduiding',
+            'begin_geldigheid',
+            'einde_geldigheid',
             # 'omschrijvingGeneriek',
             # 'categorie',
             # 'trefwoord',
