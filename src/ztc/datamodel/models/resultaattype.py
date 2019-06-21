@@ -11,10 +11,9 @@ from vng_api_common.constants import (
     ZaakobjectTypes
 )
 from vng_api_common.descriptors import GegevensGroepType
-from .mixins import DraftMixin
 
 
-class ResultaatType(DraftMixin, models.Model):
+class ResultaatType(models.Model):
     """
     Het betreft de indeling of groepering van resultaten van zaken van hetzelfde
     ZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', et cetera.

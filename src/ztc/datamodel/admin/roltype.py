@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import MogelijkeBetrokkene, RolType
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from .mixins import FilterSearchOrderingAdminMixin
 
 
 class MogelijkeBetrokkeneInline(admin.TabularInline):
@@ -12,7 +12,7 @@ class MogelijkeBetrokkeneInline(admin.TabularInline):
 
 
 @admin.register(RolType)
-class RolTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+class RolTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
     model = RolType
 
     # List

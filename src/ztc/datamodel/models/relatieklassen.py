@@ -7,10 +7,9 @@ from django.utils.translation import ugettext_lazy as _
 from ztc.datamodel.choices import (
     AardRelatieChoices, ArchiefNominatieChoices, RichtingChoices
 )
-from .mixins import DraftMixin
 
 
-class ZaakInformatieobjectType(DraftMixin, models.Model):
+class ZaakInformatieobjectType(models.Model):
     """
     ZAAK-INFORMATIEOBJECT-TYPE
 

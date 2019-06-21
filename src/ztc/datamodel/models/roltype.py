@@ -5,10 +5,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.constants import RolOmschrijving, RolTypes
-from .mixins import DraftMixin
 
 
-class RolType(DraftMixin, models.Model):
+class RolType(models.Model):
     """
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
     uitoefenen in ZAAKen van een ZAAKTYPE.

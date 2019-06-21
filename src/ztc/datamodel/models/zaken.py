@@ -475,6 +475,5 @@ class ZaakType(APIMixin, DraftMixin, GeldigheidMixin, models.Model):
         self._clean_geldigheid(self)
 
     def get_absolute_api_url(self, request=None, **kwargs) -> str:
-        kwargs['catalogus_uuid'] = self.catalogus.uuid
         kwargs['version'] = '1'
         return super().get_absolute_api_url(request=request, **kwargs)

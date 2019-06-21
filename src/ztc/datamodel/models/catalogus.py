@@ -6,10 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.fields import RSINField
 
 from ..validators import validate_uppercase
-from .mixins import DraftMixin
 
 
-class Catalogus(DraftMixin, models.Model):
+class Catalogus(models.Model):
     """
     De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor
     een Domein die als één geheel beheerd wordt.
