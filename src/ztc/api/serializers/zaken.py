@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
+from rest_framework.exceptions import PermissionDenied
 
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, HyperlinkedRelatedField, ModelSerializer
@@ -10,7 +11,7 @@ from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGr
 
 from ...datamodel.models import (
     BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,
-    ZaakTypenRelatie, StatusType, RolType, ResultaatType, Eigenschap, InformatieObjectType, BesluitType
+    ZaakTypenRelatie, BesluitType
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 
@@ -274,6 +275,18 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
 
+    def validate(self, attrs):
+        validated_attrs = super().validate(attrs)
+
+        # check that M2M relations are created only with draft objects
+        besluittypen = validated_attrs.get('besluittype_set', [])
+        for besluittype in besluittypen:
+            if not besluittype.draft:
+                msg = _("Relations to a non-draft BesluitType can't be created")
+                raise PermissionDenied(detail=msg)
+
+        return validated_attrs
+
     @transaction.atomic()
     def create(self, validated_data):
         zaaktypen_relaties_data = validated_data.pop('zaaktypenrelaties', None)
@@ -285,4 +298,3 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
                 ZaakTypenRelatie.objects.create(**zaaktypen_relaties, zaaktype=zaaktype)
 
         return zaaktype
-

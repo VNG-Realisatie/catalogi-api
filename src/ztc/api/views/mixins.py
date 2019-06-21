@@ -2,6 +2,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema, no_body
 from rest_framework.exceptions import PermissionDenied
+from django.utils.translation import ugettext_lazy as _
 
 
 class DraftPublishMixin:
@@ -25,7 +26,7 @@ class DraftDestroyMixin:
 
     def perform_destroy(self, instance):
         if not self.get_draft(instance):
-            msg = "Deleting a non-draft object is forbidden"
+            msg = _("Deleting a non-draft object is forbidden")
             raise PermissionDenied(detail=msg)
 
         super().perform_destroy(instance)

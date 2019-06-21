@@ -106,6 +106,70 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(besluittype.informatieobjecttypes.get(), informatieobjecttype)
         self.assertEqual(besluittype.draft, True)
 
+    def test_create_besluittype_fail_non_draft_zaaktypes(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse('informatieobjecttype-detail', kwargs={
+            'uuid': informatieobjecttype.uuid,
+        })
+        besluittype_list_url = reverse('besluittype-list')
+        data = {
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'zaaktypes': [f'http://testserver{zaaktype_url}'],
+            'omschrijving': 'test',
+            'omschrijvingGeneriek': '',
+            'besluitcategorie': '',
+            'reactietermijn': 'P14D',
+            'publicatieIndicatie': True,
+            'publicatietekst': '',
+            'publicatietermijn': None,
+            'toelichting': '',
+            'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
+            'beginGeldigheid': '2019-01-01',
+        }
+
+        response = self.client.post(besluittype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], "Relations to a non-draft object can't be created")
+
+    def test_create_besluittype_fail_non_draft_informatieobjecttypes(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype_url = reverse('informatieobjecttype-detail', kwargs={
+            'uuid': informatieobjecttype.uuid,
+        })
+        besluittype_list_url = reverse('besluittype-list')
+        data = {
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'zaaktypes': [f'http://testserver{zaaktype_url}'],
+            'omschrijving': 'test',
+            'omschrijvingGeneriek': '',
+            'besluitcategorie': '',
+            'reactietermijn': 'P14D',
+            'publicatieIndicatie': True,
+            'publicatietekst': '',
+            'publicatietermijn': None,
+            'toelichting': '',
+            'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
+            'beginGeldigheid': '2019-01-01',
+        }
+
+        response = self.client.post(besluittype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], "Relations to a non-draft object can't be created")
+
     def test_publish_besluittype(self):
         besluittype = BesluitTypeFactory.create()
         besluittype_url = reverse('besluittype-publish', kwargs={

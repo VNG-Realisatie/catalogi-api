@@ -2,7 +2,6 @@ import uuid
 from unittest import skip
 
 from django.urls import reverse
-
 from rest_framework import status
 from vng_api_common.tests import get_operation_url
 
@@ -164,6 +163,53 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(zaaktype.referentieproces_naam, 'ReferentieProces 0')
         self.assertEqual(zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype, 'http://example.com/zaaktype/1')
         self.assertEqual(zaaktype.draft, True)
+
+    def test_create_zaaktype_fail_besluittype_non_draft(self):
+        besluittype = BesluitTypeFactory.create(draft=False)
+        besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
+
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        data = {
+            'identificatie': 0,
+            'doel': 'some test',
+            'aanleiding': 'some test',
+            'indicatieInternOfExtern': InternExtern.extern,
+            'handelingInitiator': 'indienen',
+            'onderwerp': 'Klacht',
+            'handelingBehandelaar': 'uitvoeren',
+            'doorlooptijd': 'P30D',
+            'opschortingEnAanhoudingMogelijk': False,
+            'verlengingMogelijk': True,
+            'verlengingstermijn': 'P30D',
+            'publicatieIndicatie': True,
+            'verantwoordingsrelatie': [],
+            'productenOfDiensten': ['https://example.com/product/123'],
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'omschrijving': 'some test',
+            'gerelateerdeZaaktypen': [
+                {
+                    'zaaktype': 'http://example.com/zaaktype/1',
+                    'aard_relatie': AardRelatieChoices.bijdrage,
+                    'toelichting': 'test relations'
+                },
+            ],
+            'referentieproces': {
+                'naam': 'ReferentieProces 0',
+                'link': ''
+            },
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            'besluittypen': [f'http://testserver{besluittype_url}'],
+            'beginGeldigheid': '2018-01-01',
+            'versiedatum': '2018-01-01',
+        }
+
+        response = self.client.post(zaaktype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], "Relations to a non-draft BesluitType can't be created")
 
     def test_publish_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
