@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db import transaction
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
 
@@ -47,6 +48,7 @@ class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
             }
         }
 
+    @transaction.atomic()
     def create(self, validated_data):
         mogelijke_betrokkenen_data = validated_data.pop('mogelijkebetrokkene_set', None)
         roltype = super().create(validated_data)

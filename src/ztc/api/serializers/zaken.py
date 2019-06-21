@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext_lazy as _
+from django.db import transaction
 
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, HyperlinkedRelatedField, ModelSerializer
@@ -273,6 +274,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
 
+    @transaction.atomic()
     def create(self, validated_data):
         zaaktypen_relaties_data = validated_data.pop('zaaktypenrelaties', None)
 
