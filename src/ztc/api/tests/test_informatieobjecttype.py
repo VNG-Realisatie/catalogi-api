@@ -128,3 +128,35 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
         self.assertEqual(informatieobjecttype.draft, True)
 
+    def test_publish_zaaktype(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttypee_url = get_operation_url('informatieobjecttype_publish', uuid=informatieobjecttype.uuid)
+
+        response = self.client.post(informatieobjecttypee_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        informatieobjecttype.refresh_from_db()
+
+        self.assertEqual(informatieobjecttype.draft, False)
+
+    def test_delete_zaaktype(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
+
+        response = self.client.delete(informatieobjecttypee_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(InformatieObjectType.objects.filter(id=informatieobjecttype.id))
+
+    def test_delete_zaak_fail_not_draft(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
+
+        response = self.client.delete(informatieobjecttypee_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+

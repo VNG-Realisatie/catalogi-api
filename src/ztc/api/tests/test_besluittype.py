@@ -105,3 +105,41 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(besluittype.zaaktypes.get(), zaaktype)
         self.assertEqual(besluittype.informatieobjecttypes.get(), informatieobjecttype)
         self.assertEqual(besluittype.draft, True)
+
+    def test_publish_besluittype(self):
+        besluittype = BesluitTypeFactory.create()
+        besluittype_url = reverse('besluittype-publish', kwargs={
+            'uuid': besluittype.uuid,
+        })
+
+        response = self.client.post(besluittype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        besluittype.refresh_from_db()
+
+        self.assertEqual(besluittype.draft, False)
+
+    def test_delete_besluittype(self):
+        besluittype = BesluitTypeFactory.create()
+        besluittype_url = reverse('besluittype-detail', kwargs={
+            'uuid': besluittype.uuid,
+        })
+
+        response = self.client.delete(besluittype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(BesluitType.objects.exists())
+
+    def test_delete_besluittype_fail_not_draft(self):
+        besluittype = BesluitTypeFactory.create(draft=False)
+        besluittype_url = reverse('besluittype-detail', kwargs={
+            'uuid': besluittype.uuid,
+        })
+
+        response = self.client.delete(besluittype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')

@@ -99,6 +99,37 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatie_object_type, informatieobjecttype)
 
+    def test_delete_ziot(self):
+        ziot = ZaakInformatieobjectTypeFactory.create()
+        ziot_url = reverse(ziot)
+
+        response = self.client.delete(ziot_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ZaakInformatieobjectType.objects.filter(id=ziot.id))
+
+    def test_delete_ziot_fail_not_draft_zaaktype(self):
+        ziot = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False)
+        ziot_url = reverse(ziot)
+
+        response = self.client.delete(ziot_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+    def test_delete_ziot_fail_not_draft_informatieobjecttype(self):
+        ziot = ZaakInformatieobjectTypeFactory.create(informatie_object_type__draft=False)
+        ziot_url = reverse(ziot)
+
+        response = self.client.delete(ziot_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
 
 @skip("Not MVP yet")
 class ZaakInformatieobjectTypeArchiefregimeAPITests(APITestCase):

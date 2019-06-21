@@ -168,3 +168,23 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             resultaattype.brondatum_archiefprocedure_afleidingswijze,
             BrondatumArchiefprocedureAfleidingswijze.afgehandeld
         )
+
+    def test_delete_eigenschap(self):
+        resultaattype = ResultaatTypeFactory.create()
+        resultaattype_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype.uuid})
+
+        response = self.client.delete(resultaattype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ResultaatType.objects.filter(id=resultaattype.id))
+
+    def test_delete_eigenschap_fail_not_draft_zaaktype(self):
+        resultaattype = ResultaatTypeFactory.create(zaaktype__draft=False)
+        resultaattype_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype.uuid})
+
+        response = self.client.delete(resultaattype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')

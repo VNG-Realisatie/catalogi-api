@@ -115,3 +115,23 @@ class EigenschapAPITests(APITestCase):
 
         self.assertEqual(eigenschap.eigenschapnaam, 'Beoogd product')
         self.assertEqual(eigenschap.zaaktype, zaaktype)
+
+    def test_delete_eigenschap(self):
+        eigenschap = EigenschapFactory.create()
+        eigenschap_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap.uuid})
+
+        response = self.client.delete(eigenschap_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Eigenschap.objects.filter(id=eigenschap.id))
+
+    def test_delete_eigenschap_fail_not_draft_zaaktype(self):
+        eigenschap = EigenschapFactory.create(zaaktype__draft=False)
+        informatieobjecttypee_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap.uuid})
+
+        response = self.client.delete(informatieobjecttypee_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')

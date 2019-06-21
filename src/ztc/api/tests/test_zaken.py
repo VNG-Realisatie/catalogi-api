@@ -165,6 +165,38 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype, 'http://example.com/zaaktype/1')
         self.assertEqual(zaaktype.draft, True)
 
+    def test_publish_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = get_operation_url('zaaktype_publish', uuid=zaaktype.uuid)
+
+        response = self.client.post(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        zaaktype.refresh_from_db()
+
+        self.assertEqual(zaaktype.draft, False)
+
+    def test_delete_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = get_operation_url('zaaktype_read', uuid=zaaktype.uuid)
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ZaakType.objects.filter(id=zaaktype.id))
+
+    def test_delete_zaak_fail_not_draft(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = get_operation_url('zaaktype_read', uuid=zaaktype.uuid)
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
 
 @skip("Not in current MVP")
 class ZaakObjectTypeAPITests(APITestCase):

@@ -74,3 +74,23 @@ class StatusTypeAPITests(APITestCase):
         statustype = StatusType.objects.get()
 
         self.assertEqual(statustype.statustype_omschrijving, 'Besluit genomen')
+
+    def test_delete_statustype(self):
+        statustype = StatusTypeFactory.create()
+        statustype_url = reverse('statustype-detail', kwargs={'uuid': statustype.uuid})
+
+        response = self.client.delete(statustype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(StatusType.objects.filter(id=statustype.id))
+
+    def test_delete_statustype_fail_not_draft_zaaktype(self):
+        statustype = StatusTypeFactory.create(zaaktype__draft=False)
+        statustype_url = reverse('statustype-detail', kwargs={'uuid': statustype.uuid})
+
+        response = self.client.delete(statustype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')

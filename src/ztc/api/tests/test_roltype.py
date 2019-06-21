@@ -84,6 +84,26 @@ class RolTypeAPITests(APITestCase):
         roltype = RolType.objects.get()
         self.assertEqual(roltype.omschrijving, 'Vergunningaanvrager')
 
+    def test_delete_roltype(self):
+        roltype = RolTypeFactory.create()
+        roltype_url = reverse('roltype-detail', kwargs={'uuid': roltype.uuid})
+
+        response = self.client.delete(roltype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(RolType.objects.filter(id=roltype.id))
+
+    def test_delete_roltype_fail_not_draft_zaaktype(self):
+        roltype = RolTypeFactory.create(zaaktype__draft=False)
+        roltype_url = reverse('roltype-detail', kwargs={'uuid': roltype.uuid})
+
+        response = self.client.delete(roltype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
 
 class FilterValidationTests(APITestCase):
 
