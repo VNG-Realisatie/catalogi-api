@@ -7,7 +7,6 @@ from ..serializers import CatalogusSerializer
 
 
 class CatalogusViewSet(mixins.CreateModelMixin,
-                       mixins.DestroyModelMixin,
                        viewsets.ReadOnlyModelViewSet):
     """
     retrieve:

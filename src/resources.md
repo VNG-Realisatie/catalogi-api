@@ -24,7 +24,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | informatieobjecttypes |  | array | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
-| draft | Flag indicating the object is a draft | boolean | nee | C​R​U​D |
+| draft | Flag indicating the object is a draft | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## Catalogus
 
@@ -78,7 +78,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | vertrouwelijkheidaanduiding | Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn. | string | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
-| draft | Flag indicating the object is a draft | boolean | nee | C​R​U​D |
+| draft | Flag indicating the object is a draft | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## ResultaatType
 
@@ -186,7 +186,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
 | versiedatum | De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden | string | ja | C​R​U​D |
-| draft | Flag indicating the object is a draft | boolean | nee | C​R​U​D |
+| draft | Flag indicating the object is a draft | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 
 * Create, Read, Update, Delete
