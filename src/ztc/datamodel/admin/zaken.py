@@ -9,7 +9,9 @@ from ..models import (
 )
 from .eigenschap import EigenschapAdmin
 from .forms import ZaakTypeForm
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin, DraftAdminMixin
+from .mixins import (
+    DraftAdminMixin, FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+)
 from .resultaattype import ResultaatTypeAdmin
 from .roltype import RolTypeAdmin
 from .statustype import StatusTypeAdmin

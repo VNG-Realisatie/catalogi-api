@@ -1,7 +1,7 @@
-from rest_framework import status
 import requests_mock
-from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
+from rest_framework import status
 from vng_api_common.constants import BrondatumArchiefprocedureAfleidingswijze
+from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
 
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory

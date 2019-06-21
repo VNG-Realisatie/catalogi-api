@@ -3,12 +3,13 @@ from unittest import skip
 from rest_framework import status
 from vng_api_common.tests import reverse, reverse_lazy
 
+from ztc.datamodel.choices import RichtingChoices
 from ztc.datamodel.models import ZaakInformatieobjectType
 from ztc.datamodel.tests.factories import (
-    ZaakInformatieobjectTypeArchiefregimeFactory,
-    ZaakInformatieobjectTypeFactory, ZaakTypeFactory, InformatieObjectTypeFactory
+    InformatieObjectTypeFactory, ZaakInformatieobjectTypeArchiefregimeFactory,
+    ZaakInformatieobjectTypeFactory, ZaakTypeFactory
 )
-from ztc.datamodel.choices import RichtingChoices
+
 from .base import APITestCase
 
 

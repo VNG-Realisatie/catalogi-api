@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins
+from rest_framework import mixins, viewsets
 from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import ZaakObjectType, ZaakType

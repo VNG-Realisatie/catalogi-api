@@ -5,7 +5,7 @@ from ..models import (
     InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek,
     ZaakInformatieobjectType
 )
-from .mixins import GeldigheidAdminMixin, DraftAdminMixin
+from .mixins import DraftAdminMixin, GeldigheidAdminMixin
 
 
 class ZaakInformatieobjectTypeInline(admin.TabularInline):

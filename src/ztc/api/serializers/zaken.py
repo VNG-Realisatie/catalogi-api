@@ -1,17 +1,19 @@
-from django.utils.translation import ugettext_lazy as _
 from django.db import transaction
-from rest_framework.exceptions import PermissionDenied
+from django.utils.translation import ugettext_lazy as _
 
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, HyperlinkedRelatedField, ModelSerializer
 )
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
-from vng_api_common.serializers import GegevensGroepSerializer, NestedGegevensGroepMixin
+from vng_api_common.serializers import (
+    GegevensGroepSerializer, NestedGegevensGroepMixin
+)
 
 from ...datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,
-    ZaakTypenRelatie, BesluitType
+    BesluitType, BronCatalogus, BronZaakType, Formulier, ZaakObjectType,
+    ZaakType, ZaakTypenRelatie
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 

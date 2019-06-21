@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins
+from rest_framework import mixins, viewsets
 
 from ztc.datamodel.models import Catalogus
 

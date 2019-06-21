@@ -2,17 +2,18 @@ import uuid
 from unittest import skip
 
 from django.urls import reverse
+
 from rest_framework import status
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import get_operation_url
 
-from ztc.datamodel.tests.factories import (
-    ZaakObjectTypeFactory, ZaakTypeFactory, BesluitTypeFactory
-)
+from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
-from vng_api_common.constants import VertrouwelijkheidsAanduiding
+from ztc.datamodel.tests.factories import (
+    BesluitTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory
+)
 
 from .base import APITestCase
-from ztc.datamodel.choices import InternExtern, AardRelatieChoices
 
 
 class ZaakTypeAPITests(APITestCase):

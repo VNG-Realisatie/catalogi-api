@@ -1,10 +1,10 @@
 from rest_framework import status
-from .utils import reverse
 
-from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
 from ztc.datamodel.models import StatusType
+from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
 
 from .base import APITestCase
+from .utils import reverse
 
 
 class StatusTypeAPITests(APITestCase):

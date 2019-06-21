@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.fields import VertrouwelijkheidsAanduidingField
 
-from .mixins import GeldigheidMixin, DraftMixin
+from .mixins import DraftMixin, GeldigheidMixin
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):

@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from django.db import transaction
+
+from rest_framework import serializers
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
 

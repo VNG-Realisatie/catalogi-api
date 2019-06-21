@@ -1,15 +1,16 @@
 from unittest import skip
 
 from django.urls import reverse
-from rest_framework import status
-from vng_api_common.tests import get_operation_url
-from vng_api_common.constants import VertrouwelijkheidsAanduiding
 
+from rest_framework import status
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
+from vng_api_common.tests import get_operation_url
+
+from ...datamodel.models import InformatieObjectType
 from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory
 )
-from ...datamodel.models import InformatieObjectType
 from .base import APITestCase
 
 
@@ -159,4 +160,3 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
-

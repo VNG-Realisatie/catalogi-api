@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import BesluitType
-from .mixins import GeldigheidAdminMixin, DraftAdminMixin
+from .mixins import DraftAdminMixin, GeldigheidAdminMixin
 
 
 @admin.register(BesluitType)

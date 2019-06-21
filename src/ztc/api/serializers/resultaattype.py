@@ -3,7 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from vng_api_common.constants import Archiefnominatie
 from vng_api_common.serializers import (
-    GegevensGroepSerializer, add_choice_values_help_text, NestedGegevensGroepMixin
+    GegevensGroepSerializer, NestedGegevensGroepMixin,
+    add_choice_values_help_text
 )
 
 from ...datamodel.models import ResultaatType

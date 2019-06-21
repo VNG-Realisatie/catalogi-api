@@ -1,6 +1,8 @@
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
-from django.utils.translation import ugettext_lazy as _
+
 from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
 
 

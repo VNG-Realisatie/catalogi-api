@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.fields import DaysDurationField
 
-from .mixins import GeldigheidMixin, DraftMixin
+from .mixins import DraftMixin, GeldigheidMixin
 
 
 class BesluitType(GeldigheidMixin,DraftMixin, models.Model):

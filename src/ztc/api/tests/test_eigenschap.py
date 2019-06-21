@@ -1,11 +1,12 @@
 from unittest import skip
 
 from rest_framework import status
+
+from ztc.datamodel.models import Eigenschap
 from ztc.datamodel.tests.factories import (
     EigenschapFactory, EigenschapReferentieFactory,
     EigenschapSpecificatieFactory, ZaakTypeFactory
 )
-from ztc.datamodel.models import Eigenschap
 
 from .base import APITestCase
 from .utils import reverse

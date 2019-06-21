@@ -1,7 +1,9 @@
 from rest_framework import status
 
-from ...datamodel.tests.factories import BesluitTypeFactory, ZaakTypeFactory, InformatieObjectTypeFactory
 from ...datamodel.models import BesluitType
+from ...datamodel.tests.factories import (
+    BesluitTypeFactory, InformatieObjectTypeFactory, ZaakTypeFactory
+)
 from .base import APITestCase
 from .utils import reverse
 
