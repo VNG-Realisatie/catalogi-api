@@ -63,7 +63,8 @@ class InformatieObjectTypeAPITests(APITestCase):
             'vertrouwelijkheidaanduiding': '',
             # 'isRelevantVoor': [],
             'beginGeldigheid': '2019-01-01',
-            'eindeGeldigheid': None
+            'eindeGeldigheid': None,
+            'draft': True,
         }
         self.assertEqual(expected, response.json())
 
@@ -125,4 +126,5 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         self.assertEqual(informatieobjecttype.omschrijving, 'test')
         self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
+        self.assertEqual(informatieobjecttype.draft, True)
 

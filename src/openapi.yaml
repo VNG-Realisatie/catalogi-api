@@ -5021,7 +5021,10 @@ components:
     BesluitType:
       required:
       - catalogus
+      - zaaktypes
       - omschrijving
+      - informatieobjecttypes
+      - beginGeldigheid
       type: object
       properties:
         url:
@@ -5039,7 +5042,6 @@ components:
           items:
             type: string
             format: uri
-          readOnly: true
           uniqueItems: true
         omschrijving:
           title: Omschrijving
@@ -5088,8 +5090,21 @@ components:
           items:
             type: string
             format: uri
-          readOnly: true
           uniqueItems: true
+        beginGeldigheid:
+          title: Begin geldigheid
+          description: De datum waarop het is ontstaan.
+          type: string
+          format: date
+        eindeGeldigheid:
+          title: Einde geldigheid
+          description: De datum waarop het is opgeheven.
+          type: string
+          format: date
+        draft:
+          title: Draft
+          description: Flag indicating the object is a draft
+          type: boolean
     Fout:
       required:
       - code
@@ -5351,6 +5366,7 @@ components:
       - catalogus
       - omschrijving
       - vertrouwelijkheidaanduiding
+      - beginGeldigheid
       type: object
       properties:
         url:
@@ -5383,6 +5399,20 @@ components:
           - confidentieel
           - geheim
           - zeer geheim
+        beginGeldigheid:
+          title: Begin geldigheid
+          description: De datum waarop het is ontstaan.
+          type: string
+          format: date
+        eindeGeldigheid:
+          title: Einde geldigheid
+          description: De datum waarop het is opgeheven.
+          type: string
+          format: date
+        draft:
+          title: Draft
+          description: Flag indicating the object is a draft
+          type: boolean
     BrondatumArchiefprocedure:
       title: Brondatum archiefprocedure
       description: Specificatie voor het bepalen van de brondatum voor de start van
@@ -5753,8 +5783,10 @@ components:
       - productenOfDiensten
       - referentieproces
       - catalogus
+      - besluittypen
       - gerelateerdeZaaktypen
       - beginGeldigheid
+      - versiedatum
       type: object
       properties:
         url:
@@ -5969,7 +6001,6 @@ components:
             title: heeft relevante besluittypen
             type: string
             format: uri
-          readOnly: true
           uniqueItems: true
         gerelateerdeZaaktypen:
           description: De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit
@@ -5987,3 +6018,13 @@ components:
           description: De datum waarop het is opgeheven.
           type: string
           format: date
+        versiedatum:
+          title: Versiedatum
+          description: De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE
+            geldig zijn geworden
+          type: string
+          format: date
+        draft:
+          title: Draft
+          description: Flag indicating the object is a draft
+          type: boolean

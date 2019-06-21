@@ -63,7 +63,8 @@ class BesluitTypeAPITests(APITestCase):
             'toelichting': '',
             'informatieobjecttypes': [],
             'beginGeldigheid': '2018-01-01',
-            'eindeGeldigheid': None
+            'eindeGeldigheid': None,
+            'draft': True,
             # 'resultaattypes': ['http://testserver{resultaattype_url}'],
         }
         self.assertEqual(response.json(), expected)
@@ -103,3 +104,4 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(besluittype.catalogus, self.catalogus)
         self.assertEqual(besluittype.zaaktypes.get(), zaaktype)
         self.assertEqual(besluittype.informatieobjecttypes.get(), informatieobjecttype)
+        self.assertEqual(besluittype.draft, True)

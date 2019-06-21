@@ -89,6 +89,7 @@ class ZaakTypeAPITests(APITestCase):
             'beginGeldigheid': '2018-01-01',
             'eindeGeldigheid': None,
             'versiedatum': '2018-01-01',
+            'draft': True,
         }
         self.assertEqual(expected, response.json())
 
@@ -162,6 +163,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(zaaktype.besluittype_set.get(), besluittype)
         self.assertEqual(zaaktype.referentieproces_naam, 'ReferentieProces 0')
         self.assertEqual(zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype, 'http://example.com/zaaktype/1')
+        self.assertEqual(zaaktype.draft, True)
 
 
 @skip("Not in current MVP")

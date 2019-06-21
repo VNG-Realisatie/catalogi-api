@@ -33,6 +33,9 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             'einde_geldigheid': {
                 'source': 'datum_einde_geldigheid'
             },
+            'draft': {
+                'read_only': True,
+            },
         }
         fields = (
             'url',
@@ -51,4 +54,5 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             'informatieobjecttypes',
             'begin_geldigheid',
             'einde_geldigheid',
+            'draft',
         )

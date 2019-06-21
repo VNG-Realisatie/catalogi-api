@@ -6090,7 +6090,10 @@
         "BesluitType": {
             "required": [
                 "catalogus",
-                "omschrijving"
+                "zaaktypes",
+                "omschrijving",
+                "informatieobjecttypes",
+                "beginGeldigheid"
             ],
             "type": "object",
             "properties": {
@@ -6112,7 +6115,6 @@
                         "type": "string",
                         "format": "uri"
                     },
-                    "readOnly": true,
                     "uniqueItems": true
                 },
                 "omschrijving": {
@@ -6166,8 +6168,24 @@
                         "type": "string",
                         "format": "uri"
                     },
-                    "readOnly": true,
                     "uniqueItems": true
+                },
+                "beginGeldigheid": {
+                    "title": "Begin geldigheid",
+                    "description": "De datum waarop het is ontstaan.",
+                    "type": "string",
+                    "format": "date"
+                },
+                "eindeGeldigheid": {
+                    "title": "Einde geldigheid",
+                    "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date"
+                },
+                "draft": {
+                    "title": "Draft",
+                    "description": "Flag indicating the object is a draft",
+                    "type": "boolean"
                 }
             }
         },
@@ -6477,7 +6495,8 @@
             "required": [
                 "catalogus",
                 "omschrijving",
-                "vertrouwelijkheidaanduiding"
+                "vertrouwelijkheidaanduiding",
+                "beginGeldigheid"
             ],
             "type": "object",
             "properties": {
@@ -6514,6 +6533,23 @@
                         "geheim",
                         "zeer geheim"
                     ]
+                },
+                "beginGeldigheid": {
+                    "title": "Begin geldigheid",
+                    "description": "De datum waarop het is ontstaan.",
+                    "type": "string",
+                    "format": "date"
+                },
+                "eindeGeldigheid": {
+                    "title": "Einde geldigheid",
+                    "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date"
+                },
+                "draft": {
+                    "title": "Draft",
+                    "description": "Flag indicating the object is a draft",
+                    "type": "boolean"
                 }
             }
         },
@@ -6909,8 +6945,10 @@
                 "productenOfDiensten",
                 "referentieproces",
                 "catalogus",
+                "besluittypen",
                 "gerelateerdeZaaktypen",
-                "beginGeldigheid"
+                "beginGeldigheid",
+                "versiedatum"
             ],
             "type": "object",
             "properties": {
@@ -7139,7 +7177,6 @@
                         "type": "string",
                         "format": "uri"
                     },
-                    "readOnly": true,
                     "uniqueItems": true
                 },
                 "gerelateerdeZaaktypen": {
@@ -7160,6 +7197,17 @@
                     "description": "De datum waarop het is opgeheven.",
                     "type": "string",
                     "format": "date"
+                },
+                "versiedatum": {
+                    "title": "Versiedatum",
+                    "description": "De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden",
+                    "type": "string",
+                    "format": "date"
+                },
+                "draft": {
+                    "title": "Draft",
+                    "description": "Flag indicating the object is a draft",
+                    "type": "boolean"
                 }
             }
         }

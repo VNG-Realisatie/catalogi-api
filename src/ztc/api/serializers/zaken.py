@@ -234,6 +234,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
             'begin_geldigheid',
             'einde_geldigheid',
             'versiedatum',
+            'draft',
         )
         extra_kwargs = {
             'url': {
@@ -262,6 +263,9 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
             },
             'einde_geldigheid': {
                 'source': 'datum_einde_geldigheid'
+            },
+            'draft': {
+                'read_only': True,
             },
         }
 

@@ -50,6 +50,9 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             'einde_geldigheid': {
                 'source': 'datum_einde_geldigheid'
             },
+            'draft': {
+                'read_only': True,
+            },
         }
         fields = (
             'url',
@@ -59,6 +62,7 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             'vertrouwelijkheidaanduiding',
             'begin_geldigheid',
             'einde_geldigheid',
+            'draft',
             # 'omschrijvingGeneriek',
             # 'categorie',
             # 'trefwoord',
