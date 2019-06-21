@@ -1,0 +1,40 @@
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema, no_body
+from rest_framework.exceptions import PermissionDenied
+
+
+class DraftPublishMixin:
+    @swagger_auto_schema(
+        request_body=no_body,
+    )
+    @action(detail=True, methods=['post'])
+    def publish(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.draft = False
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+
+        return Response(serializer.data)
+
+
+class DraftDestroyMixin:
+    def get_draft(self, instance):
+        return instance.draft
+
+    def perform_destroy(self, instance):
+        if not self.get_draft(instance):
+            msg = "Deleting a non-draft object is forbidden"
+            raise PermissionDenied(detail=msg)
+
+        super().perform_destroy(instance)
+
+
+class ZaakTypeDraftDestroyMixin(DraftDestroyMixin):
+    def get_draft(self, instance):
+        return instance.zaaktype.draft
+
+
+class DraftMixin(DraftPublishMixin, DraftDestroyMixin):
+    pass

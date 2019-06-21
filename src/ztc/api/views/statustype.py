@@ -4,9 +4,11 @@ from ...datamodel.models import StatusType
 from ..filters import StatusTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import StatusTypeSerializer
+from .mixins import ZaakTypeDraftDestroyMixin
 
 
-class StatusTypeViewSet(mixins.CreateModelMixin,
+class StatusTypeViewSet(ZaakTypeDraftDestroyMixin,
+                        mixins.CreateModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.ReadOnlyModelViewSet):
     """

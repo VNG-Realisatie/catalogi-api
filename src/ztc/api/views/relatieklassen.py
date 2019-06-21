@@ -12,9 +12,11 @@ from ..serializers import (
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from .mixins import DraftDestroyMixin
 
 
-class ZaakTypeInformatieObjectTypeViewSet(mixins.CreateModelMixin,
+class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
+                                          mixins.CreateModelMixin,
                                           mixins.DestroyModelMixin,
                                           viewsets.ReadOnlyModelViewSet):
     """
@@ -42,6 +44,9 @@ class ZaakTypeInformatieObjectTypeViewSet(mixins.CreateModelMixin,
         'create': SCOPE_ZAAKTYPES_WRITE,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
     }
+
+    def get_draft(self, instance):
+        return instance.zaaktype.draft and instance.informatie_object_type.draft
 
 
 class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,

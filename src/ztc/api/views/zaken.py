@@ -7,6 +7,7 @@ from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakObjectTypeSerializer, ZaakTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from .mixins import DraftMixin
 
 
 class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
@@ -28,7 +29,8 @@ class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin
     }
 
 
-class ZaakTypeViewSet(mixins.CreateModelMixin,
+class ZaakTypeViewSet(DraftMixin,
+                      mixins.CreateModelMixin,
                       mixins.DestroyModelMixin,
                       viewsets.ReadOnlyModelViewSet):
     """
@@ -57,5 +59,6 @@ class ZaakTypeViewSet(mixins.CreateModelMixin,
         'retrieve': SCOPE_ZAAKTYPES_READ,
         'create': SCOPE_ZAAKTYPES_WRITE,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
+        'publish': SCOPE_ZAAKTYPES_WRITE,
 
     }

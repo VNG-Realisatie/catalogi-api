@@ -603,6 +603,41 @@ paths:
       schema:
         type: string
         format: uuid
+  /besluittypen/{uuid}/publish:
+    post:
+      operationId: besluittype_publish
+      description: ''
+      responses:
+        '201':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BesluitType'
+      tags:
+      - besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke resource identifier (UUID4)
+      required: true
+      schema:
+        type: string
+        format: uuid
   /catalogussen:
     get:
       operationId: catalogus_list
@@ -2082,6 +2117,41 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Fout'
+      tags:
+      - informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke resource identifier (UUID4)
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /informatieobjecttypen/{uuid}/publish:
+    post:
+      operationId: informatieobjecttype_publish
+      description: ''
+      responses:
+        '201':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InformatieObjectType'
       tags:
       - informatieobjecttypen
       security:
@@ -4871,6 +4941,41 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Fout'
+      tags:
+      - zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
+    parameters:
+    - name: uuid
+      in: path
+      description: Unieke resource identifier (UUID4)
+      required: true
+      schema:
+        type: string
+        format: uuid
+  /zaaktypen/{uuid}/publish:
+    post:
+      operationId: zaaktype_publish
+      description: ''
+      responses:
+        '201':
+          description: ''
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+            Location:
+              schema:
+                type: string
+                format: uri
+              description: URL waar de resource leeft.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZaakType'
       tags:
       - zaaktypen
       security:
