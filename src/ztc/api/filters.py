@@ -1,11 +1,10 @@
-from vng_api_common.filtersets import FilterSet
 from django_filters import rest_framework as filters
+from vng_api_common.filtersets import FilterSet
 
 from ztc.datamodel.models import (
     BesluitType, Eigenschap, InformatieObjectType, ResultaatType, RolType,
     StatusType, ZaakInformatieobjectType, ZaakType
 )
-
 
 # custom filter to show draft and non-drafts
 PUBLISH_HELP_TEXT = """filter objects depending on their draft status:

@@ -101,5 +101,3 @@ class M2MDraftCreateMixin:
                     raise PermissionDenied(detail=msg)
 
         super().perform_create(serializer)
-
-
