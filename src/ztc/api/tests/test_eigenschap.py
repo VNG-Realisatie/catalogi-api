@@ -117,6 +117,24 @@ class EigenschapAPITests(APITestCase):
         self.assertEqual(eigenschap.eigenschapnaam, 'Beoogd product')
         self.assertEqual(eigenschap.zaaktype, zaaktype)
 
+    def test_create_eigenschap_fail_not_draft_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={'uuid': zaaktype.uuid})
+        eigenschap_list_url = reverse('eigenschap-list')
+        data = {
+            'naam': 'Beoogd product',
+            'definitie': 'test',
+            'toelichting': '',
+            'zaaktype': 'http://testserver{}'.format(zaaktype_url),
+        }
+
+        response = self.client.post(eigenschap_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
+
     def test_delete_eigenschap(self):
         eigenschap = EigenschapFactory.create()
         eigenschap_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap.uuid})

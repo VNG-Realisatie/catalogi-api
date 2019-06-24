@@ -55,7 +55,7 @@ class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
         informatie_object_type = serializer.validated_data['informatie_object_type']
 
         if not(zaaktype.draft and informatie_object_type.draft):
-            msg = _("creating relations between non-draft objects is forbidden")
+            msg = _("Creating relations between non-draft objects is forbidden")
             raise PermissionDenied(detail=msg)
         super().perform_create(serializer)
 

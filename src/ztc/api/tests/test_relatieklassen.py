@@ -100,6 +100,44 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatie_object_type, informatieobjecttype)
 
+    def test_create_ziot_fail_not_draft_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = reverse(zaaktype)
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse(informatieobjecttype)
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'informatieObjectType': f'http://testserver{informatieobjecttype_url}',
+            'volgnummer': 13,
+            'richting': RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating relations between non-draft objects is forbidden')
+
+    def test_create_ziot_fail_not_draft_informatieobjecttype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype_url = reverse(informatieobjecttype)
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'informatieObjectType': f'http://testserver{informatieobjecttype_url}',
+            'volgnummer': 13,
+            'richting': RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating relations between non-draft objects is forbidden')
+
     def test_delete_ziot(self):
         ziot = ZaakInformatieobjectTypeFactory.create()
         ziot_url = reverse(ziot)

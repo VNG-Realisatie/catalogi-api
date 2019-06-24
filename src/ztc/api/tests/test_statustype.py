@@ -74,6 +74,27 @@ class StatusTypeAPITests(APITestCase):
         statustype = StatusType.objects.get()
 
         self.assertEqual(statustype.statustype_omschrijving, 'Besluit genomen')
+        self.assertEqual(statustype.zaaktype, zaaktype)
+
+    def test_create_statustype_fail_not_draft_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        statustype_list_url = reverse('statustype-list')
+        data = {
+            'omschrijving': 'Besluit genomen',
+            'omschrijvingGeneriek': '',
+            'statustekst': '',
+            'zaaktype': 'http://testserver{}'.format(zaaktype_url),
+            'volgnummer': 2,
+        }
+        response = self.client.post(statustype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
 
     def test_delete_statustype(self):
         statustype = StatusTypeFactory.create()

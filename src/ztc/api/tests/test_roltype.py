@@ -83,6 +83,27 @@ class RolTypeAPITests(APITestCase):
 
         roltype = RolType.objects.get()
         self.assertEqual(roltype.omschrijving, 'Vergunningaanvrager')
+        self.assertEqual(roltype.zaaktype, zaaktype)
+
+    def test_create_roltype_fail_not_draft_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        rol_type_list_url = reverse('roltype-list')
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'Vergunningaanvrager',
+            'omschrijvingGeneriek': RolOmschrijving.initiator,
+            'mogelijkeBetrokkenen': [],
+        }
+
+        response = self.client.post(rol_type_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
 
     def test_delete_roltype(self):
         roltype = RolTypeFactory.create()
