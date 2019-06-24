@@ -17,18 +17,19 @@ from .base import APITestCase
 class InformatieObjectTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        """Retrieve a list of `InformatieObjectType` objects."""
-        InformatieObjectTypeFactory.create()
+    def test_get_list_default_nondraft(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(draft=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(draft=False)
         informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype2_url = get_operation_url('informatieobjecttype_read',  uuid=informatieobjecttype2.uuid)
 
         response = self.client.get(informatieobjecttype_list_url)
-
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
 
     def test_get_detail(self):
         """Retrieve the details of a single `InformatieObjectType` object."""

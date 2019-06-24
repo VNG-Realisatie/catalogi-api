@@ -15,17 +15,19 @@ from .utils import reverse
 class EigenschapAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        EigenschapFactory.create_batch(2)
+    def test_get_list_default_nonpublish(self):
+        eigenschap1 = EigenschapFactory.create(zaaktype__draft=True)
+        eigenschap2 = EigenschapFactory.create(zaaktype__draft=False)
         eigenschap_list_url = reverse('eigenschap-list')
+        eigenschap2_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap2.uuid})
 
-        response = self.api_client.get(eigenschap_list_url)
-
+        response = self.client.get(eigenschap_list_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
-        self.assertEqual(len(data), 2)
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{eigenschap2_url}')
 
     def test_get_detail(self):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
@@ -192,7 +194,7 @@ class EigenschapFilterAPITests(APITestCase):
         eigenschap2_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap2.uuid})
 
         response = self.client.get(eigenschap_list_url, {'publish': 'nondraft'})
-        self.assertEqual(response.status_code , 200)
+        self.assertEqual(response.status_code, 200)
 
         data = response.json()
 

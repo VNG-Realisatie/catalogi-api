@@ -12,22 +12,19 @@ from .utils import reverse
 class BesluitTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        """Retrieve a list of `BesluitType` objects."""
-        BesluitTypeFactory.create(
-            catalogus=self.catalogus,
-            publicatie_indicatie=True
-        )
+    def test_get_list_default_nondrafts(self):
+        besluittype1 = BesluitTypeFactory.create(draft=True)
+        besluittype2 = BesluitTypeFactory.create(draft=False)
         besluittype_list_url = reverse('besluittype-list')
+        besluittype2_url = reverse('besluittype-detail', kwargs={'uuid': besluittype2.uuid})
 
         response = self.client.get(besluittype_list_url)
-
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
-        # pagination disabled for now
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{besluittype2_url}')
 
     def test_get_detail(self):
         """Retrieve the details of a single `BesluitType` object."""

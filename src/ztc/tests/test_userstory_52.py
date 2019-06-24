@@ -16,7 +16,7 @@ from ztc.datamodel.tests.factories import (
 class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
     def test_list_eigenschappen(self):
-        zaaktype = ZaakTypeFactory.create()
+        zaaktype = ZaakTypeFactory.create(draft=False)
 
         eigenschap1 = EigenschapFactory.create(
             eigenschapnaam='objecttype',

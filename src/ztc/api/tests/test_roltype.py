@@ -10,24 +10,19 @@ from .utils import reverse
 class RolTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        RolTypeFactory.create(
-            omschrijving='Vergunningaanvrager',
-            omschrijving_generiek=RolOmschrijving.initiator,
-            soort_betrokkene=['Aanvrager'],
-            zaaktype__catalogus=self.catalogus,
-        )
-        rol_type_list_url = reverse('roltype-list')
+    def test_get_list_default_nondraft(self):
+        roltype1 = RolTypeFactory.create(zaaktype__draft=True)
+        roltype2 = RolTypeFactory.create(zaaktype__draft=False)
+        roltype_list_url = reverse('roltype-list')
+        roltype2_url = reverse('roltype-detail', kwargs={'uuid': roltype2.uuid})
 
-        response = self.client.get(rol_type_list_url)
+        response = self.client.get(roltype_list_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
-        # TODO: when pagination gets re-added
-        # self.assertTrue('results' in data)
-        # self.assertEqual(len(data['results']), 1)
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{roltype2_url}')
 
     def test_get_detail(self):
         rol_type = RolTypeFactory.create(
@@ -178,7 +173,7 @@ class RolTypeFilterAPITests(APITestCase):
         roltype2_url = reverse('roltype-detail', kwargs={'uuid': roltype2.uuid})
 
         response = self.client.get(roltype_list_url, {'publish': 'nondraft'})
-        self.assertEqual(response.status_code , 200)
+        self.assertEqual(response.status_code, 200)
 
         data = response.json()
 

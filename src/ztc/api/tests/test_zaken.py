@@ -19,9 +19,11 @@ from .base import APITestCase
 class ZaakTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        ZaakTypeFactory.create(catalogus=self.catalogus)
+    def test_get_list_default_nondraft(self):
+        zaaktype1 = ZaakTypeFactory.create(draft=True)
+        zaaktype2 = ZaakTypeFactory.create(draft=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
 
         response = self.client.get(zaaktype_list_url)
         self.assertEqual(response.status_code, 200)
@@ -29,6 +31,7 @@ class ZaakTypeAPITests(APITestCase):
         data = response.json()
 
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype2_url}')
 
     def test_get_detail(self):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)

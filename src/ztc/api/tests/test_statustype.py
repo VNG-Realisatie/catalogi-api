@@ -10,20 +10,19 @@ from .utils import reverse
 class StatusTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        StatusTypeFactory.create(
-            statustype_omschrijving='Besluit genomen',
-            zaaktype__catalogus=self.catalogus,
-        )
+    def test_get_list_default_nondraft(self):
+        statustype1 = StatusTypeFactory.create(zaaktype__draft=True)
+        statustype2 = StatusTypeFactory.create(zaaktype__draft=False)
         statustype_list_url = reverse('statustype-list')
+        statustype2_url = reverse('statustype-detail', kwargs={'uuid': statustype2.uuid})
 
-        response = self.api_client.get(statustype_list_url)
-
+        response = self.client.get(statustype_list_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')
 
     def test_get_detail(self):
         status_type = StatusTypeFactory.create(

@@ -15,7 +15,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
     list_url = reverse_lazy(ResultaatType)
 
     def test_get_list(self):
-        ResultaatTypeFactory.create_batch(3)
+        ResultaatTypeFactory.create_batch(3, zaaktype__draft=False)
 
         response = self.api_client.get(self.list_url)
 
@@ -38,28 +38,19 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             )
         )
 
-    def test_filter_on_zaaktype(self):
-        zt1, zt2 = ZaakTypeFactory.create_batch(2)
-        rt1 = ResultaatTypeFactory.create(zaaktype=zt1)
-        rt1_url = f'http://testserver{reverse(rt1)}'
-        rt2 = ResultaatTypeFactory.create(zaaktype=zt2)
-        rt2_url = f'http://testserver{reverse(rt2)}'
-        zt1_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
-            'uuid': zt1.uuid,
-        }))
-        zt2_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
-            'uuid': zt2.uuid,
-        }))
+    def test_get_list_default_nondraft(self):
+        resultaattype1 = ResultaatTypeFactory.create(zaaktype__draft=True)
+        resultaattype2 = ResultaatTypeFactory.create(zaaktype__draft=False)
+        resultaattype_list_url = reverse('resultaattype-list')
+        resultaattype2_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype2.uuid})
 
-        response = self.client.get(self.list_url, {'zaaktype': zt1_url})
+        response = self.client.get(resultaattype_list_url)
+        self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = response.json()
-        self.assertEqual(len(response_data), 1)
-        self.assertEqual(response_data[0]['url'], rt1_url)
-        self.assertEqual(response_data[0]['zaaktype'], zt1_url)
-        self.assertNotEqual(response_data[0]['url'], rt2_url)
-        self.assertNotEqual(response_data[0]['zaaktype'], zt2_url)
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{resultaattype2_url}')
 
     def test_get_detail(self):
         resultaattype = ResultaatTypeFactory.create()
@@ -227,6 +218,30 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 class ResultaatTypeFilterAPITests(APITestCase):
     maxDiff = None
 
+    def test_filter_on_zaaktype(self):
+        zt1, zt2 = ZaakTypeFactory.create_batch(2, draft=False)
+        rt1 = ResultaatTypeFactory.create(zaaktype=zt1)
+        rt1_url = f'http://testserver{reverse(rt1)}'
+        rt2 = ResultaatTypeFactory.create(zaaktype=zt2)
+        rt2_url = f'http://testserver{reverse(rt2)}'
+        zt1_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
+            'uuid': zt1.uuid,
+        }))
+        zt2_url = 'http://testserver{}'.format(reverse('zaaktype-detail', kwargs={
+            'uuid': zt2.uuid,
+        }))
+        list_url = reverse('resultaattype-list')
+
+        response = self.client.get(list_url, {'zaaktype': zt1_url})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response_data = response.json()
+        self.assertEqual(len(response_data), 1)
+        self.assertEqual(response_data[0]['url'], rt1_url)
+        self.assertEqual(response_data[0]['zaaktype'], zt1_url)
+        self.assertNotEqual(response_data[0]['url'], rt2_url)
+        self.assertNotEqual(response_data[0]['zaaktype'], zt2_url)
+
     def test_filter_resultaattype_publish_all(self):
         ResultaatTypeFactory.create(zaaktype__draft=True)
         ResultaatTypeFactory.create(zaaktype__draft=False)
@@ -260,7 +275,7 @@ class ResultaatTypeFilterAPITests(APITestCase):
         resultaattype2_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype2.uuid})
 
         response = self.client.get(resultaattype_list_url, {'publish': 'nondraft'})
-        self.assertEqual(response.status_code , 200)
+        self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
