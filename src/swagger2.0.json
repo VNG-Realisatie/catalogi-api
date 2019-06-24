@@ -49,7 +49,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     }
@@ -1265,7 +1265,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     }
@@ -1940,7 +1940,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     }
@@ -2665,7 +2665,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     },
@@ -3384,7 +3384,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     }
@@ -4058,7 +4058,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     }
@@ -4753,7 +4753,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     }
@@ -5428,7 +5428,7 @@
                     {
                         "name": "publish",
                         "in": "query",
-                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
                         "required": false,
                         "type": "string"
                     }

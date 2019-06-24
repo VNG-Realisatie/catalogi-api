@@ -73,13 +73,13 @@ paths:
           format: uri
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
@@ -1066,13 +1066,13 @@ paths:
           format: uri
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
@@ -1627,13 +1627,13 @@ paths:
           format: uri
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
@@ -2221,13 +2221,13 @@ paths:
           format: uri
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
@@ -2817,13 +2817,13 @@ paths:
           - Mede-initiator
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
@@ -3375,13 +3375,13 @@ paths:
           format: uri
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
@@ -3963,13 +3963,13 @@ paths:
           - Uitgaand
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
@@ -4521,13 +4521,13 @@ paths:
           format: uri
       - name: publish
         in: query
-        description: 'filter objects depend on their draft status:
+        description: 'filter objects depending on their draft status:
 
-          * all: show all objects
+          * `all`: show all objects
 
-          * draft: show only draft or draft-related objects
+          * `draft`: show only draft or draft-related objects
 
-          * nondraft: show only non-draft or non-draft-related objects (default)
+          * `nondraft`: show only non-draft or non-draft-related objects (default)
 
           '
         required: false
