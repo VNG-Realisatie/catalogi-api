@@ -45,6 +45,13 @@
                         "required": false,
                         "type": "string",
                         "format": "uri"
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1254,6 +1261,13 @@
                         "required": false,
                         "type": "string",
                         "format": "uri"
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -1922,6 +1936,13 @@
                         "required": false,
                         "type": "string",
                         "format": "uri"
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -2642,6 +2663,13 @@
                         "format": "uri"
                     },
                     {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "pagina",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -3352,6 +3380,13 @@
                             "Zaakco\u00f6rdinator",
                             "Mede-initiator"
                         ]
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4019,6 +4054,13 @@
                         "required": false,
                         "type": "string",
                         "format": "uri"
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -4707,6 +4749,13 @@
                             "Intern",
                             "Uitgaand"
                         ]
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -5375,6 +5424,13 @@
                         "required": false,
                         "type": "string",
                         "format": "uri"
+                    },
+                    {
+                        "name": "publish",
+                        "in": "query",
+                        "description": "filter objects depend on their draft status:\n* all: show all objects\n* draft: show only draft or draft-related objects\n* nondraft: show only non-draft or non-draft-related objects (default)\n",
+                        "required": false,
+                        "type": "string"
                     }
                 ],
                 "responses": {

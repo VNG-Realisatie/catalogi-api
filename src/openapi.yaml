@@ -71,6 +71,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -1050,6 +1064,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -1597,6 +1625,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -2177,6 +2219,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       - name: pagina
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -2759,6 +2815,20 @@ paths:
           - Klantcontacter
           - "Zaakco\xF6rdinator"
           - Mede-initiator
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -3303,6 +3373,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -3877,6 +3961,20 @@ paths:
           - Inkomend
           - Intern
           - Uitgaand
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -4421,6 +4519,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: publish
+        in: query
+        description: 'filter objects depend on their draft status:
+
+          * all: show all objects
+
+          * draft: show only draft or draft-related objects
+
+          * nondraft: show only non-draft or non-draft-related objects (default)
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
