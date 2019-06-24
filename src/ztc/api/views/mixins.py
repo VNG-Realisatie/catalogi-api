@@ -33,8 +33,27 @@ class DraftDestroyMixin:
         super().perform_destroy(instance)
 
 
+class DraftFilterMixin:
+    def get_draft_filter(self):
+        return {'draft': False}
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if not hasattr(self, 'action') or self.action != 'list':
+            return qs
+
+        # show only non-drafts by default
+        query_params = self.request.query_params or {}
+        if 'publish' in query_params:
+            return qs
+
+        return qs.filter(**self.get_draft_filter())
+
+
 class DraftMixin(DraftPublishMixin,
-                 DraftDestroyMixin):
+                 DraftDestroyMixin,
+                 DraftFilterMixin):
     """ mixin for resources which have 'draft' field"""
     pass
 
@@ -54,8 +73,14 @@ class ZaakTypeDraftDestroyMixin(DraftDestroyMixin):
         return instance.zaaktype.draft
 
 
+class ZaakTypeDraftFilterMixin(DraftFilterMixin):
+    def get_draft_filter(self):
+        return {'zaaktype__draft': False}
+
+
 class ZaakTypeDraftMixin(ZaakTypeDraftCreateMixin,
-                         ZaakTypeDraftDestroyMixin):
+                         ZaakTypeDraftDestroyMixin,
+                         ZaakTypeDraftFilterMixin):
     """
     mixin for resources which have FK or one-to-one relations with ZaakType objects,
     which support draft functionality
@@ -76,3 +101,5 @@ class M2MDraftCreateMixin:
                     raise PermissionDenied(detail=msg)
 
         super().perform_create(serializer)
+
+

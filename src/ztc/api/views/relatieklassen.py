@@ -15,10 +15,11 @@ from ..serializers import (
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
-from .mixins import DraftDestroyMixin
+from .mixins import DraftDestroyMixin, DraftFilterMixin
 
 
-class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
+class ZaakTypeInformatieObjectTypeViewSet(DraftFilterMixin,
+                                          DraftDestroyMixin,
                                           mixins.CreateModelMixin,
                                           mixins.DestroyModelMixin,
                                           viewsets.ReadOnlyModelViewSet):
@@ -59,6 +60,9 @@ class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
             msg = _("Creating relations between non-draft objects is forbidden")
             raise PermissionDenied(detail=msg)
         super().perform_create(serializer)
+
+    def get_draft_filter(self):
+        return {'zaaktype__draft': False, 'informatie_object_type__draft': False}
 
 
 class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
