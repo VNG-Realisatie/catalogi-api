@@ -59,17 +59,3 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             'einde_geldigheid',
             'draft',
         )
-
-    def validate(self, attrs):
-        validated_attrs = super().validate(attrs)
-
-        # check that M2M relations are created only with draft objects
-        informatieobjecttypes = validated_attrs.get('informatieobjecttypes', [])
-        zaaktypes = validated_attrs.get('zaaktypes', [])
-        for related_objects in [informatieobjecttypes, zaaktypes]:
-            for related_object in related_objects:
-                if not related_object.draft:
-                    msg = _("Relations to a non-draft object can't be created")
-                    raise PermissionDenied(detail=msg)
-
-        return validated_attrs

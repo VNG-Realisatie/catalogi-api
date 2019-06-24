@@ -7,7 +7,7 @@ from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakObjectTypeSerializer, ZaakTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
-from .mixins import DraftMixin
+from .mixins import DraftMixin, M2MDraftCreateMixin
 
 
 class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
@@ -30,6 +30,7 @@ class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin
 
 
 class ZaakTypeViewSet(DraftMixin,
+                      M2MDraftCreateMixin,
                       mixins.CreateModelMixin,
                       mixins.DestroyModelMixin,
                       viewsets.ReadOnlyModelViewSet):
@@ -60,5 +61,7 @@ class ZaakTypeViewSet(DraftMixin,
         'create': SCOPE_ZAAKTYPES_WRITE,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
         'publish': SCOPE_ZAAKTYPES_WRITE,
-
     }
+    draft_related_fields = 'besluittype_set'
+
+

@@ -4,10 +4,11 @@ from ...datamodel.models import BesluitType
 from ..filters import BesluitTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import BesluitTypeSerializer
-from .mixins import DraftMixin
+from .mixins import DraftMixin, M2MDraftCreateMixin
 
 
 class BesluitTypeViewSet(DraftMixin,
+                         M2MDraftCreateMixin,
                          mixins.CreateModelMixin,
                          mixins.DestroyModelMixin,
                          viewsets.ReadOnlyModelViewSet):
@@ -31,3 +32,4 @@ class BesluitTypeViewSet(DraftMixin,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
         'publish': SCOPE_ZAAKTYPES_WRITE,
     }
+    draft_related_fields = ['informatieobjecttypes', 'zaaktypes']

@@ -5,11 +5,11 @@ from ...datamodel.models import RolType
 from ..filters import RolTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import RolTypeSerializer
-from .mixins import ZaakTypeDraftDestroyMixin
+from .mixins import ZaakTypeDraftMixin
 
 
 class RolTypeViewSet(CheckQueryParamsMixin,
-                     ZaakTypeDraftDestroyMixin,
+                     ZaakTypeDraftMixin,
                      mixins.CreateModelMixin,
                      mixins.DestroyModelMixin,
                      viewsets.ReadOnlyModelViewSet):

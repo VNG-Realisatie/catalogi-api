@@ -277,18 +277,6 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
 
-    def validate(self, attrs):
-        validated_attrs = super().validate(attrs)
-
-        # check that M2M relations are created only with draft objects
-        besluittypen = validated_attrs.get('besluittype_set', [])
-        for besluittype in besluittypen:
-            if not besluittype.draft:
-                msg = _("Relations to a non-draft BesluitType can't be created")
-                raise PermissionDenied(detail=msg)
-
-        return validated_attrs
-
     @transaction.atomic()
     def create(self, validated_data):
         zaaktypen_relaties_data = validated_data.pop('zaaktypenrelaties', None)

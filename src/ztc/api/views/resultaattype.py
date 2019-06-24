@@ -4,10 +4,10 @@ from ...datamodel.models import ResultaatType
 from ..filters import ResultaatTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ResultaatTypeSerializer
-from .mixins import ZaakTypeDraftDestroyMixin
+from .mixins import ZaakTypeDraftMixin
 
 
-class ResultaatTypeViewSet(ZaakTypeDraftDestroyMixin,
+class ResultaatTypeViewSet(ZaakTypeDraftMixin,
                            mixins.CreateModelMixin,
                            mixins.DestroyModelMixin,
                            viewsets.ReadOnlyModelViewSet):

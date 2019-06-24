@@ -33,10 +33,46 @@ class DraftDestroyMixin:
         super().perform_destroy(instance)
 
 
+class DraftMixin(DraftPublishMixin,
+                 DraftDestroyMixin):
+    """ mixin for resources which have 'draft' field"""
+    pass
+
+
+class ZaakTypeDraftCreateMixin:
+    def perform_create(self, serializer):
+        zaaktype = serializer.validated_data['zaaktype']
+        if not zaaktype.draft:
+            msg = _("Creating a related object to non-draft object is forbidden")
+            raise PermissionDenied(detail=msg)
+
+        super().perform_create(serializer)
+
+
 class ZaakTypeDraftDestroyMixin(DraftDestroyMixin):
     def get_draft(self, instance):
         return instance.zaaktype.draft
 
 
-class DraftMixin(DraftPublishMixin, DraftDestroyMixin):
+class ZaakTypeDraftMixin(ZaakTypeDraftCreateMixin,
+                         ZaakTypeDraftDestroyMixin):
+    """
+    mixin for resources which have FK or one-to-one relations with ZaakType objects,
+    which support draft functionality
+    """
     pass
+
+
+class M2MDraftCreateMixin:
+
+    draft_related_fields = []
+
+    def perform_create(self, serializer):
+        related_fields = [serializer.validated_data.get(f, []) for f in self.draft_related_fields]
+        for field in related_fields:
+            for related_object in field:
+                if not related_object.draft:
+                    msg = _(f"Relations to a non-draft object {field} can't be created")
+                    raise PermissionDenied(detail=msg)
+
+        super().perform_create(serializer)

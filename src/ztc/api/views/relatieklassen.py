@@ -45,9 +45,6 @@ class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
     }
 
-    def get_draft(self, instance):
-        return instance.zaaktype.draft and instance.informatie_object_type.draft
-
 
 class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
                                                    FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
