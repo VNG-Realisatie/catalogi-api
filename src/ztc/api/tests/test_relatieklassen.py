@@ -170,6 +170,54 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
 
 
+class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
+    maxDiff = None
+    list_url = reverse_lazy(ZaakInformatieobjectType)
+
+    def test_filter_ziot_publish_all(self):
+        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=True)
+        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=True)
+        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=False)
+        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=False)
+
+        response = self.client.get(self.list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 4)
+
+    def test_filter_ziot_publish_draft(self):
+        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=True)
+        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=True)
+        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=False)
+        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=False)
+        ziot1_url = reverse(ziot1)
+
+        response = self.client.get(self.list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{ziot1_url}')
+
+    def test_filter_ziot_publish_nondraft(self):
+        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=True)
+        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=True)
+        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=False)
+        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=False)
+        ziot4_url = reverse(ziot4)
+
+        response = self.client.get(self.list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{ziot4_url}')
+
+
 @skip("Not MVP yet")
 class ZaakInformatieobjectTypeArchiefregimeAPITests(APITestCase):
     maxDiff = None

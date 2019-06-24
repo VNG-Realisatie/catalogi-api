@@ -115,3 +115,47 @@ class StatusTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+
+class StatusTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_statustype_publish_all(self):
+        StatusTypeFactory.create(zaaktype__draft=True)
+        StatusTypeFactory.create(zaaktype__draft=False)
+        statustype_list_url = reverse('statustype-list')
+
+        response = self.client.get(statustype_list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_statustype_publish_draft(self):
+        statustype1 = StatusTypeFactory.create(zaaktype__draft=True)
+        statustype2 = StatusTypeFactory.create(zaaktype__draft=False)
+        statustype_list_url = reverse('statustype-list')
+        statustype1_url = reverse('statustype-detail', kwargs={'uuid': statustype1.uuid})
+
+        response = self.client.get(statustype_list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{statustype1_url}')
+
+    def test_filter_statustype_publish_nondraft(self):
+        statustype1 = StatusTypeFactory.create(zaaktype__draft=True)
+        statustype2 = StatusTypeFactory.create(zaaktype__draft=False)
+        statustype_list_url = reverse('statustype-list')
+        statustype2_url = reverse('statustype-detail', kwargs={'uuid': statustype2.uuid})
+
+        response = self.client.get(statustype_list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')

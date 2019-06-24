@@ -154,3 +154,47 @@ class EigenschapAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+
+class EigenschapFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_eigenschap_publish_all(self):
+        EigenschapFactory.create(zaaktype__draft=True)
+        EigenschapFactory.create(zaaktype__draft=False)
+        eigenschap_list_url = reverse('eigenschap-list')
+
+        response = self.client.get(eigenschap_list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_eigenschap_publish_draft(self):
+        eigenschap1 = EigenschapFactory.create(zaaktype__draft=True)
+        eigenschap2 = EigenschapFactory.create(zaaktype__draft=False)
+        eigenschap_list_url = reverse('eigenschap-list')
+        eigenschap1_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap1.uuid})
+
+        response = self.client.get(eigenschap_list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{eigenschap1_url}')
+
+    def test_filter_eigenschap_publish_nondraft(self):
+        eigenschap1 = EigenschapFactory.create(zaaktype__draft=True)
+        eigenschap2 = EigenschapFactory.create(zaaktype__draft=False)
+        eigenschap_list_url = reverse('eigenschap-list')
+        eigenschap2_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap2.uuid})
+
+        response = self.client.get(eigenschap_list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code , 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{eigenschap2_url}')

@@ -140,3 +140,47 @@ class FilterValidationTests(APITestCase):
             with self.subTest(query_param=key, value=value):
                 response = self.client.get(url, {key: value})
                 self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class RolTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_roltype_publish_all(self):
+        RolTypeFactory.create(zaaktype__draft=True)
+        RolTypeFactory.create(zaaktype__draft=False)
+        roltype_list_url = reverse('roltype-list')
+
+        response = self.client.get(roltype_list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_roltype_publish_draft(self):
+        roltype1 = RolTypeFactory.create(zaaktype__draft=True)
+        roltype2 = RolTypeFactory.create(zaaktype__draft=False)
+        roltype_list_url = reverse('roltype-list')
+        roltype1_url = reverse('roltype-detail', kwargs={'uuid': roltype1.uuid})
+
+        response = self.client.get(roltype_list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{roltype1_url}')
+
+    def test_filter_roltype_publish_nondraft(self):
+        roltype1 = RolTypeFactory.create(zaaktype__draft=True)
+        roltype2 = RolTypeFactory.create(zaaktype__draft=False)
+        roltype_list_url = reverse('roltype-list')
+        roltype2_url = reverse('roltype-detail', kwargs={'uuid': roltype2.uuid})
+
+        response = self.client.get(roltype_list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code , 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{roltype2_url}')

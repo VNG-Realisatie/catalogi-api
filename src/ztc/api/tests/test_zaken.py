@@ -279,7 +279,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(ZaakType.objects.filter(id=zaaktype.id))
 
-    def test_delete_zaak_fail_not_draft(self):
+    def test_delete_zaaktype_fail_not_draft(self):
         zaaktype = ZaakTypeFactory.create(draft=False)
         zaaktype_url = get_operation_url('zaaktype_read', uuid=zaaktype.uuid)
 
@@ -289,6 +289,50 @@ class ZaakTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+
+class ZaakTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_zaaktype_publish_all(self):
+        ZaakTypeFactory.create(draft=True)
+        ZaakTypeFactory.create(draft=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+
+        response = self.client.get(zaaktype_list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_zaaktype_publish_draft(self):
+        zaaktype1 = ZaakTypeFactory.create(draft=True)
+        zaaktype2 = ZaakTypeFactory.create(draft=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
+
+    def test_filter_zaaktype_publish_nondraft(self):
+        zaaktype1 = ZaakTypeFactory.create(draft=True)
+        zaaktype2 = ZaakTypeFactory.create(draft=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype2_url}')
 
 
 @skip("Not in current MVP")

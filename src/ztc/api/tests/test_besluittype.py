@@ -274,3 +274,47 @@ class BesluitTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+
+class BesluitTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_besluittype_publish_all(self):
+        BesluitTypeFactory.create(draft=True)
+        BesluitTypeFactory.create(draft=False)
+        besluittype_list_url = reverse('besluittype-list')
+
+        response = self.client.get(besluittype_list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_besluittype_publish_draft(self):
+        besluittype1 = BesluitTypeFactory.create(draft=True)
+        besluittype2 = BesluitTypeFactory.create(draft=False)
+        besluittype_list_url = reverse('besluittype-list')
+        besluittype1_url = reverse('besluittype-detail', kwargs={'uuid': besluittype1.uuid})
+
+        response = self.client.get(besluittype_list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{besluittype1_url}')
+
+    def test_filter_besluittype_publish_nondraft(self):
+        besluittype1 = BesluitTypeFactory.create(draft=True)
+        besluittype2 = BesluitTypeFactory.create(draft=False)
+        besluittype_list_url = reverse('besluittype-list')
+        besluittype2_url = reverse('besluittype-detail',  kwargs={'uuid': besluittype2.uuid})
+
+        response = self.client.get(besluittype_list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{besluittype2_url}')

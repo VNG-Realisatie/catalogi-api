@@ -203,7 +203,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         data = response.json()
         self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
 
-    def test_delete_eigenschap(self):
+    def test_delete_resultaattype(self):
         resultaattype = ResultaatTypeFactory.create()
         resultaattype_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype.uuid})
 
@@ -212,7 +212,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(ResultaatType.objects.filter(id=resultaattype.id))
 
-    def test_delete_eigenschap_fail_not_draft_zaaktype(self):
+    def test_delete_resultaattype_fail_not_draft_zaaktype(self):
         resultaattype = ResultaatTypeFactory.create(zaaktype__draft=False)
         resultaattype_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype.uuid})
 
@@ -222,3 +222,47 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+
+class ResultaatTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_resultaattype_publish_all(self):
+        ResultaatTypeFactory.create(zaaktype__draft=True)
+        ResultaatTypeFactory.create(zaaktype__draft=False)
+        resultaattype_list_url = reverse('resultaattype-list')
+
+        response = self.client.get(resultaattype_list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_resultaattype_publish_draft(self):
+        resultaattype1 = ResultaatTypeFactory.create(zaaktype__draft=True)
+        resultaattype2 = ResultaatTypeFactory.create(zaaktype__draft=False)
+        resultaattype_list_url = reverse('resultaattype-list')
+        resultaattype1_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype1.uuid})
+
+        response = self.client.get(resultaattype_list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{resultaattype1_url}')
+
+    def test_filter_resultaattype_publish_nondraft(self):
+        resultaattype1 = ResultaatTypeFactory.create(zaaktype__draft=True)
+        resultaattype2 = ResultaatTypeFactory.create(zaaktype__draft=False)
+        resultaattype_list_url = reverse('resultaattype-list')
+        resultaattype2_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype2.uuid})
+
+        response = self.client.get(resultaattype_list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code , 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{resultaattype2_url}')

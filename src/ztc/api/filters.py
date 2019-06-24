@@ -50,9 +50,9 @@ class ZaakInformatieobjectTypeFilter(FilterSet):
 
     def publish_filter_m2m(self, queryset, name, value):
         if value == 'draft':
-            return queryset.filter(zaaktype__draft=True, informatie_object_type=True)
+            return queryset.filter(zaaktype__draft=True, informatie_object_type__draft=True)
         elif value == 'nondraft':
-            return queryset.filter(zaaktype__draft=False, informatie_object_type=False)
+            return queryset.filter(zaaktype__draft=False, informatie_object_type__draft=False)
         elif value == 'all':
             return queryset
 

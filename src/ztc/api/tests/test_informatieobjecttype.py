@@ -129,7 +129,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
         self.assertEqual(informatieobjecttype.draft, True)
 
-    def test_publish_zaaktype(self):
+    def test_publish_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttypee_url = get_operation_url('informatieobjecttype_publish', uuid=informatieobjecttype.uuid)
 
@@ -141,7 +141,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         self.assertEqual(informatieobjecttype.draft, False)
 
-    def test_delete_zaaktype(self):
+    def test_delete_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
 
@@ -150,7 +150,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(InformatieObjectType.objects.filter(id=informatieobjecttype.id))
 
-    def test_delete_zaak_fail_not_draft(self):
+    def test_delete_informatieobjecttype_fail_not_draft(self):
         informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
         informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
 
@@ -160,3 +160,47 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+
+class InformatieObjectTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_informatieobjecttype_publish_all(self):
+        InformatieObjectTypeFactory.create(draft=True)
+        InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url, {'publish': 'all'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_informatieobjecttype_publish_draft(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(draft=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype1_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype1.uuid)
+
+        response = self.client.get(informatieobjecttype_list_url, {'publish': 'draft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype1_url}')
+
+    def test_filter_informatieobjecttype_publish_nondraft(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(draft=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype2_url = get_operation_url('informatieobjecttype_read',  uuid=informatieobjecttype2.uuid)
+
+        response = self.client.get(informatieobjecttype_list_url, {'publish': 'nondraft'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
