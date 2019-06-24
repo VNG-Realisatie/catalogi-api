@@ -210,7 +210,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], "Relations to a non-draft BesluitType can't be created")
+        self.assertEqual(data['detail'], "Relations to a non-draft besluittype_set object can't be created")
 
     def test_publish_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()

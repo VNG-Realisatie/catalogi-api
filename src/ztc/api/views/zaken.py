@@ -62,6 +62,6 @@ class ZaakTypeViewSet(DraftMixin,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
         'publish': SCOPE_ZAAKTYPES_WRITE,
     }
-    draft_related_fields = 'besluittype_set'
+    draft_related_fields = ['besluittype_set']
 
 

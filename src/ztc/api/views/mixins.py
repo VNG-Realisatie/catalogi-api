@@ -68,11 +68,11 @@ class M2MDraftCreateMixin:
     draft_related_fields = []
 
     def perform_create(self, serializer):
-        related_fields = [serializer.validated_data.get(f, []) for f in self.draft_related_fields]
-        for field in related_fields:
+        for field_name in self.draft_related_fields:
+            field = serializer.validated_data.get(field_name, [])
             for related_object in field:
                 if not related_object.draft:
-                    msg = _(f"Relations to a non-draft object {field} can't be created")
+                    msg = _(f"Relations to a non-draft {field_name} object can't be created")
                     raise PermissionDenied(detail=msg)
 
         super().perform_create(serializer)

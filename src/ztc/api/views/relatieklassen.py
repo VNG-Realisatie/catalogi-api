@@ -12,7 +12,9 @@ from ..serializers import (
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from rest_framework.exceptions import PermissionDenied
 from .mixins import DraftDestroyMixin
+from django.utils.translation import ugettext_lazy as _
 
 
 class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
@@ -44,6 +46,18 @@ class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
         'create': SCOPE_ZAAKTYPES_WRITE,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
     }
+
+    def get_draft(self, instance):
+        return instance.zaaktype.draft and instance.informatie_object_type.draft
+
+    def perform_create(self, serializer):
+        zaaktype = serializer.validated_data['zaaktype']
+        informatie_object_type = serializer.validated_data['informatie_object_type']
+
+        if not(zaaktype.draft and informatie_object_type.draft):
+            msg = _("creating relations between non-draft objects is forbidden")
+            raise PermissionDenied(detail=msg)
+        super().perform_create(serializer)
 
 
 class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
