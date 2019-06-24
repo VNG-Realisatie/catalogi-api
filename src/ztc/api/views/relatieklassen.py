@@ -1,4 +1,7 @@
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework import mixins, viewsets
+from rest_framework.exceptions import PermissionDenied
 from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import (
@@ -12,9 +15,7 @@ from ..serializers import (
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
-from rest_framework.exceptions import PermissionDenied
 from .mixins import DraftDestroyMixin
-from django.utils.translation import ugettext_lazy as _
 
 
 class ZaakTypeInformatieObjectTypeViewSet(DraftDestroyMixin,
