@@ -1,6 +1,6 @@
-from drf_writable_nested import NestedCreateMixin
 from django.utils.translation import ugettext_lazy as _
 
+from drf_writable_nested import NestedCreateMixin
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, HyperlinkedRelatedField, ModelSerializer
 )

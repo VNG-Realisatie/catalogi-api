@@ -1,5 +1,4 @@
 from rest_framework import status
-
 from vng_api_common.tests import get_validation_errors
 
 from ...datamodel.models import BesluitType

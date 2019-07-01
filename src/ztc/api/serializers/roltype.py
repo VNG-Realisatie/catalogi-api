@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from drf_writable_nested import NestedCreateMixin
+from rest_framework import serializers
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
 
