@@ -7,7 +7,6 @@ from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
 from .forms import (
     RelativeDeltaField as RelativeDeltaFormField, ResultaatTypeForm
 )
-from .mixins import GeldigheidAdminMixin
 
 
 class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):
@@ -16,7 +15,7 @@ class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):
 
 
 @admin.register(ResultaatType)
-class ResultaatTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+class ResultaatTypeAdmin(admin.ModelAdmin):
     model = ResultaatType
     form = ResultaatTypeForm
 

@@ -1,17 +1,21 @@
 from django.utils.translation import ugettext_lazy as _
 
+from drf_writable_nested import NestedCreateMixin
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, HyperlinkedRelatedField, ModelSerializer
 )
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
-from vng_api_common.serializers import GegevensGroepSerializer
+from vng_api_common.serializers import (
+    GegevensGroepSerializer, NestedGegevensGroepMixin
+)
 
 from ...datamodel.models import (
-    BronCatalogus, BronZaakType, Formulier, ZaakObjectType, ZaakType,
-    ZaakTypenRelatie
+    BesluitType, BronCatalogus, BronZaakType, Formulier, ZaakObjectType,
+    ZaakType, ZaakTypenRelatie
 )
 from ..utils.serializers import SourceMappingSerializerMixin
+from ..utils.validators import RelationCatalogValidator
 
 
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
@@ -101,7 +105,7 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         }
 
 
-class ZaakTypeSerializer(HyperlinkedModelSerializer):
+class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, HyperlinkedModelSerializer):
 
     # formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(
@@ -173,11 +177,11 @@ class ZaakTypeSerializer(HyperlinkedModelSerializer):
 
     besluittypen = HyperlinkedRelatedField(
         many=True,
-        read_only=True,
         label=_("heeft relevante besluittypen"),
         source='besluittype_set',
         view_name='besluittype-detail',
         lookup_field='uuid',
+        queryset=BesluitType.objects.all(),
     )
 
     class Meta:
@@ -233,6 +237,8 @@ class ZaakTypeSerializer(HyperlinkedModelSerializer):
             # # 'isDeelzaaktypeVan',
             'begin_geldigheid',
             'einde_geldigheid',
+            'versiedatum',
+            'draft',
         )
         extra_kwargs = {
             'url': {
@@ -262,8 +268,12 @@ class ZaakTypeSerializer(HyperlinkedModelSerializer):
             'einde_geldigheid': {
                 'source': 'datum_einde_geldigheid'
             },
+            'draft': {
+                'read_only': True,
+            },
         }
 
         # expandable_fields = {
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
+        validators = [RelationCatalogValidator('besluittype_set')]

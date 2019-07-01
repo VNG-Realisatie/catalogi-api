@@ -12,10 +12,8 @@ from vng_api_common.constants import (
 )
 from vng_api_common.descriptors import GegevensGroepType
 
-from .mixins import GeldigheidMixin
 
-
-class ResultaatType(GeldigheidMixin, models.Model):
+class ResultaatType(models.Model):
     """
     Het betreft de indeling of groepering van resultaten van zaken van hetzelfde
     ZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', et cetera.
@@ -189,12 +187,6 @@ class ResultaatType(GeldigheidMixin, models.Model):
         unique_together = ('zaaktype', 'omschrijving')
         verbose_name = _('resultaattype')
         verbose_name_plural = _('resultaattypen')
-
-    def clean(self):
-        super().clean()
-
-        if self.zaaktype_id:
-            self._clean_geldigheid(self.zaaktype)
 
     def save(self, *args, **kwargs):
         """

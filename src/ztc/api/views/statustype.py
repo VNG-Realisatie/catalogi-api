@@ -1,12 +1,16 @@
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 
 from ...datamodel.models import StatusType
 from ..filters import StatusTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import StatusTypeSerializer
+from .mixins import ZaakTypeDraftMixin
 
 
-class StatusTypeViewSet(viewsets.ReadOnlyModelViewSet):
+class StatusTypeViewSet(ZaakTypeDraftMixin,
+                        mixins.CreateModelMixin,
+                        mixins.DestroyModelMixin,
+                        viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een status.
@@ -22,4 +26,6 @@ class StatusTypeViewSet(viewsets.ReadOnlyModelViewSet):
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }

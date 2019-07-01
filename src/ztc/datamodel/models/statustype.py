@@ -6,7 +6,6 @@ from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
 from ..choices import JaNee
-from .mixins import GeldigheidMixin
 
 
 class CheckListItem(models.Model):
@@ -31,7 +30,7 @@ class CheckListItem(models.Model):
         'Beschrijving van de overwegingen bij het controleren van het aandachtspunt'))
 
 
-class StatusType(GeldigheidMixin, models.Model):
+class StatusType(models.Model):
     """
     Generieke aanduiding van de aard van een STATUS
 
@@ -111,21 +110,6 @@ class StatusType(GeldigheidMixin, models.Model):
             'statustype_omschrijving_generiek',
             'statustypevolgnummer',
         )
-
-    def clean(self):
-        """
-        datum_begin_geldigheid:
-        - De datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
-
-        datum_einde_geldigheid:
-        - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid statusType’.
-        - De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
-        """
-        super().clean()
-
-        # on invalid selections, accessing self.zaaktype raises RelatedObjectDoesNotExist
-        if self.zaaktype_id:
-            self._clean_geldigheid(self.zaaktype)
 
     def is_eindstatus(self):
         """

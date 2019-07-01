@@ -15,7 +15,5 @@ class ResultaatTypeFactory(factory.django.DjangoModelFactory):
     archiefnominatie = factory.fuzzy.FuzzyChoice(['blijvend_bewaren', 'vernietigen'])
     archiefactietermijn = relativedelta(years=10)
 
-    datum_begin_geldigheid = factory.SelfAttribute('zaaktype.datum_begin_geldigheid')
-
     class Meta:
         model = ResultaatType

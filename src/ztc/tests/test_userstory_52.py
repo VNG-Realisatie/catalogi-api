@@ -69,8 +69,6 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             ('definitie', str),
             ('specificatie', dict),
             ('toelichting', str),
-            ('ingangsdatumObject', str),
-            ('einddatumObject', type(None)),
             ('zaaktype', str),
         })
 
@@ -93,8 +91,6 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                 'url': f'http://testserver{detail_url}',
                 'naam': 'objecttype',
                 'definitie': '',
-                'einddatumObject': None,
-                'ingangsdatumObject': zaaktype.datum_begin_geldigheid.strftime("%Y-%m-%d"),
                 'zaaktype': f'http://testserver{zaaktype_url}',
                 'toelichting': '',
                 'specificatie': {

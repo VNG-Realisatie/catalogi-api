@@ -27,3 +27,4 @@ vng-api-common
 
 drf-flex-fields
 django-cors-middleware
+drf-writable-nested

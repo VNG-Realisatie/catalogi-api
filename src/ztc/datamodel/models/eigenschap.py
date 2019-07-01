@@ -11,7 +11,6 @@ from ..validators import (
     validate_kardinaliteit, validate_letters_numbers_underscores,
     validate_letters_numbers_underscores_spaces
 )
-from .mixins import GeldigheidMixin
 
 
 class EigenschapSpecificatie(models.Model):
@@ -122,7 +121,7 @@ class EigenschapReferentie(models.Model):
         pass
 
 
-class Eigenschap(GeldigheidMixin, models.Model):
+class Eigenschap(models.Model):
     """
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
     kenmerk is van een zaak.
@@ -231,8 +230,6 @@ class Eigenschap(GeldigheidMixin, models.Model):
                 _('Één van twee groepen attributen is verplicht: specificatie '
                   'van eigenschap of referentie naar eigenschap')
             )
-
-        self._clean_geldigheid(self.zaaktype)
 
     def __str__(self):
         return '{} - {}'.format(self.zaaktype, self.eigenschapnaam)

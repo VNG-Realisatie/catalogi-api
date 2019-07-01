@@ -3,10 +3,11 @@ from unittest import skip
 from rest_framework import status
 from vng_api_common.tests import reverse, reverse_lazy
 
+from ztc.datamodel.choices import RichtingChoices
 from ztc.datamodel.models import ZaakInformatieobjectType
 from ztc.datamodel.tests.factories import (
-    ZaakInformatieobjectTypeArchiefregimeFactory,
-    ZaakInformatieobjectTypeFactory
+    InformatieObjectTypeFactory, ZaakInformatieobjectTypeArchiefregimeFactory,
+    ZaakInformatieobjectTypeFactory, ZaakTypeFactory
 )
 
 from .base import APITestCase
@@ -77,6 +78,96 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.json()[0]['url'], url)
         self.assertEqual(response.json()[0]['informatieObjectType'], informatie_object_type1_url)
         self.assertNotEqual(response.json()[0]['informatieObjectType'], informatie_object_type2_url)
+
+    def test_create_ziot(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse(informatieobjecttype)
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'informatieObjectType': f'http://testserver{informatieobjecttype_url}',
+            'volgnummer': 13,
+            'richting': RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        ziot = ZaakInformatieobjectType.objects.get(volgnummer=13)
+
+        self.assertEqual(ziot.zaaktype, zaaktype)
+        self.assertEqual(ziot.informatie_object_type, informatieobjecttype)
+
+    def test_create_ziot_fail_not_draft_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = reverse(zaaktype)
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse(informatieobjecttype)
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'informatieObjectType': f'http://testserver{informatieobjecttype_url}',
+            'volgnummer': 13,
+            'richting': RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating relations between non-draft objects is forbidden')
+
+    def test_create_ziot_fail_not_draft_informatieobjecttype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype_url = reverse(informatieobjecttype)
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'informatieObjectType': f'http://testserver{informatieobjecttype_url}',
+            'volgnummer': 13,
+            'richting': RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating relations between non-draft objects is forbidden')
+
+    def test_delete_ziot(self):
+        ziot = ZaakInformatieobjectTypeFactory.create()
+        ziot_url = reverse(ziot)
+
+        response = self.client.delete(ziot_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ZaakInformatieobjectType.objects.filter(id=ziot.id))
+
+    def test_delete_ziot_fail_not_draft_zaaktype(self):
+        ziot = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False)
+        ziot_url = reverse(ziot)
+
+        response = self.client.delete(ziot_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+
+    def test_delete_ziot_fail_not_draft_informatieobjecttype(self):
+        ziot = ZaakInformatieobjectTypeFactory.create(informatie_object_type__draft=False)
+        ziot_url = reverse(ziot)
+
+        response = self.client.delete(ziot_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
 
 
 @skip("Not MVP yet")

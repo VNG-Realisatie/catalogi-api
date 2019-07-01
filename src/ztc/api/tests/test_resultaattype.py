@@ -1,4 +1,6 @@
+import requests_mock
 from rest_framework import status
+from vng_api_common.constants import BrondatumArchiefprocedureAfleidingswijze
 from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
 
 from ztc.datamodel.models import ResultaatType
@@ -126,3 +128,97 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
         # Verify that the procestermijn was serialized correctly
         self.assertEqual(brondatumArchiefprocedure['procestermijn'], procestermijn)
+
+    def test_create_resultaattype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'illum',
+            'resultaattypeomschrijving': resultaattypeomschrijving_url,
+            'selectielijstklasse': 'https://garcia.org/',
+            'archiefnominatie': 'blijvend_bewaren',
+            'archiefactietermijn': 'P10Y',
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                'einddatumBekend': False,
+                'procestermijn': 'P10Y',
+                'datumkenmerk': '',
+                'objecttype': '',
+                'registratie': '',
+            }
+        }
+
+        with requests_mock.Mocker() as m:
+            m.register_uri('GET', resultaattypeomschrijving_url, json={
+                'omschrijving': 'test'
+            })
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        resultaattype = ResultaatType.objects.get()
+
+        self.assertEqual(resultaattype.omschrijving_generiek, 'test')
+        self.assertEqual(resultaattype.zaaktype, zaaktype)
+        self.assertEqual(
+            resultaattype.brondatum_archiefprocedure_afleidingswijze,
+            BrondatumArchiefprocedureAfleidingswijze.afgehandeld
+        )
+
+    def test_create_resultaattype_fail_not_draft_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'illum',
+            'resultaattypeomschrijving': resultaattypeomschrijving_url,
+            'selectielijstklasse': 'https://garcia.org/',
+            'archiefnominatie': 'blijvend_bewaren',
+            'archiefactietermijn': 'P10Y',
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                'einddatumBekend': False,
+                'procestermijn': 'P10Y',
+                'datumkenmerk': '',
+                'objecttype': '',
+                'registratie': '',
+            }
+        }
+
+        with requests_mock.Mocker() as m:
+            m.register_uri('GET', resultaattypeomschrijving_url, json={
+                'omschrijving': 'test'
+            })
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
+
+    def test_delete_eigenschap(self):
+        resultaattype = ResultaatTypeFactory.create()
+        resultaattype_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype.uuid})
+
+        response = self.client.delete(resultaattype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ResultaatType.objects.filter(id=resultaattype.id))
+
+    def test_delete_eigenschap_fail_not_draft_zaaktype(self):
+        resultaattype = ResultaatTypeFactory.create(zaaktype__draft=False)
+        resultaattype_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype.uuid})
+
+        response = self.client.delete(resultaattype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')

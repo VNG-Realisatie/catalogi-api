@@ -27,30 +27,6 @@ class GeldigheidMixin(models.Model):
             - begin: De datum is gelijk aan een Versiedatum van een gerelateerd zaaktype.
             - eind: De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
 
-        - Eigenschap
-            - begin: De datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
-            - eind: De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
-
-        - INFORMATIEOBJECTTYPE
-            CHECK
-            - begin: De datum is gelijk aan een Versiedatum van een gerelateerd zaaktype
-            - einde: De datum is gelijk aan de dag voor een Versiedatum van een gerelateerd zaaktype.
-
-        - ResultaatType
-            CHECK
-            - begin De datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
-            - De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype
-
-        - RolType
-            CHECK
-            - begin  De datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
-            - De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype
-
-        - StatusType
-            CHECK
-            - begin  De datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
-            - eind  De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
-
         - ZaakObjectType
             CHECK
             - begin De datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
@@ -95,3 +71,12 @@ class GeldigheidMixin(models.Model):
                     _("'Datum einde geldigheid' moet gelijk zijn aan de dag "
                       "voor een Versiedatum van het gerelateerde zaaktype.")
                 )
+
+
+class DraftMixin(models.Model):
+    draft = models.BooleanField(
+        _('draft'), default=True, help_text=_('Flag indicating the object is a draft')
+    )
+
+    class Meta:
+        abstract = True

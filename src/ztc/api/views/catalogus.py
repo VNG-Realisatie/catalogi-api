@@ -1,12 +1,13 @@
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 
 from ztc.datamodel.models import Catalogus
 
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import CatalogusSerializer
 
 
-class CatalogusViewSet(viewsets.ReadOnlyModelViewSet):
+class CatalogusViewSet(mixins.CreateModelMixin,
+                       viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor een Domein die als één geheel beheerd
@@ -22,4 +23,6 @@ class CatalogusViewSet(viewsets.ReadOnlyModelViewSet):
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }

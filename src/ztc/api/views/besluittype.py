@@ -1,12 +1,17 @@
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 
 from ...datamodel.models import BesluitType
 from ..filters import BesluitTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import BesluitTypeSerializer
+from .mixins import DraftMixin, M2MDraftCreateMixin
 
 
-class BesluitTypeViewSet(viewsets.ReadOnlyModelViewSet):
+class BesluitTypeViewSet(DraftMixin,
+                         M2MDraftCreateMixin,
+                         mixins.CreateModelMixin,
+                         mixins.DestroyModelMixin,
+                         viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een besluit.
@@ -23,4 +28,8 @@ class BesluitTypeViewSet(viewsets.ReadOnlyModelViewSet):
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
+        'publish': SCOPE_ZAAKTYPES_WRITE,
     }
+    draft_related_fields = ['informatieobjecttypes', 'zaaktypes']
