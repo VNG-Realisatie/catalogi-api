@@ -6,25 +6,25 @@ from ztc.datamodel.models import (
     StatusType, ZaakInformatieobjectType, ZaakType
 )
 
-# custom filter to show draft and non-drafts
-PUBLISH_HELP_TEXT = """filter objects depending on their draft status:
+# custom filter to show concept and non-concepts
+PUBLISH_HELP_TEXT = """filter objects depending on their concept status:
 * `all`: show all objects
-* `draft`: show only draft or draft-related objects
-* `nondraft`: show only non-draft or non-draft-related objects (default)
+* `concept`: show only concept or concept-related objects
+* `nonconcept`: show only non-concept or non-concept-related objects (default)
 """
 
 
 def publish_filter(queryset, name, value):
-    if value == 'draft':
+    if value == 'concept':
         return queryset.filter(**{name: True})
-    elif value == 'nondraft':
+    elif value == 'nonconcept':
         return queryset.filter(**{name: False})
     elif value == 'all':
         return queryset
 
 
 class RolTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__draft', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = RolType
@@ -36,7 +36,7 @@ class RolTypeFilter(FilterSet):
 
 
 class ZaakInformatieobjectTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__draft', method='publish_filter_m2m', help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='zaaktype__concept', method='publish_filter_m2m', help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = ZaakInformatieobjectType
@@ -48,16 +48,16 @@ class ZaakInformatieobjectTypeFilter(FilterSet):
         )
 
     def publish_filter_m2m(self, queryset, name, value):
-        if value == 'draft':
-            return queryset.filter(zaaktype__draft=True, informatie_object_type__draft=True)
-        elif value == 'nondraft':
-            return queryset.filter(zaaktype__draft=False, informatie_object_type__draft=False)
+        if value == 'concept':
+            return queryset.filter(zaaktype__concept=True, informatie_object_type__concept=True)
+        elif value == 'nonconcept':
+            return queryset.filter(zaaktype__concept=False, informatie_object_type__concept=False)
         elif value == 'all':
             return queryset
 
 
 class ResultaatTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__draft', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = ResultaatType
@@ -68,7 +68,7 @@ class ResultaatTypeFilter(FilterSet):
 
 
 class StatusTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__draft', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = StatusType
@@ -79,7 +79,7 @@ class StatusTypeFilter(FilterSet):
 
 
 class EigenschapFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__draft', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = Eigenschap
@@ -90,7 +90,7 @@ class EigenschapFilter(FilterSet):
 
 
 class ZaakTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='draft', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = ZaakType
@@ -101,7 +101,7 @@ class ZaakTypeFilter(FilterSet):
 
 
 class InformatieObjectTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='draft', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = InformatieObjectType
@@ -112,7 +112,7 @@ class InformatieObjectTypeFilter(FilterSet):
 
 
 class BesluitTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='draft', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    publish = filters.CharFilter(field_name='concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
 
     class Meta:
         model = BesluitType

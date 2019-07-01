@@ -3,14 +3,14 @@
 from django.db import migrations
 
 
-def update_draft(apps, schema_editor):
+def update_concept(apps, schema_editor):
     ZaakType = apps.get_model('datamodel.ZaakType')
     BesluitType = apps.get_model('datamodel.BesluitType')
     InformatieObjectType = apps.get_model('datamodel.InformatieObjectType')
 
     for model in [ZaakType, BesluitType, InformatieObjectType]:
         for model_object in model.objects.all():
-            model_object.draft = False
+            model_object.concept = False
             model_object.save()
 
 
@@ -21,5 +21,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(update_draft),
+        migrations.RunPython(update_concept),
     ]

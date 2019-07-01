@@ -10,9 +10,9 @@ from .utils import reverse
 class RolTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list_default_nondraft(self):
-        roltype1 = RolTypeFactory.create(zaaktype__draft=True)
-        roltype2 = RolTypeFactory.create(zaaktype__draft=False)
+    def test_get_list_default_nonconcept(self):
+        roltype1 = RolTypeFactory.create(zaaktype__concept=True)
+        roltype2 = RolTypeFactory.create(zaaktype__concept=False)
         roltype_list_url = reverse('roltype-list')
         roltype2_url = reverse('roltype-detail', kwargs={'uuid': roltype2.uuid})
 
@@ -80,8 +80,8 @@ class RolTypeAPITests(APITestCase):
         self.assertEqual(roltype.omschrijving, 'Vergunningaanvrager')
         self.assertEqual(roltype.zaaktype, zaaktype)
 
-    def test_create_roltype_fail_not_draft_zaaktype(self):
-        zaaktype = ZaakTypeFactory.create(draft=False)
+    def test_create_roltype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
@@ -98,7 +98,7 @@ class RolTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Creating a related object to non-concept object is forbidden')
 
     def test_delete_roltype(self):
         roltype = RolTypeFactory.create()
@@ -109,8 +109,8 @@ class RolTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(RolType.objects.filter(id=roltype.id))
 
-    def test_delete_roltype_fail_not_draft_zaaktype(self):
-        roltype = RolTypeFactory.create(zaaktype__draft=False)
+    def test_delete_roltype_fail_not_concept_zaaktype(self):
+        roltype = RolTypeFactory.create(zaaktype__concept=False)
         roltype_url = reverse('roltype-detail', kwargs={'uuid': roltype.uuid})
 
         response = self.client.delete(roltype_url)
@@ -118,7 +118,7 @@ class RolTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Deleting a non-concept object is forbidden')
 
 
 class FilterValidationTests(APITestCase):
@@ -141,8 +141,8 @@ class RolTypeFilterAPITests(APITestCase):
     maxDiff = None
 
     def test_filter_roltype_publish_all(self):
-        RolTypeFactory.create(zaaktype__draft=True)
-        RolTypeFactory.create(zaaktype__draft=False)
+        RolTypeFactory.create(zaaktype__concept=True)
+        RolTypeFactory.create(zaaktype__concept=False)
         roltype_list_url = reverse('roltype-list')
 
         response = self.client.get(roltype_list_url, {'publish': 'all'})
@@ -152,13 +152,13 @@ class RolTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_roltype_publish_draft(self):
-        roltype1 = RolTypeFactory.create(zaaktype__draft=True)
-        roltype2 = RolTypeFactory.create(zaaktype__draft=False)
+    def test_filter_roltype_publish_concept(self):
+        roltype1 = RolTypeFactory.create(zaaktype__concept=True)
+        roltype2 = RolTypeFactory.create(zaaktype__concept=False)
         roltype_list_url = reverse('roltype-list')
         roltype1_url = reverse('roltype-detail', kwargs={'uuid': roltype1.uuid})
 
-        response = self.client.get(roltype_list_url, {'publish': 'draft'})
+        response = self.client.get(roltype_list_url, {'publish': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -166,13 +166,13 @@ class RolTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{roltype1_url}')
 
-    def test_filter_roltype_publish_nondraft(self):
-        roltype1 = RolTypeFactory.create(zaaktype__draft=True)
-        roltype2 = RolTypeFactory.create(zaaktype__draft=False)
+    def test_filter_roltype_publish_nonconcept(self):
+        roltype1 = RolTypeFactory.create(zaaktype__concept=True)
+        roltype2 = RolTypeFactory.create(zaaktype__concept=False)
         roltype_list_url = reverse('roltype-list')
         roltype2_url = reverse('roltype-detail', kwargs={'uuid': roltype2.uuid})
 
-        response = self.client.get(roltype_list_url, {'publish': 'nondraft'})
+        response = self.client.get(roltype_list_url, {'publish': 'nonconcept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

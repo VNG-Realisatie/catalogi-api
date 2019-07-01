@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.fields import VertrouwelijkheidsAanduidingField
 
-from .mixins import DraftMixin, GeldigheidMixin
+from .mixins import ConceptMixin, GeldigheidMixin
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
@@ -56,7 +56,7 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         super().clean()
 
 
-class InformatieObjectType(GeldigheidMixin, DraftMixin, models.Model):
+class InformatieObjectType(GeldigheidMixin, ConceptMixin, models.Model):
     """
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
 

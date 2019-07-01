@@ -12,17 +12,23 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='besluittype',
-            name='draft',
-            field=models.BooleanField(default=True, help_text='Flag indicating the object is a draft', verbose_name='draft'),
+            name='concept',
+            field=models.BooleanField(default=True,
+                                      help_text='Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.',
+                                      verbose_name='concept'),
         ),
         migrations.AddField(
             model_name='informatieobjecttype',
-            name='draft',
-            field=models.BooleanField(default=True, help_text='Flag indicating the object is a draft', verbose_name='draft'),
+            name='concept',
+            field=models.BooleanField(default=True,
+                                      help_text='Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.',
+                                      verbose_name='concept'),
         ),
         migrations.AddField(
             model_name='zaaktype',
-            name='draft',
-            field=models.BooleanField(default=True, help_text='Flag indicating the object is a draft', verbose_name='draft'),
+            name='concept',
+            field=models.BooleanField(default=True,
+                                      help_text='Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.',
+                                      verbose_name='concept'),
         ),
     ]

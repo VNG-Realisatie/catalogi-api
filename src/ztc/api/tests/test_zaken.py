@@ -19,9 +19,9 @@ from .base import APITestCase
 class ZaakTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list_default_nondraft(self):
-        zaaktype1 = ZaakTypeFactory.create(draft=True)
-        zaaktype2 = ZaakTypeFactory.create(draft=False)
+    def test_get_list_default_nonconcept(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=True)
+        zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
         zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
 
@@ -92,7 +92,7 @@ class ZaakTypeAPITests(APITestCase):
             'beginGeldigheid': '2018-01-01',
             'eindeGeldigheid': None,
             'versiedatum': '2018-01-01',
-            'draft': True,
+            'concept': True,
         }
         self.assertEqual(expected, response.json())
 
@@ -166,10 +166,10 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(zaaktype.besluittype_set.get(), besluittype)
         self.assertEqual(zaaktype.referentieproces_naam, 'ReferentieProces 0')
         self.assertEqual(zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype, 'http://example.com/zaaktype/1')
-        self.assertEqual(zaaktype.draft, True)
+        self.assertEqual(zaaktype.concept, True)
 
-    def test_create_zaaktype_fail_besluittype_non_draft(self):
-        besluittype = BesluitTypeFactory.create(draft=False, catalogus=self.catalogus)
+    def test_create_zaaktype_fail_besluittype_non_concept(self):
+        besluittype = BesluitTypeFactory.create(concept=False, catalogus=self.catalogus)
         besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
 
         zaaktype_list_url = get_operation_url('zaaktype_list')
@@ -213,7 +213,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], "Relations to a non-draft besluittype_set object can't be created")
+        self.assertEqual(data['detail'], "Relations to a non-concept besluittype_set object can't be created")
 
     def test_create_zaaktype_fail_different_catalogus_besluittypes(self):
         besluittype = BesluitTypeFactory.create()
@@ -271,7 +271,7 @@ class ZaakTypeAPITests(APITestCase):
 
         zaaktype.refresh_from_db()
 
-        self.assertEqual(zaaktype.draft, False)
+        self.assertEqual(zaaktype.concept, False)
 
     def test_delete_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
@@ -282,8 +282,8 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(ZaakType.objects.filter(id=zaaktype.id))
 
-    def test_delete_zaaktype_fail_not_draft(self):
-        zaaktype = ZaakTypeFactory.create(draft=False)
+    def test_delete_zaaktype_fail_not_concept(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = get_operation_url('zaaktype_read', uuid=zaaktype.uuid)
 
         response = self.client.delete(zaaktype_url)
@@ -291,15 +291,15 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Deleting a non-concept object is forbidden')
 
 
 class ZaakTypeFilterAPITests(APITestCase):
     maxDiff = None
 
     def test_filter_zaaktype_publish_all(self):
-        ZaakTypeFactory.create(draft=True)
-        ZaakTypeFactory.create(draft=False)
+        ZaakTypeFactory.create(concept=True)
+        ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
 
         response = self.client.get(zaaktype_list_url, {'publish': 'all'})
@@ -309,13 +309,13 @@ class ZaakTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_zaaktype_publish_draft(self):
-        zaaktype1 = ZaakTypeFactory.create(draft=True)
-        zaaktype2 = ZaakTypeFactory.create(draft=False)
+    def test_filter_zaaktype_publish_concept(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=True)
+        zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
         zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
 
-        response = self.client.get(zaaktype_list_url, {'publish': 'draft'})
+        response = self.client.get(zaaktype_list_url, {'publish': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -323,13 +323,13 @@ class ZaakTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
 
-    def test_filter_zaaktype_publish_nondraft(self):
-        zaaktype1 = ZaakTypeFactory.create(draft=True)
-        zaaktype2 = ZaakTypeFactory.create(draft=False)
+    def test_filter_zaaktype_publish_nonconcept(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=True)
+        zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
         zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
 
-        response = self.client.get(zaaktype_list_url, {'publish': 'nondraft'})
+        response = self.client.get(zaaktype_list_url, {'publish': 'nonconcept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

@@ -5,10 +5,10 @@ from ztc.datamodel.models import Eigenschap
 from ..filters import EigenschapFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import EigenschapSerializer
-from .mixins import ZaakTypeDraftMixin
+from .mixins import ZaakTypeConceptMixin
 
 
-class EigenschapViewSet(ZaakTypeDraftMixin,
+class EigenschapViewSet(ZaakTypeConceptMixin,
                         mixins.CreateModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.ReadOnlyModelViewSet):

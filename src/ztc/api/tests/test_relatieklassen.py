@@ -18,11 +18,11 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
     list_url = reverse_lazy(ZaakInformatieobjectType)
 
-    def test_get_list_default_nondraft(self):
-        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=True)
-        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=True)
-        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=False)
-        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=False)
+    def test_get_list_default_nonconcept(self):
+        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=True)
+        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=True)
+        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=False)
+        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=False)
         ziot4_url = reverse(ziot4)
 
         response = self.client.get(self.list_url)
@@ -75,8 +75,8 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatie_object_type, informatieobjecttype)
 
-    def test_create_ziot_fail_not_draft_zaaktype(self):
-        zaaktype = ZaakTypeFactory.create(draft=False)
+    def test_create_ziot_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -92,12 +92,12 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Creating relations between non-draft objects is forbidden')
+        self.assertEqual(data['detail'], 'Creating relations between non-concept objects is forbidden')
 
-    def test_create_ziot_fail_not_draft_informatieobjecttype(self):
+    def test_create_ziot_fail_not_concept_informatieobjecttype(self):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
-        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             'zaaktype': f'http://testserver{zaaktype_url}',
@@ -111,7 +111,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Creating relations between non-draft objects is forbidden')
+        self.assertEqual(data['detail'], 'Creating relations between non-concept objects is forbidden')
 
     def test_delete_ziot(self):
         ziot = ZaakInformatieobjectTypeFactory.create()
@@ -122,8 +122,8 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(ZaakInformatieobjectType.objects.filter(id=ziot.id))
 
-    def test_delete_ziot_fail_not_draft_zaaktype(self):
-        ziot = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False)
+    def test_delete_ziot_fail_not_concept_zaaktype(self):
+        ziot = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False)
         ziot_url = reverse(ziot)
 
         response = self.client.delete(ziot_url)
@@ -131,10 +131,10 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Deleting a non-concept object is forbidden')
 
-    def test_delete_ziot_fail_not_draft_informatieobjecttype(self):
-        ziot = ZaakInformatieobjectTypeFactory.create(informatie_object_type__draft=False)
+    def test_delete_ziot_fail_not_concept_informatieobjecttype(self):
+        ziot = ZaakInformatieobjectTypeFactory.create(informatie_object_type__concept=False)
         ziot_url = reverse(ziot)
 
         response = self.client.delete(ziot_url)
@@ -142,7 +142,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Deleting a non-concept object is forbidden')
 
 
 class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
@@ -152,8 +152,8 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype(self):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(
             2,
-            zaaktype__draft=False,
-            informatie_object_type__draft=False
+            zaaktype__concept=False,
+            informatie_object_type__concept=False
         )
         url = f'http://testserver{reverse(ztiot1)}'
         zaaktype1_url = reverse(ztiot1.zaaktype)
@@ -173,8 +173,8 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
     def test_filter_informatieobjecttype(self):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(
             2,
-            zaaktype__draft=False,
-            informatie_object_type__draft=False
+            zaaktype__concept=False,
+            informatie_object_type__concept=False
         )
         url = f'http://testserver{reverse(ztiot1)}'
         informatie_object_type1_url = reverse(ztiot1.informatie_object_type)
@@ -191,10 +191,10 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
         self.assertNotEqual(response.json()[0]['informatieObjectType'], informatie_object_type2_url)
 
     def test_filter_ziot_publish_all(self):
-        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=True)
-        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=True)
-        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=False)
-        ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=False)
+        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=True)
+        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=True)
+        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=False)
+        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=False)
 
         response = self.client.get(self.list_url, {'publish': 'all'})
         self.assertEqual(response.status_code, 200)
@@ -203,14 +203,14 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 4)
 
-    def test_filter_ziot_publish_draft(self):
-        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=True)
-        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=True)
-        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=False)
-        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=False)
+    def test_filter_ziot_publish_concept(self):
+        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=True)
+        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=True)
+        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=False)
+        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=False)
         ziot1_url = reverse(ziot1)
 
-        response = self.client.get(self.list_url, {'publish': 'draft'})
+        response = self.client.get(self.list_url, {'publish': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -218,14 +218,14 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{ziot1_url}')
 
-    def test_filter_ziot_publish_nondraft(self):
-        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=True)
-        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=True)
-        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=True, informatie_object_type__draft=False)
-        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__draft=False, informatie_object_type__draft=False)
+    def test_filter_ziot_publish_nonconcept(self):
+        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=True)
+        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=True)
+        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatie_object_type__concept=False)
+        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatie_object_type__concept=False)
         ziot4_url = reverse(ziot4)
 
-        response = self.client.get(self.list_url, {'publish': 'nondraft'})
+        response = self.client.get(self.list_url, {'publish': 'nonconcept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

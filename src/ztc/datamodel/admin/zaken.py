@@ -10,7 +10,7 @@ from ..models import (
 from .eigenschap import EigenschapAdmin
 from .forms import ZaakTypeForm
 from .mixins import (
-    DraftAdminMixin, FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+    ConceptAdminMixin, FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
 )
 from .resultaattype import ResultaatTypeAdmin
 from .roltype import RolTypeAdmin
@@ -79,7 +79,7 @@ class ZaakTypenRelatieInline(admin.TabularInline):
 
 @admin.register(ZaakType)
 class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
-                    GeldigheidAdminMixin, DraftAdminMixin, admin.ModelAdmin):
+                    GeldigheidAdminMixin, ConceptAdminMixin, admin.ModelAdmin):
     model = ZaakType
     form = ZaakTypeForm
 

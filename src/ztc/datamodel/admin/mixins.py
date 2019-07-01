@@ -46,11 +46,11 @@ class FilterSearchOrderingAdminMixin(object):
         return self.get_model_option('search_fields', super().get_search_fields(request))
 
 
-class DraftAdminMixin(object):
+class ConceptAdminMixin(object):
     def get_fieldsets(self, request, obj=None):
         fieldsets = super().get_fieldsets(request, obj)
         return tuple(fieldsets) + (
-            (_('Draft'), {
-                'fields': ('draft', )
+            (_('Concept'), {
+                'fields': ('concept', )
             }),
         )

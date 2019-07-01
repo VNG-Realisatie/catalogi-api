@@ -15,11 +15,11 @@ from ..serializers import (
 )
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
-from .mixins import DraftDestroyMixin, DraftFilterMixin
+from .mixins import ConceptDestroyMixin, ConceptFilterMixin
 
 
-class ZaakTypeInformatieObjectTypeViewSet(DraftFilterMixin,
-                                          DraftDestroyMixin,
+class ZaakTypeInformatieObjectTypeViewSet(ConceptFilterMixin,
+                                          ConceptDestroyMixin,
                                           mixins.CreateModelMixin,
                                           mixins.DestroyModelMixin,
                                           viewsets.ReadOnlyModelViewSet):
@@ -49,20 +49,20 @@ class ZaakTypeInformatieObjectTypeViewSet(DraftFilterMixin,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
     }
 
-    def get_draft(self, instance):
-        return instance.zaaktype.draft and instance.informatie_object_type.draft
+    def get_concept(self, instance):
+        return instance.zaaktype.concept and instance.informatie_object_type.concept
 
     def perform_create(self, serializer):
         zaaktype = serializer.validated_data['zaaktype']
         informatie_object_type = serializer.validated_data['informatie_object_type']
 
-        if not(zaaktype.draft and informatie_object_type.draft):
-            msg = _("Creating relations between non-draft objects is forbidden")
+        if not(zaaktype.concept and informatie_object_type.concept):
+            msg = _("Creating relations between non-concept objects is forbidden")
             raise PermissionDenied(detail=msg)
         super().perform_create(serializer)
 
-    def get_draft_filter(self):
-        return {'zaaktype__draft': False, 'informatie_object_type__draft': False}
+    def get_concept_filter(self):
+        return {'zaaktype__concept': False, 'informatie_object_type__concept': False}
 
 
 class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,

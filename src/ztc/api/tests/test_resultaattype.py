@@ -15,7 +15,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
     list_url = reverse_lazy(ResultaatType)
 
     def test_get_list(self):
-        ResultaatTypeFactory.create_batch(3, zaaktype__draft=False)
+        ResultaatTypeFactory.create_batch(3, zaaktype__concept=False)
 
         response = self.api_client.get(self.list_url)
 
@@ -38,9 +38,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             )
         )
 
-    def test_get_list_default_nondraft(self):
-        resultaattype1 = ResultaatTypeFactory.create(zaaktype__draft=True)
-        resultaattype2 = ResultaatTypeFactory.create(zaaktype__draft=False)
+    def test_get_list_default_nonconcept(self):
+        resultaattype1 = ResultaatTypeFactory.create(zaaktype__concept=True)
+        resultaattype2 = ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
         resultaattype2_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype2.uuid})
 
@@ -160,8 +160,8 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             BrondatumArchiefprocedureAfleidingswijze.afgehandeld
         )
 
-    def test_create_resultaattype_fail_not_draft_zaaktype(self):
-        zaaktype = ZaakTypeFactory.create(draft=False)
+    def test_create_resultaattype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
@@ -192,7 +192,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Creating a related object to non-concept object is forbidden')
 
     def test_delete_resultaattype(self):
         resultaattype = ResultaatTypeFactory.create()
@@ -203,8 +203,8 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(ResultaatType.objects.filter(id=resultaattype.id))
 
-    def test_delete_resultaattype_fail_not_draft_zaaktype(self):
-        resultaattype = ResultaatTypeFactory.create(zaaktype__draft=False)
+    def test_delete_resultaattype_fail_not_concept_zaaktype(self):
+        resultaattype = ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype.uuid})
 
         response = self.client.delete(resultaattype_url)
@@ -212,14 +212,14 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Deleting a non-concept object is forbidden')
 
 
 class ResultaatTypeFilterAPITests(APITestCase):
     maxDiff = None
 
     def test_filter_on_zaaktype(self):
-        zt1, zt2 = ZaakTypeFactory.create_batch(2, draft=False)
+        zt1, zt2 = ZaakTypeFactory.create_batch(2, concept=False)
         rt1 = ResultaatTypeFactory.create(zaaktype=zt1)
         rt1_url = f'http://testserver{reverse(rt1)}'
         rt2 = ResultaatTypeFactory.create(zaaktype=zt2)
@@ -243,8 +243,8 @@ class ResultaatTypeFilterAPITests(APITestCase):
         self.assertNotEqual(response_data[0]['zaaktype'], zt2_url)
 
     def test_filter_resultaattype_publish_all(self):
-        ResultaatTypeFactory.create(zaaktype__draft=True)
-        ResultaatTypeFactory.create(zaaktype__draft=False)
+        ResultaatTypeFactory.create(zaaktype__concept=True)
+        ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
 
         response = self.client.get(resultaattype_list_url, {'publish': 'all'})
@@ -254,13 +254,13 @@ class ResultaatTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_resultaattype_publish_draft(self):
-        resultaattype1 = ResultaatTypeFactory.create(zaaktype__draft=True)
-        resultaattype2 = ResultaatTypeFactory.create(zaaktype__draft=False)
+    def test_filter_resultaattype_publish_concept(self):
+        resultaattype1 = ResultaatTypeFactory.create(zaaktype__concept=True)
+        resultaattype2 = ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
         resultaattype1_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype1.uuid})
 
-        response = self.client.get(resultaattype_list_url, {'publish': 'draft'})
+        response = self.client.get(resultaattype_list_url, {'publish': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -268,13 +268,13 @@ class ResultaatTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{resultaattype1_url}')
 
-    def test_filter_resultaattype_publish_nondraft(self):
-        resultaattype1 = ResultaatTypeFactory.create(zaaktype__draft=True)
-        resultaattype2 = ResultaatTypeFactory.create(zaaktype__draft=False)
+    def test_filter_resultaattype_publish_nonconcept(self):
+        resultaattype1 = ResultaatTypeFactory.create(zaaktype__concept=True)
+        resultaattype2 = ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
         resultaattype2_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype2.uuid})
 
-        response = self.client.get(resultaattype_list_url, {'publish': 'nondraft'})
+        response = self.client.get(resultaattype_list_url, {'publish': 'nonconcept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

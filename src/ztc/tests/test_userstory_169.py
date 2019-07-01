@@ -45,7 +45,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         Zie https://github.com/VNG-Realisatie/gemma-zaken/issues/182#issuecomment-408899919
         voor context
         """
-        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype = ZaakTypeFactory.create(concept=False)
         roltype_behandelaar = RolTypeFactory.create(
             zaaktype=zaaktype,
             omschrijving_generiek=RolOmschrijving.behandelaar,
