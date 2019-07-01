@@ -47,9 +47,9 @@
                         "format": "uri"
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     }
@@ -1263,9 +1263,9 @@
                         "format": "uri"
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     }
@@ -1938,9 +1938,9 @@
                         "format": "uri"
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     }
@@ -2663,9 +2663,9 @@
                         "format": "uri"
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -3382,9 +3382,9 @@
                         ]
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     }
@@ -4056,9 +4056,9 @@
                         "format": "uri"
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     }
@@ -4751,9 +4751,9 @@
                         ]
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     }
@@ -5426,9 +5426,9 @@
                         "format": "uri"
                     },
                     {
-                        "name": "publish",
+                        "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their draft status:\n* `all`: show all objects\n* `draft`: show only draft or draft-related objects\n* `nondraft`: show only non-draft or non-draft-related objects (default)\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     }
@@ -6233,9 +6233,9 @@
                     "type": "string",
                     "format": "date"
                 },
-                "draft": {
-                    "title": "Draft",
-                    "description": "Flag indicating the object is a draft",
+                "concept": {
+                    "title": "Concept",
+                    "description": "Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
                     "type": "boolean",
                     "readOnly": true
                 }
@@ -6598,9 +6598,9 @@
                     "type": "string",
                     "format": "date"
                 },
-                "draft": {
-                    "title": "Draft",
-                    "description": "Flag indicating the object is a draft",
+                "concept": {
+                    "title": "Concept",
+                    "description": "Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
                     "type": "boolean",
                     "readOnly": true
                 }
@@ -6647,9 +6647,37 @@
                     "description": "Het soort object in de registratie dat het procesobject representeert.",
                     "type": "string",
                     "enum": [
-                        "VerblijfsObject",
-                        "MeldingOpenbareRuimte",
-                        "InzageVerzoek"
+                        "adres",
+                        "besluit",
+                        "buurt",
+                        "enkelvoudigDocument",
+                        "gemeente",
+                        "gemeentelijkeOpenbareRuimte",
+                        "huishouden",
+                        "inrichtingselement",
+                        "kadastraleOnroerendeZaak",
+                        "kunstwerkdeel",
+                        "maatschappelijkeActiviteit",
+                        "medewerker",
+                        "natuurlijkPersoon",
+                        "nietNatuurlijkPersoon",
+                        "openbareRuimte",
+                        "organisatorischeEenheid",
+                        "pand",
+                        "spoorbaandeel",
+                        "status",
+                        "terreindeel",
+                        "terreinGebouwdObject",
+                        "vestiging",
+                        "waterdeel",
+                        "wegdeel",
+                        "wijk",
+                        "woonplaats",
+                        "wozDeelobject",
+                        "wozObject",
+                        "wozWaarde",
+                        "zakelijkRecht",
+                        "overige"
                     ]
                 },
                 "registratie": {
@@ -7257,9 +7285,9 @@
                     "type": "string",
                     "format": "date"
                 },
-                "draft": {
-                    "title": "Draft",
-                    "description": "Flag indicating the object is a draft",
+                "concept": {
+                    "title": "Concept",
+                    "description": "Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
                     "type": "boolean",
                     "readOnly": true
                 }
