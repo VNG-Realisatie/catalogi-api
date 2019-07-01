@@ -20,7 +20,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         eigenschap1 = EigenschapFactory.create(
             eigenschapnaam='objecttype',
-            is_van=zaaktype,
+            zaaktype=zaaktype,
             specificatie_van_eigenschap=EigenschapSpecificatieFactory.create(
                 formaat=FormaatChoices.tekst,
                 lengte=255,
@@ -31,7 +31,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         EigenschapFactory.create(
             eigenschapnaam='boot.naam',
-            is_van=zaaktype,
+            zaaktype=zaaktype,
             specificatie_van_eigenschap=EigenschapSpecificatieFactory.create(
                 groep='boot',
                 formaat=FormaatChoices.tekst,
@@ -42,7 +42,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         EigenschapFactory.create(
             eigenschapnaam='boot.rederij',
-            is_van=zaaktype,
+            zaaktype=zaaktype,
             specificatie_van_eigenschap=EigenschapSpecificatieFactory.create(
                 groep='boot',
                 formaat=FormaatChoices.tekst,

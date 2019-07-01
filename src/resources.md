@@ -4,22 +4,6 @@ Dit document beschrijft de (RGBZ-)objecttypen die als resources ontsloten
 worden met de beschikbare attributen.
 
 
-## Catalogus
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/catalogus)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| domein | Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt. | string | ja | C​R​U​D |
-| rsin | Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS. | string | ja | C​R​U​D |
-| contactpersoonBeheerNaam | De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | ja | C​R​U​D |
-| contactpersoonBeheerTelefoonnummer | Het telefoonnummer van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | nee | C​R​U​D |
-| contactpersoonBeheerEmailadres | Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | nee | C​R​U​D |
-| zaaktypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| besluittypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| informatieobjecttypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-
 ## BesluitType
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/besluittype)
@@ -39,6 +23,48 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | toelichting | Een eventuele toelichting op dit BESLUITTYPE. | string | nee | C​R​U​D |
 | informatieobjecttypes |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
+## Catalogus
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/catalogus)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| domein | Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt. | string | ja | C​R​U​D |
+| rsin | Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS. | string | ja | C​R​U​D |
+| contactpersoonBeheerNaam | De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | ja | C​R​U​D |
+| contactpersoonBeheerTelefoonnummer | Het telefoonnummer van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | nee | C​R​U​D |
+| contactpersoonBeheerEmailadres | Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | nee | C​R​U​D |
+| zaaktypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| besluittypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| informatieobjecttypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+
+## EigenschapSpecificatie
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/eigenschapspecificatie)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| groep | Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert. | string | nee | C​R​U​D |
+| formaat | Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd. | string | ja | C​R​U​D |
+| lengte | Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd. | string | ja | C​R​U​D |
+| kardinaliteit | Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE. | string | ja | C​R​U​D |
+| waardenverzameling | Waarden die deze EIGENSCHAP kan hebben (Gebruik een komma om waarden van elkaar te onderscheiden.) | array | nee | C​R​U​D |
+
+## Eigenschap
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/eigenschap)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| naam | De naam van de EIGENSCHAP | string | ja | C​R​U​D |
+| definitie | De beschrijving van de betekenis van deze EIGENSCHAP | string | ja | C​R​U​D |
+| toelichting | Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE. | string | nee | C​R​U​D |
+| ingangsdatumObject | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
+| einddatumObject | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| zaaktype | Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is. | string | ja | C​R​U​D |
+
 ## InformatieObjectType
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/informatieobjecttype)
@@ -49,6 +75,62 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | catalogus | De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort. | string | ja | C​R​U​D |
 | omschrijving | Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | string | ja | C​R​U​D |
 | vertrouwelijkheidaanduiding | Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn. | string | ja | C​R​U​D |
+
+## ResultaatType
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/resultaattype)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| zaaktype | Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden. | string | ja | C​R​U​D |
+| omschrijving | Omschrijving van de aard van resultaten van het RESULTAATTYPE. | string | ja | C​R​U​D |
+| resultaattypeomschrijving | Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit &#39;omschrijving generiek&#39; | string | ja | C​R​U​D |
+| omschrijvingGeneriek | Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`) | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| selectielijstklasse | Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, categorie in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie. Dit is een URL-referentie naar een resultaat uit de selectielijst API | string | ja | C​R​U​D |
+| toelichting | Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd. | string | nee | C​R​U​D |
+| archiefnominatie | Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst.
+
+De mapping van waarden naar weergave is als volgt:
+
+* `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.
+* `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden. | string | nee | C​R​U​D |
+| archiefactietermijn | De termijn, na het vervallen van het bedrjfsvoeringsbelang, waarna het zaakdossier (de ZAAK met alle bijbehorende INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit RESULTAATTYPE vernietigd of overgebracht (naar een archiefbewaarplaats) moet worden. Voor te vernietigen dossiers betreft het de in die Selectielijst genoemde bewaartermjn. Voor blijvend te bewaren zaakdossiers betreft het de termijn vanaf afronding van de zaak tot overbrenging (de procestermijn is dan nihil). | string | nee | C​R​U​D |
+
+## MogelijkeBetrokkene
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/mogelijkebetrokkene)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| betrokkene | Een betrokkene die kan gerelateerd worden aan een zaak | string | ja | C​R​U​D |
+| betrokkeneType |  | string | ja | C​R​U​D |
+
+## RolType
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/roltype)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| zaaktype | De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit ZAAKTYPE. | string | ja | C​R​U​D |
+| omschrijving | Omschrijving van de aard van de ROL. | string | ja | C​R​U​D |
+| omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van de ROL. | string | ja | C​R​U​D |
+| mogelijkeBetrokkenen |  | array | ja | C​R​U​D |
+
+## StatusType
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/statustype)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| omschrijving | Een korte, voor de initiator van de zaak relevante, omschrijving van de aard van de STATUS van zaken van een ZAAKTYPE. | string | ja | C​R​U​D |
+| omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van STATUSsen van het STATUSTYPE | string | nee | C​R​U​D |
+| statustekst | De tekst die wordt gebruikt om de Initiator te informeren over het bereiken van een STATUS van dit STATUSTYPE bij het desbetreffende ZAAKTYPE. | string | nee | C​R​U​D |
+| zaaktype | Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden. | string | ja | C​R​U​D |
+| volgnummer | Een volgnummer voor statussen van het STATUSTYPE binnen een zaak. | integer | ja | C​R​U​D |
+| isEindstatus | Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## ZaakTypenRelatie
 
@@ -99,88 +181,6 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | gerelateerdeZaaktypen | De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE. | array | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
-
-## EigenschapSpecificatie
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/eigenschapspecificatie)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| groep | Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert. | string | nee | C​R​U​D |
-| formaat | Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd. | string | ja | C​R​U​D |
-| lengte | Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd. | string | ja | C​R​U​D |
-| kardinaliteit | Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE. | string | ja | C​R​U​D |
-| waardenverzameling | Waarden die deze EIGENSCHAP kan hebben (Gebruik een komma om waarden van elkaar te onderscheiden.) | array | nee | C​R​U​D |
-
-## Eigenschap
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/eigenschap)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| naam | De naam van de EIGENSCHAP | string | ja | C​R​U​D |
-| definitie | De beschrijving van de betekenis van deze EIGENSCHAP | string | ja | C​R​U​D |
-| toelichting | Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE. | string | nee | C​R​U​D |
-| ingangsdatumObject | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
-| einddatumObject | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
-| zaaktype |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-
-## MogelijkeBetrokkene
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/mogelijkebetrokkene)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| betrokkene | Een betrokkene die kan gerelateerd worden aan een zaak | string | ja | C​R​U​D |
-| betrokkeneType |  | string | ja | C​R​U​D |
-
-## RolType
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/roltype)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| zaaktype |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| omschrijving | Omschrijving van de aard van de ROL. | string | ja | C​R​U​D |
-| omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van de ROL. | string | ja | C​R​U​D |
-| mogelijkeBetrokkenen |  | array | ja | C​R​U​D |
-
-## StatusType
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/statustype)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| omschrijving | Een korte, voor de initiator van de zaak relevante, omschrijving van de aard van de STATUS van zaken van een ZAAKTYPE. | string | ja | C​R​U​D |
-| omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van STATUSsen van het STATUSTYPE | string | nee | C​R​U​D |
-| statustekst | De tekst die wordt gebruikt om de Initiator te informeren over het bereiken van een STATUS van dit STATUSTYPE bij het desbetreffende ZAAKTYPE. | string | nee | C​R​U​D |
-| zaaktype |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| volgnummer | Een volgnummer voor statussen van het STATUSTYPE binnen een zaak. | integer | ja | C​R​U​D |
-| isEindstatus | Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
-
-## ResultaatType
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/resultaattype)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| zaaktype |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| omschrijving | Omschrijving van de aard van resultaten van het RESULTAATTYPE. | string | ja | C​R​U​D |
-| resultaattypeomschrijving | Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit &#39;omschrijving generiek&#39; | string | ja | C​R​U​D |
-| omschrijvingGeneriek | Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`) | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| selectielijstklasse | Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, categorie in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie. Dit is een URL-referentie naar een resultaat uit de selectielijst API | string | ja | C​R​U​D |
-| toelichting | Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd. | string | nee | C​R​U​D |
-| archiefnominatie | Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst.
-
-De mapping van waarden naar weergave is als volgt:
-
-* `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.
-* `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden. | string | nee | C​R​U​D |
-| archiefactietermijn | De termijn, na het vervallen van het bedrjfsvoeringsbelang, waarna het zaakdossier (de ZAAK met alle bijbehorende INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit RESULTAATTYPE vernietigd of overgebracht (naar een archiefbewaarplaats) moet worden. Voor te vernietigen dossiers betreft het de in die Selectielijst genoemde bewaartermjn. Voor blijvend te bewaren zaakdossiers betreft het de termijn vanaf afronding van de zaak tot overbrenging (de procestermijn is dan nihil). | string | nee | C​R​U​D |
 
 
 * Create, Read, Update, Delete

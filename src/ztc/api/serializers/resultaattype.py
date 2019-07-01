@@ -1,7 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from vng_api_common.constants import Archiefnominatie
 from vng_api_common.serializers import (
     GegevensGroepSerializer, add_choice_values_help_text
@@ -17,16 +16,6 @@ class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
 
 
 class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
-
-    zaaktype = NestedHyperlinkedRelatedField(
-        read_only=True,
-        view_name='zaaktype-detail',
-        lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        },
-        label=_('is van')
-    )
 
     brondatum_archiefprocedure = BrondatumArchiefprocedureSerializer(
         label=_("Brondatum archiefprocedure"),
@@ -56,6 +45,10 @@ class ResultaatTypeSerializer(serializers.HyperlinkedModelSerializer):
             'omschrijving_generiek': {
                 'read_only': True,
                 'help_text': _("Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)"),
+            },
+            'zaaktype': {
+                'lookup_field': 'uuid',
+                'label': _('is van'),
             }
         }
 

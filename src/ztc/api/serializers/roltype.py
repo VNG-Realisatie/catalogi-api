@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
 
@@ -14,20 +12,7 @@ class MogelijkeBetrokkeneSerializer(serializers.ModelSerializer):
         )
 
 
-class RolTypeSerializer(NestedHyperlinkedModelSerializer):
-    parent_lookup_kwargs = {
-        'zaaktype_uuid': 'zaaktype__uuid',
-        'catalogus_uuid': 'zaaktype__catalogus__uuid',
-    }
-    zaaktype = NestedHyperlinkedRelatedField(
-        read_only=True,
-        view_name='zaaktype-detail',
-        lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        },
-    )
-
+class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
     mogelijke_betrokkenen = MogelijkeBetrokkeneSerializer(many=True, source='mogelijkebetrokkene_set')
     # magZetten = NestedHyperlinkedRelatedField(
     #     many=True,
@@ -58,4 +43,7 @@ class RolTypeSerializer(NestedHyperlinkedModelSerializer):
             'url': {
                 'lookup_field': 'uuid'
             },
+            'zaaktype': {
+                'lookup_field': 'uuid'
+            }
         }

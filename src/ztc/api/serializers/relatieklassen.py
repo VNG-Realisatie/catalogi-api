@@ -15,32 +15,6 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
 
     Relatie met informatieobjecttype dat relevant is voor zaaktype.
     """
-    zaaktype = NestedHyperlinkedRelatedField(
-        read_only=True,
-        view_name='zaaktype-detail',
-        lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        },
-    )
-    informatie_object_type = NestedHyperlinkedRelatedField(
-        read_only=True,
-        view_name='informatieobjecttype-detail',
-        lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        },
-    )
-    status_type = NestedHyperlinkedRelatedField(
-        read_only=True,
-        view_name='statustype-detail',
-        lookup_field='uuid',
-        parent_lookup_kwargs={
-            'zaaktype_uuid': 'zaaktype__uuid',
-            'catalogus_uuid': 'zaaktype__catalogus__uuid',
-        },
-    )
-
     class Meta:
         model = ZaakInformatieobjectType
         fields = (
@@ -52,7 +26,18 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
             'status_type',
         )
         extra_kwargs = {
-            'url': {'lookup_field': 'uuid'},
+            'url': {
+                'lookup_field': 'uuid'
+            },
+            'zaaktype': {
+                'lookup_field': 'uuid'
+            },
+            'informatie_object_type': {
+                'lookup_field': 'uuid'
+            },
+            'status_type': {
+                'lookup_field': 'uuid'
+            },
         }
 
 

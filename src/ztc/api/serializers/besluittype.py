@@ -1,32 +1,21 @@
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from rest_framework import serializers
 
 from ...datamodel.models import BesluitType
 
 
-class BesluitTypeSerializer(NestedHyperlinkedModelSerializer):
-    parent_lookup_kwargs = {
-        'catalogus_uuid': 'catalogus__uuid'
-    }
-
-    informatieobjecttypes = NestedHyperlinkedRelatedField(
-        many=True,
-        read_only=True,
+class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
+    informatieobjecttypes = serializers.HyperlinkedRelatedField(
         view_name='informatieobjecttype-detail',
+        many=True,
         lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        },
+        read_only=True
     )
 
-    zaaktypes = NestedHyperlinkedRelatedField(
+    zaaktypes = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
         view_name='zaaktype-detail',
         lookup_field='uuid',
-        parent_lookup_kwargs={
-            'catalogus_uuid': 'catalogus__uuid',
-        }
     )
 
     class Meta:

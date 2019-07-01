@@ -2,12 +2,13 @@ import json
 from unittest import expectedFailure, skip, skipIf
 
 from django.test import SimpleTestCase
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
+import yaml
 from rest_framework.settings import api_settings
 from rest_framework.test import APILiveServerTestCase, APIRequestFactory
-from vng_api_common.tests import get_operation_url
+from vng_api_common.tests import get_operation_url, reverse
 
 from ...datamodel.models import Catalogus
 from ...datamodel.tests.factories import (
@@ -20,6 +21,7 @@ from .base import APITestCase, CatalogusAPITestMixin
 class RestfulPrinciplesAPITests(APITestCase):
     """Section 2.6.1 of the DSO: API strategy"""
 
+    @skip('API structure is flat. There are no nested resources now')
     def test_nested_resources(self):
         """DSO: API-09 (nested resources)
 
@@ -236,6 +238,28 @@ class DocumentationAPITests(SimpleTestCase):
 
         self.assertTrue('swagger' in data)
         self.assertEqual(data['swagger'], '2.0')
+
+    def test_api_19_documentation_version_json(self):
+        url = reverse('schema-json', kwargs={'format': '.json'})
+
+        response = self.client.get(url)
+
+        self.assertIn('application/json', response['Content-Type'])
+
+        doc = response.json()
+
+        self.assertGreaterEqual(doc['openapi'], '3.0.0')
+
+    def test_api_19_documentation_version_yaml(self):
+        url = reverse('schema-json', kwargs={'format': '.yaml'})
+
+        response = self.client.get(url)
+
+        self.assertIn('application/yaml', response['Content-Type'])
+
+        doc = yaml.safe_load(response.content)
+
+        self.assertGreaterEqual(doc['openapi'], '3.0.0')
 
     def test_documentation_can_be_accepted(self):
         """DSO: API-21 (documentation can be tested)

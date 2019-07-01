@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import ZaakObjectType, ZaakType
+from ..filters import ZaakTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ
 from ..serializers import ZaakObjectTypeSerializer, ZaakTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
@@ -26,7 +27,7 @@ class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin
     }
 
 
-class ZaakTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class ZaakTypeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
@@ -47,7 +48,7 @@ class ZaakTypeViewSet(NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = ZaakTypeSerializer
     pagination_class = None
     lookup_field = 'uuid'
-
+    filterset_class = ZaakTypeFilter
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
