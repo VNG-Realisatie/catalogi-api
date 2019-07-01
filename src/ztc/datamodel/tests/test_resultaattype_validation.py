@@ -330,7 +330,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
 
             # parameter fields - no values allowed!
             'brondatum_archiefprocedure_datumkenmerk': 'foo',
-            'brondatum_archiefprocedure_objecttype': 'VerblijfsObject',
+            'brondatum_archiefprocedure_objecttype': 'adres',
             'brondatum_archiefprocedure_registratie': 'ORC',
             'brondatum_archiefprocedure_procestermijn': 'P30D',
         }
@@ -505,7 +505,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
 
         form = self._get_form(Afleidingswijze.eigenschap, zaaktype, resultaat_url, **{
             'brondatum_archiefprocedure_datumkenmerk': '',
-            'brondatum_archiefprocedure_objecttype': 'VerblijfsObject',
+            'brondatum_archiefprocedure_objecttype': 'adres',
             'brondatum_archiefprocedure_registratie': 'BRC',
         })
 
