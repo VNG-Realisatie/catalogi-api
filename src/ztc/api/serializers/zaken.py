@@ -1,7 +1,6 @@
 from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.serializers import (
     HyperlinkedModelSerializer, HyperlinkedRelatedField, ModelSerializer
 )
@@ -16,6 +15,7 @@ from ...datamodel.models import (
     ZaakType, ZaakTypenRelatie
 )
 from ..utils.serializers import SourceMappingSerializerMixin
+from ..utils.validators import RelationCatalogValidator
 
 
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
@@ -276,6 +276,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
         # expandable_fields = {
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
+        validators = [RelationCatalogValidator('besluittype_set')]
 
     @transaction.atomic()
     def create(self, validated_data):

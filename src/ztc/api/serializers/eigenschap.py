@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ztc.datamodel.models import Eigenschap, EigenschapSpecificatie
 

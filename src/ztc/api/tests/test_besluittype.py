@@ -1,5 +1,7 @@
 from rest_framework import status
 
+from vng_api_common.tests import get_validation_errors
+
 from ...datamodel.models import BesluitType
 from ...datamodel.tests.factories import (
     BesluitTypeFactory, InformatieObjectTypeFactory, ZaakTypeFactory
@@ -72,11 +74,11 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(response.json(), expected)
 
     def test_create_besluittype(self):
-        zaaktype = ZaakTypeFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
-        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=self.catalogus)
         informatieobjecttype_url = reverse('informatieobjecttype-detail', kwargs={
             'uuid': informatieobjecttype.uuid,
         })
@@ -109,11 +111,11 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(besluittype.draft, True)
 
     def test_create_besluittype_fail_non_draft_zaaktypes(self):
-        zaaktype = ZaakTypeFactory.create(draft=False)
+        zaaktype = ZaakTypeFactory.create(draft=False, catalogus=self.catalogus)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
-        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=self.catalogus)
         informatieobjecttype_url = reverse('informatieobjecttype-detail', kwargs={
             'uuid': informatieobjecttype.uuid,
         })
@@ -141,11 +143,11 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(data['detail'], "Relations to a non-draft zaaktypes object can't be created")
 
     def test_create_besluittype_fail_non_draft_informatieobjecttypes(self):
-        zaaktype = ZaakTypeFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
-        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False, catalogus=self.catalogus)
         informatieobjecttype_url = reverse('informatieobjecttype-detail', kwargs={
             'uuid': informatieobjecttype.uuid,
         })
@@ -171,6 +173,70 @@ class BesluitTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], "Relations to a non-draft informatieobjecttypes object can't be created")
+
+    def test_create_besluittype_fail_different_catalogus_for_zaaktypes(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=self.catalogus)
+        informatieobjecttype_url = reverse('informatieobjecttype-detail', kwargs={
+            'uuid': informatieobjecttype.uuid,
+        })
+        besluittype_list_url = reverse('besluittype-list')
+        data = {
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'zaaktypes': [f'http://testserver{zaaktype_url}'],
+            'omschrijving': 'test',
+            'omschrijvingGeneriek': '',
+            'besluitcategorie': '',
+            'reactietermijn': 'P14D',
+            'publicatieIndicatie': True,
+            'publicatietekst': '',
+            'publicatietermijn': None,
+            'toelichting': '',
+            'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
+            'beginGeldigheid': '2019-01-01',
+        }
+
+        response = self.client.post(besluittype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'relations-incorrect-catalogus')
+
+    def test_create_besluittype_fail_different_catalogus_for_informatieobjecttypes(self):
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse('informatieobjecttype-detail', kwargs={
+            'uuid': informatieobjecttype.uuid,
+        })
+        besluittype_list_url = reverse('besluittype-list')
+        data = {
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'zaaktypes': [f'http://testserver{zaaktype_url}'],
+            'omschrijving': 'test',
+            'omschrijvingGeneriek': '',
+            'besluitcategorie': '',
+            'reactietermijn': 'P14D',
+            'publicatieIndicatie': True,
+            'publicatietekst': '',
+            'publicatietermijn': None,
+            'toelichting': '',
+            'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
+            'beginGeldigheid': '2019-01-01',
+        }
+
+        response = self.client.post(besluittype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'relations-incorrect-catalogus')
 
     def test_publish_besluittype(self):
         besluittype = BesluitTypeFactory.create()

@@ -1,9 +1,7 @@
-from django.utils.translation import ugettext_lazy as _
-
 from rest_framework import serializers
-from rest_framework.exceptions import PermissionDenied
 
 from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
+from ..utils.validators import RelationCatalogValidator
 
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -59,3 +57,7 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             'einde_geldigheid',
             'draft',
         )
+        validators = [
+            RelationCatalogValidator('informatieobjecttypes'),
+            RelationCatalogValidator('zaaktypes'),
+        ]

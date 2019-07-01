@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
-from vng_api_common.tests import get_operation_url
+from vng_api_common.tests import get_operation_url, get_validation_errors
 
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
@@ -115,7 +115,7 @@ class ZaakTypeAPITests(APITestCase):
         })
 
     def test_create_zaaktype(self):
-        besluittype = BesluitTypeFactory.create()
+        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
         besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
 
         zaaktype_list_url = get_operation_url('zaaktype_list')
@@ -166,7 +166,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(zaaktype.draft, True)
 
     def test_create_zaaktype_fail_besluittype_non_draft(self):
-        besluittype = BesluitTypeFactory.create(draft=False)
+        besluittype = BesluitTypeFactory.create(draft=False, catalogus=self.catalogus)
         besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
 
         zaaktype_list_url = get_operation_url('zaaktype_list')
@@ -211,6 +211,52 @@ class ZaakTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], "Relations to a non-draft besluittype_set object can't be created")
+
+    def test_create_zaaktype_fail_different_catalogus_besluittypes(self):
+        besluittype = BesluitTypeFactory.create()
+        besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
+
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        data = {
+            'identificatie': 0,
+            'doel': 'some test',
+            'aanleiding': 'some test',
+            'indicatieInternOfExtern': InternExtern.extern,
+            'handelingInitiator': 'indienen',
+            'onderwerp': 'Klacht',
+            'handelingBehandelaar': 'uitvoeren',
+            'doorlooptijd': 'P30D',
+            'opschortingEnAanhoudingMogelijk': False,
+            'verlengingMogelijk': True,
+            'verlengingstermijn': 'P30D',
+            'publicatieIndicatie': True,
+            'verantwoordingsrelatie': [],
+            'productenOfDiensten': ['https://example.com/product/123'],
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'omschrijving': 'some test',
+            'gerelateerdeZaaktypen': [
+                {
+                    'zaaktype': 'http://example.com/zaaktype/1',
+                    'aard_relatie': AardRelatieChoices.bijdrage,
+                    'toelichting': 'test relations'
+                },
+            ],
+            'referentieproces': {
+                'naam': 'ReferentieProces 0',
+                'link': ''
+            },
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            'besluittypen': [f'http://testserver{besluittype_url}'],
+            'beginGeldigheid': '2018-01-01',
+            'versiedatum': '2018-01-01',
+        }
+        response = self.client.post(zaaktype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST, response.data)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'relations-incorrect-catalogus')
 
     def test_publish_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
