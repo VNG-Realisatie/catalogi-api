@@ -1,4 +1,4 @@
-from django.db import transaction
+from drf_writable_nested import NestedCreateMixin
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.serializers import (
@@ -105,7 +105,7 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         }
 
 
-class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
+class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, HyperlinkedModelSerializer):
 
     # formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(
@@ -277,15 +277,3 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, HyperlinkedModelSerializer):
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
         validators = [RelationCatalogValidator('besluittype_set')]
-
-    @transaction.atomic()
-    def create(self, validated_data):
-        zaaktypen_relaties_data = validated_data.pop('zaaktypenrelaties', None)
-
-        zaaktype = super().create(validated_data)
-
-        if zaaktypen_relaties_data:
-            for zaaktypen_relaties in zaaktypen_relaties_data:
-                ZaakTypenRelatie.objects.create(**zaaktypen_relaties, zaaktype=zaaktype)
-
-        return zaaktype

@@ -1,6 +1,5 @@
-from django.db import transaction
-
 from rest_framework import serializers
+from drf_writable_nested import NestedCreateMixin
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
 
@@ -14,7 +13,7 @@ class MogelijkeBetrokkeneSerializer(serializers.ModelSerializer):
         )
 
 
-class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
+class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerializer):
     mogelijke_betrokkenen = MogelijkeBetrokkeneSerializer(many=True, source='mogelijkebetrokkene_set')
     # magZetten = NestedHyperlinkedRelatedField(
     #     many=True,
@@ -48,13 +47,3 @@ class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
                 'lookup_field': 'uuid'
             }
         }
-
-    @transaction.atomic()
-    def create(self, validated_data):
-        mogelijke_betrokkenen_data = validated_data.pop('mogelijkebetrokkene_set', None)
-        roltype = super().create(validated_data)
-
-        if mogelijke_betrokkenen_data:
-            for mogelijke_betrokkenen in mogelijke_betrokkenen_data:
-                MogelijkeBetrokkene.objects.create(**mogelijke_betrokkenen, roltype=roltype)
-        return roltype
