@@ -5002,7 +5002,6 @@ components:
       required:
       - catalogus
       - zaaktypes
-      - omschrijving
       - informatieobjecttypes
       - beginGeldigheid
       type: object

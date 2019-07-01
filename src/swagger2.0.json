@@ -6087,7 +6087,6 @@
             "required": [
                 "catalogus",
                 "zaaktypes",
-                "omschrijving",
                 "informatieobjecttypes",
                 "beginGeldigheid"
             ],

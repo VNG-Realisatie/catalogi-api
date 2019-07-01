@@ -13,7 +13,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | catalogus | De CATALOGUS waartoe dit BESLUITTYPE behoort. | string | ja | C​R​U​D |
 | zaaktypes |  | array | ja | C​R​U​D |
-| omschrijving | Omschrijving van de aard van BESLUITen van het BESLUITTYPE. | string | ja | C​R​U​D |
+| omschrijving | Omschrijving van de aard van BESLUITen van het BESLUITTYPE. | string | nee | C​R​U​D |
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van BESLUITen van het BESLUITTYPE | string | nee | C​R​U​D |
 | besluitcategorie | Typering van de aard van BESLUITen van het BESLUITTYPE. | string | nee | C​R​U​D |
 | reactietermijn | Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is. | string | nee | C​R​U​D |
