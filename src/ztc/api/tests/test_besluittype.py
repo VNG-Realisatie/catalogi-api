@@ -69,6 +69,61 @@ class BesluitTypeAPITests(APITestCase):
         }
         self.assertEqual(response.json(), expected)
 
+    def test_get_detail_related_informatieobjecttypes(self):
+        """Retrieve the details of a single `BesluitType` object with related informatieonnjecttype."""
+        besluittype = BesluitTypeFactory.create(
+            catalogus=self.catalogus,
+            publicatie_indicatie=True,
+        )
+        iot1 = InformatieObjectTypeFactory.create(
+            catalogus=self.catalogus,
+        )
+        iot2 = InformatieObjectTypeFactory.create(
+            catalogus=self.catalogus
+        )
+        besluittype.informatieobjecttypes.add(iot1)
+
+        besluittype_detail_url = reverse('besluittype-detail', kwargs={
+            'uuid': besluittype.uuid
+        })
+        iot1_url = reverse('informatieobjecttype-detail', kwargs={'uuid': iot1.uuid})
+
+        response = self.client.get(besluittype_detail_url)
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        self.assertEqual(len(data['informatieobjecttypes']), 1)
+        self.assertEqual(data['informatieobjecttypes'][0], f'http://testserver{iot1_url}')
+
+    def test_get_detail_related_zaaktypes(self):
+        """Retrieve the details of a single `BesluitType` object with related zaaktypes."""
+        besluittype = BesluitTypeFactory.create(
+            catalogus=self.catalogus,
+            publicatie_indicatie=True,
+        )
+        zaaktype1 = ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            catalogus=self.catalogus
+        )
+        besluittype.zaaktypes.clear()
+        besluittype.zaaktypes.add(zaaktype1)
+
+        besluittype_detail_url = reverse('besluittype-detail', kwargs={
+            'uuid': besluittype.uuid
+        })
+        zaaktype1_url = reverse('zaaktype-detail', kwargs={'uuid': zaaktype1.uuid})
+
+        response = self.client.get(besluittype_detail_url)
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+        self.assertEqual(len(data['zaaktypes']), 1)
+        self.assertEqual(data['zaaktypes'][0], f'http://testserver{zaaktype1_url}')
+
     def test_create_besluittype(self):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
@@ -270,7 +325,7 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-concept object is forbidden')
+        self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
 
 
 class BesluitTypeFilterAPITests(APITestCase):

@@ -27,7 +27,7 @@ class ConceptDestroyMixin:
 
     def perform_destroy(self, instance):
         if not self.get_concept(instance):
-            msg = _("Deleting a non-concept object is forbidden")
+            msg = _("Alleen concepten kunnen worden verwijderd.")
             raise PermissionDenied(detail=msg)
 
         super().perform_destroy(instance)
