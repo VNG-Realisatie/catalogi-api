@@ -15,7 +15,7 @@ from .utils import reverse
 class EigenschapAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list_default_nonpublish(self):
+    def test_get_list_default_definitief(self):
         eigenschap1 = EigenschapFactory.create(zaaktype__concept=True)
         eigenschap2 = EigenschapFactory.create(zaaktype__concept=False)
         eigenschap_list_url = reverse('eigenschap-list')
@@ -161,25 +161,25 @@ class EigenschapAPITests(APITestCase):
 class EigenschapFilterAPITests(APITestCase):
     maxDiff = None
 
-    def test_filter_eigenschap_publish_all(self):
+    def test_filter_eigenschap_status_alles(self):
         EigenschapFactory.create(zaaktype__concept=True)
         EigenschapFactory.create(zaaktype__concept=False)
         eigenschap_list_url = reverse('eigenschap-list')
 
-        response = self.client.get(eigenschap_list_url, {'publish': 'all'})
+        response = self.client.get(eigenschap_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_eigenschap_publish_concept(self):
+    def test_filter_eigenschap_status_concept(self):
         eigenschap1 = EigenschapFactory.create(zaaktype__concept=True)
         eigenschap2 = EigenschapFactory.create(zaaktype__concept=False)
         eigenschap_list_url = reverse('eigenschap-list')
         eigenschap1_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap1.uuid})
 
-        response = self.client.get(eigenschap_list_url, {'publish': 'concept'})
+        response = self.client.get(eigenschap_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -187,13 +187,13 @@ class EigenschapFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{eigenschap1_url}')
 
-    def test_filter_eigenschap_publish_nonconcept(self):
+    def test_filter_eigenschap_status_definitief(self):
         eigenschap1 = EigenschapFactory.create(zaaktype__concept=True)
         eigenschap2 = EigenschapFactory.create(zaaktype__concept=False)
         eigenschap_list_url = reverse('eigenschap-list')
         eigenschap2_url = reverse('eigenschap-detail', kwargs={'uuid': eigenschap2.uuid})
 
-        response = self.client.get(eigenschap_list_url, {'publish': 'nonconcept'})
+        response = self.client.get(eigenschap_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

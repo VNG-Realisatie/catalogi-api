@@ -19,7 +19,7 @@ from .base import APITestCase
 class ZaakTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list_default_nonconcept(self):
+    def test_get_list_default_definitief(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)
         zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
@@ -297,25 +297,25 @@ class ZaakTypeAPITests(APITestCase):
 class ZaakTypeFilterAPITests(APITestCase):
     maxDiff = None
 
-    def test_filter_zaaktype_publish_all(self):
+    def test_filter_zaaktype_status_alles(self):
         ZaakTypeFactory.create(concept=True)
         ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
 
-        response = self.client.get(zaaktype_list_url, {'publish': 'all'})
+        response = self.client.get(zaaktype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_zaaktype_publish_concept(self):
+    def test_filter_zaaktype_status_concept(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)
         zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
         zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
 
-        response = self.client.get(zaaktype_list_url, {'publish': 'concept'})
+        response = self.client.get(zaaktype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -323,13 +323,13 @@ class ZaakTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
 
-    def test_filter_zaaktype_publish_nonconcept(self):
+    def test_filter_zaaktype_status_definitief(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)
         zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
         zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
 
-        response = self.client.get(zaaktype_list_url, {'publish': 'nonconcept'})
+        response = self.client.get(zaaktype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

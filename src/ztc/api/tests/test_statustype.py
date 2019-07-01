@@ -10,7 +10,7 @@ from .utils import reverse
 class StatusTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list_default_nonconcept(self):
+    def test_get_list_default_definitief(self):
         statustype1 = StatusTypeFactory.create(zaaktype__concept=True)
         statustype2 = StatusTypeFactory.create(zaaktype__concept=False)
         statustype_list_url = reverse('statustype-list')
@@ -119,25 +119,25 @@ class StatusTypeAPITests(APITestCase):
 class StatusTypeFilterAPITests(APITestCase):
     maxDiff = None
 
-    def test_filter_statustype_publish_all(self):
+    def test_filter_statustype_status_alles(self):
         StatusTypeFactory.create(zaaktype__concept=True)
         StatusTypeFactory.create(zaaktype__concept=False)
         statustype_list_url = reverse('statustype-list')
 
-        response = self.client.get(statustype_list_url, {'publish': 'all'})
+        response = self.client.get(statustype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_statustype_publish_concept(self):
+    def test_filter_statustype_status_concept(self):
         statustype1 = StatusTypeFactory.create(zaaktype__concept=True)
         statustype2 = StatusTypeFactory.create(zaaktype__concept=False)
         statustype_list_url = reverse('statustype-list')
         statustype1_url = reverse('statustype-detail', kwargs={'uuid': statustype1.uuid})
 
-        response = self.client.get(statustype_list_url, {'publish': 'concept'})
+        response = self.client.get(statustype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -145,13 +145,13 @@ class StatusTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{statustype1_url}')
 
-    def test_filter_statustype_publish_nonconcept(self):
+    def test_filter_statustype_status_definitief(self):
         statustype1 = StatusTypeFactory.create(zaaktype__concept=True)
         statustype2 = StatusTypeFactory.create(zaaktype__concept=False)
         statustype_list_url = reverse('statustype-list')
         statustype2_url = reverse('statustype-detail', kwargs={'uuid': statustype2.uuid})
 
-        response = self.client.get(statustype_list_url, {'publish': 'nonconcept'})
+        response = self.client.get(statustype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

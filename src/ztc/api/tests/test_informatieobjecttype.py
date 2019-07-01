@@ -17,7 +17,7 @@ from .base import APITestCase
 class InformatieObjectTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list_default_nonconcept(self):
+    def test_get_list_default_definitief(self):
         informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
         informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
@@ -166,25 +166,25 @@ class InformatieObjectTypeAPITests(APITestCase):
 class InformatieObjectTypeFilterAPITests(APITestCase):
     maxDiff = None
 
-    def test_filter_informatieobjecttype_publish_all(self):
+    def test_filter_informatieobjecttype_status_alles(self):
         InformatieObjectTypeFactory.create(concept=True)
         InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
 
-        response = self.client.get(informatieobjecttype_list_url, {'publish': 'all'})
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_informatieobjecttype_publish_concept(self):
+    def test_filter_informatieobjecttype_status_concept(self):
         informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
         informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
         informatieobjecttype1_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype1.uuid)
 
-        response = self.client.get(informatieobjecttype_list_url, {'publish': 'concept'})
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -192,13 +192,13 @@ class InformatieObjectTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype1_url}')
 
-    def test_filter_informatieobjecttype_publish_nonconcept(self):
+    def test_filter_informatieobjecttype_status_definitief(self):
         informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
         informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
         informatieobjecttype2_url = get_operation_url('informatieobjecttype_read',  uuid=informatieobjecttype2.uuid)
 
-        response = self.client.get(informatieobjecttype_list_url, {'publish': 'nonconcept'})
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

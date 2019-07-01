@@ -12,7 +12,7 @@ from .utils import reverse
 class BesluitTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list_default_nonconcepts(self):
+    def test_get_list_default_definitief(self):
         besluittype1 = BesluitTypeFactory.create(concept=True)
         besluittype2 = BesluitTypeFactory.create(concept=False)
         besluittype_list_url = reverse('besluittype-list')
@@ -276,25 +276,25 @@ class BesluitTypeAPITests(APITestCase):
 class BesluitTypeFilterAPITests(APITestCase):
     maxDiff = None
 
-    def test_filter_besluittype_publish_all(self):
+    def test_filter_besluittype_status_alles(self):
         BesluitTypeFactory.create(concept=True)
         BesluitTypeFactory.create(concept=False)
         besluittype_list_url = reverse('besluittype-list')
 
-        response = self.client.get(besluittype_list_url, {'publish': 'all'})
+        response = self.client.get(besluittype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_besluittype_publish_concept(self):
+    def test_filter_besluittype_status_concept(self):
         besluittype1 = BesluitTypeFactory.create(concept=True)
         besluittype2 = BesluitTypeFactory.create(concept=False)
         besluittype_list_url = reverse('besluittype-list')
         besluittype1_url = reverse('besluittype-detail', kwargs={'uuid': besluittype1.uuid})
 
-        response = self.client.get(besluittype_list_url, {'publish': 'concept'})
+        response = self.client.get(besluittype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -302,13 +302,13 @@ class BesluitTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{besluittype1_url}')
 
-    def test_filter_besluittype_publish_nonconcept(self):
+    def test_filter_besluittype_status_definitief(self):
         besluittype1 = BesluitTypeFactory.create(concept=True)
         besluittype2 = BesluitTypeFactory.create(concept=False)
         besluittype_list_url = reverse('besluittype-list')
         besluittype2_url = reverse('besluittype-detail',  kwargs={'uuid': besluittype2.uuid})
 
-        response = self.client.get(besluittype_list_url, {'publish': 'nonconcept'})
+        response = self.client.get(besluittype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()

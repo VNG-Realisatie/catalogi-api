@@ -45,15 +45,15 @@ class ConceptFilterMixin:
 
         # show only non-concepts by default
         query_params = self.request.query_params or {}
-        if 'publish' in query_params:
+        if 'status' in query_params:
             return qs
 
         return qs.filter(**self.get_concept_filter())
 
 
 class ConceptMixin(ConceptPublishMixin,
-                 ConceptDestroyMixin,
-                 ConceptFilterMixin):
+                   ConceptDestroyMixin,
+                   ConceptFilterMixin):
     """ mixin for resources which have 'concept' field"""
     pass
 
@@ -79,8 +79,8 @@ class ZaakTypeConceptFilterMixin(ConceptFilterMixin):
 
 
 class ZaakTypeConceptMixin(ZaakTypeConceptCreateMixin,
-                         ZaakTypeConceptDestroyMixin,
-                         ZaakTypeConceptFilterMixin):
+                           ZaakTypeConceptDestroyMixin,
+                           ZaakTypeConceptFilterMixin):
     """
     mixin for resources which have FK or one-to-one relations with ZaakType objects,
     which support concept functionality

@@ -7,36 +7,36 @@ from ztc.datamodel.models import (
 )
 
 # custom filter to show concept and non-concepts
-PUBLISH_HELP_TEXT = """filter objects depending on their concept status:
-* `all`: show all objects
-* `concept`: show only concept or concept-related objects
-* `nonconcept`: show only non-concept or non-concept-related objects (default)
+STATUS_HELP_TEXT = """filter objects depending on their concept status:
+* `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+* `concept`: toon objecten waarvan het attribuut `concept` true is.
+* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
 """
 
 
-def publish_filter(queryset, name, value):
+def status_filter(queryset, name, value):
     if value == 'concept':
         return queryset.filter(**{name: True})
-    elif value == 'nonconcept':
+    elif value == 'definitief':
         return queryset.filter(**{name: False})
-    elif value == 'all':
+    elif value == 'alles':
         return queryset
 
 
 class RolTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='zaaktype__concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = RolType
         fields = (
             'zaaktype',
             'omschrijving_generiek',
-            'publish'
+            'status'
         )
 
 
 class ZaakInformatieobjectTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__concept', method='publish_filter_m2m', help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='zaaktype__concept', method='status_filter_m2m', help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = ZaakInformatieobjectType
@@ -44,79 +44,79 @@ class ZaakInformatieobjectTypeFilter(FilterSet):
             'zaaktype',
             'informatie_object_type',
             'richting',
-            'publish',
+            'status',
         )
 
-    def publish_filter_m2m(self, queryset, name, value):
+    def status_filter_m2m(self, queryset, name, value):
         if value == 'concept':
             return queryset.filter(zaaktype__concept=True, informatie_object_type__concept=True)
-        elif value == 'nonconcept':
+        elif value == 'definitief':
             return queryset.filter(zaaktype__concept=False, informatie_object_type__concept=False)
-        elif value == 'all':
+        elif value == 'alles':
             return queryset
 
 
 class ResultaatTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='zaaktype__concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = ResultaatType
         fields = (
             'zaaktype',
-            'publish'
+            'status'
         )
 
 
 class StatusTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='zaaktype__concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = StatusType
         fields = (
             'zaaktype',
-            'publish'
+            'status'
         )
 
 
 class EigenschapFilter(FilterSet):
-    publish = filters.CharFilter(field_name='zaaktype__concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='zaaktype__concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = Eigenschap
         fields = (
             'zaaktype',
-            'publish'
+            'status'
         )
 
 
 class ZaakTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = ZaakType
         fields = (
             'catalogus',
-            'publish'
+            'status'
         )
 
 
 class InformatieObjectTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = InformatieObjectType
         fields = (
             'catalogus',
-            'publish'
+            'status'
         )
 
 
 class BesluitTypeFilter(FilterSet):
-    publish = filters.CharFilter(field_name='concept', method=publish_filter, help_text=PUBLISH_HELP_TEXT)
+    status = filters.CharFilter(field_name='concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = BesluitType
         fields = (
             'catalogus',
-            'publish'
+            'status'
         )

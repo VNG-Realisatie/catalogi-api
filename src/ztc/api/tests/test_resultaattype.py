@@ -38,7 +38,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             )
         )
 
-    def test_get_list_default_nonconcept(self):
+    def test_get_list_default_definitief(self):
         resultaattype1 = ResultaatTypeFactory.create(zaaktype__concept=True)
         resultaattype2 = ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
@@ -242,25 +242,25 @@ class ResultaatTypeFilterAPITests(APITestCase):
         self.assertNotEqual(response_data[0]['url'], rt2_url)
         self.assertNotEqual(response_data[0]['zaaktype'], zt2_url)
 
-    def test_filter_resultaattype_publish_all(self):
+    def test_filter_resultaattype_status_alles(self):
         ResultaatTypeFactory.create(zaaktype__concept=True)
         ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
 
-        response = self.client.get(resultaattype_list_url, {'publish': 'all'})
+        response = self.client.get(resultaattype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 2)
 
-    def test_filter_resultaattype_publish_concept(self):
+    def test_filter_resultaattype_status_concept(self):
         resultaattype1 = ResultaatTypeFactory.create(zaaktype__concept=True)
         resultaattype2 = ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
         resultaattype1_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype1.uuid})
 
-        response = self.client.get(resultaattype_list_url, {'publish': 'concept'})
+        response = self.client.get(resultaattype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -268,13 +268,13 @@ class ResultaatTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{resultaattype1_url}')
 
-    def test_filter_resultaattype_publish_nonconcept(self):
+    def test_filter_resultaattype_status_definitief(self):
         resultaattype1 = ResultaatTypeFactory.create(zaaktype__concept=True)
         resultaattype2 = ResultaatTypeFactory.create(zaaktype__concept=False)
         resultaattype_list_url = reverse('resultaattype-list')
         resultaattype2_url = reverse('resultaattype-detail', kwargs={'uuid': resultaattype2.uuid})
 
-        response = self.client.get(resultaattype_list_url, {'publish': 'nonconcept'})
+        response = self.client.get(resultaattype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
