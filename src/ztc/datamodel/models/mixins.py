@@ -73,9 +73,11 @@ class GeldigheidMixin(models.Model):
                 )
 
 
-class DraftMixin(models.Model):
-    draft = models.BooleanField(
-        _('draft'), default=True, help_text=_('Flag indicating the object is a draft')
+class ConceptMixin(models.Model):
+    concept = models.BooleanField(
+        _('concept'), default=True,
+        help_text=_('Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve '
+                    'versies en zouden niet gebruikt moeten worden buiten deze API.')
     )
 
     class Meta:

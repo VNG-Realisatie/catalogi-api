@@ -10,20 +10,19 @@ from .utils import reverse
 class StatusTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        StatusTypeFactory.create(
-            statustype_omschrijving='Besluit genomen',
-            zaaktype__catalogus=self.catalogus,
-        )
+    def test_get_list_default_definitief(self):
+        statustype1 = StatusTypeFactory.create(zaaktype__concept=True)
+        statustype2 = StatusTypeFactory.create(zaaktype__concept=False)
         statustype_list_url = reverse('statustype-list')
+        statustype2_url = reverse('statustype-detail', kwargs={'uuid': statustype2.uuid})
 
-        response = self.api_client.get(statustype_list_url)
-
+        response = self.client.get(statustype_list_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')
 
     def test_get_detail(self):
         status_type = StatusTypeFactory.create(
@@ -76,8 +75,8 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(statustype.statustype_omschrijving, 'Besluit genomen')
         self.assertEqual(statustype.zaaktype, zaaktype)
 
-    def test_create_statustype_fail_not_draft_zaaktype(self):
-        zaaktype = ZaakTypeFactory.create(draft=False)
+    def test_create_statustype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
@@ -94,7 +93,7 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Creating a related object to non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Creating a related object to non-concept object is forbidden')
 
     def test_delete_statustype(self):
         statustype = StatusTypeFactory.create()
@@ -105,8 +104,8 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(StatusType.objects.filter(id=statustype.id))
 
-    def test_delete_statustype_fail_not_draft_zaaktype(self):
-        statustype = StatusTypeFactory.create(zaaktype__draft=False)
+    def test_delete_statustype_fail_not_concept_zaaktype(self):
+        statustype = StatusTypeFactory.create(zaaktype__concept=False)
         statustype_url = reverse('statustype-detail', kwargs={'uuid': statustype.uuid})
 
         response = self.client.delete(statustype_url)
@@ -114,4 +113,48 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
+
+
+class StatusTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_statustype_status_alles(self):
+        StatusTypeFactory.create(zaaktype__concept=True)
+        StatusTypeFactory.create(zaaktype__concept=False)
+        statustype_list_url = reverse('statustype-list')
+
+        response = self.client.get(statustype_list_url, {'status': 'alles'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_statustype_status_concept(self):
+        statustype1 = StatusTypeFactory.create(zaaktype__concept=True)
+        statustype2 = StatusTypeFactory.create(zaaktype__concept=False)
+        statustype_list_url = reverse('statustype-list')
+        statustype1_url = reverse('statustype-detail', kwargs={'uuid': statustype1.uuid})
+
+        response = self.client.get(statustype_list_url, {'status': 'concept'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{statustype1_url}')
+
+    def test_filter_statustype_status_definitief(self):
+        statustype1 = StatusTypeFactory.create(zaaktype__concept=True)
+        statustype2 = StatusTypeFactory.create(zaaktype__concept=False)
+        statustype_list_url = reverse('statustype-list')
+        statustype2_url = reverse('statustype-detail', kwargs={'uuid': statustype2.uuid})
+
+        response = self.client.get(statustype_list_url, {'status': 'definitief'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')

@@ -4,10 +4,10 @@ from ...datamodel.models import InformatieObjectType
 from ..filters import InformatieObjectTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import InformatieObjectTypeSerializer
-from .mixins import DraftMixin
+from .mixins import ConceptMixin
 
 
-class InformatieObjectTypeViewSet(DraftMixin,
+class InformatieObjectTypeViewSet(ConceptMixin,
                                   mixins.CreateModelMixin,
                                   mixins.DestroyModelMixin,
                                   viewsets.ReadOnlyModelViewSet):

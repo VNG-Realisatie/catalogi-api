@@ -14,7 +14,7 @@ from vng_api_common.fields import (
 from vng_api_common.models import APIMixin
 
 from ..choices import InternExtern, JaNee, ObjectTypen
-from .mixins import DraftMixin, GeldigheidMixin
+from .mixins import ConceptMixin, GeldigheidMixin
 
 
 class ZaakObjectType(GeldigheidMixin, models.Model):
@@ -195,7 +195,7 @@ class BronZaakType(models.Model):
         verbose_name_plural = _('Bron zaaktypen')
 
 
-class ZaakType(APIMixin, DraftMixin, GeldigheidMixin, models.Model):
+class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
     """
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort
 

@@ -71,6 +71,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -1050,6 +1064,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -1597,6 +1625,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -2177,6 +2219,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       - name: pagina
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -2759,6 +2815,20 @@ paths:
           - Klantcontacter
           - "Zaakco\xF6rdinator"
           - Mede-initiator
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -3303,6 +3373,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -3877,6 +3961,20 @@ paths:
           - Inkomend
           - Intern
           - Uitgaand
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -4421,6 +4519,20 @@ paths:
         schema:
           type: string
           format: uri
+      - name: status
+        in: query
+        description: 'filter objects depending on their concept status:
+
+          * `alles`: toon objecten waarvan het attribuut `concept` true of false is.
+
+          * `concept`: toon objecten waarvan het attribuut `concept` true is.
+
+          * `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: ''
@@ -5080,9 +5192,11 @@ components:
           description: De datum waarop het is opgeheven.
           type: string
           format: date
-        draft:
-          title: Draft
-          description: Flag indicating the object is a draft
+        concept:
+          title: Concept
+          description: Geeft aan of het object een concept betreft. Concepten zijn
+            niet-definitieve versies en zouden niet gebruikt moeten worden buiten
+            deze API.
           type: boolean
           readOnly: true
     Fout:
@@ -5389,9 +5503,11 @@ components:
           description: De datum waarop het is opgeheven.
           type: string
           format: date
-        draft:
-          title: Draft
-          description: Flag indicating the object is a draft
+        concept:
+          title: Concept
+          description: Geeft aan of het object een concept betreft. Concepten zijn
+            niet-definitieve versies en zouden niet gebruikt moeten worden buiten
+            deze API.
           type: boolean
           readOnly: true
     BrondatumArchiefprocedure:
@@ -5435,9 +5551,37 @@ components:
           description: Het soort object in de registratie dat het procesobject representeert.
           type: string
           enum:
-          - VerblijfsObject
-          - MeldingOpenbareRuimte
-          - InzageVerzoek
+          - adres
+          - besluit
+          - buurt
+          - enkelvoudigDocument
+          - gemeente
+          - gemeentelijkeOpenbareRuimte
+          - huishouden
+          - inrichtingselement
+          - kadastraleOnroerendeZaak
+          - kunstwerkdeel
+          - maatschappelijkeActiviteit
+          - medewerker
+          - natuurlijkPersoon
+          - nietNatuurlijkPersoon
+          - openbareRuimte
+          - organisatorischeEenheid
+          - pand
+          - spoorbaandeel
+          - status
+          - terreindeel
+          - terreinGebouwdObject
+          - vestiging
+          - waterdeel
+          - wegdeel
+          - wijk
+          - woonplaats
+          - wozDeelobject
+          - wozObject
+          - wozWaarde
+          - zakelijkRecht
+          - overige
         registratie:
           title: Registratie
           description: De naam van de registratie waarvan het procesobject deel uit
@@ -6005,8 +6149,10 @@ components:
             geldig zijn geworden
           type: string
           format: date
-        draft:
-          title: Draft
-          description: Flag indicating the object is a draft
+        concept:
+          title: Concept
+          description: Geeft aan of het object een concept betreft. Concepten zijn
+            niet-definitieve versies en zouden niet gebruikt moeten worden buiten
+            deze API.
           type: boolean
           readOnly: true

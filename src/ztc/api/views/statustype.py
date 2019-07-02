@@ -4,10 +4,10 @@ from ...datamodel.models import StatusType
 from ..filters import StatusTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import StatusTypeSerializer
-from .mixins import ZaakTypeDraftMixin
+from .mixins import ZaakTypeConceptMixin
 
 
-class StatusTypeViewSet(ZaakTypeDraftMixin,
+class StatusTypeViewSet(ZaakTypeConceptMixin,
                         mixins.CreateModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.ReadOnlyModelViewSet):

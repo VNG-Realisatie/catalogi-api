@@ -6,14 +6,14 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 
-class DraftPublishMixin:
+class ConceptPublishMixin:
     @swagger_auto_schema(
         request_body=no_body,
     )
     @action(detail=True, methods=['post'])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.draft = False
+        instance.concept = False
         instance.save()
 
         serializer = self.get_serializer(instance)
@@ -21,58 +21,83 @@ class DraftPublishMixin:
         return Response(serializer.data)
 
 
-class DraftDestroyMixin:
-    def get_draft(self, instance):
-        return instance.draft
+class ConceptDestroyMixin:
+    def get_concept(self, instance):
+        return instance.concept
 
     def perform_destroy(self, instance):
-        if not self.get_draft(instance):
-            msg = _("Deleting a non-draft object is forbidden")
+        if not self.get_concept(instance):
+            msg = _("Alleen concepten kunnen worden verwijderd.")
             raise PermissionDenied(detail=msg)
 
         super().perform_destroy(instance)
 
 
-class DraftMixin(DraftPublishMixin,
-                 DraftDestroyMixin):
-    """ mixin for resources which have 'draft' field"""
+class ConceptFilterMixin:
+    def get_concept_filter(self):
+        return {'concept': False}
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        if not hasattr(self, 'action') or self.action != 'list':
+            return qs
+
+        # show only non-concepts by default
+        query_params = self.request.query_params or {}
+        if 'status' in query_params:
+            return qs
+
+        return qs.filter(**self.get_concept_filter())
+
+
+class ConceptMixin(ConceptPublishMixin,
+                   ConceptDestroyMixin,
+                   ConceptFilterMixin):
+    """ mixin for resources which have 'concept' field"""
     pass
 
 
-class ZaakTypeDraftCreateMixin:
+class ZaakTypeConceptCreateMixin:
     def perform_create(self, serializer):
         zaaktype = serializer.validated_data['zaaktype']
-        if not zaaktype.draft:
-            msg = _("Creating a related object to non-draft object is forbidden")
+        if not zaaktype.concept:
+            msg = _("Creating a related object to non-concept object is forbidden")
             raise PermissionDenied(detail=msg)
 
         super().perform_create(serializer)
 
 
-class ZaakTypeDraftDestroyMixin(DraftDestroyMixin):
-    def get_draft(self, instance):
-        return instance.zaaktype.draft
+class ZaakTypeConceptDestroyMixin(ConceptDestroyMixin):
+    def get_concept(self, instance):
+        return instance.zaaktype.concept
 
 
-class ZaakTypeDraftMixin(ZaakTypeDraftCreateMixin,
-                         ZaakTypeDraftDestroyMixin):
+class ZaakTypeConceptFilterMixin(ConceptFilterMixin):
+    def get_concept_filter(self):
+        return {'zaaktype__concept': False}
+
+
+class ZaakTypeConceptMixin(ZaakTypeConceptCreateMixin,
+                           ZaakTypeConceptDestroyMixin,
+                           ZaakTypeConceptFilterMixin):
     """
     mixin for resources which have FK or one-to-one relations with ZaakType objects,
-    which support draft functionality
+    which support concept functionality
     """
     pass
 
 
-class M2MDraftCreateMixin:
+class M2MConceptCreateMixin:
 
-    draft_related_fields = []
+    concept_related_fields = []
 
     def perform_create(self, serializer):
-        for field_name in self.draft_related_fields:
+        for field_name in self.concept_related_fields:
             field = serializer.validated_data.get(field_name, [])
             for related_object in field:
-                if not related_object.draft:
-                    msg = _(f"Relations to a non-draft {field_name} object can't be created")
+                if not related_object.concept:
+                    msg = _(f"Relations to a non-concept {field_name} object can't be created")
                     raise PermissionDenied(detail=msg)
 
         super().perform_create(serializer)

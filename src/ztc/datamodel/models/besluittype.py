@@ -5,10 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.fields import DaysDurationField
 
-from .mixins import DraftMixin, GeldigheidMixin
+from .mixins import ConceptMixin, GeldigheidMixin
 
 
-class BesluitType(GeldigheidMixin,DraftMixin, models.Model):
+class BesluitType(GeldigheidMixin, ConceptMixin, models.Model):
     """
     Generieke aanduiding van de aard van een besluit.
 

@@ -17,18 +17,19 @@ from .base import APITestCase
 class InformatieObjectTypeAPITests(APITestCase):
     maxDiff = None
 
-    def test_get_list(self):
-        """Retrieve a list of `InformatieObjectType` objects."""
-        InformatieObjectTypeFactory.create()
+    def test_get_list_default_definitief(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype2_url = get_operation_url('informatieobjecttype_read',  uuid=informatieobjecttype2.uuid)
 
         response = self.client.get(informatieobjecttype_list_url)
-
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
 
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
 
     def test_get_detail(self):
         """Retrieve the details of a single `InformatieObjectType` object."""
@@ -65,7 +66,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             # 'isRelevantVoor': [],
             'beginGeldigheid': '2019-01-01',
             'eindeGeldigheid': None,
-            'draft': True,
+            'concept': True,
         }
         self.assertEqual(expected, response.json())
 
@@ -127,9 +128,9 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         self.assertEqual(informatieobjecttype.omschrijving, 'test')
         self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
-        self.assertEqual(informatieobjecttype.draft, True)
+        self.assertEqual(informatieobjecttype.concept, True)
 
-    def test_publish_zaaktype(self):
+    def test_publish_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttypee_url = get_operation_url('informatieobjecttype_publish', uuid=informatieobjecttype.uuid)
 
@@ -139,9 +140,9 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         informatieobjecttype.refresh_from_db()
 
-        self.assertEqual(informatieobjecttype.draft, False)
+        self.assertEqual(informatieobjecttype.concept, False)
 
-    def test_delete_zaaktype(self):
+    def test_delete_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
 
@@ -150,8 +151,8 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(InformatieObjectType.objects.filter(id=informatieobjecttype.id))
 
-    def test_delete_zaak_fail_not_draft(self):
-        informatieobjecttype = InformatieObjectTypeFactory.create(draft=False)
+    def test_delete_informatieobjecttype_fail_not_concept(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
 
         response = self.client.delete(informatieobjecttypee_url)
@@ -159,4 +160,48 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Deleting a non-draft object is forbidden')
+        self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
+
+
+class InformatieObjectTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_informatieobjecttype_status_alles(self):
+        InformatieObjectTypeFactory.create(concept=True)
+        InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'alles'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_informatieobjecttype_status_concept(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype1_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype1.uuid)
+
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'concept'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype1_url}')
+
+    def test_filter_informatieobjecttype_status_definitief(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype2_url = get_operation_url('informatieobjecttype_read',  uuid=informatieobjecttype2.uuid)
+
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'definitief'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
