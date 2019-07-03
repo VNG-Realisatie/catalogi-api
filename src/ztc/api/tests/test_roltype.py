@@ -19,7 +19,7 @@ class RolTypeAPITests(APITestCase):
         response = self.client.get(roltype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{roltype2_url}')
@@ -148,7 +148,7 @@ class RolTypeFilterAPITests(APITestCase):
         response = self.client.get(roltype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 2)
 
@@ -161,7 +161,7 @@ class RolTypeFilterAPITests(APITestCase):
         response = self.client.get(roltype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{roltype1_url}')
@@ -175,7 +175,7 @@ class RolTypeFilterAPITests(APITestCase):
         response = self.client.get(roltype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{roltype2_url}')

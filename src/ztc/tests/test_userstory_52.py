@@ -60,7 +60,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = response.json()
+        response_data = response.json()['results']
 
         self.assertEqual(len(response_data), 3)
         self.assertResponseTypes(response_data[0], {

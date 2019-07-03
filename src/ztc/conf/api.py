@@ -5,7 +5,8 @@ REST_FRAMEWORK.update({
     'DEFAULT_PERMISSION_CLASSES': (
         'vng_api_common.permissions.AuthScopesRequired',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'ztc.api.utils.pagination.HALPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
     # Filtering
     'SEARCH_PARAM': 'zoek',  # 'search',
     'ORDERING_PARAM': 'sorteer',  # 'ordering',

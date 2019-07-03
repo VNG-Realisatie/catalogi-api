@@ -16,9 +16,8 @@ class CatalogusViewSet(mixins.CreateModelMixin,
     list:
     Een verzameling van CATALOGUSsen.
     """
-    queryset = Catalogus.objects.all()
+    queryset = Catalogus.objects.all().order_by('-pk')
     serializer_class = CatalogusSerializer
-    pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,

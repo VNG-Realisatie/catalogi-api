@@ -13,7 +13,7 @@ class CatalogusAPITests(APITestCase):
         response = self.client.get(self.catalogus_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
 

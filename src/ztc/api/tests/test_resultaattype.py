@@ -20,7 +20,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         response = self.api_client.get(self.list_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
+        data = response.json()['results']
         self.assertEqual(len(data), 3)
         self.assertResponseTypes(
             data[0],
@@ -47,7 +47,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         response = self.client.get(resultaattype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{resultaattype2_url}')
@@ -235,7 +235,7 @@ class ResultaatTypeFilterAPITests(APITestCase):
         response = self.client.get(list_url, {'zaaktype': zt1_url})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = response.json()
+        response_data = response.json()['results']
         self.assertEqual(len(response_data), 1)
         self.assertEqual(response_data[0]['url'], rt1_url)
         self.assertEqual(response_data[0]['zaaktype'], zt1_url)
@@ -250,7 +250,7 @@ class ResultaatTypeFilterAPITests(APITestCase):
         response = self.client.get(resultaattype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 2)
 
@@ -263,7 +263,7 @@ class ResultaatTypeFilterAPITests(APITestCase):
         response = self.client.get(resultaattype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{resultaattype1_url}')
@@ -277,7 +277,7 @@ class ResultaatTypeFilterAPITests(APITestCase):
         response = self.client.get(resultaattype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{resultaattype2_url}')

@@ -18,10 +18,9 @@ class InformatieObjectTypeViewSet(ConceptMixin,
     list:
     Een verzameling van INFORMATIEOBJECTTYPEn.
     """
-    queryset = InformatieObjectType.objects.all()
+    queryset = InformatieObjectType.objects.all().order_by('-pk')
     serializer_class = InformatieObjectTypeSerializer
     filterset_class = InformatieObjectTypeFilter
-    pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,

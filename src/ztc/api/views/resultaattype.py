@@ -19,7 +19,7 @@ class ResultaatTypeViewSet(ZaakTypeConceptMixin,
     list:
     Een verzameling van RESULTAATTYPEn.
     """
-    queryset = ResultaatType.objects.all()
+    queryset = ResultaatType.objects.all().order_by('-pk')
     serializer_class = ResultaatTypeSerializer
     filter_class = ResultaatTypeFilter
     lookup_field = 'uuid'

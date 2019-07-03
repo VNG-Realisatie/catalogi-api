@@ -19,7 +19,7 @@ class StatusTypeAPITests(APITestCase):
         response = self.client.get(statustype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')
@@ -127,7 +127,7 @@ class StatusTypeFilterAPITests(APITestCase):
         response = self.client.get(statustype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 2)
 
@@ -140,7 +140,7 @@ class StatusTypeFilterAPITests(APITestCase):
         response = self.client.get(statustype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{statustype1_url}')
@@ -154,7 +154,7 @@ class StatusTypeFilterAPITests(APITestCase):
         response = self.client.get(statustype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')

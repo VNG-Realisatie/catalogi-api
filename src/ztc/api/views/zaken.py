@@ -50,9 +50,8 @@ class ZaakTypeViewSet(ConceptMixin,
         'eigenschap_set',
         'roltype_set',
         'besluittype_set',
-    )
+    ).order_by('-pk')
     serializer_class = ZaakTypeSerializer
-    pagination_class = None
     lookup_field = 'uuid'
     filterset_class = ZaakTypeFilter
     required_scopes = {

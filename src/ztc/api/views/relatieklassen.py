@@ -37,11 +37,10 @@ class ZaakTypeInformatieObjectTypeViewSet(ConceptFilterMixin,
 
     Meerdere querystring-parameters tegelijk worden als een AND beschouwd.
     """
-    queryset = ZaakInformatieobjectType.objects.all()
+    queryset = ZaakInformatieobjectType.objects.all().order_by('-pk')
     serializer_class = ZaakTypeInformatieObjectTypeSerializer
     filterset_class = ZaakInformatieobjectTypeFilter
     lookup_field = 'uuid'
-    pagination_class = None
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,

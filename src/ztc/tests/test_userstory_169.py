@@ -69,7 +69,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         })
 
         self.assertEqual(response.status_code, 200)
-        response_data = response.json()
+        response_data = response.json()['results']
 
         self.assertEqual(len(response_data), 1)
 
