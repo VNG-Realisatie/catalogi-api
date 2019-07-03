@@ -85,6 +85,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -97,9 +103,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BesluitType'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BesluitType'
         '400':
           description: ''
           headers:
@@ -656,6 +676,13 @@ paths:
     get:
       operationId: catalogus_list
       description: Een verzameling van CATALOGUSsen.
+      parameters:
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -668,9 +695,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Catalogus'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Catalogus'
         '401':
           description: ''
           headers:
@@ -1078,6 +1119,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -1090,9 +1137,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Eigenschap'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Eigenschap'
         '400':
           description: ''
           headers:
@@ -1639,6 +1700,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -1651,9 +1718,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InformatieObjectType'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InformatieObjectType'
         '400':
           description: ''
           headers:
@@ -2233,7 +2314,7 @@ paths:
         required: false
         schema:
           type: string
-      - name: pagina
+      - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
         required: false
@@ -2829,6 +2910,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -2841,9 +2928,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RolType'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RolType'
         '400':
           description: ''
           headers:
@@ -3387,6 +3488,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -3399,9 +3506,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/StatusType'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusType'
         '400':
           description: ''
           headers:
@@ -3975,6 +4096,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -3987,9 +4114,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
         '400':
           description: ''
           headers:
@@ -4533,6 +4674,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: page
+        in: query
+        description: Een pagina binnen de gepagineerde set resultaten.
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: ''
@@ -4545,9 +4692,23 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ZaakType'
+                required:
+                - count
+                - results
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                    format: uri
+                  previous:
+                    type: string
+                    format: uri
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ZaakType'
         '400':
           description: ''
           headers:
