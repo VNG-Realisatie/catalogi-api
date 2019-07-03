@@ -237,6 +237,35 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
         self.assertEqual(data[0]['url'], f'http://testserver{ziot4_url}')
 
 
+class ZaakInformatieobjectTypePaginationTestCase(APITestCase):
+    maxDiff = None
+    list_url = reverse_lazy(ZaakInformatieobjectType)
+
+    def test_pagination_default(self):
+        ZaakInformatieobjectTypeFactory.create_batch(2, zaaktype__concept=False, informatie_object_type__concept=False)
+
+        response = self.client.get(self.list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        ZaakInformatieobjectTypeFactory.create_batch(2, zaaktype__concept=False, informatie_object_type__concept=False)
+
+        response = self.client.get(self.list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+
 @skip("Not MVP yet")
 class ZaakInformatieobjectTypeArchiefregimeAPITests(APITestCase):
     maxDiff = None

@@ -200,3 +200,33 @@ class EigenschapFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{eigenschap2_url}')
+
+
+class EigenschapPaginationTestCase(APITestCase):
+    maxDiff = None
+
+    def test_pagination_default(self):
+        EigenschapFactory.create_batch(2, zaaktype__concept=False)
+        eigenschap_list_url = reverse('eigenschap-list')
+
+        response = self.client.get(eigenschap_list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        EigenschapFactory.create_batch(2, zaaktype__concept=False)
+        eigenschap_list_url = reverse('eigenschap-list')
+
+        response = self.client.get(eigenschap_list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])

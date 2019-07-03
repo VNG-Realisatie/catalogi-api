@@ -158,3 +158,33 @@ class StatusTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')
+
+
+class StatusTypePaginationTestCase(APITestCase):
+    maxDiff = None
+
+    def test_pagination_default(self):
+        StatusTypeFactory.create_batch(2, zaaktype__concept=False)
+        statustype_list_url = reverse('statustype-list')
+
+        response = self.client.get(statustype_list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        StatusTypeFactory.create_batch(2, zaaktype__concept=False)
+        statustype_list_url = reverse('statustype-list')
+
+        response = self.client.get(statustype_list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])

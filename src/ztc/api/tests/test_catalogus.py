@@ -51,3 +51,27 @@ class CatalogusAPITests(APITestCase):
         catalog = Catalogus.objects.get(domein='TEST')
 
         self.assertEqual(catalog.rsin, '100000009')
+
+
+class CatalogusPaginationTestCase(APITestCase):
+    maxDiff = None
+
+    def test_pagination_default(self):
+        response = self.client.get(self.catalogus_list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 1)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        response = self.client.get(self.catalogus_list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 1)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
