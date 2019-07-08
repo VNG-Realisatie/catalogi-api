@@ -1,9 +1,8 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import include, path, re_path
+from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 from vng_api_common.views import ViewConfigView
@@ -11,14 +10,7 @@ from vng_api_common.views import ViewConfigView
 from .views import DumpDataFixtureView, DumpDataView
 
 urlpatterns = [
-    path('admin/password_reset/', auth_views.password_reset, name='admin_password_reset'),
-    path('admin/password_reset/done/', auth_views.password_reset_done, name='password_reset_done'),
     path('admin/', admin.site.urls),
-    re_path(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
-            auth_views.password_reset_confirm, name='password_reset_confirm'),
-    path('reset/done/', auth_views.password_reset_complete, name='password_reset_complete'),
-
-    # API views
     path('api/', include('ztc.api.urls')),
 
     # Simply show the master template.
