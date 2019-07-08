@@ -6360,6 +6360,7 @@
             "required": [
                 "catalogus",
                 "zaaktypes",
+                "publicatieIndicatie",
                 "informatieobjecttypes",
                 "beginGeldigheid"
             ],
@@ -7240,6 +7241,9 @@
                 "onderwerp",
                 "handelingBehandelaar",
                 "doorlooptijd",
+                "opschortingEnAanhoudingMogelijk",
+                "verlengingMogelijk",
+                "publicatieIndicatie",
                 "productenOfDiensten",
                 "referentieproces",
                 "catalogus",

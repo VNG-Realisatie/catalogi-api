@@ -17,7 +17,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van BESLUITen van het BESLUITTYPE | string | nee | C​R​U​D |
 | besluitcategorie | Typering van de aard van BESLUITen van het BESLUITTYPE. | string | nee | C​R​U​D |
 | reactietermijn | Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is. | string | nee | C​R​U​D |
-| publicatieIndicatie | Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten worden. | boolean | nee | C​R​U​D |
+| publicatieIndicatie | Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten worden. | boolean | ja | C​R​U​D |
 | publicatietekst | De generieke tekst van de publicatie van BESLUITen van dit BESLUITTYPE | string | nee | C​R​U​D |
 | publicatietermijn | Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven. | string | nee | C​R​U​D |
 | toelichting | Een eventuele toelichting op dit BESLUITTYPE. | string | nee | C​R​U​D |
@@ -166,11 +166,11 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | handelingBehandelaar | Werkwoord dat hoort bij de handeling die de behandelaar verricht bij het afdoen van ZAAKen van dit ZAAKTYPE. Meestal &#39;behandelen&#39;, &#39;uitvoeren&#39;, &#39;vaststellen&#39; of &#39;onderhouden&#39;. Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_behandelaar | string | ja | C​R​U​D |
 | doorlooptijd | De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen. | string | ja | C​R​U​D |
 | servicenorm | De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s). | string | nee | C​R​U​D |
-| opschortingEnAanhoudingMogelijk | Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE kunnen worden opgeschort en/of aangehouden. | boolean | nee | C​R​U​D |
-| verlengingMogelijk | Aanduiding die aangeeft of de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. | boolean | nee | C​R​U​D |
+| opschortingEnAanhoudingMogelijk | Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE kunnen worden opgeschort en/of aangehouden. | boolean | ja | C​R​U​D |
+| verlengingMogelijk | Aanduiding die aangeeft of de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. | boolean | ja | C​R​U​D |
 | verlengingstermijn | De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging mogelijk is. | string | nee | C​R​U​D |
 | trefwoorden | Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd. | array | nee | C​R​U​D |
-| publicatieIndicatie | Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden. | boolean | nee | C​R​U​D |
+| publicatieIndicatie | Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd moet worden. | boolean | ja | C​R​U​D |
 | publicatietekst | De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE. | string | nee | C​R​U​D |
 | verantwoordingsrelatie | De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige en/of financiële verantwoording. | array | nee | C​R​U​D |
 | productenOfDiensten | Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht. | array | ja | C​R​U​D |

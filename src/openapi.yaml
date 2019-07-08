@@ -5275,6 +5275,7 @@ components:
       required:
       - catalogus
       - zaaktypes
+      - publicatieIndicatie
       - informatieobjecttypes
       - beginGeldigheid
       type: object
@@ -6066,6 +6067,9 @@ components:
       - onderwerp
       - handelingBehandelaar
       - doorlooptijd
+      - opschortingEnAanhoudingMogelijk
+      - verlengingMogelijk
+      - publicatieIndicatie
       - productenOfDiensten
       - referentieproces
       - catalogus
