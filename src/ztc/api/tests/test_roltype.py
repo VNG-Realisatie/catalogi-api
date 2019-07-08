@@ -1,10 +1,10 @@
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
+from vng_api_common.tests import reverse
 
 from ...datamodel.models import RolType
 from ...datamodel.tests.factories import RolTypeFactory, ZaakTypeFactory
 from .base import APITestCase
-from .utils import reverse
 
 
 class RolTypeAPITests(APITestCase):
@@ -179,6 +179,23 @@ class RolTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{roltype2_url}')
+
+    def test_filter_zaaktype(self):
+        roltype1 = RolTypeFactory.create(zaaktype__concept=False)
+        roltype2 = RolTypeFactory.create(zaaktype__concept=False)
+        zaaktype1 = roltype1.zaaktype
+        roltype_list_url = reverse('roltype-list')
+        roltype1_url = reverse(roltype1)
+        zaaktype1_url = reverse(zaaktype1)
+
+        response = self.client.get(roltype_list_url, {'zaaktype': zaaktype1_url})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{roltype1_url}')
 
 
 class RolTypePaginationTestCase(APITestCase):

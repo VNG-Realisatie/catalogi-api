@@ -1,6 +1,8 @@
 from rest_framework import status
+from vng_api_common.tests import reverse
 
 from ztc.datamodel.models import Catalogus
+from ztc.datamodel.tests.factories import CatalogusFactory
 
 from .base import APITestCase
 
@@ -51,6 +53,62 @@ class CatalogusAPITests(APITestCase):
         catalog = Catalogus.objects.get(domein='TEST')
 
         self.assertEqual(catalog.rsin, '100000009')
+
+
+class CatalogusFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_domein_exact(self):
+        catalogus1 = CatalogusFactory.create(domein='ABC')
+        catalogus2 = CatalogusFactory.create(domein='DEF')
+
+        response = self.client.get(self.catalogus_list_url, {'domein': 'ABC'})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{reverse(catalogus1)}')
+
+    def test_filter_domein_in(self):
+        catalogus1 = CatalogusFactory.create(domein='ABC')
+        catalogus2 = CatalogusFactory.create(domein='DEF')
+
+        response = self.client.get(self.catalogus_list_url, {'domein__in': 'ABC,AAA'})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{reverse(catalogus1)}')
+
+    def test_filter_rsin_exact(self):
+        catalogus1 = CatalogusFactory.create(rsin='100000009')
+        catalogus2 = CatalogusFactory.create(rsin='100000020')
+
+        response = self.client.get(self.catalogus_list_url, {'rsin': '100000009'})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{reverse(catalogus1)}')
+
+    def test_filter_rsin_in(self):
+        catalogus1 = CatalogusFactory.create(rsin='100000009')
+        catalogus2 = CatalogusFactory.create(rsin='100000022')
+
+        response = self.client.get(self.catalogus_list_url, {'rsin__in': '100000009,100000010'})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{reverse(catalogus1)}')
 
 
 class CatalogusPaginationTestCase(APITestCase):

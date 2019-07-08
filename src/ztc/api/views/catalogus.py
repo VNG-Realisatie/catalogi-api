@@ -2,6 +2,7 @@ from rest_framework import mixins, viewsets
 
 from ztc.datamodel.models import Catalogus
 
+from ..filters import CatalogusFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import CatalogusSerializer
 
@@ -18,6 +19,7 @@ class CatalogusViewSet(mixins.CreateModelMixin,
     """
     queryset = Catalogus.objects.all().order_by('-pk')
     serializer_class = CatalogusSerializer
+    filter_class = CatalogusFilter
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
