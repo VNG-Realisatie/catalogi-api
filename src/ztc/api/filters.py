@@ -1,9 +1,10 @@
 from django_filters import rest_framework as filters
 from vng_api_common.filtersets import FilterSet
+from vng_api_common.utils import get_resource_for_path
 
 from ztc.datamodel.models import (
     BesluitType, Eigenschap, InformatieObjectType, ResultaatType, RolType,
-    StatusType, ZaakInformatieobjectType, ZaakType
+    StatusType, ZaakInformatieobjectType, ZaakType, Catalogus
 )
 
 # custom filter to show concept and non-concepts
@@ -21,6 +22,15 @@ def status_filter(queryset, name, value):
         return queryset.filter(**{name: False})
     elif value == 'alles':
         return queryset
+
+
+def m2m_filter(queryset, name, value):
+    object = get_resource_for_path(value)
+    return queryset.filter(**{name: object})
+
+
+class CharArrayFilter(filters.BaseInFilter, filters.CharFilter):
+    pass
 
 
 class RolTypeFilter(FilterSet):
@@ -91,11 +101,15 @@ class EigenschapFilter(FilterSet):
 
 class ZaakTypeFilter(FilterSet):
     status = filters.CharFilter(field_name='concept', method=status_filter, help_text=STATUS_HELP_TEXT)
+    trefwoorden = CharArrayFilter(field_name='trefwoorden', lookup_expr='contains')
+    identificatie = filters.NumberFilter(field_name='zaaktype_identificatie')
 
     class Meta:
         model = ZaakType
         fields = (
             'catalogus',
+            'identificatie',
+            'trefwoorden',
             'status'
         )
 
@@ -112,11 +126,24 @@ class InformatieObjectTypeFilter(FilterSet):
 
 
 class BesluitTypeFilter(FilterSet):
+    zaaktypes = filters.CharFilter(field_name='zaaktypes', method=m2m_filter)
+    informatieobjecttypes = filters.CharFilter(field_name='informatieobjecttypes', method=m2m_filter)
     status = filters.CharFilter(field_name='concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
         model = BesluitType
         fields = (
             'catalogus',
+            'zaaktypes',
+            'informatieobjecttypes',
             'status'
         )
+
+
+class CatalogusFilter(FilterSet):
+    class Meta:
+        model = Catalogus
+        fields = {
+            'domein': ['exact', 'in'],
+            'rsin': ['exact', 'in'],
+        }
