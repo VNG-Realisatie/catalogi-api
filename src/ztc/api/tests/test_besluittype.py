@@ -1,12 +1,11 @@
 from rest_framework import status
-from vng_api_common.tests import get_validation_errors
+from vng_api_common.tests import get_validation_errors, reverse
 
 from ...datamodel.models import BesluitType
 from ...datamodel.tests.factories import (
     BesluitTypeFactory, InformatieObjectTypeFactory, ZaakTypeFactory
 )
 from .base import APITestCase
-from .utils import reverse
 
 
 class BesluitTypeAPITests(APITestCase):
@@ -370,6 +369,43 @@ class BesluitTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{besluittype2_url}')
+
+    def test_filter_zaaktypes(self):
+        besluittype1 = BesluitTypeFactory.create(concept=False)
+        besluittype2 = BesluitTypeFactory.create(concept=False)
+        zaaktype1 = besluittype1.zaaktypes.get()
+        zaaktype1_url = reverse(zaaktype1)
+        besluittype_list_url = reverse('besluittype-list')
+        besluittype1_url = reverse(besluittype1)
+
+        response = self.client.get(besluittype_list_url, {'zaaktypes': zaaktype1_url})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{besluittype1_url}')
+
+    def test_filter_informatieobjecttypes(self):
+        besluittype1 = BesluitTypeFactory.create(concept=False)
+        besluittype2 = BesluitTypeFactory.create(concept=False)
+        iot1 = InformatieObjectTypeFactory.create(
+            catalogus=self.catalogus,
+        )
+        besluittype1.informatieobjecttypes.add(iot1)
+        besluittype_list_url = reverse('besluittype-list')
+        besluittype1_url = reverse(besluittype1)
+        iot1_url = reverse(iot1)
+
+        response = self.client.get(besluittype_list_url, {'informatieobjecttypes': iot1_url})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{besluittype1_url}')
 
 
 class BesluitTypePaginationTestCase(APITestCase):

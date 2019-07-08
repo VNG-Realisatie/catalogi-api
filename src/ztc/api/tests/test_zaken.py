@@ -337,6 +337,34 @@ class ZaakTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{zaaktype2_url}')
 
+    def test_filter_identificatie(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=False, zaaktype_identificatie=123)
+        zaaktype2 = ZaakTypeFactory.create(concept=False, zaaktype_identificatie=456)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'identificatie': 123})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
+
+    def test_filter_trefwoorden(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=False, trefwoorden=['some', 'key', 'words'])
+        zaaktype2 = ZaakTypeFactory.create(concept=False, trefwoorden=['other', 'words'])
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'trefwoorden': 'key'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
+
 
 @skip("Not in current MVP")
 class ZaakObjectTypeAPITests(APITestCase):
