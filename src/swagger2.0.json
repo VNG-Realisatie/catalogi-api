@@ -47,6 +47,20 @@
                         "format": "uri"
                     },
                     {
+                        "name": "zaaktypes",
+                        "in": "query",
+                        "description": "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "informatieobjecttypes",
+                        "in": "query",
+                        "description": "Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "status",
                         "in": "query",
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
@@ -791,6 +805,34 @@
                 "description": "Een verzameling van CATALOGUSsen.",
                 "parameters": [
                     {
+                        "name": "domein",
+                        "in": "query",
+                        "description": "Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "domein__in",
+                        "in": "query",
+                        "description": "Multiple values may be separated by commas.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rsin",
+                        "in": "query",
+                        "description": "Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rsin__in",
+                        "in": "query",
+                        "description": "Multiple values may be separated by commas.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -826,6 +868,20 @@
                                     }
                                 }
                             }
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
                         },
                         "headers": {
                             "API-version": {
@@ -5614,6 +5670,20 @@
                         "required": false,
                         "type": "string",
                         "format": "uri"
+                    },
+                    {
+                        "name": "identificatie",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "name": "trefwoorden",
+                        "in": "query",
+                        "description": "Multiple values may be separated by commas.",
+                        "required": false,
+                        "type": "string"
                     },
                     {
                         "name": "status",

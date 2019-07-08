@@ -1,3 +1,5 @@
+from django.utils.translation import ugettext_lazy as _
+
 from django_filters import rest_framework as filters
 from vng_api_common.filtersets import FilterSet
 from vng_api_common.utils import get_resource_for_path
@@ -126,8 +128,15 @@ class InformatieObjectTypeFilter(FilterSet):
 
 
 class BesluitTypeFilter(FilterSet):
-    zaaktypes = filters.CharFilter(field_name='zaaktypes', method=m2m_filter)
-    informatieobjecttypes = filters.CharFilter(field_name='informatieobjecttypes', method=m2m_filter)
+    zaaktypes = filters.CharFilter(
+        field_name='zaaktypes', method=m2m_filter,
+        help_text=_('ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE')
+    )
+    informatieobjecttypes = filters.CharFilter(
+        field_name='informatieobjecttypes', method=m2m_filter,
+        help_text=_('Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit '
+                    'BESLUITTYPE worden vastgelegd.')
+    )
     status = filters.CharFilter(field_name='concept', method=status_filter, help_text=STATUS_HELP_TEXT)
 
     class Meta:
