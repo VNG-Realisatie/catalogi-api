@@ -26,7 +26,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         response = self.client.get(informatieobjecttype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
@@ -174,7 +174,7 @@ class InformatieObjectTypeFilterAPITests(APITestCase):
         response = self.client.get(informatieobjecttype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 2)
 
@@ -187,7 +187,7 @@ class InformatieObjectTypeFilterAPITests(APITestCase):
         response = self.client.get(informatieobjecttype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype1_url}')
@@ -201,7 +201,37 @@ class InformatieObjectTypeFilterAPITests(APITestCase):
         response = self.client.get(informatieobjecttype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
+
+
+class InformatieObjectTypePaginationTestCase(APITestCase):
+    maxDiff = None
+
+    def test_pagination_default(self):
+        InformatieObjectTypeFactory.create_batch(2, concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        InformatieObjectTypeFactory.create_batch(2, concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])

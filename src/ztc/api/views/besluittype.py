@@ -20,10 +20,9 @@ class BesluitTypeViewSet(ConceptMixin,
     Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het
     zaakgericht werken van de behandelende organisatie(s).
     """
-    queryset = BesluitType.objects.all()
+    queryset = BesluitType.objects.all().order_by('-pk')
     serializer_class = BesluitTypeSerializer
     filterset_class = BesluitTypeFilter
-    pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,

@@ -20,10 +20,9 @@ class RolTypeViewSet(CheckQueryParamsMixin,
     list:
     Een verzameling van ROLTYPEn.
     """
-    queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set')
+    queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set').order_by('-pk')
     serializer_class = RolTypeSerializer
     filterset_class = RolTypeFilter
-    pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,

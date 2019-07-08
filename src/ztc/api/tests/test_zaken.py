@@ -28,7 +28,7 @@ class ZaakTypeAPITests(APITestCase):
         response = self.client.get(zaaktype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{zaaktype2_url}')
@@ -305,7 +305,7 @@ class ZaakTypeFilterAPITests(APITestCase):
         response = self.client.get(zaaktype_list_url, {'status': 'alles'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 2)
 
@@ -318,7 +318,7 @@ class ZaakTypeFilterAPITests(APITestCase):
         response = self.client.get(zaaktype_list_url, {'status': 'concept'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
@@ -332,7 +332,7 @@ class ZaakTypeFilterAPITests(APITestCase):
         response = self.client.get(zaaktype_list_url, {'status': 'definitief'})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{zaaktype2_url}')
@@ -385,3 +385,33 @@ class ZaakObjectTypeAPITests(APITestCase):
             'url': 'http://testserver{}'.format(self.zaakobjecttype_detail_url)
         }
         self.assertEqual(expected, response.json())
+
+
+class ZaakTypePaginationTestCase(APITestCase):
+    maxDiff = None
+
+    def test_pagination_default(self):
+        ZaakTypeFactory.create_batch(2, concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+
+        response = self.client.get(zaaktype_list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        ZaakTypeFactory.create_batch(2, concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+
+        response = self.client.get(zaaktype_list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])

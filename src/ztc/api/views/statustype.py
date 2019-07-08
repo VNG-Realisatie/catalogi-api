@@ -18,10 +18,9 @@ class StatusTypeViewSet(ZaakTypeConceptMixin,
     list:
     Een verzameling van STATUSTYPEn.
     """
-    queryset = StatusType.objects.all()
+    queryset = StatusType.objects.all().order_by('-pk')
     serializer_class = StatusTypeSerializer
     filterset_class = StatusTypeFilter
-    pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,

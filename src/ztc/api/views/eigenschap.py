@@ -20,10 +20,9 @@ class EigenschapViewSet(ZaakTypeConceptMixin,
     list:
     Een verzameling van EIGENSCHAPpen.
     """
-    queryset = Eigenschap.objects.all()
+    queryset = Eigenschap.objects.all().order_by('-pk')
     serializer_class = EigenschapSerializer
     filterset_class = EigenschapFilter
-    pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,

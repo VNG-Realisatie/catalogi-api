@@ -52,15 +52,42 @@
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/BesluitType"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/BesluitType"
+                                    }
+                                }
                             }
                         },
                         "headers": {
@@ -762,14 +789,42 @@
             "get": {
                 "operationId": "catalogus_list",
                 "description": "Een verzameling van CATALOGUSsen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Catalogus"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Catalogus"
+                                    }
+                                }
                             }
                         },
                         "headers": {
@@ -1268,15 +1323,42 @@
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Eigenschap"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Eigenschap"
+                                    }
+                                }
                             }
                         },
                         "headers": {
@@ -1943,15 +2025,42 @@
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/InformatieObjectType"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/InformatieObjectType"
+                                    }
+                                }
                             }
                         },
                         "headers": {
@@ -2670,7 +2779,7 @@
                         "type": "string"
                     },
                     {
-                        "name": "pagina",
+                        "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
                         "required": false,
@@ -3387,15 +3496,42 @@
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/RolType"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/RolType"
+                                    }
+                                }
                             }
                         },
                         "headers": {
@@ -4061,15 +4197,42 @@
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/StatusType"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/StatusType"
+                                    }
+                                }
                             }
                         },
                         "headers": {
@@ -4756,15 +4919,42 @@
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ZaakTypeInformatieObjectType"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/ZaakTypeInformatieObjectType"
+                                    }
+                                }
                             }
                         },
                         "headers": {
@@ -5431,15 +5621,42 @@
                         "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Een pagina binnen de gepagineerde set resultaten.",
+                        "required": false,
+                        "type": "integer"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ZaakType"
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "count": {
+                                    "type": "integer"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "format": "uri"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/ZaakType"
+                                    }
+                                }
                             }
                         },
                         "headers": {
