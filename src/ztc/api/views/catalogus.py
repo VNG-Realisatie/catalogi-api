@@ -2,9 +2,9 @@ from rest_framework import mixins, viewsets
 
 from ztc.datamodel.models import Catalogus
 
+from ..filters import CatalogusFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import CatalogusSerializer
-from ..filters import CatalogusFilter
 
 
 class CatalogusViewSet(mixins.CreateModelMixin,

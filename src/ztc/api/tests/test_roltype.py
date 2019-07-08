@@ -1,10 +1,10 @@
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
+from vng_api_common.tests import reverse
 
 from ...datamodel.models import RolType
 from ...datamodel.tests.factories import RolTypeFactory, ZaakTypeFactory
 from .base import APITestCase
-from vng_api_common.tests import reverse
 
 
 class RolTypeAPITests(APITestCase):

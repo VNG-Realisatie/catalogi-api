@@ -3,8 +3,8 @@ from vng_api_common.filtersets import FilterSet
 from vng_api_common.utils import get_resource_for_path
 
 from ztc.datamodel.models import (
-    BesluitType, Eigenschap, InformatieObjectType, ResultaatType, RolType,
-    StatusType, ZaakInformatieobjectType, ZaakType, Catalogus
+    BesluitType, Catalogus, Eigenschap, InformatieObjectType, ResultaatType,
+    RolType, StatusType, ZaakInformatieobjectType, ZaakType
 )
 
 # custom filter to show concept and non-concepts

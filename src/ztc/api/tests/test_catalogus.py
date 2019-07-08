@@ -1,8 +1,8 @@
 from rest_framework import status
+from vng_api_common.tests import reverse
 
 from ztc.datamodel.models import Catalogus
 from ztc.datamodel.tests.factories import CatalogusFactory
-from vng_api_common.tests import reverse
 
 from .base import APITestCase
 
