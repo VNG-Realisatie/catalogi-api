@@ -42,6 +42,8 @@ class ZaaktypeValidationTests(TestCase):
             'versiedatum': '2019-01-01',
             'producten_of_diensten': ['http://example.com/producten_of_diensten/1'],
             'referentieproces_naam': 'test',
+            'trefwoorden': [],
+            'verantwoordingsrelatie': [],
         })
 
         valid = form.is_valid()
@@ -76,6 +78,8 @@ class ZaaktypeValidationTests(TestCase):
             'versiedatum': '2018-10-01',
             'producten_of_diensten': ['http://example.com/producten_of_diensten/1'],
             'referentieproces_naam': 'test',
+            'trefwoorden': [],
+            'verantwoordingsrelatie': []
         })
 
         valid = form.is_valid()
@@ -112,6 +116,8 @@ class ZaaktypeValidationTests(TestCase):
             'versiedatum': '2019-01-01',
             'producten_of_diensten': ['http://example.com/producten_of_diensten/1'],
             'referentieproces_naam': 'test',
+            'trefwoorden': [],
+            'verantwoordingsrelatie': []
         })
 
         valid = form.is_valid()

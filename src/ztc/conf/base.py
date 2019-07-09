@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_filters',
     'django_markup',
+    'django_better_admin_arrayfield.apps.DjangoBetterAdminArrayfieldConfig',
 
     # Project applications.
     'ztc.accounts',
