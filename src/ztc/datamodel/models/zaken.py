@@ -1,6 +1,6 @@
 import uuid
 
-from django.contrib.postgres.fields import ArrayField
+from django_better_admin_arrayfield.models.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
