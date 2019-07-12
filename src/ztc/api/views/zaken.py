@@ -1,32 +1,29 @@
 from rest_framework import mixins, viewsets
-from vng_api_common.viewsets import NestedViewSetMixin
 
-from ...datamodel.models import ZaakObjectType, ZaakType
+from ...datamodel.models import ZaakType
 from ..filters import ZaakTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
-from ..serializers import ZaakObjectTypeSerializer, ZaakTypeSerializer
-from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from ..serializers import ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 
-class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
-                            FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
-    """
-    retrieve:
-    De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
-
-    list:
-    Een verzameling van ZAAKOBJECTTYPEn.
-    """
-    queryset = ZaakObjectType.objects.all()
-    serializer_class = ZaakObjectTypeSerializer
-
-    required_scopes = {
-        'list': SCOPE_ZAAKTYPES_READ,
-        'retrieve': SCOPE_ZAAKTYPES_READ,
-
-    }
+# class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
+#                             FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+#     """
+#     retrieve:
+#     De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
+#
+#     list:
+#     Een verzameling van ZAAKOBJECTTYPEn.
+#     """
+#     queryset = ZaakObjectType.objects.all()
+#     serializer_class = ZaakObjectTypeSerializer
+#
+#     required_scopes = {
+#         'list': SCOPE_ZAAKTYPES_READ,
+#         'retrieve': SCOPE_ZAAKTYPES_READ,
+#
+#     }
 
 
 class ZaakTypeViewSet(ConceptMixin,

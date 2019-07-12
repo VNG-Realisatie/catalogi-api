@@ -2,19 +2,15 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import mixins, viewsets
 from rest_framework.exceptions import PermissionDenied
-from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import (
-    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime
+    ZaakInformatieobjectType
 )
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import (
-    ZaakInformatieobjectTypeArchiefregimeSerializer,
     ZaakTypeInformatieObjectTypeSerializer
 )
-from ..utils.rest_flex_fields import FlexFieldsMixin
-from ..utils.viewsets import FilterSearchOrderingViewSetMixin
 from .mixins import ConceptDestroyMixin, ConceptFilterMixin
 
 
@@ -64,19 +60,19 @@ class ZaakTypeInformatieObjectTypeViewSet(ConceptFilterMixin,
         return {'zaaktype__concept': False, 'informatie_object_type__concept': False}
 
 
-class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
-                                                   FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
-    """
-    retrieve:
-    Afwijkende archiveringskenmerken van informatieobjecten van een INFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE op
-    grond van resultaten van een RESULTAATTYPE bij dat ZAAKTYPE.
-
-    list:
-    Een verzameling van ZAAKINFORMATIEOBJECTTYPEARCHIEFREGIMEs.
-    """
-    queryset = ZaakInformatieobjectTypeArchiefregime.objects.all()
-    serializer_class = ZaakInformatieobjectTypeArchiefregimeSerializer
-    required_scopes = {
-        'list': SCOPE_ZAAKTYPES_READ,
-        'retrieve': SCOPE_ZAAKTYPES_READ,
-    }
+# class ZaakInformatieobjectTypeArchiefregimeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
+#                                                    FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
+#     """
+#     retrieve:
+#     Afwijkende archiveringskenmerken van informatieobjecten van een INFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE op
+#     grond van resultaten van een RESULTAATTYPE bij dat ZAAKTYPE.
+#
+#     list:
+#     Een verzameling van ZAAKINFORMATIEOBJECTTYPEARCHIEFREGIMEs.
+#     """
+#     queryset = ZaakInformatieobjectTypeArchiefregime.objects.all()
+#     serializer_class = ZaakInformatieobjectTypeArchiefregimeSerializer
+#     required_scopes = {
+#         'list': SCOPE_ZAAKTYPES_READ,
+#         'retrieve': SCOPE_ZAAKTYPES_READ,
+#     }
