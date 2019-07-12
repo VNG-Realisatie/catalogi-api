@@ -6,7 +6,7 @@ Copyright
 
 .. |copy|   unicode:: U+000A9 .. COPYRIGHT SIGN
 
-Copyright |copy| 2018, Maykin Media B.V.
+Copyright |copy| 2018, VNG Realisatie
 
 All rights reserved. This material may be copied or distributed only subject
 to the terms and conditions set forth in the `Creative Commons
