@@ -1,5 +1,7 @@
 from drf_writable_nested import NestedCreateMixin
 from rest_framework import serializers
+from vng_api_common.serializers import add_choice_values_help_text
+from vng_api_common.constants import RolOmschrijving
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
 
@@ -47,3 +49,9 @@ class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerialize
                 'lookup_field': 'uuid'
             }
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(RolOmschrijving)
+        self.fields['omschrijving_generiek'].help_text += f"\n\n{value_display_mapping}"

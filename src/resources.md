@@ -10,7 +10,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | catalogus | De CATALOGUS waartoe dit BESLUITTYPE behoort. | string | ja | C​R​U​D |
 | zaaktypes |  | array | ja | C​R​U​D |
 | omschrijving | Omschrijving van de aard van BESLUITen van het BESLUITTYPE. | string | nee | C​R​U​D |
@@ -32,7 +32,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | domein | Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt. | string | ja | C​R​U​D |
 | rsin | Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS. | string | ja | C​R​U​D |
 | contactpersoonBeheerNaam | De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS. | string | ja | C​R​U​D |
@@ -49,7 +49,14 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
 | groep | Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert. | string | nee | C​R​U​D |
-| formaat | Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd. | string | ja | C​R​U​D |
+| formaat | Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.
+
+Uitleg bij mogelijke waarden:
+
+* `tekst` - Tekst
+* `getal` - Getal
+* `datum (jjjjmmdd)` - Datum
+* `datum/tijd (jjjjmmdduummss)` - Datum/tijd | string | ja | C​R​U​D |
 | lengte | Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd. | string | ja | C​R​U​D |
 | kardinaliteit | Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE. | string | ja | C​R​U​D |
 | waardenverzameling | Waarden die deze EIGENSCHAP kan hebben (Gebruik een komma om waarden van elkaar te onderscheiden.) | array | nee | C​R​U​D |
@@ -60,7 +67,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | naam | De naam van de EIGENSCHAP | string | ja | C​R​U​D |
 | definitie | De beschrijving van de betekenis van deze EIGENSCHAP | string | ja | C​R​U​D |
 | toelichting | Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE. | string | nee | C​R​U​D |
@@ -72,10 +79,21 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | catalogus | De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort. | string | ja | C​R​U​D |
 | omschrijving | Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | string | ja | C​R​U​D |
-| vertrouwelijkheidaanduiding | Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn. | string | ja | C​R​U​D |
+| vertrouwelijkheidaanduiding | Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn.
+
+Uitleg bij mogelijke waarden:
+
+* `openbaar` - Openbaar
+* `beperkt_openbaar` - Beperkt openbaar
+* `intern` - Intern
+* `zaakvertrouwelijk` - Zaakvertrouwelijk
+* `vertrouwelijk` - Vertrouwelijk
+* `confidentieel` - Confidentieel
+* `geheim` - Geheim
+* `zeer_geheim` - Zeer geheim | string | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
@@ -86,7 +104,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktype | Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden. | string | ja | C​R​U​D |
 | omschrijving | Omschrijving van de aard van resultaten van het RESULTAATTYPE. | string | ja | C​R​U​D |
 | resultaattypeomschrijving | Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit &#39;omschrijving generiek&#39; | string | ja | C​R​U​D |
@@ -95,7 +113,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | toelichting | Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd. | string | nee | C​R​U​D |
 | archiefnominatie | Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst.
 
-De mapping van waarden naar weergave is als volgt:
+Uitleg bij mogelijke waarden:
 
 * `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.
 * `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden. | string | nee | C​R​U​D |
@@ -116,10 +134,21 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktype | De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit ZAAKTYPE. | string | ja | C​R​U​D |
 | omschrijving | Omschrijving van de aard van de ROL. | string | ja | C​R​U​D |
-| omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van de ROL. | string | ja | C​R​U​D |
+| omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van de ROL.
+
+Uitleg bij mogelijke waarden:
+
+* `adviseur` - (Adviseur) Kennis in dienst stellen van de behandeling van (een deel van) een zaak.
+* `behandelaar` - (Behandelaar) De vakinhoudelijke behandeling doen van (een deel van) een zaak.
+* `belanghebbende` - (Belanghebbende) Vanuit eigen en objectief belang rechtstreeks betrokken zijn bij de behandeling en/of de uitkomst van een zaak.
+* `beslisser` - (Beslisser) Nemen van besluiten die voor de uitkomst van een zaak noodzakelijk zijn.
+* `initiator` - (Initiator) Aanleiding geven tot de start van een zaak ..
+* `klantcontacter` - (Klantcontacter) Het eerste aanspreekpunt zijn voor vragen van burgers en bedrijven ..
+* `zaakcoordinator` - (Zaakcoördinator) Er voor zorg dragen dat de behandeling van de zaak in samenhang uitgevoerd wordt conform de daarover gemaakte afspraken.
+* `mede_initiator` - Mede-initiator | string | ja | C​R​U​D |
 | mogelijkeBetrokkenen |  | array | ja | C​R​U​D |
 
 ## StatusType
@@ -128,7 +157,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | omschrijving | Een korte, voor de initiator van de zaak relevante, omschrijving van de aard van de STATUS van zaken van een ZAAKTYPE. | string | ja | C​R​U​D |
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van STATUSsen van het STATUSTYPE | string | nee | C​R​U​D |
 | statustekst | De tekst die wordt gebruikt om de Initiator te informeren over het bereiken van een STATUS van dit STATUSTYPE bij het desbetreffende ZAAKTYPE. | string | nee | C​R​U​D |
@@ -143,7 +172,13 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
 | zaaktype | URL referentie naar het gerelateerde zaaktype, mogelijks in een extern ZTC. | string | ja | C​R​U​D |
-| aardRelatie | Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE | string | ja | C​R​U​D |
+| aardRelatie | Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE
+
+Uitleg bij mogelijke waarden:
+
+* `vervolg` - Vervolg
+* `bijdrage` - Bijdrage
+* `onderwerp` - Onderwerp | string | ja | C​R​U​D |
 | toelichting | Een toelichting op de aard van de relatie tussen beide ZAAKTYPEN. | string | nee | C​R​U​D |
 
 ## ZaakType
@@ -152,15 +187,32 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
-| url |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | identificatie | Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt. | integer | ja | C​R​U​D |
 | omschrijving | Omschrijving van de aard van ZAAKen van het ZAAKTYPE. | string | ja | C​R​U​D |
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE | string | nee | C​R​U​D |
-| vertrouwelijkheidaanduiding | Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet. | string | ja | C​R​U​D |
+| vertrouwelijkheidaanduiding | Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.
+
+Uitleg bij mogelijke waarden:
+
+* `openbaar` - Openbaar
+* `beperkt_openbaar` - Beperkt openbaar
+* `intern` - Intern
+* `zaakvertrouwelijk` - Zaakvertrouwelijk
+* `vertrouwelijk` - Vertrouwelijk
+* `confidentieel` - Confidentieel
+* `geheim` - Geheim
+* `zeer_geheim` - Zeer geheim | string | ja | C​R​U​D |
 | doel | Een omschrijving van hetgeen beoogd is te bereiken met een zaak van dit zaaktype. | string | ja | C​R​U​D |
 | aanleiding | Een omschrijving van de gebeurtenis die leidt tot het starten van een ZAAK van dit ZAAKTYPE. | string | ja | C​R​U​D |
 | toelichting | Een eventuele toelichting op dit zaaktype, zoals een beschrijving van het procesverloop op de hoofdlijnen. | string | nee | C​R​U​D |
-| indicatieInternOfExtern | Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn die Intern respectievelijk Extern geïnitieerd worden. Indien van beide sprake kan zijn, dan prevaleert de externe initiatie. | string | ja | C​R​U​D |
+| indicatieInternOfExtern | Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn die Intern respectievelijk Extern geïnitieerd worden. Indien van beide sprake kan zijn, dan prevaleert de externe initiatie.
+
+Uitleg bij mogelijke waarden:
+
+* `inkomend` - Inkomend
+* `intern` - Intern
+* `uitgaand` - Uitgaand | string | ja | C​R​U​D |
 | handelingInitiator | Werkwoord dat hoort bij de handeling die de initiator verricht bij dit zaaktype. Meestal &#39;aanvragen&#39;, &#39;indienen&#39; of &#39;melden&#39;. Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_initiator | string | ja | C​R​U​D |
 | onderwerp | Het onderwerp van ZAAKen van dit ZAAKTYPE. In veel gevallen nauw gerelateerd aan de product- of dienstnaam uit de Producten- en Dienstencatalogus (PDC). Bijvoorbeeld: &#39;Evenementenvergunning&#39;, &#39;Geboorte&#39;, &#39;Klacht&#39;. Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.onderwerp | string | ja | C​R​U​D |
 | handelingBehandelaar | Werkwoord dat hoort bij de handeling die de behandelaar verricht bij het afdoen van ZAAKen van dit ZAAKTYPE. Meestal &#39;behandelen&#39;, &#39;uitvoeren&#39;, &#39;vaststellen&#39; of &#39;onderhouden&#39;. Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_behandelaar | string | ja | C​R​U​D |

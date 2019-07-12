@@ -63,7 +63,7 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -77,7 +77,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -90,11 +90,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -114,7 +116,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -128,7 +130,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -142,7 +144,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -156,7 +158,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -170,7 +172,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -184,7 +186,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -198,7 +200,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -212,7 +214,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -226,7 +228,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -242,13 +244,6 @@
                 },
                 "tags": [
                     "besluittypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -266,7 +261,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/BesluitType"
                         },
@@ -287,7 +282,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -301,7 +296,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -315,7 +310,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -329,7 +324,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -343,7 +338,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -357,7 +352,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -371,7 +366,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -385,7 +380,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -399,7 +394,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -415,13 +410,6 @@
                 },
                 "tags": [
                     "besluittypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -433,7 +421,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/BesluitType"
                         },
@@ -447,7 +435,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -461,7 +449,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -475,7 +463,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -489,7 +477,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -503,7 +491,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -517,7 +505,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -531,7 +519,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -545,7 +533,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -559,7 +547,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -575,13 +563,6 @@
                 },
                 "tags": [
                     "besluittypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -590,7 +571,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -601,7 +582,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -615,7 +596,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -629,7 +610,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -643,7 +624,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -657,7 +638,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -671,7 +652,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -685,7 +666,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -699,7 +680,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -713,7 +694,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -729,13 +710,6 @@
                 },
                 "tags": [
                     "besluittypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -756,7 +730,7 @@
                 "parameters": [],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/BesluitType"
                         },
@@ -779,13 +753,6 @@
                 },
                 "tags": [
                     "besluittypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -842,7 +809,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -855,11 +822,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -879,7 +848,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -893,7 +862,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -907,7 +876,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -921,7 +890,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -935,7 +904,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -949,7 +918,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -963,7 +932,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -977,7 +946,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -991,7 +960,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1007,13 +976,6 @@
                 },
                 "tags": [
                     "catalogussen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -1031,7 +993,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/Catalogus"
                         },
@@ -1052,7 +1014,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -1066,7 +1028,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1080,7 +1042,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1094,7 +1056,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1108,7 +1070,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1122,7 +1084,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1136,7 +1098,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1150,7 +1112,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1164,7 +1126,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1180,13 +1142,6 @@
                 },
                 "tags": [
                     "catalogussen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -1198,7 +1153,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/Catalogus"
                         },
@@ -1212,7 +1167,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1226,7 +1181,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1240,7 +1195,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1254,7 +1209,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1268,7 +1223,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1282,7 +1237,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1296,7 +1251,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1310,7 +1265,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1324,7 +1279,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1340,13 +1295,6 @@
                 },
                 "tags": [
                     "catalogussen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -1376,7 +1324,7 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -1390,7 +1338,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -1403,11 +1351,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -1427,7 +1377,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -1441,7 +1391,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1455,7 +1405,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1469,7 +1419,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1483,7 +1433,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1497,7 +1447,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1511,7 +1461,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1525,7 +1475,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1539,7 +1489,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1555,13 +1505,6 @@
                 },
                 "tags": [
                     "eigenschappen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -1579,7 +1522,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/Eigenschap"
                         },
@@ -1600,7 +1543,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -1614,7 +1557,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1628,7 +1571,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1642,7 +1585,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1656,7 +1599,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1670,7 +1613,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1684,7 +1627,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1698,7 +1641,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1712,7 +1655,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1728,13 +1671,6 @@
                 },
                 "tags": [
                     "eigenschappen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -1746,7 +1682,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/Eigenschap"
                         },
@@ -1760,7 +1696,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1774,7 +1710,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1788,7 +1724,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1802,7 +1738,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1816,7 +1752,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1830,7 +1766,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1844,7 +1780,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1858,7 +1794,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1872,7 +1808,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1888,13 +1824,6 @@
                 },
                 "tags": [
                     "eigenschappen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -1903,7 +1832,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -1914,7 +1843,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1928,7 +1857,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1942,7 +1871,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1956,7 +1885,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1970,7 +1899,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1984,7 +1913,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1998,7 +1927,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2012,7 +1941,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2026,7 +1955,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2042,13 +1971,6 @@
                 },
                 "tags": [
                     "eigenschappen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -2078,7 +2000,7 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -2092,7 +2014,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -2105,11 +2027,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -2129,7 +2053,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -2143,7 +2067,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2157,7 +2081,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2171,7 +2095,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2185,7 +2109,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2199,7 +2123,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2213,7 +2137,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2227,7 +2151,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2241,7 +2165,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2257,13 +2181,6 @@
                 },
                 "tags": [
                     "informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -2281,7 +2198,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/InformatieObjectType"
                         },
@@ -2302,7 +2219,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -2316,7 +2233,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2330,7 +2247,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2344,7 +2261,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2358,7 +2275,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2372,7 +2289,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2386,7 +2303,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2400,7 +2317,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2414,7 +2331,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2430,13 +2347,6 @@
                 },
                 "tags": [
                     "informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -2448,7 +2358,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/InformatieObjectType"
                         },
@@ -2462,7 +2372,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2476,7 +2386,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2490,7 +2400,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2504,7 +2414,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2518,7 +2428,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2532,7 +2442,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2546,7 +2456,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2560,7 +2470,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2574,7 +2484,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2590,13 +2500,6 @@
                 },
                 "tags": [
                     "informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -2605,7 +2508,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -2616,7 +2519,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2630,7 +2533,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2644,7 +2547,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2658,7 +2561,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2672,7 +2575,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2686,7 +2589,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2700,7 +2603,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2714,7 +2617,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2728,7 +2631,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2744,13 +2647,6 @@
                 },
                 "tags": [
                     "informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -2771,7 +2667,7 @@
                 "parameters": [],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/InformatieObjectType"
                         },
@@ -2794,13 +2690,6 @@
                 },
                 "tags": [
                     "informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -2830,7 +2719,7 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -2844,7 +2733,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -2857,11 +2746,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -2881,7 +2772,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -2895,7 +2786,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2909,7 +2800,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2923,7 +2814,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2937,7 +2828,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2951,7 +2842,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2965,7 +2856,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2979,7 +2870,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2993,7 +2884,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3009,13 +2900,6 @@
                 },
                 "tags": [
                     "resultaattypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -3033,7 +2917,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/ResultaatType"
                         },
@@ -3054,7 +2938,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -3068,7 +2952,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3082,7 +2966,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3096,7 +2980,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3110,7 +2994,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3124,7 +3008,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3138,7 +3022,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3152,7 +3036,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3166,7 +3050,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3182,13 +3066,6 @@
                 },
                 "tags": [
                     "resultaattypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -3200,7 +3077,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/ResultaatType"
                         },
@@ -3214,7 +3091,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3228,7 +3105,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3242,7 +3119,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3256,7 +3133,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3270,7 +3147,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3284,7 +3161,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3298,7 +3175,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3312,7 +3189,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3326,7 +3203,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3342,13 +3219,6 @@
                 },
                 "tags": [
                     "resultaattypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -3357,7 +3227,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -3368,7 +3238,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3382,7 +3252,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3396,7 +3266,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3410,7 +3280,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3424,7 +3294,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3438,7 +3308,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3452,7 +3322,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3466,7 +3336,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3480,7 +3350,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3496,13 +3366,6 @@
                 },
                 "tags": [
                     "resultaattypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -3536,20 +3399,20 @@
                         "required": false,
                         "type": "string",
                         "enum": [
-                            "Adviseur",
-                            "Behandelaar",
-                            "Belanghebbende",
-                            "Beslisser",
-                            "Initiator",
-                            "Klantcontacter",
-                            "Zaakco\u00f6rdinator",
-                            "Mede-initiator"
+                            "adviseur",
+                            "behandelaar",
+                            "belanghebbende",
+                            "beslisser",
+                            "initiator",
+                            "klantcontacter",
+                            "zaakcoordinator",
+                            "mede_initiator"
                         ]
                     },
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -3563,7 +3426,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -3576,11 +3439,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -3600,7 +3465,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -3614,7 +3479,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3628,7 +3493,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3642,7 +3507,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3656,7 +3521,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3670,7 +3535,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3684,7 +3549,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3698,7 +3563,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3712,7 +3577,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3728,13 +3593,6 @@
                 },
                 "tags": [
                     "roltypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -3752,7 +3610,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/RolType"
                         },
@@ -3773,7 +3631,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -3787,7 +3645,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3801,7 +3659,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3815,7 +3673,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3829,7 +3687,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3843,7 +3701,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3857,7 +3715,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3871,7 +3729,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3885,7 +3743,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3901,13 +3759,6 @@
                 },
                 "tags": [
                     "roltypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -3919,7 +3770,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/RolType"
                         },
@@ -3933,7 +3784,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3947,7 +3798,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3961,7 +3812,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3975,7 +3826,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3989,7 +3840,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4003,7 +3854,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4017,7 +3868,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4031,7 +3882,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4045,7 +3896,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4061,13 +3912,6 @@
                 },
                 "tags": [
                     "roltypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -4076,7 +3920,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -4087,7 +3931,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4101,7 +3945,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4115,7 +3959,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4129,7 +3973,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4143,7 +3987,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4157,7 +4001,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4171,7 +4015,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4185,7 +4029,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4199,7 +4043,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4215,13 +4059,6 @@
                 },
                 "tags": [
                     "roltypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -4250,7 +4087,7 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -4264,7 +4101,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -4277,11 +4114,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -4301,7 +4140,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -4315,7 +4154,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4329,7 +4168,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4343,7 +4182,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4357,7 +4196,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4371,7 +4210,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4385,7 +4224,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4399,7 +4238,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4413,7 +4252,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4429,13 +4268,6 @@
                 },
                 "tags": [
                     "statustypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -4453,7 +4285,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/StatusType"
                         },
@@ -4474,7 +4306,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -4488,7 +4320,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4502,7 +4334,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4516,7 +4348,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4530,7 +4362,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4544,7 +4376,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4558,7 +4390,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4572,7 +4404,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4586,7 +4418,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4602,13 +4434,6 @@
                 },
                 "tags": [
                     "statustypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -4620,7 +4445,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/StatusType"
                         },
@@ -4634,7 +4459,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4648,7 +4473,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4662,7 +4487,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4676,7 +4501,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4690,7 +4515,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4704,7 +4529,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4718,7 +4543,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4732,7 +4557,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4746,7 +4571,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4762,13 +4587,6 @@
                 },
                 "tags": [
                     "statustypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -4777,7 +4595,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -4788,7 +4606,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4802,7 +4620,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4816,7 +4634,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4830,7 +4648,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4844,7 +4662,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4858,7 +4676,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4872,7 +4690,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4886,7 +4704,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4900,7 +4718,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4916,13 +4734,6 @@
                 },
                 "tags": [
                     "statustypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -4939,7 +4750,8 @@
         "/zaaktype-informatieobjecttypen": {
             "get": {
                 "operationId": "zaakinformatieobjecttype_list",
-                "description": "Een verzameling van ZAAKINFORMATIEOBJECTTYPEn.\n\nFilteren van de gegevens kan middels de querystringparameters:\n- zaaktype: URL van het zaaktype\n- informatie_object_type: URL van het zaaktype\n- richting: waarde van de richting (string)\n\nMeerdere querystring-parameters tegelijk worden als een AND beschouwd.",
+                "summary": "Een verzameling van ZAAKINFORMATIEOBJECTTYPEn.",
+                "description": "Filteren van de gegevens kan middels de querystringparameters:\n- zaaktype: URL van het zaaktype\n- informatie_object_type: URL van het zaaktype\n- richting: waarde van de richting (string)\n\nMeerdere querystring-parameters tegelijk worden als een AND beschouwd.",
                 "parameters": [
                     {
                         "name": "zaaktype",
@@ -4964,15 +4776,15 @@
                         "required": false,
                         "type": "string",
                         "enum": [
-                            "Inkomend",
-                            "Intern",
-                            "Uitgaand"
+                            "inkomend",
+                            "intern",
+                            "uitgaand"
                         ]
                     },
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -4986,7 +4798,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -4999,11 +4811,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -5023,7 +4837,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -5037,7 +4851,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5051,7 +4865,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5065,7 +4879,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5079,7 +4893,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5093,7 +4907,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5107,7 +4921,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5121,7 +4935,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5135,7 +4949,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5151,13 +4965,6 @@
                 },
                 "tags": [
                     "zaaktype-informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -5175,7 +4982,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/ZaakTypeInformatieObjectType"
                         },
@@ -5196,7 +5003,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -5210,7 +5017,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5224,7 +5031,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5238,7 +5045,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5252,7 +5059,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5266,7 +5073,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5280,7 +5087,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5294,7 +5101,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5308,7 +5115,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5324,13 +5131,6 @@
                 },
                 "tags": [
                     "zaaktype-informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -5342,7 +5142,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/ZaakTypeInformatieObjectType"
                         },
@@ -5356,7 +5156,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5370,7 +5170,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5384,7 +5184,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5398,7 +5198,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5412,7 +5212,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5426,7 +5226,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5440,7 +5240,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5454,7 +5254,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5468,7 +5268,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5484,13 +5284,6 @@
                 },
                 "tags": [
                     "zaaktype-informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -5499,7 +5292,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -5510,7 +5303,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5524,7 +5317,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5538,7 +5331,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5552,7 +5345,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5566,7 +5359,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5580,7 +5373,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5594,7 +5387,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5608,7 +5401,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5622,7 +5415,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5638,13 +5431,6 @@
                 },
                 "tags": [
                     "zaaktype-informatieobjecttypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -5688,7 +5474,7 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "filter objects depending on their concept status:\n* `alles`: toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
                         "required": false,
                         "type": "string"
                     },
@@ -5702,7 +5488,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "required": [
                                 "count",
@@ -5715,11 +5501,13 @@
                                 },
                                 "next": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "previous": {
                                     "type": "string",
-                                    "format": "uri"
+                                    "format": "uri",
+                                    "x-nullable": true
                                 },
                                 "results": {
                                     "type": "array",
@@ -5739,7 +5527,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -5753,7 +5541,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5767,7 +5555,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5781,7 +5569,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5795,7 +5583,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5809,7 +5597,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5823,7 +5611,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5837,7 +5625,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5851,7 +5639,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5867,13 +5655,6 @@
                 },
                 "tags": [
                     "zaaktypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "post": {
@@ -5891,7 +5672,7 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/ZaakType"
                         },
@@ -5912,7 +5693,7 @@
                         }
                     },
                     "400": {
-                        "description": "",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/ValidatieFout"
                         },
@@ -5926,7 +5707,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5940,7 +5721,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5954,7 +5735,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5968,7 +5749,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5982,7 +5763,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5996,7 +5777,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6010,7 +5791,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6024,7 +5805,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6040,13 +5821,6 @@
                 },
                 "tags": [
                     "zaaktypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": []
@@ -6058,7 +5832,7 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": "",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/ZaakType"
                         },
@@ -6072,7 +5846,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6086,7 +5860,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6100,7 +5874,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6114,7 +5888,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6128,7 +5902,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6142,7 +5916,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6156,7 +5930,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6170,7 +5944,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6184,7 +5958,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6200,13 +5974,6 @@
                 },
                 "tags": [
                     "zaaktypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.lezen"
-                        ]
-                    }
                 ]
             },
             "delete": {
@@ -6215,7 +5982,7 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "",
+                        "description": "No content",
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -6226,7 +5993,7 @@
                         }
                     },
                     "401": {
-                        "description": "",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6240,7 +6007,7 @@
                         }
                     },
                     "403": {
-                        "description": "",
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6254,7 +6021,7 @@
                         }
                     },
                     "404": {
-                        "description": "",
+                        "description": "Not_found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6268,7 +6035,7 @@
                         }
                     },
                     "406": {
-                        "description": "",
+                        "description": "Not acceptable",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6282,7 +6049,7 @@
                         }
                     },
                     "409": {
-                        "description": "",
+                        "description": "Conflict",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6296,7 +6063,7 @@
                         }
                     },
                     "410": {
-                        "description": "",
+                        "description": "Gone",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6310,7 +6077,7 @@
                         }
                     },
                     "415": {
-                        "description": "",
+                        "description": "Unsupported media type",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6324,7 +6091,7 @@
                         }
                     },
                     "429": {
-                        "description": "",
+                        "description": "Too many requests",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6338,7 +6105,7 @@
                         }
                     },
                     "500": {
-                        "description": "",
+                        "description": "Internal server error",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6354,13 +6121,6 @@
                 },
                 "tags": [
                     "zaaktypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -6381,7 +6141,7 @@
                 "parameters": [],
                 "responses": {
                     "201": {
-                        "description": "",
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/ZaakType"
                         },
@@ -6404,13 +6164,6 @@
                 },
                 "tags": [
                     "zaaktypen"
-                ],
-                "security": [
-                    {
-                        "JWT-Claims": [
-                            "zaaktypes.schrijven"
-                        ]
-                    }
                 ]
             },
             "parameters": [
@@ -6438,9 +6191,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "catalogus": {
                     "title": "Catalogus",
@@ -6478,7 +6234,8 @@
                     "title": "Reactietermijn",
                     "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.",
                     "type": "string",
-                    "format": "duration"
+                    "format": "duration",
+                    "x-nullable": true
                 },
                 "publicatieIndicatie": {
                     "title": "Publicatie indicatie",
@@ -6494,7 +6251,8 @@
                     "title": "Publicatietermijn",
                     "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.",
                     "type": "string",
-                    "format": "duration"
+                    "format": "duration",
+                    "x-nullable": true
                 },
                 "toelichting": {
                     "title": "Toelichting",
@@ -6519,7 +6277,8 @@
                     "title": "Einde geldigheid",
                     "description": "De datum waarop het is opgeheven.",
                     "type": "string",
-                    "format": "date"
+                    "format": "date",
+                    "x-nullable": true
                 },
                 "concept": {
                     "title": "Concept",
@@ -6666,9 +6425,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "domein": {
                     "title": "Domein",
@@ -6750,7 +6512,7 @@
                 },
                 "formaat": {
                     "title": "Formaat",
-                    "description": "Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.",
+                    "description": "Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.\n\nUitleg bij mogelijke waarden:\n\n* `tekst` - Tekst\n* `getal` - Getal\n* `datum (jjjjmmdd)` - Datum\n* `datum/tijd (jjjjmmdduummss)` - Datum/tijd",
                     "type": "string",
                     "enum": [
                         "tekst",
@@ -6783,8 +6545,7 @@
                         "minLength": 1
                     }
                 }
-            },
-            "readOnly": true
+            }
         },
         "Eigenschap": {
             "required": [
@@ -6796,9 +6557,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "naam": {
                     "title": "Naam",
@@ -6842,9 +6606,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "catalogus": {
                     "title": "Maakt deel uit van",
@@ -6861,17 +6628,17 @@
                 },
                 "vertrouwelijkheidaanduiding": {
                     "title": "Vertrouwelijkheidaanduiding",
-                    "description": "Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn.",
+                    "description": "Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn.\n\nUitleg bij mogelijke waarden:\n\n* `openbaar` - Openbaar\n* `beperkt_openbaar` - Beperkt openbaar\n* `intern` - Intern\n* `zaakvertrouwelijk` - Zaakvertrouwelijk\n* `vertrouwelijk` - Vertrouwelijk\n* `confidentieel` - Confidentieel\n* `geheim` - Geheim\n* `zeer_geheim` - Zeer geheim",
                     "type": "string",
                     "enum": [
                         "openbaar",
-                        "beperkt openbaar",
+                        "beperkt_openbaar",
                         "intern",
                         "zaakvertrouwelijk",
                         "vertrouwelijk",
                         "confidentieel",
                         "geheim",
-                        "zeer geheim"
+                        "zeer_geheim"
                     ]
                 },
                 "beginGeldigheid": {
@@ -6884,7 +6651,8 @@
                     "title": "Einde geldigheid",
                     "description": "De datum waarop het is opgeheven.",
                     "type": "string",
-                    "format": "date"
+                    "format": "date",
+                    "x-nullable": true
                 },
                 "concept": {
                     "title": "Concept",
@@ -6938,33 +6706,33 @@
                         "adres",
                         "besluit",
                         "buurt",
-                        "enkelvoudigDocument",
+                        "enkelvoudig_document",
                         "gemeente",
-                        "gemeentelijkeOpenbareRuimte",
+                        "gemeentelijke_openbare_ruimte",
                         "huishouden",
                         "inrichtingselement",
-                        "kadastraleOnroerendeZaak",
+                        "kadastrale_onroerende_zaak",
                         "kunstwerkdeel",
-                        "maatschappelijkeActiviteit",
+                        "maatschappelijke_activiteit",
                         "medewerker",
-                        "natuurlijkPersoon",
-                        "nietNatuurlijkPersoon",
-                        "openbareRuimte",
-                        "organisatorischeEenheid",
+                        "natuurlijk_persoon",
+                        "niet_natuurlijk_persoon",
+                        "openbare_ruimte",
+                        "organisatorische_eenheid",
                         "pand",
                         "spoorbaandeel",
                         "status",
                         "terreindeel",
-                        "terreinGebouwdObject",
+                        "terrein_gebouwd_object",
                         "vestiging",
                         "waterdeel",
                         "wegdeel",
                         "wijk",
                         "woonplaats",
-                        "wozDeelobject",
-                        "wozObject",
-                        "wozWaarde",
-                        "zakelijkRecht",
+                        "woz_deelobject",
+                        "woz_object",
+                        "woz_waarde",
+                        "zakelijk_recht",
                         "overige"
                     ]
                 },
@@ -6993,9 +6761,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "zaaktype": {
                     "title": "is van",
@@ -7040,7 +6811,7 @@
                 },
                 "archiefnominatie": {
                     "title": "Archiefnominatie",
-                    "description": "Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst.\n\nDe mapping van waarden naar weergave is als volgt:\n\n* `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.\n* `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden.",
+                    "description": "Aanduiding die aangeeft of ZAAKen met een resultaat van dit RESULTAATTYPE blijvend moeten worden bewaard of (op termijn) moeten worden vernietigd. Indien niet expliciet opgegeven wordt dit gevuld vanuit de selectielijst.\n\nUitleg bij mogelijke waarden:\n\n* `blijvend_bewaren` - Het zaakdossier moet bewaard blijven en op de Archiefactiedatum overgedragen worden naar een archiefbewaarplaats.\n* `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden.",
                     "type": "string",
                     "enum": [
                         "blijvend_bewaren",
@@ -7051,7 +6822,8 @@
                     "title": "Archiefactietermijn",
                     "description": "De termijn, na het vervallen van het bedrjfsvoeringsbelang, waarna het zaakdossier (de ZAAK met alle bijbehorende INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit RESULTAATTYPE vernietigd of overgebracht (naar een archiefbewaarplaats) moet worden. Voor te vernietigen dossiers betreft het de in die Selectielijst genoemde bewaartermjn. Voor blijvend te bewaren zaakdossiers betreft het de termijn vanaf afronding van de zaak tot overbrenging (de procestermijn is dan nihil).",
                     "type": "string",
-                    "format": "duration"
+                    "format": "duration",
+                    "x-nullable": true
                 },
                 "brondatumArchiefprocedure": {
                     "$ref": "#/definitions/BrondatumArchiefprocedure"
@@ -7077,11 +6849,11 @@
                     "title": "Betrokkene type",
                     "type": "string",
                     "enum": [
-                        "Natuurlijk persoon",
-                        "Niet-natuurlijk persoon",
-                        "Vestiging",
-                        "Organisatorische eenheid",
-                        "Medewerker"
+                        "natuurlijk_persoon",
+                        "niet_natuurlijk_persoon",
+                        "vestiging",
+                        "organisatorische_eenheid",
+                        "medewerker"
                     ]
                 }
             }
@@ -7097,9 +6869,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "zaaktype": {
                     "title": "Is van",
@@ -7116,17 +6891,17 @@
                 },
                 "omschrijvingGeneriek": {
                     "title": "Omschrijving generiek",
-                    "description": "Algemeen gehanteerde omschrijving van de aard van de ROL.",
+                    "description": "Algemeen gehanteerde omschrijving van de aard van de ROL.\n\nUitleg bij mogelijke waarden:\n\n* `adviseur` - (Adviseur) Kennis in dienst stellen van de behandeling van (een deel van) een zaak.\n* `behandelaar` - (Behandelaar) De vakinhoudelijke behandeling doen van (een deel van) een zaak.\n* `belanghebbende` - (Belanghebbende) Vanuit eigen en objectief belang rechtstreeks betrokken zijn bij de behandeling en/of de uitkomst van een zaak.\n* `beslisser` - (Beslisser) Nemen van besluiten die voor de uitkomst van een zaak noodzakelijk zijn.\n* `initiator` - (Initiator) Aanleiding geven tot de start van een zaak ..\n* `klantcontacter` - (Klantcontacter) Het eerste aanspreekpunt zijn voor vragen van burgers en bedrijven ..\n* `zaakcoordinator` - (Zaakco\u00f6rdinator) Er voor zorg dragen dat de behandeling van de zaak in samenhang uitgevoerd wordt conform de daarover gemaakte afspraken.\n* `mede_initiator` - Mede-initiator",
                     "type": "string",
                     "enum": [
-                        "Adviseur",
-                        "Behandelaar",
-                        "Belanghebbende",
-                        "Beslisser",
-                        "Initiator",
-                        "Klantcontacter",
-                        "Zaakco\u00f6rdinator",
-                        "Mede-initiator"
+                        "adviseur",
+                        "behandelaar",
+                        "belanghebbende",
+                        "beslisser",
+                        "initiator",
+                        "klantcontacter",
+                        "zaakcoordinator",
+                        "mede_initiator"
                     ]
                 },
                 "mogelijkeBetrokkenen": {
@@ -7147,9 +6922,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "omschrijving": {
                     "title": "Omschrijving",
@@ -7202,9 +6980,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "zaaktype": {
                     "title": "Zaaktype",
@@ -7225,19 +7006,20 @@
                 },
                 "richting": {
                     "title": "Richting",
-                    "description": "Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE.",
+                    "description": "Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE.\n\nUitleg bij mogelijke waarden:\n\n* `inkomend` - Inkomend\n* `intern` - Intern\n* `uitgaand` - Uitgaand",
                     "type": "string",
                     "enum": [
-                        "Inkomend",
-                        "Intern",
-                        "Uitgaand"
+                        "inkomend",
+                        "intern",
+                        "uitgaand"
                     ]
                 },
                 "statusType": {
                     "title": "Status type",
                     "description": "De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het STATUSTYPE gerelateerde ZAAKTYPE waarvoor geldt dat deze verplicht aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE voordat de status van dit STATUSTYPE kan worden gezet bij die zaak.",
                     "type": "string",
-                    "format": "uri"
+                    "format": "uri",
+                    "x-nullable": true
                 }
             }
         },
@@ -7283,7 +7065,7 @@
                 },
                 "aardRelatie": {
                     "title": "Aard relatie",
-                    "description": "Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE",
+                    "description": "Omschrijving van de aard van de relatie van zaken van het ZAAKTYPE tot zaken van het andere ZAAKTYPE\n\nUitleg bij mogelijke waarden:\n\n* `vervolg` - Vervolg\n* `bijdrage` - Bijdrage\n* `onderwerp` - Onderwerp",
                     "type": "string",
                     "enum": [
                         "vervolg",
@@ -7326,9 +7108,12 @@
             "properties": {
                 "url": {
                     "title": "Url",
+                    "description": "URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object.",
                     "type": "string",
                     "format": "uri",
-                    "readOnly": true
+                    "readOnly": true,
+                    "maxLength": 1000,
+                    "minLength": 1
                 },
                 "identificatie": {
                     "title": "Identificatie",
@@ -7352,17 +7137,17 @@
                 },
                 "vertrouwelijkheidaanduiding": {
                     "title": "Vertrouwelijkheidaanduiding",
-                    "description": "Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.",
+                    "description": "Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.\n\nUitleg bij mogelijke waarden:\n\n* `openbaar` - Openbaar\n* `beperkt_openbaar` - Beperkt openbaar\n* `intern` - Intern\n* `zaakvertrouwelijk` - Zaakvertrouwelijk\n* `vertrouwelijk` - Vertrouwelijk\n* `confidentieel` - Confidentieel\n* `geheim` - Geheim\n* `zeer_geheim` - Zeer geheim",
                     "type": "string",
                     "enum": [
                         "openbaar",
-                        "beperkt openbaar",
+                        "beperkt_openbaar",
                         "intern",
                         "zaakvertrouwelijk",
                         "vertrouwelijk",
                         "confidentieel",
                         "geheim",
-                        "zeer geheim"
+                        "zeer_geheim"
                     ]
                 },
                 "doel": {
@@ -7384,11 +7169,11 @@
                 },
                 "indicatieInternOfExtern": {
                     "title": "Indicatie intern of extern",
-                    "description": "Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn die Intern respectievelijk Extern ge\u00efnitieerd worden. Indien van beide sprake kan zijn, dan prevaleert de externe initiatie.",
+                    "description": "Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn die Intern respectievelijk Extern ge\u00efnitieerd worden. Indien van beide sprake kan zijn, dan prevaleert de externe initiatie.\n\nUitleg bij mogelijke waarden:\n\n* `inkomend` - Inkomend\n* `intern` - Intern\n* `uitgaand` - Uitgaand",
                     "type": "string",
                     "enum": [
-                        "Intern",
-                        "Extern"
+                        "intern",
+                        "extern"
                     ]
                 },
                 "handelingInitiator": {
@@ -7422,7 +7207,8 @@
                     "title": "Servicenorm",
                     "description": "De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s).",
                     "type": "string",
-                    "format": "duration"
+                    "format": "duration",
+                    "x-nullable": true
                 },
                 "opschortingEnAanhoudingMogelijk": {
                     "title": "Opschorting/aanhouding mogelijk",
@@ -7438,7 +7224,8 @@
                     "title": "Verlengingstermijn",
                     "description": "De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging mogelijk is.",
                     "type": "string",
-                    "format": "duration"
+                    "format": "duration",
+                    "x-nullable": true
                 },
                 "trefwoorden": {
                     "description": "Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.",
@@ -7568,7 +7355,8 @@
                     "title": "Einde geldigheid",
                     "description": "De datum waarop het is opgeheven.",
                     "type": "string",
-                    "format": "date"
+                    "format": "date",
+                    "x-nullable": true
                 },
                 "versiedatum": {
                     "title": "Versiedatum",

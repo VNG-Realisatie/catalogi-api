@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from vng_api_common.serializers import add_choice_values_help_text
 
+from ...datamodel.choices import RichtingChoices
 from ...datamodel.models import (
-    ZaakInformatieobjectType, ZaakInformatieobjectTypeArchiefregime
+    ZaakInformatieobjectType
 )
 
 
@@ -38,29 +38,13 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
             },
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
-                                                      NestedHyperlinkedModelSerializer):
-    """
-    RSTIOTARC-basis
+        value_display_mapping = add_choice_values_help_text(RichtingChoices)
+        self.fields['richting'].help_text += f"\n\n{value_display_mapping}"
 
-    Afwijkende archiveringskenmerken van informatieobjecten van een INFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE op
-    grond van resultaten van een RESULTAATTYPE bij dat ZAAKTYPE.
-    """
-    parent_lookup_kwargs = {
-        'catalogus_pk': 'zaak_informatieobject_type__zaaktype__catalogus__pk',
-        'zaaktype_pk': 'zaak_informatieobject_type__zaaktype__pk',
-    }
 
-    gerelateerde = NestedHyperlinkedRelatedField(
-        read_only=True,
-        source='zaak_informatieobject_type',
-        view_name='api:informatieobjecttype-detail',
-        parent_lookup_kwargs={
-            'catalogus_pk': 'informatie_object_type__catalogus__pk',
-            'pk': 'informatie_object_type__pk'
-        },
-    )
 
 # class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
 #                                                       NestedHyperlinkedModelSerializer):

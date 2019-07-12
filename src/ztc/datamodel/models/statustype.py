@@ -5,8 +5,6 @@ from django.db import models
 from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
-from ..choices import JaNee
-
 
 class CheckListItem(models.Model):
     """
@@ -23,7 +21,7 @@ class CheckListItem(models.Model):
     vraagstelling = models.CharField(_('vraagstelling'), max_length=255, help_text=_(
         'Een betekenisvolle vraag waaruit blijkt waarop het aandachtspunt gecontroleerd moet worden.'))
     # verplicht is gedefinieerd als BooleanField, en informeren als AN1, beide met waardeverzameling J/N
-    verplicht = models.CharField(_('verplicht'), max_length=1, choices=JaNee.choices, help_text=_(
+    verplicht = models.BooleanField(_('verplicht'), help_text=_(
         'Het al dan niet verplicht zijn van controle van het aandachtspunt voorafgaand aan het bereiken van de '
         'status van het gerelateerde STATUSTYPE.'))
     toelichting = models.CharField(_('toelichting'), max_length=1000, blank=True, null=True, help_text=_(
@@ -74,8 +72,8 @@ class StatusType(models.Model):
     checklistitem = models.ManyToManyField(
         'datamodel.CheckListItem', verbose_name=_('checklistitem'), blank=True, help_text=_(
             'Te controleren aandachtspunt voorafgaand aan het bereiken van een status van het STATUSTYPE.'))
-    informeren = models.CharField(
-        _('informeren'), max_length=1, choices=JaNee.choices,
+    informeren = models.BooleanField(
+        _('informeren'),
         help_text=_('Aanduiding die aangeeft of na het zetten van een STATUS van dit STATUSTYPE de Initiator moet '
                     'worden geïnformeerd over de statusovergang.')
     )

@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from vng_api_common.serializers import add_choice_values_help_text
 
-from ztc.datamodel.models import Eigenschap, EigenschapSpecificatie
+from ...datamodel.choices import FormaatChoices
+from ...datamodel.models import Eigenschap, EigenschapSpecificatie
 
 # class EigenschapReferentieSerializer(SourceMappingSerializerMixin, ModelSerializer):
 #     class Meta:
@@ -29,6 +31,12 @@ class EigenschapSpecificatieSerializer(serializers.ModelSerializer):
             'kardinaliteit',
             'waardenverzameling',
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(FormaatChoices)
+        self.fields['formaat'].help_text += f"\n\n{value_display_mapping}"
 
 
 class EigenschapSerializer(serializers.HyperlinkedModelSerializer):

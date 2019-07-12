@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from vng_api_common.serializers import add_choice_values_help_text
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 
 from ...datamodel.models import InformatieObjectType
 
@@ -74,3 +76,9 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             # 'isRelevantVoor',
             # 'isVastleggingVoor',
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(VertrouwelijkheidsAanduiding)
+        self.fields['vertrouwelijkheidaanduiding'].help_text += f"\n\n{value_display_mapping}"

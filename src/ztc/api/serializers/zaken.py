@@ -7,9 +7,11 @@ from rest_framework.serializers import (
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from vng_api_common.serializers import (
-    GegevensGroepSerializer, NestedGegevensGroepMixin
+    GegevensGroepSerializer, NestedGegevensGroepMixin, add_choice_values_help_text
 )
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 
+from ...datamodel.choices import RichtingChoices, AardRelatieChoices
 from ...datamodel.models import (
     BesluitType, BronCatalogus, BronZaakType, Formulier, ZaakObjectType,
     ZaakType, ZaakTypenRelatie
@@ -103,6 +105,12 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         extra_kwargs = {
             'zaaktype': {'source': 'gerelateerd_zaaktype'},
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(AardRelatieChoices)
+        self.fields['aard_relatie'].help_text += f"\n\n{value_display_mapping}"
 
 
 class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, HyperlinkedModelSerializer):
@@ -277,3 +285,12 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
         validators = [RelationCatalogValidator('besluittype_set')]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(VertrouwelijkheidsAanduiding)
+        self.fields['vertrouwelijkheidaanduiding'].help_text += f"\n\n{value_display_mapping}"
+
+        value_display_mapping = add_choice_values_help_text(RichtingChoices)
+        self.fields['indicatie_intern_of_extern'].help_text += f"\n\n{value_display_mapping}"
