@@ -6,12 +6,13 @@ from rest_framework.serializers import (
 )
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
-from vng_api_common.serializers import (
-    GegevensGroepSerializer, NestedGegevensGroepMixin, add_choice_values_help_text
-)
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
+from vng_api_common.serializers import (
+    GegevensGroepSerializer, NestedGegevensGroepMixin,
+    add_choice_values_help_text
+)
 
-from ...datamodel.choices import RichtingChoices, AardRelatieChoices
+from ...datamodel.choices import AardRelatieChoices, RichtingChoices
 from ...datamodel.models import (
     BesluitType, BronCatalogus, BronZaakType, Formulier, ZaakObjectType,
     ZaakType, ZaakTypenRelatie

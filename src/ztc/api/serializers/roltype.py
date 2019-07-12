@@ -1,7 +1,7 @@
 from drf_writable_nested import NestedCreateMixin
 from rest_framework import serializers
-from vng_api_common.serializers import add_choice_values_help_text
 from vng_api_common.constants import RolOmschrijving
+from vng_api_common.serializers import add_choice_values_help_text
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
 

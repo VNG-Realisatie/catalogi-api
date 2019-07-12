@@ -6,7 +6,6 @@ from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptCreateMixin
 
-
 # class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
 #                             FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
 #     """

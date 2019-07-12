@@ -3,14 +3,10 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import mixins, viewsets
 from rest_framework.exceptions import PermissionDenied
 
-from ...datamodel.models import (
-    ZaakInformatieobjectType
-)
+from ...datamodel.models import ZaakInformatieobjectType
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
-from ..serializers import (
-    ZaakTypeInformatieObjectTypeSerializer
-)
+from ..serializers import ZaakTypeInformatieObjectTypeSerializer
 from .mixins import ConceptDestroyMixin, ConceptFilterMixin
 
 

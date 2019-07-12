@@ -1,5 +1,7 @@
 import os
 
+# TODO: Make it disappear
+import django.db.models.options as options
 # Django-hijack (and Django-hijack-admin)
 from django.urls import reverse_lazy
 
@@ -355,8 +357,6 @@ if SENTRY_DSN:
 #
 IS_HTTPS = os.getenv('IS_HTTPS', '1').lower() in ['true', '1', 'yes']
 
-# TODO: Make it disappear
-import django.db.models.options as options
 
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
     'mnemonic',
