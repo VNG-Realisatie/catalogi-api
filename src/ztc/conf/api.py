@@ -1,16 +1,8 @@
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
-REST_FRAMEWORK.update({
-    'DEFAULT_PERMISSION_CLASSES': (
-        'vng_api_common.permissions.AuthScopesRequired',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100,
-    # Filtering
-    'SEARCH_PARAM': 'zoek',  # 'search',
-    'ORDERING_PARAM': 'sorteer',  # 'ordering',
-})
+REST_FRAMEWORK['PAGE_SIZE'] = 100
+REST_FRAMEWORK['DEFAULT_PAGINATION_CLASS'] = 'rest_framework.pagination.PageNumberPagination'
 
 SECURITY_DEFINITION_NAME = 'JWT-Claims'
 
@@ -33,17 +25,7 @@ SWAGGER_SETTINGS.update({
             # 'type': 'apiKey',
         }
     },
-
-    # no geo things here
-    'DEFAULT_FIELD_INSPECTORS': BASE_SWAGGER_SETTINGS['DEFAULT_FIELD_INSPECTORS'][1:]
 })
-
-REST_FRAMEWORK_EXT = {
-    'PAGE_PARAM': 'pagina',
-    'EXPAND_PARAM': 'expand',
-    'EXPAND_ALL_VALUE': 'true',
-    'FIELDS_PARAM': 'fields',
-}
 
 GEMMA_URL_INFORMATIEMODEL = 'Imztc'
 GEMMA_URL_INFORMATIEMODEL_VERSIE = '2.1'

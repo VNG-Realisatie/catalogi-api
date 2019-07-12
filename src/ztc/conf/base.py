@@ -1,6 +1,7 @@
 import os
 
-import django.db.models.options as options
+# Django-hijack (and Django-hijack-admin)
+from django.urls import reverse_lazy
 
 from .api import *  # noqa
 
@@ -11,7 +12,7 @@ DJANGO_PROJECT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.
 BASE_DIR = os.path.abspath(os.path.join(DJANGO_PROJECT_DIR, os.path.pardir, os.path.pardir))
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -35,7 +36,6 @@ DATABASES = {
 # Application definition
 
 INSTALLED_APPS = [
-
     # Note: contenttypes should be first, see Django ticket #10827
     'django.contrib.contenttypes',
     'django.contrib.auth',
@@ -47,12 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Optional applications.
-    'ordered_model',
-    'django_admin_index',
     'django.contrib.admin',
     # 'django.contrib.admindocs',
     # 'django.contrib.humanize',
-    # 'django.contrib.sitemaps',
 
     # External applications.
     'axes',
@@ -61,10 +58,11 @@ INSTALLED_APPS = [
     'vng_api_common',  # before drf_yasg to override the management command
     'vng_api_common.authorizations',
     'vng_api_common.notifications',
+    # 'vng_api_common.audittrails',
     'solo',
     'drf_yasg',
     'rest_framework',
-    'rest_framework_filters',
+    # 'rest_framework_filters',
     'django_markup',
     'django_better_admin_arrayfield.apps.DjangoBetterAdminArrayfieldConfig',
 
@@ -113,8 +111,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'ztc.utils.context_processors.settings',
-                # REQUIRED FOR ADMIN INDEX
-                'django_admin_index.context_processors.dashboard',
             ],
             'loaders': RAW_TEMPLATE_LOADERS
         },
@@ -124,10 +120,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ztc.wsgi.application'
 
 # Database: Defined in target specific settings files.
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 # Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -146,11 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
+# https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'nl-nl'
 
-TIME_ZONE = 'Europe/Amsterdam'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -166,7 +162,7 @@ LOCALE_PATHS = (
 )
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
+# https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
 
@@ -194,6 +190,7 @@ FIXTURE_DIRS = (
 )
 
 DEFAULT_FROM_EMAIL = 'ztc@example.com'
+EMAIL_TIMEOUT = 10
 
 LOGGING_DIR = os.path.join(BASE_DIR, 'log')
 
@@ -294,27 +291,24 @@ AUTHENTICATION_BACKENDS = [
 SESSION_COOKIE_NAME = 'ztc_sessionid'
 
 #
+# Silenced checks
+#
+SILENCED_SYSTEM_CHECKS = [
+    'rest_framework.W001',
+]
+
+#
 # Custom settings
 #
-PROJECT_NAME = 'Zaaktypen'
+PROJECT_NAME = 'Catalogi'
 SITE_TITLE = 'Zaaktypecatalogus (ZTC)'
 
 ENVIRONMENT = None
 SHOW_ALERT = True
 
-options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
-    'mnemonic',
-
-    'filter_fields',
-    'ordering_fields',
-    'search_fields',
-)
-
 #
 # Library settings
 #
-
-ADMIN_INDEX_SHOW_REMAINING_APPS = False
 
 # Django-axes
 AXES_LOGIN_FAILURE_LIMIT = 30  # Default: 3
@@ -325,7 +319,13 @@ AXES_BEHIND_REVERSE_PROXY = True  # Default: False (we are typically using Nginx
 AXES_ONLY_USER_FAILURES = False  # Default: False (you might want to block on username rather than IP)
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = False  # Default: False (you might want to block on username and IP)
 
-DATUM_FORMAT = "%Y%m%d"  # Datum (jjjjmmdd)
+
+HIJACK_LOGIN_REDIRECT_URL = '/'
+HIJACK_LOGOUT_REDIRECT_URL = reverse_lazy('admin:accounts_user_changelist')
+HIJACK_REGISTER_ADMIN = False
+# This is a CSRF-security risk.
+# See: http://django-hijack.readthedocs.io/en/latest/configuration/#allowing-get-method-for-hijack-views
+HIJACK_ALLOW_GET_REQUESTS = True
 
 # Django-CORS-middleware
 CORS_ORIGIN_ALLOW_ALL = True
@@ -350,5 +350,18 @@ if SENTRY_DSN:
         },
     })
 
-
+#
+# SSL or not?
+#
 IS_HTTPS = os.getenv('IS_HTTPS', '1').lower() in ['true', '1', 'yes']
+
+# TODO: Make it disappear
+import django.db.models.options as options
+
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
+    'mnemonic',
+
+    'filter_fields',
+    'ordering_fields',
+    'search_fields',
+)
