@@ -51,7 +51,7 @@ class GoneView(BaseErrorView):
     exception = Gone("The resource was destroyed")
 
 
-class PreconditionFailed(BaseErrorView):
+class PreconditionFailedView(BaseErrorView):
     exception = PreconditionFailed("Something about CRS")
 
 

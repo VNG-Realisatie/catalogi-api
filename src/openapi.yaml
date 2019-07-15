@@ -211,6 +211,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: besluittype_create
       description: ''
@@ -342,6 +345,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -476,6 +482,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: besluittype_delete
       description: ''
@@ -598,6 +607,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -630,6 +642,9 @@ paths:
                 $ref: '#/components/schemas/BesluitType'
       tags:
       - besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -816,6 +831,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: catalogus_create
       description: ''
@@ -947,6 +965,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -1082,6 +1103,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     parameters:
     - name: uuid
       in: path
@@ -1263,6 +1287,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: eigenschap_create
       description: ''
@@ -1394,6 +1421,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -1531,6 +1561,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: eigenschap_delete
       description: ''
@@ -1653,6 +1686,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -1834,6 +1870,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: informatieobjecttype_create
       description: ''
@@ -1965,6 +2004,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -2100,6 +2142,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: informatieobjecttype_delete
       description: ''
@@ -2222,6 +2267,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -2254,6 +2302,9 @@ paths:
                 $ref: '#/components/schemas/InformatieObjectType'
       tags:
       - informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -2435,6 +2486,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: resultaattype_create
       description: ''
@@ -2566,6 +2620,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -2703,6 +2760,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: resultaattype_delete
       description: ''
@@ -2825,6 +2885,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -3021,6 +3084,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: roltype_create
       description: ''
@@ -3152,6 +3218,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -3287,6 +3356,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: roltype_delete
       description: ''
@@ -3409,6 +3481,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -3589,6 +3664,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: statustype_create
       description: ''
@@ -3720,6 +3798,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -3854,6 +3935,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: statustype_delete
       description: ''
@@ -3976,6 +4060,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -4185,6 +4272,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktype-informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: zaakinformatieobjecttype_create
       description: ''
@@ -4316,6 +4406,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktype-informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -4450,6 +4543,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktype-informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: zaakinformatieobjecttype_delete
       description: ''
@@ -4572,6 +4668,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktype-informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -4765,6 +4864,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: zaaktype_create
       description: ''
@@ -4896,6 +4998,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
       requestBody:
         content:
           application/json:
@@ -5031,6 +5136,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     delete:
       operationId: zaaktype_delete
       description: ''
@@ -5153,6 +5261,9 @@ paths:
                 $ref: '#/components/schemas/Fout'
       tags:
       - zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -5185,6 +5296,9 @@ paths:
                 $ref: '#/components/schemas/ZaakType'
       tags:
       - zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     parameters:
     - name: uuid
       in: path
@@ -5969,6 +6083,12 @@ components:
             is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer.
           type: boolean
           readOnly: true
+        informeren:
+          title: Informeren
+          description: "Aanduiding die aangeeft of na het zetten van een STATUS van\
+            \ dit STATUSTYPE de Initiator moet worden ge\xC3\xAFnformeerd over de\
+            \ statusovergang."
+          type: boolean
     ZaakTypeInformatieObjectType:
       required:
       - zaaktype

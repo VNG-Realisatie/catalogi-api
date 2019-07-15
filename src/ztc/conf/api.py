@@ -1,6 +1,9 @@
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
+REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = (
+    'vng_api_common.permissions.AuthScopesRequired',
+)
 REST_FRAMEWORK['PAGE_SIZE'] = 100
 REST_FRAMEWORK['DEFAULT_PAGINATION_CLASS'] = 'rest_framework.pagination.PageNumberPagination'
 
