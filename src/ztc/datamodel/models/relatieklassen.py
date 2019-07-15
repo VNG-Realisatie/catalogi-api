@@ -20,28 +20,31 @@ class ZaakInformatieobjectType(models.Model):
         help_text="Unieke resource identifier (UUID4)"
     )
 
-    zaaktype = models.ForeignKey('datamodel.Zaaktype', verbose_name=_('zaaktype'), on_delete=models.CASCADE)
-    informatie_object_type = models.ForeignKey(
+    zaaktype = models.ForeignKey(
+        'datamodel.Zaaktype', verbose_name=_('zaaktype'), on_delete=models.CASCADE,
+        help_text=_('URL-referentie naar het ZAAKTYPE.')
+    )
+    informatieobjecttype = models.ForeignKey(
         'datamodel.InformatieObjectType', on_delete=models.CASCADE,
-        verbose_name=_('informatie object type')
+        verbose_name=_('informatie object type'),
+        help_text=_('URL-referentie naar het INFORMATIEOBJECTTYPE.')
     )
 
     volgnummer = models.PositiveSmallIntegerField(
         _('volgnummer'), validators=[MinValueValidator(1), MaxValueValidator(999)], help_text=_(
-            'Uniek volgnummer van het ZAAK-INFORMATIEOBJECT-TYPE binnen het ZAAKTYPE.'))
+            'Uniek volgnummer van het ZAAK-INFORMATIEOBJECTTYPE binnen het ZAAKTYPE.'))
     richting = models.CharField(_('richting'), max_length=20, choices=RichtingChoices.choices, help_text=_(
         'Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE '
         'bij zaken van het gerelateerde ZAAKTYPE.'))
 
     # this is the relation that is described on StatusType in the specification
     # TODO: validate that statustype is in fact a status type of self.zaaktype
-    status_type = models.ForeignKey(
+    statustype = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
         on_delete=models.CASCADE,
-        related_name='heeft_verplichte_zit', help_text=_(
-            'De informatieobjecten van de INFORMATIEOBJECTTYPEn van het aan het STATUSTYPE gerelateerde ZAAKTYPE '
-            'waarvoor geldt dat deze verplicht aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE '
-            'voordat de status van dit STATUSTYPE kan worden gezet bij die zaak.'))
+        related_name='heeft_verplichte_zit',
+        help_text=_('URL-referentie naar het STATUSTYPE waarbij deze INFORMATIEOBJECTTYPEn verplicht aanwezig moeten '
+                    'zijn.'))
 
     class Meta:
         # NOTE: The uniqueness is implied in the specification.
@@ -52,7 +55,7 @@ class ZaakInformatieobjectType(models.Model):
 
         filter_fields = (
             'zaaktype',
-            'informatie_object_type',
+            'informatieobjecttype',
             'richting',
         )
         ordering_fields = filter_fields

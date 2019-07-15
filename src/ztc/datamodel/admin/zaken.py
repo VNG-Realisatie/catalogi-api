@@ -24,7 +24,7 @@ class ZaakObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, 
     model = ZaakObjectType
 
     # List
-    list_display = ['objecttype', 'ander_objecttype', 'status_type']
+    list_display = ['objecttype', 'ander_objecttype', 'statustype']
 
     # Details
     fieldsets = (
@@ -33,7 +33,7 @@ class ZaakObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, 
                 'objecttype',
                 'ander_objecttype',
                 'relatieomschrijving',
-                'status_type',
+                'statustype',
             )
         }),
         (_('Relaties'), {
@@ -42,7 +42,7 @@ class ZaakObjectTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, 
             )
         }),
     )
-    raw_id_fields = ('is_relevant_voor', 'status_type', )
+    raw_id_fields = ('is_relevant_voor', 'statustype', )
 
 
 class StatusTypeInline(EditInlineAdminMixin, admin.TabularInline):

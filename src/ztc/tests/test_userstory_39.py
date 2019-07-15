@@ -36,12 +36,12 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         self.assertIsInstance(response_data['omschrijving'], str)
 
     def test_retrieve_statustype(self):
-        status_type = StatusTypeFactory.create()
+        statustype = StatusTypeFactory.create()
         url = get_operation_url(
             'statustype_read',
-            catalogus_uuid=status_type.zaaktype.catalogus.uuid,
-            zaaktype_uuid=status_type.zaaktype.uuid,
-            uuid=status_type.uuid
+            catalogus_uuid=statustype.zaaktype.catalogus.uuid,
+            zaaktype_uuid=statustype.zaaktype.uuid,
+            uuid=statustype.uuid
         )
 
         response = self.client.get(url)

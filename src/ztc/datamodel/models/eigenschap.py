@@ -35,8 +35,7 @@ class EigenschapSpecificatie(models.Model):
 
     waardenverzameling = ArrayField(
         models.CharField(_('waardenverzameling'), max_length=100),
-        blank=True, help_text=_('Waarden die deze EIGENSCHAP kan hebben '
-                                '(Gebruik een komma om waarden van elkaar te onderscheiden.)')
+        blank=True, help_text=_('Waarden die deze EIGENSCHAP kan hebben.')
     )
 
     class Meta:
@@ -187,7 +186,7 @@ class Eigenschap(models.Model):
     )
 
     # shouldn't this be a M2M?
-    status_type = models.ForeignKey(
+    statustype = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'),
         blank=True, null=True, on_delete=models.CASCADE,
         related_name='heeft_verplichte_eigenschap', help_text=_(
@@ -195,7 +194,7 @@ class Eigenschap(models.Model):
             'STATUS van het STATUSTYPE kan worden gezet.')
     )
     zaaktype = models.ForeignKey('datamodel.ZaakType', verbose_name=_('is van'), help_text=_(
-        'Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'),
+        'URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.'),
         on_delete=models.CASCADE
     )
 

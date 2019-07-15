@@ -25,8 +25,8 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
             return
 
         if extracted:
-            for informatie_object_type in extracted:
-                self.informatieobjecttypes.add(informatie_object_type)
+            for informatieobjecttype in extracted:
+                self.informatieobjecttypes.add(informatieobjecttype)
 
     @factory.post_generation
     def zaaktypes(self, create, extracted, **kwargs):

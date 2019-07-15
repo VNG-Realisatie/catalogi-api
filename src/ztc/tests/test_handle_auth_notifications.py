@@ -19,7 +19,7 @@ class HandleAuthNotifTestCase(JWTAuthMixin, APITestCase):
     def test_handle_create_auth(self):
         config = AuthorizationsConfig.get_solo()
         uuid = _uuid.uuid4()
-        applicatie_url = f'{config.api_root}/applicaties/{uuid}'
+        applicatie_url = f'{config.api_root}applicaties/{uuid}'
         webhook_url = reverse('notificaties-webhook')
 
         responses = {
@@ -28,7 +28,7 @@ class HandleAuthNotifTestCase(JWTAuthMixin, APITestCase):
                 'label': 'Melding Openbare Ruimte consumer',
                 'heeftAlleAutorisaties': False,
                 'autorisaties': [{
-                    'component': 'ZRC',
+                    'component': 'zrc',
                     'scopes': [
                         'zds.scopes.zaken.lezen',
                         'zds.scopes.zaken.aanmaken',
@@ -77,7 +77,7 @@ class HandleAuthNotifTestCase(JWTAuthMixin, APITestCase):
                 'label': 'after',
                 'heeftAlleAutorisaties': False,
                 'autorisaties': [{
-                    'component': 'ZRC',
+                    'component': 'zrc',
                     'scopes': [
                         'zds.scopes.zaken.lezen',
                         'zds.scopes.zaken.aanmaken',

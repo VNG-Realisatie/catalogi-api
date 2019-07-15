@@ -70,13 +70,13 @@ class BesluitType(GeldigheidMixin, ConceptMixin, models.Model):
 
     catalogus = models.ForeignKey(
         'datamodel.Catalogus', on_delete=models.CASCADE,
-        verbose_name=_('catalogus'), help_text=_('De CATALOGUS waartoe dit BESLUITTYPE behoort.')
+        verbose_name=_('catalogus'), help_text=_('URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.')
     )
 
     informatieobjecttypes = models.ManyToManyField(
         'datamodel.InformatieObjectType', blank=True,
         verbose_name=_('informatieobjecttype'),
-        help_text=_('Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit '
+        help_text=_('URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit '
                     'BESLUITTYPE worden vastgelegd.')
     )
 

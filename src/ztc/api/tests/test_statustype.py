@@ -25,14 +25,14 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')
 
     def test_get_detail(self):
-        status_type = StatusTypeFactory.create(
+        statustype = StatusTypeFactory.create(
             statustype_omschrijving='Besluit genomen',
             zaaktype__catalogus=self.catalogus,
         )
         statustype_detail_url = reverse('statustype-detail', kwargs={
-            'uuid': status_type.uuid,
+            'uuid': statustype.uuid,
         })
-        zaaktype = status_type.zaaktype
+        zaaktype = statustype.zaaktype
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
@@ -47,8 +47,9 @@ class StatusTypeAPITests(APITestCase):
             'omschrijvingGeneriek': '',
             'statustekst': '',
             'zaaktype': 'http://testserver{}'.format(zaaktype_url),
-            'volgnummer': status_type.statustypevolgnummer,
+            'volgnummer': statustype.statustypevolgnummer,
             'isEindstatus': True,
+            'informeren': False,
         }
 
         self.assertEqual(expected, response.json())
