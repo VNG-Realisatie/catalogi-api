@@ -49,6 +49,7 @@ class StatusTypeAPITests(APITestCase):
             'zaaktype': 'http://testserver{}'.format(zaaktype_url),
             'volgnummer': status_type.statustypevolgnummer,
             'isEindstatus': True,
+            'informeren': False,
         }
 
         self.assertEqual(expected, response.json())
