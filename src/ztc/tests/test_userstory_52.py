@@ -16,7 +16,7 @@ from ztc.datamodel.tests.factories import (
 class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
     def test_list_eigenschappen(self):
-        zaaktype = ZaakTypeFactory.create()
+        zaaktype = ZaakTypeFactory.create(concept=False)
 
         eigenschap1 = EigenschapFactory.create(
             eigenschapnaam='objecttype',
@@ -60,7 +60,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response_data = response.json()
+        response_data = response.json()['results']
 
         self.assertEqual(len(response_data), 3)
         self.assertResponseTypes(response_data[0], {
@@ -69,8 +69,6 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             ('definitie', str),
             ('specificatie', dict),
             ('toelichting', str),
-            ('ingangsdatumObject', str),
-            ('einddatumObject', type(None)),
             ('zaaktype', str),
         })
 
@@ -93,8 +91,6 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                 'url': f'http://testserver{detail_url}',
                 'naam': 'objecttype',
                 'definitie': '',
-                'einddatumObject': None,
-                'ingangsdatumObject': zaaktype.datum_begin_geldigheid.strftime("%Y-%m-%d"),
                 'zaaktype': f'http://testserver{zaaktype_url}',
                 'toelichting': '',
                 'specificatie': {

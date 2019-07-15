@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from ...datamodel.models import BesluitType
+from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
+from ..utils.validators import RelationCatalogValidator
 
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -8,14 +9,14 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
         view_name='informatieobjecttype-detail',
         many=True,
         lookup_field='uuid',
-        read_only=True
+        queryset=InformatieObjectType.objects.all()
     )
 
     zaaktypes = serializers.HyperlinkedRelatedField(
         many=True,
-        read_only=True,
         view_name='zaaktype-detail',
         lookup_field='uuid',
+        queryset=ZaakType.objects.all()
     )
 
     class Meta:
@@ -26,6 +27,15 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             },
             'catalogus': {
                 'lookup_field': 'uuid',
+            },
+            'begin_geldigheid': {
+                'source': 'datum_begin_geldigheid'
+            },
+            'einde_geldigheid': {
+                'source': 'datum_einde_geldigheid'
+            },
+            'concept': {
+                'read_only': True,
             },
         }
         fields = (
@@ -43,4 +53,11 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             'toelichting',
 
             'informatieobjecttypes',
+            'begin_geldigheid',
+            'einde_geldigheid',
+            'concept',
         )
+        validators = [
+            RelationCatalogValidator('informatieobjecttypes'),
+            RelationCatalogValidator('zaaktypes'),
+        ]

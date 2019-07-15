@@ -49,23 +49,7 @@ class FactoryTests(HaaglandenMixin, TestCase):
         #
         expected_dates = [date(2018, 1, 30)]  # since the freeze time is used, that date should appear
         self.assertEqual(
-            list(set(RolType.objects.values_list('datum_begin_geldigheid', flat=True))),
-            expected_dates
-        )
-        self.assertEqual(
-            list(set(StatusType.objects.values_list('datum_begin_geldigheid', flat=True))),
-            expected_dates
-        )
-        self.assertEqual(
             list(set(BesluitType.objects.values_list('datum_begin_geldigheid', flat=True))),
-            expected_dates
-        )
-        self.assertEqual(
-            list(set(Eigenschap.objects.values_list('datum_begin_geldigheid', flat=True))),
-            expected_dates
-        )
-        self.assertEqual(
-            list(set(ResultaatType.objects.values_list('datum_begin_geldigheid', flat=True))),
             expected_dates
         )
         self.assertEqual(

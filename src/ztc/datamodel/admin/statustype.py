@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import CheckListItem, StatusType
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from .mixins import FilterSearchOrderingAdminMixin
 
 
 @admin.register(CheckListItem)
@@ -12,7 +12,7 @@ class CheckListItemAdmin(admin.ModelAdmin):
 
 
 @admin.register(StatusType)
-class StatusTypeAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+class StatusTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
     model = StatusType
 
     # List

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
+
 from ztc.utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 
 from ..models import (
@@ -9,7 +11,9 @@ from ..models import (
 )
 from .eigenschap import EigenschapAdmin
 from .forms import ZaakTypeForm
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from .mixins import (
+    ConceptAdminMixin, FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+)
 from .resultaattype import ResultaatTypeAdmin
 from .roltype import RolTypeAdmin
 from .statustype import StatusTypeAdmin
@@ -76,8 +80,12 @@ class ZaakTypenRelatieInline(admin.TabularInline):
 
 
 @admin.register(ZaakType)
-class ZaakTypeAdmin(ListObjectActionsAdminMixin, FilterSearchOrderingAdminMixin,
-                    GeldigheidAdminMixin, admin.ModelAdmin):
+class ZaakTypeAdmin(ListObjectActionsAdminMixin,
+                    FilterSearchOrderingAdminMixin,
+                    GeldigheidAdminMixin,
+                    ConceptAdminMixin,
+                    DynamicArrayMixin,
+                    admin.ModelAdmin):
     model = ZaakType
     form = ZaakTypeForm
 

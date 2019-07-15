@@ -5,7 +5,7 @@ from ..models import (
     InformatieObjectType, InformatieObjectTypeOmschrijvingGeneriek,
     ZaakInformatieobjectType
 )
-from .mixins import GeldigheidAdminMixin
+from .mixins import ConceptAdminMixin, GeldigheidAdminMixin
 
 
 class ZaakInformatieobjectTypeInline(admin.TabularInline):
@@ -41,7 +41,7 @@ class InformatieObjectTypeOmschrijvingGeneriekAdmin(GeldigheidAdminMixin, admin.
 
 
 @admin.register(InformatieObjectType)
-class InformatieObjectTypeAdmin(GeldigheidAdminMixin, admin.ModelAdmin):
+class InformatieObjectTypeAdmin(GeldigheidAdminMixin, ConceptAdminMixin, admin.ModelAdmin):
     list_display = ('catalogus', 'omschrijving', 'informatieobjectcategorie', )
     list_filter = ('catalogus', 'informatieobjectcategorie')
     search_fields = ('omschrijving', 'informatieobjectcategorie', 'trefwoord', 'toelichting')

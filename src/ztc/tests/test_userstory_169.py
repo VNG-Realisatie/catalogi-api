@@ -45,7 +45,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         Zie https://github.com/VNG-Realisatie/gemma-zaken/issues/182#issuecomment-408899919
         voor context
         """
-        zaaktype = ZaakTypeFactory.create()
+        zaaktype = ZaakTypeFactory.create(concept=False)
         roltype_behandelaar = RolTypeFactory.create(
             zaaktype=zaaktype,
             omschrijving_generiek=RolOmschrijving.behandelaar,
@@ -69,7 +69,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         })
 
         self.assertEqual(response.status_code, 200)
-        response_data = response.json()
+        response_data = response.json()['results']
 
         self.assertEqual(len(response_data), 1)
 

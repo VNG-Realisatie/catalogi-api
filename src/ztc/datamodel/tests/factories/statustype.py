@@ -13,7 +13,6 @@ class CheckListItemFactory(factory.django.DjangoModelFactory):
 class StatusTypeFactory(factory.django.DjangoModelFactory):
     statustypevolgnummer = factory.sequence(lambda n: n + 1)
     zaaktype = factory.SubFactory(ZaakTypeFactory)
-    datum_begin_geldigheid = factory.SelfAttribute('zaaktype.datum_begin_geldigheid')
 
     class Meta:
         model = StatusType

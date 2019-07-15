@@ -1,12 +1,13 @@
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 from vng_api_common.viewsets import NestedViewSetMixin
 
 from ...datamodel.models import ZaakObjectType, ZaakType
 from ..filters import ZaakTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakObjectTypeSerializer, ZaakTypeSerializer
 from ..utils.rest_flex_fields import FlexFieldsMixin
 from ..utils.viewsets import FilterSearchOrderingViewSetMixin
+from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 
 class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
@@ -24,10 +25,15 @@ class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+
     }
 
 
-class ZaakTypeViewSet(viewsets.ReadOnlyModelViewSet):
+class ZaakTypeViewSet(ConceptMixin,
+                      M2MConceptCreateMixin,
+                      mixins.CreateModelMixin,
+                      mixins.DestroyModelMixin,
+                      viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
@@ -44,12 +50,15 @@ class ZaakTypeViewSet(viewsets.ReadOnlyModelViewSet):
         'eigenschap_set',
         'roltype_set',
         'besluittype_set',
-    )
+    ).order_by('-pk')
     serializer_class = ZaakTypeSerializer
-    pagination_class = None
     lookup_field = 'uuid'
     filterset_class = ZaakTypeFilter
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
+        'publish': SCOPE_ZAAKTYPES_WRITE,
     }
+    concept_related_fields = ['besluittype_set']

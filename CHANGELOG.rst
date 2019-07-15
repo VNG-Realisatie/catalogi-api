@@ -2,6 +2,25 @@
 Wijzigingen
 ===========
 
+0.15.0 (2019-07-15)
+===================
+
+Maturity improvement
+
+* Added create/destroy actions to resources, making the ZTC writable
+* Removed ``datumBeginGeldigheid`` and ``datumEindeGeldigheid`` from models
+  directly linked to ``Zaaktype`` - this is derived from ``Zaaktype`` instead
+* Added ``concept`` (=draft) fields to resources. Resources may be modified
+  as long as they're in 'concept' status. Once concept status is set to
+  ``false``, no modifications are allowed, not on related objects either.
+* Added filters for concept/published/all status
+* Added filters for relations (catalogus, zaaktype...)
+* Added pagination to the collections
+* Update to Django LTS version (2.2)
+* Set up CI/CD for ``develop`` branch as well
+* Improved admin interface w/r to ``ArrayField`` presentation/UI
+* Added management command to migrate to new domains
+
 0.14.2 (2019-07-02)
 ===================
 

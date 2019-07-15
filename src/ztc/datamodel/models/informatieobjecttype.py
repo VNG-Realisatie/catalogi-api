@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.fields import VertrouwelijkheidsAanduidingField
 
-from .mixins import GeldigheidMixin
+from .mixins import ConceptMixin, GeldigheidMixin
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
@@ -56,7 +56,7 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         super().clean()
 
 
-class InformatieObjectType(GeldigheidMixin, models.Model):
+class InformatieObjectType(GeldigheidMixin, ConceptMixin, models.Model):
     """
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
 
@@ -77,7 +77,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
         _('categorie'), max_length=80,
         help_text=_('Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.'))
     trefwoord = ArrayField(
-        models.CharField(_('trefwoord'), max_length=30),
+        models.CharField(_('trefwoord'), max_length=30), default=list,
         blank=True, help_text=_('Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden '
                                 'gekarakteriseerd. (Gebruik een komma om waarden van elkaar te onderscheiden.)'))
     vertrouwelijkheidaanduiding = VertrouwelijkheidsAanduidingField(
@@ -88,7 +88,7 @@ class InformatieObjectType(GeldigheidMixin, models.Model):
     )
     model = ArrayField(
         models.URLField(_('model')),
-        blank=True, help_text=_(
+        blank=True,  default=list, help_text=_(
             'De URL naar het model / sjabloon dat wordt gebruikt voor de creatie van informatieobjecten '
             'van dit INFORMATIEOBJECTTYPE. (Gebruik een komma om waarden van elkaar te onderscheiden.)'))
     toelichting = models.CharField(

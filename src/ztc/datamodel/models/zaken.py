@@ -1,12 +1,12 @@
 import uuid
 
-from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
+from django_better_admin_arrayfield.models.fields import ArrayField
 from vng_api_common.descriptors import GegevensGroepType
 from vng_api_common.fields import (
     DaysDurationField, VertrouwelijkheidsAanduidingField
@@ -14,7 +14,7 @@ from vng_api_common.fields import (
 from vng_api_common.models import APIMixin
 
 from ..choices import InternExtern, JaNee, ObjectTypen
-from .mixins import GeldigheidMixin
+from .mixins import ConceptMixin, GeldigheidMixin
 
 
 class ZaakObjectType(GeldigheidMixin, models.Model):
@@ -195,7 +195,7 @@ class BronZaakType(models.Model):
         verbose_name_plural = _('Bron zaaktypen')
 
 
-class ZaakType(APIMixin, GeldigheidMixin, models.Model):
+class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
     """
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort
 

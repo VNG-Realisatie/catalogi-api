@@ -1,13 +1,18 @@
-from rest_framework import viewsets
-from vng_api_common.viewsets import CheckQueryParamsMixin, NestedViewSetMixin
+from rest_framework import mixins, viewsets
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import RolType
 from ..filters import RolTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import RolTypeSerializer
+from .mixins import ZaakTypeConceptMixin
 
 
-class RolTypeViewSet(CheckQueryParamsMixin, NestedViewSetMixin, viewsets.ReadOnlyModelViewSet):
+class RolTypeViewSet(CheckQueryParamsMixin,
+                     ZaakTypeConceptMixin,
+                     mixins.CreateModelMixin,
+                     mixins.DestroyModelMixin,
+                     viewsets.ReadOnlyModelViewSet):
     """
     retrieve:
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE.
@@ -15,12 +20,13 @@ class RolTypeViewSet(CheckQueryParamsMixin, NestedViewSetMixin, viewsets.ReadOnl
     list:
     Een verzameling van ROLTYPEn.
     """
-    queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set')
+    queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set').order_by('-pk')
     serializer_class = RolTypeSerializer
     filterset_class = RolTypeFilter
-    pagination_class = None
     lookup_field = 'uuid'
     required_scopes = {
         'list': SCOPE_ZAAKTYPES_READ,
         'retrieve': SCOPE_ZAAKTYPES_READ,
+        'create': SCOPE_ZAAKTYPES_WRITE,
+        'destroy': SCOPE_ZAAKTYPES_WRITE,
     }

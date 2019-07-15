@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 
 from ztc.datamodel.models import Eigenschap, EigenschapSpecificatie
 
@@ -46,19 +44,11 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             'definitie',
             'specificatie',
             'toelichting',
-            'ingangsdatum_object',
-            'einddatum_object',
             'zaaktype',
         )
         extra_kwargs = {
             'url': {
                 'lookup_field': 'uuid',
-            },
-            'ingangsdatum_object': {
-                'source': 'datum_begin_geldigheid',
-            },
-            'einddatum_object': {
-                'source': 'datum_einde_geldigheid',
             },
             'naam': {
                 'source': 'eigenschapnaam',

@@ -2,11 +2,11 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from ..models import Eigenschap, EigenschapReferentie, EigenschapSpecificatie
-from .mixins import FilterSearchOrderingAdminMixin, GeldigheidAdminMixin
+from .mixins import FilterSearchOrderingAdminMixin
 
 
 @admin.register(Eigenschap)
-class EigenschapAdmin(GeldigheidAdminMixin, FilterSearchOrderingAdminMixin, admin.ModelAdmin):
+class EigenschapAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
     model = Eigenschap
 
     # List

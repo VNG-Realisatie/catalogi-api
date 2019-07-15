@@ -1,8 +1,5 @@
-from django.contrib.admin.widgets import AdminDateWidget
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy as _
-
-from ...utils.fields import StUFDateField
 
 
 class GeldigheidAdminMixin(object):
@@ -47,3 +44,13 @@ class FilterSearchOrderingAdminMixin(object):
         The fields that are searched in the admin.
         """
         return self.get_model_option('search_fields', super().get_search_fields(request))
+
+
+class ConceptAdminMixin(object):
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super().get_fieldsets(request, obj)
+        return tuple(fieldsets) + (
+            (_('Concept'), {
+                'fields': ('concept', )
+            }),
+        )

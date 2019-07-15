@@ -4,10 +4,13 @@ from unittest import skip
 from django.urls import reverse
 
 from rest_framework import status
-from vng_api_common.tests import get_operation_url
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
+from vng_api_common.tests import get_operation_url, get_validation_errors
 
+from ztc.datamodel.choices import AardRelatieChoices, InternExtern
+from ztc.datamodel.models import ZaakType
 from ztc.datamodel.tests.factories import (
-    ZaakObjectTypeFactory, ZaakTypeFactory
+    BesluitTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory
 )
 
 from .base import APITestCase
@@ -16,67 +19,62 @@ from .base import APITestCase
 class ZaakTypeAPITests(APITestCase):
     maxDiff = None
 
-    def setUp(self):
-        super().setUp()
+    def test_get_list_default_definitief(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=True)
+        zaaktype2 = ZaakTypeFactory.create(concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
 
-        self.zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
-
-        self.zaaktype_list_url = get_operation_url(
-            'zaaktype_list',
-            catalogus_uuid=self.catalogus.uuid
-        )
-        self.zaaktype_detail_url = get_operation_url(
-            'zaaktype_read',
-            catalogus_uuid=self.catalogus.uuid,
-            uuid=self.zaaktype.uuid
-        )
-
-    def test_get_list(self):
-        response = self.api_client.get(self.zaaktype_list_url)
+        response = self.client.get(zaaktype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype2_url}')
 
     def test_get_detail(self):
-        response = self.api_client.get(self.zaaktype_detail_url)
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
+        zaaktype_detail_url = get_operation_url('zaaktype_read', uuid=zaaktype.uuid)
+
+        response = self.api_client.get(zaaktype_detail_url)
+
         self.assertEqual(response.status_code, 200)
 
         expected = {
-            'url': f'http://testserver{self.zaaktype_detail_url}',
+            'url': f'http://testserver{zaaktype_detail_url}',
             # 'ingangsdatumObject': '2018-01-01',
             # 'einddatumObject': None,
-            'identificatie': self.zaaktype.zaaktype_identificatie,
+            'identificatie': zaaktype.zaaktype_identificatie,
             'productenOfDiensten': ['https://example.com/product/123'],
             # 'broncatalogus': None,
-            'publicatieIndicatie': self.zaaktype.publicatie_indicatie,
+            'publicatieIndicatie': zaaktype.publicatie_indicatie,
             'trefwoorden': [],
             # 'zaakcategorie': None,
             'toelichting': '',
-            'handelingInitiator': self.zaaktype.handeling_initiator,
+            'handelingInitiator': zaaktype.handeling_initiator,
             # 'bronzaaktype': None,
-            'aanleiding': self.zaaktype.aanleiding,
-            'verlengingstermijn': None if not self.zaaktype.verlenging_mogelijk else 'P30D',
-            'opschortingEnAanhoudingMogelijk': self.zaaktype.opschorting_en_aanhouding_mogelijk,
+            'aanleiding': zaaktype.aanleiding,
+            'verlengingstermijn': None if not zaaktype.verlenging_mogelijk else 'P30D',
+            'opschortingEnAanhoudingMogelijk': zaaktype.opschorting_en_aanhouding_mogelijk,
             'catalogus': f'http://testserver{self.catalogus_detail_url}',
-            'indicatieInternOfExtern': self.zaaktype.indicatie_intern_of_extern,
-            'verlengingMogelijk': self.zaaktype.verlenging_mogelijk,
-            'handelingBehandelaar': self.zaaktype.handeling_behandelaar,
-            'doel': self.zaaktype.doel,
+            'indicatieInternOfExtern': zaaktype.indicatie_intern_of_extern,
+            'verlengingMogelijk': zaaktype.verlenging_mogelijk,
+            'handelingBehandelaar': zaaktype.handeling_behandelaar,
+            'doel': zaaktype.doel,
             # 'versiedatum': '2018-01-01',
             # 'formulier': [],
-            'onderwerp': self.zaaktype.onderwerp,
+            'onderwerp': zaaktype.onderwerp,
             'publicatietekst': '',
             'omschrijvingGeneriek': '',
             'vertrouwelijkheidaanduiding': '',
             'verantwoordingsrelatie': [],
-            'selectielijstProcestype': self.zaaktype.selectielijst_procestype,
+            'selectielijstProcestype': zaaktype.selectielijst_procestype,
             # 'isDeelzaaktypeVan': [],
             'servicenorm': None,
             # 'archiefclassificatiecode': None,
             'referentieproces': {
-                'naam': self.zaaktype.referentieproces_naam,
+                'naam': zaaktype.referentieproces_naam,
                 'link': '',
             },
             'doorlooptijd': "P30D",
@@ -93,15 +91,15 @@ class ZaakTypeAPITests(APITestCase):
             'besluittypen': [],
             'beginGeldigheid': '2018-01-01',
             'eindeGeldigheid': None,
+            'versiedatum': '2018-01-01',
+            'concept': True,
         }
         self.assertEqual(expected, response.json())
 
     def test_get_detail_404(self):
-        url = get_operation_url(
-            'zaaktype_read',
-            catalogus_uuid=uuid.uuid4(),
-            uuid=uuid.uuid4()
-        )
+        ZaakTypeFactory.create(catalogus=self.catalogus)
+
+        url = get_operation_url('zaaktype_read', uuid=uuid.uuid4())
 
         response = self.client.get(url)
 
@@ -119,57 +117,253 @@ class ZaakTypeAPITests(APITestCase):
             )
         })
 
-    @skip('Not implemented yet')
-    def test_formulier(self):
-        raise NotImplementedError()
+    def test_create_zaaktype(self):
+        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
+        besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
 
-    @skip('Not implemented yet')
-    def test_heeft_relevant_informatieobjecttype(self):
-        raise NotImplementedError()
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        data = {
+            'identificatie': 0,
+            'doel': 'some test',
+            'aanleiding': 'some test',
+            'indicatieInternOfExtern': InternExtern.extern,
+            'handelingInitiator': 'indienen',
+            'onderwerp': 'Klacht',
+            'handelingBehandelaar': 'uitvoeren',
+            'doorlooptijd': 'P30D',
+            'opschortingEnAanhoudingMogelijk': False,
+            'verlengingMogelijk': True,
+            'verlengingstermijn': 'P30D',
+            'publicatieIndicatie': True,
+            'verantwoordingsrelatie': [],
+            'productenOfDiensten': ['https://example.com/product/123'],
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'omschrijving': 'some test',
+            'gerelateerdeZaaktypen': [
+                {
+                    'zaaktype': 'http://example.com/zaaktype/1',
+                    'aard_relatie': AardRelatieChoices.bijdrage,
+                    'toelichting': 'test relations'
+                },
+            ],
+            'referentieproces': {
+                'naam': 'ReferentieProces 0',
+                'link': ''
+            },
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            'besluittypen': [f'http://testserver{besluittype_url}'],
+            'beginGeldigheid': '2018-01-01',
+            'versiedatum': '2018-01-01',
+        }
+        response = self.client.post(zaaktype_list_url, data)
 
-    @skip('Not implemented yet')
-    def test_heeft_relevant_resultaattype(self):
-        raise NotImplementedError()
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    @skip('Not implemented yet')
-    def test_heeft_relevant_besluittype(self):
-        raise NotImplementedError()
+        zaaktype = ZaakType.objects.get(zaaktype_omschrijving='some test')
 
-    @skip('Not implemented yet')
-    def test_heeft_relevant_zaakobjecttype(self):
-        raise NotImplementedError()
+        self.assertEqual(zaaktype.catalogus, self.catalogus)
+        self.assertEqual(zaaktype.besluittype_set.get(), besluittype)
+        self.assertEqual(zaaktype.referentieproces_naam, 'ReferentieProces 0')
+        self.assertEqual(zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype, 'http://example.com/zaaktype/1')
+        self.assertEqual(zaaktype.concept, True)
 
-    @skip('Not implemented yet')
-    def test_heeft_eigenschap(self):
-        raise NotImplementedError()
+    def test_create_zaaktype_fail_besluittype_non_concept(self):
+        besluittype = BesluitTypeFactory.create(concept=False, catalogus=self.catalogus)
+        besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
 
-    @skip('Not implemented yet')
-    def test_heeft_roltype(self):
-        raise NotImplementedError()
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        data = {
+            'identificatie': 0,
+            'doel': 'some test',
+            'aanleiding': 'some test',
+            'indicatieInternOfExtern': InternExtern.extern,
+            'handelingInitiator': 'indienen',
+            'onderwerp': 'Klacht',
+            'handelingBehandelaar': 'uitvoeren',
+            'doorlooptijd': 'P30D',
+            'opschortingEnAanhoudingMogelijk': False,
+            'verlengingMogelijk': True,
+            'verlengingstermijn': 'P30D',
+            'publicatieIndicatie': True,
+            'verantwoordingsrelatie': [],
+            'productenOfDiensten': ['https://example.com/product/123'],
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'omschrijving': 'some test',
+            'gerelateerdeZaaktypen': [
+                {
+                    'zaaktype': 'http://example.com/zaaktype/1',
+                    'aard_relatie': AardRelatieChoices.bijdrage,
+                    'toelichting': 'test relations'
+                },
+            ],
+            'referentieproces': {
+                'naam': 'ReferentieProces 0',
+                'link': ''
+            },
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            'besluittypen': [f'http://testserver{besluittype_url}'],
+            'beginGeldigheid': '2018-01-01',
+            'versiedatum': '2018-01-01',
+        }
 
-    @skip('Not implemented yet')
-    def test_heeft_statustype(self):
-        raise NotImplementedError()
+        response = self.client.post(zaaktype_list_url, data)
 
-    @skip('Not implemented yet')
-    def test_heeft_gerelateerd(self):
-        raise NotImplementedError()
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    @skip('Not implemented yet')
-    def test_is_deelzaaktype_van(self):
-        raise NotImplementedError()
+        data = response.json()
+        self.assertEqual(data['detail'], "Relations to a non-concept besluittype_set object can't be created")
 
-    @skip('Not implemented yet')
-    def test_verantwoordingsrelatie(self):
-        raise NotImplementedError()
+    def test_create_zaaktype_fail_different_catalogus_besluittypes(self):
+        besluittype = BesluitTypeFactory.create()
+        besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
 
-    @skip('Not implemented yet')
-    def test_bronzaaktype(self):
-        raise NotImplementedError()
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        data = {
+            'identificatie': 0,
+            'doel': 'some test',
+            'aanleiding': 'some test',
+            'indicatieInternOfExtern': InternExtern.extern,
+            'handelingInitiator': 'indienen',
+            'onderwerp': 'Klacht',
+            'handelingBehandelaar': 'uitvoeren',
+            'doorlooptijd': 'P30D',
+            'opschortingEnAanhoudingMogelijk': False,
+            'verlengingMogelijk': True,
+            'verlengingstermijn': 'P30D',
+            'publicatieIndicatie': True,
+            'verantwoordingsrelatie': [],
+            'productenOfDiensten': ['https://example.com/product/123'],
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'omschrijving': 'some test',
+            'gerelateerdeZaaktypen': [
+                {
+                    'zaaktype': 'http://example.com/zaaktype/1',
+                    'aard_relatie': AardRelatieChoices.bijdrage,
+                    'toelichting': 'test relations'
+                },
+            ],
+            'referentieproces': {
+                'naam': 'ReferentieProces 0',
+                'link': ''
+            },
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            'besluittypen': [f'http://testserver{besluittype_url}'],
+            'beginGeldigheid': '2018-01-01',
+            'versiedatum': '2018-01-01',
+        }
+        response = self.client.post(zaaktype_list_url, data)
 
-    @skip('Not implemented yet')
-    def test_broncatalogus(self):
-        raise NotImplementedError()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST, response.data)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'relations-incorrect-catalogus')
+
+    def test_publish_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = get_operation_url('zaaktype_publish', uuid=zaaktype.uuid)
+
+        response = self.client.post(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        zaaktype.refresh_from_db()
+
+        self.assertEqual(zaaktype.concept, False)
+
+    def test_delete_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = get_operation_url('zaaktype_read', uuid=zaaktype.uuid)
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ZaakType.objects.filter(id=zaaktype.id))
+
+    def test_delete_zaaktype_fail_not_concept(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = get_operation_url('zaaktype_read', uuid=zaaktype.uuid)
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
+
+
+class ZaakTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_zaaktype_status_alles(self):
+        ZaakTypeFactory.create(concept=True)
+        ZaakTypeFactory.create(concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+
+        response = self.client.get(zaaktype_list_url, {'status': 'alles'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_zaaktype_status_concept(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=True)
+        zaaktype2 = ZaakTypeFactory.create(concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'status': 'concept'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
+
+    def test_filter_zaaktype_status_definitief(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=True)
+        zaaktype2 = ZaakTypeFactory.create(concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'status': 'definitief'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype2_url}')
+
+    def test_filter_identificatie(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=False, zaaktype_identificatie=123)
+        zaaktype2 = ZaakTypeFactory.create(concept=False, zaaktype_identificatie=456)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'identificatie': 123})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
+
+    def test_filter_trefwoorden(self):
+        zaaktype1 = ZaakTypeFactory.create(concept=False, trefwoorden=['some', 'key', 'words'])
+        zaaktype2 = ZaakTypeFactory.create(concept=False, trefwoorden=['other', 'words'])
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        zaaktype1_url = get_operation_url('zaaktype_read', uuid=zaaktype1.uuid)
+
+        response = self.client.get(zaaktype_list_url, {'trefwoorden': 'key'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
 
 
 @skip("Not in current MVP")
@@ -219,3 +413,33 @@ class ZaakObjectTypeAPITests(APITestCase):
             'url': 'http://testserver{}'.format(self.zaakobjecttype_detail_url)
         }
         self.assertEqual(expected, response.json())
+
+
+class ZaakTypePaginationTestCase(APITestCase):
+    maxDiff = None
+
+    def test_pagination_default(self):
+        ZaakTypeFactory.create_batch(2, concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+
+        response = self.client.get(zaaktype_list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        ZaakTypeFactory.create_batch(2, concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+
+        response = self.client.get(zaaktype_list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])

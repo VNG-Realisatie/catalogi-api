@@ -1,3 +1,4 @@
+from drf_writable_nested import NestedCreateMixin
 from rest_framework import serializers
 
 from ...datamodel.models import MogelijkeBetrokkene, RolType
@@ -12,7 +13,7 @@ class MogelijkeBetrokkeneSerializer(serializers.ModelSerializer):
         )
 
 
-class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
+class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerializer):
     mogelijke_betrokkenen = MogelijkeBetrokkeneSerializer(many=True, source='mogelijkebetrokkene_set')
     # magZetten = NestedHyperlinkedRelatedField(
     #     many=True,
@@ -33,7 +34,6 @@ class RolTypeSerializer(serializers.HyperlinkedModelSerializer):
             'omschrijving',
             'omschrijving_generiek',
             'mogelijke_betrokkenen',
-
             # 'ingangsdatumObject',
             # 'einddatumObject',
             # 'soortBetrokkene',

@@ -2,8 +2,11 @@ from unittest import skip
 
 from django.urls import reverse
 
+from rest_framework import status
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import get_operation_url
 
+from ...datamodel.models import InformatieObjectType
 from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory, ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory
@@ -14,38 +17,37 @@ from .base import APITestCase
 class InformatieObjectTypeAPITests(APITestCase):
     maxDiff = None
 
-    def setUp(self):
-        super().setUp()
+    def test_get_list_default_definitief(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype2_url = get_operation_url('informatieobjecttype_read',  uuid=informatieobjecttype2.uuid)
 
-        self.informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=self.catalogus,
-            zaaktypes=None,
-            model=['http://www.example.com'],
-            trefwoord=['abc', 'def']
-        )
-
-        self.informatieobjecttype_list_url = get_operation_url(
-            'informatieobjecttype_list',
-            catalogus_uuid=self.catalogus.uuid
-        )
-        self.informatieobjecttype_detail_url = get_operation_url(
-            'informatieobjecttype_read',
-            catalogus_uuid=self.catalogus.uuid,
-            uuid=self.informatieobjecttype.uuid
-        )
-
-    def test_get_list(self):
-        """Retrieve a list of `InformatieObjectType` objects."""
-        response = self.api_client.get(self.informatieobjecttype_list_url)
+        response = self.client.get(informatieobjecttype_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()
+        data = response.json()['results']
 
         self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
 
     def test_get_detail(self):
         """Retrieve the details of a single `InformatieObjectType` object."""
-        response = self.api_client.get(self.informatieobjecttype_detail_url)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktypes=None,
+            model=['http://www.example.com'],
+            trefwoord=['abc', 'def'],
+            datum_begin_geldigheid='2019-01-01',
+        )
+        informatieobjecttype_detail_url = get_operation_url(
+            'informatieobjecttype_read',
+            uuid=informatieobjecttype.uuid
+        )
+
+        response = self.client.get(informatieobjecttype_detail_url)
+
         self.assertEqual(response.status_code, 200)
 
         expected = {
@@ -55,28 +57,43 @@ class InformatieObjectTypeAPITests(APITestCase):
             # 'isVastleggingVoor': [],
             'catalogus': 'http://testserver{}'.format(self.catalogus_detail_url),
             # 'model': ['http://www.example.com'],
-            'omschrijving': self.informatieobjecttype.omschrijving,
+            'omschrijving': informatieobjecttype.omschrijving,
             # 'omschrijvingGeneriek': '',
             # 'toelichting': None,
             # 'trefwoord': ['abc', 'def'],
-            'url': 'http://testserver{}'.format(self.informatieobjecttype_detail_url),
+            'url': 'http://testserver{}'.format(informatieobjecttype_detail_url),
             'vertrouwelijkheidaanduiding': '',
             # 'isRelevantVoor': [],
+            'beginGeldigheid': '2019-01-01',
+            'eindeGeldigheid': None,
+            'concept': True,
         }
         self.assertEqual(expected, response.json())
 
     @skip("Not MVP yet")
     def test_is_relevant_voor(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktypes=None,
+            model=['http://www.example.com'],
+            trefwoord=['abc', 'def']
+        )
+        informatieobjecttype_detail_url = get_operation_url(
+            'informatieobjecttype_read',
+            catalogus_uuid=self.catalogus.uuid,
+            uuid=informatieobjecttype.uuid
+        )
+
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
 
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype,
-            informatie_object_type=self.informatieobjecttype,
+            informatie_object_type=informatieobjecttype,
             volgnummer=1,
             richting='richting',
         )
 
-        response = self.api_client.get(self.informatieobjecttype_detail_url)
+        response = self.client.get(informatieobjecttype_detail_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
@@ -85,11 +102,136 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(len(data['isRelevantVoor']), 1)
         self.assertEqual(
             data['isRelevantVoor'][0],
-            'http://testserver{}'.format(reverse('api:zktiot-detail', args=[
-                self.API_VERSION, self.catalogus.pk, zaaktype.pk, ziot.pk
+            'http://testserver{}'.format(reverse('zktiot-detail', args=[
+                zaaktype.pk, ziot.pk
             ]))
         )
 
     @skip("Not MVP yet")
     def test_is_vastlegging_voor(self):
         pass
+
+    def test_create_informatieobjecttype(self):
+        data = {
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'omschrijving': 'test',
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'beginGeldigheid': '2019-01-01'
+        }
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.post(informatieobjecttype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        informatieobjecttype = InformatieObjectType.objects.get()
+
+        self.assertEqual(informatieobjecttype.omschrijving, 'test')
+        self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
+        self.assertEqual(informatieobjecttype.concept, True)
+
+    def test_publish_informatieobjecttype(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttypee_url = get_operation_url('informatieobjecttype_publish', uuid=informatieobjecttype.uuid)
+
+        response = self.client.post(informatieobjecttypee_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        informatieobjecttype.refresh_from_db()
+
+        self.assertEqual(informatieobjecttype.concept, False)
+
+    def test_delete_informatieobjecttype(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
+
+        response = self.client.delete(informatieobjecttypee_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(InformatieObjectType.objects.filter(id=informatieobjecttype.id))
+
+    def test_delete_informatieobjecttype_fail_not_concept(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttypee_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype.uuid)
+
+        response = self.client.delete(informatieobjecttypee_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
+
+
+class InformatieObjectTypeFilterAPITests(APITestCase):
+    maxDiff = None
+
+    def test_filter_informatieobjecttype_status_alles(self):
+        InformatieObjectTypeFactory.create(concept=True)
+        InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'alles'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 2)
+
+    def test_filter_informatieobjecttype_status_concept(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype1_url = get_operation_url('informatieobjecttype_read', uuid=informatieobjecttype1.uuid)
+
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'concept'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype1_url}')
+
+    def test_filter_informatieobjecttype_status_definitief(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+        informatieobjecttype2_url = get_operation_url('informatieobjecttype_read',  uuid=informatieobjecttype2.uuid)
+
+        response = self.client.get(informatieobjecttype_list_url, {'status': 'definitief'})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()['results']
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
+
+
+class InformatieObjectTypePaginationTestCase(APITestCase):
+    maxDiff = None
+
+    def test_pagination_default(self):
+        InformatieObjectTypeFactory.create_batch(2, concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
+
+    def test_pagination_page_param(self):
+        InformatieObjectTypeFactory.create_batch(2, concept=False)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url, {'page': 1})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response_data = response.json()
+        self.assertEqual(response_data['count'], 2)
+        self.assertIsNone(response_data['previous'])
+        self.assertIsNone(response_data['next'])
