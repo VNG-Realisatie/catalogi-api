@@ -12,12 +12,44 @@ class ResultaatTypeViewSet(ZaakTypeConceptMixin,
                            mixins.DestroyModelMixin,
                            viewsets.ReadOnlyModelViewSet):
     """
-    retrieve:
+    Opvragen en bewerken van RESULTAATTYPEn van een ZAAKTYPE.
+
     Het betreft de indeling of groepering van resultaten van zaken van hetzelfde
     ZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', etc.
 
+    create:
+    Maak een RESULTAATTYPE aan.
+
+    Maak een RESULTAATTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een
+    concept betreft.
+
     list:
-    Een verzameling van RESULTAATTYPEn.
+    Alle RESULTAATTYPEn opvragen.
+
+    Deze lijst kan gefilterd wordt met query-string parameters.
+
+    retrieve:
+    Een specifieke RESULTAATTYPE opvragen.
+
+    Een specifieke RESULTAATTYPE opvragen.
+
+    update:
+    Werk een RESULTAATTYPE in zijn geheel bij.
+
+    Werk een RESULTAATTYPE in zijn geheel bij. Dit kan alleen als het
+    bijbehorende ZAAKTYPE een concept betreft.
+
+    partial_update:
+    Werk een RESULTAATTYPE deels bij.
+
+    Werk een RESULTAATTYPE deels bij. Dit kan alleen als het bijbehorende
+    ZAAKTYPE een concept betreft.
+
+    destroy:
+    Verwijder een RESULTAATTYPE.
+
+    Verwijder een RESULTAATTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE
+    een concept betreft.
     """
     queryset = ResultaatType.objects.all().order_by('-pk')
     serializer_class = ResultaatTypeSerializer

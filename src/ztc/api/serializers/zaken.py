@@ -54,7 +54,7 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
             'einddatumObject',
             'isRelevantVoor',
             # NOTE: this field is not in the xsd
-            # 'status_type',
+            # 'statustype',
         )
         extra_kwargs = {
             'url': {'view_name': 'api:zaakobjecttype-detail'},
@@ -152,6 +152,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         source='heeft_relevant_informatieobjecttype',
         view_name='informatieobjecttype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     statustypen = HyperlinkedRelatedField(
@@ -159,6 +160,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         read_only=True,
         view_name='statustype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     resultaattypen = HyperlinkedRelatedField(
@@ -166,6 +168,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         read_only=True,
         view_name='resultaattype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     eigenschappen = HyperlinkedRelatedField(
@@ -174,6 +177,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         source='eigenschap_set',
         view_name='eigenschap-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE.')
     )
 
     roltypen = HyperlinkedRelatedField(
@@ -182,6 +186,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         source='roltype_set',
         view_name='roltype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     besluittypen = HyperlinkedRelatedField(
@@ -191,6 +196,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         view_name='besluittype-detail',
         lookup_field='uuid',
         queryset=BesluitType.objects.all(),
+        help_text=_('URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     class Meta:

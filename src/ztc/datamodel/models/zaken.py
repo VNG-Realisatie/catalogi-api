@@ -39,7 +39,7 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
     relatieomschrijving = models.CharField(_('relatieomschrijving'), max_length=80, help_text=_(
         'Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE.'))
 
-    status_type = models.ForeignKey(
+    statustype = models.ForeignKey(
         'datamodel.StatusType', verbose_name=_('status type'), blank=True, null=True,
         on_delete=models.CASCADE,
         related_name='heeft_verplichte_zaakobjecttype', help_text=_(
@@ -359,8 +359,8 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
     # TODO: validate shape & populate?
     selectielijst_procestype = models.URLField(
         _("selectielijst procestype"), blank=True,
-        help_text=_("Een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken. "
-                    "URL naar de referentielijsten API.")
+        help_text=_("URL-referentie naar een vanuit archiveringsoptiek onderkende groep processen met dezelfde "
+                    "kenmerken (PROCESTYPE in de Selectielijst API).")
     )
 
     formulier = models.ManyToManyField(
@@ -403,7 +403,7 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
 
     catalogus = models.ForeignKey(
         'datamodel.Catalogus', verbose_name=_('maakt deel uit van'), on_delete=models.CASCADE,
-        help_text=_('De CATALOGUS waartoe dit ZAAKTYPE behoort.')
+        help_text=_('URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.')
     )
 
     class Meta:

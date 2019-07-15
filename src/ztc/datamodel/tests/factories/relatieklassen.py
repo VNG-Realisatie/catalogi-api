@@ -10,7 +10,7 @@ from ...models import (
 
 class ZaakInformatieobjectTypeFactory(factory.django.DjangoModelFactory):
     zaaktype = factory.SubFactory('ztc.datamodel.tests.factories.ZaakTypeFactory')
-    informatie_object_type = factory.SubFactory(
+    informatieobjecttype = factory.SubFactory(
         'ztc.datamodel.tests.factories.InformatieObjectTypeFactory',
         zaaktypes=None
     )

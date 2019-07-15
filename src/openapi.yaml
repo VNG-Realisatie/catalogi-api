@@ -25,10 +25,8 @@ paths:
   /besluittypen:
     get:
       operationId: besluittype_list
-      description: 'Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn
-        van het
-
-        zaakgericht werken van de behandelende organisatie(s).'
+      summary: Alle BESLUITTYPEn opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: catalogus
         in: query
@@ -216,7 +214,8 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: besluittype_create
-      description: ''
+      summary: Maak een BESLUITTYPE aan.
+      description: Maak een BESLUITTYPE aan.
       responses:
         '201':
           description: Created
@@ -358,7 +357,8 @@ paths:
   /besluittypen/{uuid}:
     get:
       operationId: besluittype_read
-      description: Generieke aanduiding van de aard van een besluit.
+      summary: Een specifieke BESLUITTYPE opvragen.
+      description: Een specifieke BESLUITTYPE opvragen.
       responses:
         '200':
           description: OK
@@ -487,7 +487,8 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: besluittype_delete
-      description: ''
+      summary: Verwijder een BESLUITTYPE.
+      description: Verwijder een BESLUITTYPE. Dit kan alleen als het een concept betreft.
       responses:
         '204':
           description: No content
@@ -621,7 +622,13 @@ paths:
   /besluittypen/{uuid}/publish:
     post:
       operationId: besluittype_publish
-      description: ''
+      summary: 'Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten
+
+        API.'
+      description: 'Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn
+        van het
+
+        zaakgericht werken van de behandelende organisatie(s).'
       responses:
         '201':
           description: Created
@@ -656,7 +663,8 @@ paths:
   /catalogussen:
     get:
       operationId: catalogus_list
-      description: Een verzameling van CATALOGUSsen.
+      summary: Alle CATALOGUSsen opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: domein
         in: query
@@ -836,7 +844,8 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: catalogus_create
-      description: ''
+      summary: Maak een CATALOGUS aan.
+      description: Maak een CATALOGUS aan.
       responses:
         '201':
           description: Created
@@ -978,8 +987,8 @@ paths:
   /catalogussen/{uuid}:
     get:
       operationId: catalogus_read
-      description: "De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen\
-        \ - voor een Domein die als \xC3\xA9\xC3\xA9n geheel beheerd\nwordt."
+      summary: Een specifieke CATALOGUS opvragen.
+      description: Een specifieke CATALOGUS opvragen.
       responses:
         '200':
           description: OK
@@ -1117,7 +1126,8 @@ paths:
   /eigenschappen:
     get:
       operationId: eigenschap_list
-      description: Een verzameling van EIGENSCHAPpen.
+      summary: Alle EIGENSCHAPpen opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: zaaktype
         in: query
@@ -1292,7 +1302,11 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: eigenschap_create
-      description: ''
+      summary: Maak een EIGENSCHAP aan.
+      description: 'Maak een EIGENSCHAP aan. Dit kan alleen als het bijbehorende ZAAKTYPE
+        een
+
+        concept betreft.'
       responses:
         '201':
           description: Created
@@ -1434,10 +1448,8 @@ paths:
   /eigenschappen/{uuid}:
     get:
       operationId: eigenschap_read
-      description: 'Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE
-        geregistreerd moet kunnen worden en geen standaard
-
-        kenmerk is van een zaak.'
+      summary: Een specifieke EIGENSCHAP opvragen.
+      description: Een specifieke EIGENSCHAP opvragen.
       responses:
         '200':
           description: OK
@@ -1566,7 +1578,11 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: eigenschap_delete
-      description: ''
+      summary: Verwijder een EIGENSCHAP.
+      description: 'Verwijder een EIGENSCHAP. Dit kan alleen als het bijbehorende
+        ZAAKTYPE een
+
+        concept betreft.'
       responses:
         '204':
           description: No content
@@ -1700,7 +1716,8 @@ paths:
   /informatieobjecttypen:
     get:
       operationId: informatieobjecttype_list
-      description: Een verzameling van INFORMATIEOBJECTTYPEn.
+      summary: Alle INFORMATIEOBJECTTYPEn opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: catalogus
         in: query
@@ -1875,7 +1892,8 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: informatieobjecttype_create
-      description: ''
+      summary: Maak een INFORMATIEOBJECTTYPE aan.
+      description: Maak een INFORMATIEOBJECTTYPE aan.
       responses:
         '201':
           description: Created
@@ -2017,8 +2035,8 @@ paths:
   /informatieobjecttypen/{uuid}:
     get:
       operationId: informatieobjecttype_read
-      description: Aanduiding van de aard van INFORMATIEOBJECTTYPEn zoals gehanteerd
-        door de zaakbehandelende organisatie.
+      summary: Een specifieke INFORMATIEOBJECTTYPE opvragen.
+      description: Een specifieke INFORMATIEOBJECTTYPE opvragen.
       responses:
         '200':
           description: OK
@@ -2147,7 +2165,11 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: informatieobjecttype_delete
-      description: ''
+      summary: Verwijder een INFORMATIEOBJECTTYPE.
+      description: 'Verwijder een INFORMATIEOBJECTTYPE. Dit kan alleen als het een
+        concept
+
+        betreft.'
       responses:
         '204':
           description: No content
@@ -2281,7 +2303,13 @@ paths:
   /informatieobjecttypen/{uuid}/publish:
     post:
       operationId: informatieobjecttype_publish
-      description: ''
+      summary: 'Opvragen en bewerken van INFORMATIEOBJECTTYPEn nodig voor
+
+        INFORMATIEOBJECTen in de Documenten API.'
+      description: 'Een INFORMATIEOBJECTTYPE beschijft de karakteristieken van een
+        document of
+
+        ander object dat informatie bevat.'
       responses:
         '201':
           description: Created
@@ -2316,7 +2344,8 @@ paths:
   /resultaattypen:
     get:
       operationId: resultaattype_list
-      description: Een verzameling van RESULTAATTYPEn.
+      summary: Alle RESULTAATTYPEn opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: zaaktype
         in: query
@@ -2491,7 +2520,11 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: resultaattype_create
-      description: ''
+      summary: Maak een RESULTAATTYPE aan.
+      description: 'Maak een RESULTAATTYPE aan. Dit kan alleen als het bijbehorende
+        ZAAKTYPE een
+
+        concept betreft.'
       responses:
         '201':
           description: Created
@@ -2633,10 +2666,8 @@ paths:
   /resultaattypen/{uuid}:
     get:
       operationId: resultaattype_read
-      description: 'Het betreft de indeling of groepering van resultaten van zaken
-        van hetzelfde
-
-        ZAAKTYPE naar hun aard, zoals ''verleend'', ''geweigerd'', ''verwerkt'', etc.'
+      summary: Een specifieke RESULTAATTYPE opvragen.
+      description: Een specifieke RESULTAATTYPE opvragen.
       responses:
         '200':
           description: OK
@@ -2765,7 +2796,11 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: resultaattype_delete
-      description: ''
+      summary: Verwijder een RESULTAATTYPE.
+      description: 'Verwijder een RESULTAATTYPE. Dit kan alleen als het bijbehorende
+        ZAAKTYPE
+
+        een concept betreft.'
       responses:
         '204':
           description: No content
@@ -2899,7 +2934,8 @@ paths:
   /roltypen:
     get:
       operationId: roltype_list
-      description: Een verzameling van ROLTYPEn.
+      summary: Alle ROLTYPEn opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: zaaktype
         in: query
@@ -3089,7 +3125,11 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: roltype_create
-      description: ''
+      summary: Maak een ROLTYPE aan.
+      description: 'Maak een ROLTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE
+        een
+
+        concept betreft.'
       responses:
         '201':
           description: Created
@@ -3231,8 +3271,8 @@ paths:
   /roltypen/{uuid}:
     get:
       operationId: roltype_read
-      description: Generieke aanduiding van de aard van een ROL die een BETROKKENE
-        kan uitoefenen in ZAAKen van een ZAAKTYPE.
+      summary: Een specifieke ROLTYPE opvragen.
+      description: Een specifieke ROLTYPE opvragen.
       responses:
         '200':
           description: OK
@@ -3361,7 +3401,11 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: roltype_delete
-      description: ''
+      summary: Verwijder een ROLTYPE.
+      description: 'Verwijder een ROLTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE
+        een
+
+        concept betreft.'
       responses:
         '204':
           description: No content
@@ -3494,7 +3538,8 @@ paths:
   /statustypen:
     get:
       operationId: statustype_list
-      description: Een verzameling van STATUSTYPEn.
+      summary: Alle STATUSTYPEn opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: zaaktype
         in: query
@@ -3669,7 +3714,11 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: statustype_create
-      description: ''
+      summary: Maak een STATUSTYPE aan.
+      description: 'Maak een STATUSTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE
+        een
+
+        concept betreft.'
       responses:
         '201':
           description: Created
@@ -3811,7 +3860,8 @@ paths:
   /statustypen/{uuid}:
     get:
       operationId: statustype_read
-      description: Generieke aanduiding van de aard van een status.
+      summary: Een specifieke STATUSTYPE opvragen.
+      description: Een specifieke STATUSTYPE opvragen.
       responses:
         '200':
           description: OK
@@ -3940,7 +3990,11 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: statustype_delete
-      description: ''
+      summary: Verwijder een STATUSTYPE.
+      description: 'Verwijder een STATUSTYPE. Dit kan alleen als het bijbehorende
+        ZAAKTYPE een
+
+        concept betreft.'
       responses:
         '204':
           description: No content
@@ -4074,17 +4128,8 @@ paths:
   /zaaktype-informatieobjecttypen:
     get:
       operationId: zaakinformatieobjecttype_list
-      summary: Een verzameling van ZAAKINFORMATIEOBJECTTYPEn.
-      description: 'Filteren van de gegevens kan middels de querystringparameters:
-
-        - zaaktype: URL van het zaaktype
-
-        - informatie_object_type: URL van het zaaktype
-
-        - richting: waarde van de richting (string)
-
-
-        Meerdere querystring-parameters tegelijk worden als een AND beschouwd.'
+      summary: Alle ZAAKTYPE-INFORMATIEOBJECTTYPE relaties opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: zaaktype
         in: query
@@ -4093,9 +4138,9 @@ paths:
         schema:
           type: string
           format: uri
-      - name: informatieObjectType
+      - name: informatieobjecttype
         in: query
-        description: URL naar de/het gerelateerde informatie_object_type
+        description: URL naar de/het gerelateerde informatieobjecttype
         required: false
         schema:
           type: string
@@ -4277,7 +4322,11 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: zaakinformatieobjecttype_create
-      description: ''
+      summary: Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan.
+      description: 'Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan. Dit kan alleen
+        als het
+
+        bijbehorende ZAAKTYPE een concept betreft.'
       responses:
         '201':
           description: Created
@@ -4419,7 +4468,8 @@ paths:
   /zaaktype-informatieobjecttypen/{uuid}:
     get:
       operationId: zaakinformatieobjecttype_read
-      description: Relatie met informatieobjecttype dat relevant is voor zaaktype.
+      summary: Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.
+      description: Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.
       responses:
         '200':
           description: OK
@@ -4548,7 +4598,11 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: zaakinformatieobjecttype_delete
-      description: ''
+      summary: Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie.
+      description: 'Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie. Dit kan alleen
+        als
+
+        het bijbehorende ZAAKTYPE een concept betreft.'
       responses:
         '204':
           description: No content
@@ -4682,7 +4736,8 @@ paths:
   /zaaktypen:
     get:
       operationId: zaaktype_list
-      description: Een verzameling van ZAAKTYPEn.
+      summary: Alle ZAAKTYPEn opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: catalogus
         in: query
@@ -4869,7 +4924,8 @@ paths:
         - zaaktypes.lezen
     post:
       operationId: zaaktype_create
-      description: ''
+      summary: Maak een ZAAKTYPE aan.
+      description: Maak een ZAAKTYPE aan.
       responses:
         '201':
           description: Created
@@ -5011,8 +5067,8 @@ paths:
   /zaaktypen/{uuid}:
     get:
       operationId: zaaktype_read
-      description: Het geheel van karakteristieke eigenschappen van zaken van eenzelfde
-        soort.
+      summary: Een specifieke ZAAKTYPE opvragen.
+      description: Een specifieke ZAAKTYPE opvragen.
       responses:
         '200':
           description: OK
@@ -5141,7 +5197,8 @@ paths:
         - zaaktypes.lezen
     delete:
       operationId: zaaktype_delete
-      description: ''
+      summary: Verwijder een ZAAKTYPE.
+      description: Verwijder een ZAAKTYPE. Dit kan alleen als het een concept betreft.
       responses:
         '204':
           description: No content
@@ -5275,7 +5332,11 @@ paths:
   /zaaktypen/{uuid}/publish:
     post:
       operationId: zaaktype_publish
-      description: ''
+      summary: Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.
+      description: 'Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen
+        van
+
+        zaken van eenzelfde soort.'
       responses:
         '201':
           description: Created
@@ -5336,12 +5397,14 @@ components:
           minLength: 1
         catalogus:
           title: Catalogus
-          description: De CATALOGUS waartoe dit BESLUITTYPE behoort.
+          description: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.
           type: string
           format: uri
         zaaktypes:
+          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
           type: array
           items:
+            description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
             type: string
             format: uri
           uniqueItems: true
@@ -5390,8 +5453,12 @@ components:
           description: Een eventuele toelichting op dit BESLUITTYPE.
           type: string
         informatieobjecttypes:
+          description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
+            waarin besluiten van dit BESLUITTYPE worden vastgelegd.
           type: array
           items:
+            description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
+              waarin besluiten van dit BESLUITTYPE worden vastgelegd.
             type: string
             format: uri
           uniqueItems: true
@@ -5567,22 +5634,34 @@ components:
           format: email
           maxLength: 254
         zaaktypen:
+          description: URL-referenties naar ZAAKTYPEn die in deze CATALOGUS worden
+            ontsloten.
           type: array
           items:
+            description: URL-referenties naar ZAAKTYPEn die in deze CATALOGUS worden
+              ontsloten.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         besluittypen:
+          description: URL-referenties naar BESLUITTYPEn die in deze CATALOGUS worden
+            ontsloten.
           type: array
           items:
+            description: URL-referenties naar BESLUITTYPEn die in deze CATALOGUS worden
+              ontsloten.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         informatieobjecttypen:
+          description: URL-referenties naar INFORMATIEOBJECTTYPEn die in deze CATALOGUS
+            worden ontsloten.
           type: array
           items:
+            description: URL-referenties naar INFORMATIEOBJECTTYPEn die in deze CATALOGUS
+              worden ontsloten.
             type: string
             format: uri
           readOnly: true
@@ -5638,8 +5717,7 @@ components:
           maxLength: 3
           minLength: 1
         waardenverzameling:
-          description: Waarden die deze EIGENSCHAP kan hebben (Gebruik een komma om
-            waarden van elkaar te onderscheiden.)
+          description: Waarden die deze EIGENSCHAP kan hebben.
           type: array
           items:
             title: Waardenverzameling
@@ -5684,8 +5762,8 @@ components:
           maxLength: 1000
         zaaktype:
           title: Is van
-          description: Het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang
-            is.
+          description: URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze
+            EIGENSCHAP van belang is.
           type: string
           format: uri
     InformatieObjectType:
@@ -5707,7 +5785,8 @@ components:
           minLength: 1
         catalogus:
           title: Maakt deel uit van
-          description: De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.
+          description: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
+            behoort.
           type: string
           format: uri
         omschrijving:
@@ -5873,8 +5952,8 @@ components:
           minLength: 1
         zaaktype:
           title: is van
-          description: Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE
-            bereikt kunnen worden.
+          description: URL-referentie naar het ZAAKTYPE van ZAAKen waarin resultaten
+            van dit RESULTAATTYPE bereikt kunnen worden.
           type: string
           format: uri
         omschrijving:
@@ -5901,10 +5980,9 @@ components:
           minLength: 1
         selectielijstklasse:
           title: Selectielijstklasse
-          description: Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE
-            relevante, categorie in de Selectielijst Archiefbescheiden van de voor
-            het ZAAKTYPE verantwoordelijke overheidsorganisatie. Dit is een URL-referentie
-            naar een resultaat uit de selectielijst API
+          description: URL-referentie naar de, voor het archiefregime bij het RESULTAATTYPE
+            relevante, categorie in de Selectielijst Archiefbescheiden (RESULTAAT
+            in de Selectielijst API) van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie.
           type: string
           format: uri
           maxLength: 1000
@@ -5956,13 +6034,30 @@ components:
       properties:
         betrokkene:
           title: Betrokkene
-          description: Een betrokkene die kan gerelateerd worden aan een zaak
+          description: URL-referentie naar een specifieke BETROKKENE die kan gerelateerd
+            worden aan een ZAAK.
           type: string
           format: uri
           maxLength: 200
           minLength: 1
         betrokkeneType:
           title: Betrokkene type
+          description: 'Het type BETROKKENE waarnaar verwezen wordt in het attribuut
+            `betrokkene`.
+
+
+            Uitleg bij mogelijke waarden:
+
+
+            * `natuurlijk_persoon` - Natuurlijk persoon
+
+            * `niet_natuurlijk_persoon` - Niet-natuurlijk persoon
+
+            * `vestiging` - Vestiging
+
+            * `organisatorische_eenheid` - Organisatorische eenheid
+
+            * `medewerker` - Medewerker'
           type: string
           enum:
           - natuurlijk_persoon
@@ -5989,8 +6084,8 @@ components:
           minLength: 1
         zaaktype:
           title: Is van
-          description: De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in
-            ZAAKen van dit ZAAKTYPE.
+          description: URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken
+            kunnen zijn.
           type: string
           format: uri
         omschrijving:
@@ -6066,8 +6161,8 @@ components:
           maxLength: 1000
         zaaktype:
           title: Is van
-          description: Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE
-            bereikt kunnen worden.
+          description: URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen
+            van dit STATUSTYPE bereikt kunnen worden.
           type: string
           format: uri
         volgnummer:
@@ -6092,7 +6187,7 @@ components:
     ZaakTypeInformatieObjectType:
       required:
       - zaaktype
-      - informatieObjectType
+      - informatieobjecttype
       - volgnummer
       - richting
       type: object
@@ -6108,16 +6203,18 @@ components:
           minLength: 1
         zaaktype:
           title: Zaaktype
+          description: URL-referentie naar het ZAAKTYPE.
           type: string
           format: uri
-        informatieObjectType:
+        informatieobjecttype:
           title: Informatie object type
+          description: URL-referentie naar het INFORMATIEOBJECTTYPE.
           type: string
           format: uri
         volgnummer:
           title: Volgnummer
-          description: Uniek volgnummer van het ZAAK-INFORMATIEOBJECT-TYPE binnen
-            het ZAAKTYPE.
+          description: Uniek volgnummer van het ZAAK-INFORMATIEOBJECTTYPE binnen het
+            ZAAKTYPE.
           type: integer
           maximum: 999
           minimum: 1
@@ -6140,12 +6237,10 @@ components:
           - inkomend
           - intern
           - uitgaand
-        statusType:
+        statustype:
           title: Status type
-          description: De informatieobjecten van de INFORMATIEOBJECTTYPEn van het
-            aan het STATUSTYPE gerelateerde ZAAKTYPE waarvoor geldt dat deze verplicht
-            aanwezig moeten zijn bij een zaak van het gerelateerde ZAAKTYPE voordat
-            de status van dit STATUSTYPE kan worden gezet bij die zaak.
+          description: URL-referentie naar het STATUSTYPE waarbij deze INFORMATIEOBJECTTYPEn
+            verplicht aanwezig moeten zijn.
           type: string
           format: uri
           nullable: true
@@ -6419,8 +6514,9 @@ components:
             minLength: 1
         selectielijstProcestype:
           title: Selectielijst procestype
-          description: Een vanuit archiveringsoptiek onderkende groep processen met
-            dezelfde kenmerken. URL naar de referentielijsten API.
+          description: URL-referentie naar een vanuit archiveringsoptiek onderkende
+            groep processen met dezelfde kenmerken (PROCESTYPE in de Selectielijst
+            API).
           type: string
           format: uri
           maxLength: 200
@@ -6428,48 +6524,72 @@ components:
           $ref: '#/components/schemas/ReferentieProces'
         catalogus:
           title: Maakt deel uit van
-          description: De CATALOGUS waartoe dit ZAAKTYPE behoort.
+          description: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.
           type: string
           format: uri
         statustypen:
+          description: URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen
+            dit ZAAKTYPE.
           type: array
           items:
+            description: URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen
+              dit ZAAKTYPE.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         resultaattypen:
+          description: URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen
+            dit ZAAKTYPE.
           type: array
           items:
+            description: URL-referenties naar de RESULTAATTYPEN die mogelijk zijn
+              binnen dit ZAAKTYPE.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         eigenschappen:
+          description: URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn
+            in ZAKEN van dit ZAAKTYPE.
           type: array
           items:
+            description: URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten
+              zijn in ZAKEN van dit ZAAKTYPE.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         informatieobjecttypen:
+          description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
+            zijn binnen dit ZAAKTYPE.
           type: array
           items:
+            description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
+              zijn binnen dit ZAAKTYPE.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         roltypen:
+          description: URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit
+            ZAAKTYPE.
           type: array
           items:
+            description: URL-referenties naar de ROLTYPEN die mogelijk zijn binnen
+              dit ZAAKTYPE.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         besluittypen:
+          description: URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen
+            dit ZAAKTYPE.
           type: array
           items:
             title: heeft relevante besluittypen
+            description: URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen
+              dit ZAAKTYPE.
             type: string
             format: uri
           uniqueItems: true

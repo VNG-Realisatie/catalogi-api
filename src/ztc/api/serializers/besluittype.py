@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from vng_api_common.utils import get_help_text
+
 
 from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
 from ..utils.validators import RelationCatalogValidator
@@ -9,14 +11,16 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
         view_name='informatieobjecttype-detail',
         many=True,
         lookup_field='uuid',
-        queryset=InformatieObjectType.objects.all()
+        queryset=InformatieObjectType.objects.all(),
+        help_text=get_help_text('datamodel.BesluitType', 'informatieobjecttypes')
     )
 
     zaaktypes = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='zaaktype-detail',
         lookup_field='uuid',
-        queryset=ZaakType.objects.all()
+        queryset=ZaakType.objects.all(),
+        help_text=get_help_text('datamodel.BesluitType', 'zaaktypes')
     )
 
     class Meta:

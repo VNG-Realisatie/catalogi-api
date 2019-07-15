@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils.translation import ugettext_lazy as _
 
 from ...datamodel.models import Catalogus
 
@@ -10,6 +11,7 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         source='zaaktype_set',
         view_name='zaaktype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar ZAAKTYPEn die in deze CATALOGUS worden ontsloten.')
     )
 
     besluittypen = serializers.HyperlinkedRelatedField(
@@ -18,6 +20,7 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         source='besluittype_set',
         view_name='besluittype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar BESLUITTYPEn die in deze CATALOGUS worden ontsloten.')
     )
 
     informatieobjecttypen = serializers.HyperlinkedRelatedField(
@@ -26,6 +29,7 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
         source='informatieobjecttype_set',
         view_name='informatieobjecttype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar INFORMATIEOBJECTTYPEn die in deze CATALOGUS worden ontsloten.')
     )
 
     class Meta:

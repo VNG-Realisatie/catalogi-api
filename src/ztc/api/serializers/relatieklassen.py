@@ -16,10 +16,10 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         fields = (
             'url',
             'zaaktype',
-            'informatie_object_type',
+            'informatieobjecttype',
             'volgnummer',
             'richting',
-            'status_type',
+            'statustype',
         )
         extra_kwargs = {
             'url': {
@@ -28,10 +28,10 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
             'zaaktype': {
                 'lookup_field': 'uuid'
             },
-            'informatie_object_type': {
+            'informatieobjecttype': {
                 'lookup_field': 'uuid'
             },
-            'status_type': {
+            'statustype': {
                 'lookup_field': 'uuid'
             },
         }
@@ -62,8 +62,8 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
 #         source='zaak_informatieobject_type',
 #         view_name='api:informatieobjecttype-detail',
 #         parent_lookup_kwargs={
-#             'catalogus_pk': 'informatie_object_type__catalogus__pk',
-#             'pk': 'informatie_object_type__pk'
+#             'catalogus_pk': 'informatieobjecttype__catalogus__pk',
+#             'pk': 'informatieobjecttype__pk'
 #         },
 #     )
 #

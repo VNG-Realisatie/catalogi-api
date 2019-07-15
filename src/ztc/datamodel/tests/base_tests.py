@@ -196,7 +196,7 @@ class HaaglandenMixin(object):
         #
         # Statusen
         #
-        self.status_type_intake_afgerond = StatusTypeFactory.create(
+        self.statustype_intake_afgerond = StatusTypeFactory.create(
             statustype_omschrijving='Intake afgerond',
             statustypevolgnummer=1,
             doorlooptijd_status=2,  # werkdagen
@@ -231,7 +231,7 @@ class HaaglandenMixin(object):
             ],
             zaaktype=self.zaaktype,
         )
-        self.status_type_getoetst = StatusTypeFactory.create(
+        self.statustype_getoetst = StatusTypeFactory.create(
             statustype_omschrijving='Getoetst op indieningsvereisten',
             statustypevolgnummer=2,
             doorlooptijd_status=4,  # werkdagen
@@ -262,7 +262,7 @@ class HaaglandenMixin(object):
             ],
             zaaktype=self.zaaktype,
         )
-        self.status_type_inhoudelijk_behandeld = StatusTypeFactory.create(
+        self.statustype_inhoudelijk_behandeld = StatusTypeFactory.create(
             statustype_omschrijving='Inhoudelijk behandeld',
             statustypevolgnummer=3,
             doorlooptijd_status=21,  # 3 weken
@@ -288,7 +288,7 @@ class HaaglandenMixin(object):
             ],
             zaaktype=self.zaaktype,
         )
-        self.status_type_besluit_genomen = StatusTypeFactory.create(
+        self.statustype_besluit_genomen = StatusTypeFactory.create(
             statustype_omschrijving='Besluit genomen',
             statustypevolgnummer=4,
             doorlooptijd_status=2,  # werkdagen
@@ -304,7 +304,7 @@ class HaaglandenMixin(object):
             ],
             zaaktype=self.zaaktype,
         )
-        self.status_type_producten_geleverd = StatusTypeFactory.create(
+        self.statustype_producten_geleverd = StatusTypeFactory.create(
             statustype_omschrijving='Producten geleverd',
             statustypevolgnummer=6,  # NOTE: also refered to as '5' in de haaglanden doc
             doorlooptijd_status=3,  # werkdagen
@@ -330,7 +330,7 @@ class HaaglandenMixin(object):
             objecttype='Milieu-inrichting of -locatie',  # it's one that is not in the choices
             ander_objecttype=True,
             relatieomschrijving='De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
-            # status_type=foreign key StatusType
+            # statustype=foreign key StatusType
             is_relevant_voor=self.zaaktype
         )
         self.zaakobjecttype_pand = ZaakObjectTypeFactory.create(
@@ -338,7 +338,7 @@ class HaaglandenMixin(object):
             ander_objecttype=False,
             relatieomschrijving='Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting '
                                 'gevestigd is waarop de zaak betrekking heeft.'[:80],
-            # status_type=foreign key StatusType
+            # statustype=foreign key StatusType
             is_relevant_voor=self.zaaktype
         )
         self.zaakobjecttype_verblijfsobject = ZaakObjectTypeFactory.create(
@@ -347,7 +347,7 @@ class HaaglandenMixin(object):
             relatieomschrijving='Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) '
                                 'waarin het deel van de milieu-inrichting gevestigd is waarop de zaak'
                                 'betrekking heeft.'[:80],
-            # status_type=foreign key StatusType
+            # statustype=foreign key StatusType
             is_relevant_voor=self.zaaktype
         )
         # NOTE: there are three more
@@ -361,7 +361,7 @@ class HaaglandenMixin(object):
             toelichting='',
             # specificatie_van_eigenschap= fk EigenschapSpecificatie
             # referentie_naar_eigenschap= fk EigenschapReferentie
-            # status_type=fk StatusType
+            # statustype=fk StatusType
             zaaktype=self.zaaktype,
         )
         self.eigenschap_aard_product = EigenschapFactory.create(

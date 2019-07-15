@@ -31,11 +31,41 @@ class ZaakTypeViewSet(ConceptMixin,
                       mixins.DestroyModelMixin,
                       viewsets.ReadOnlyModelViewSet):
     """
-    retrieve:
-    Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
+    Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.
+
+    Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen van
+    zaken van eenzelfde soort.
+
+    create:
+    Maak een ZAAKTYPE aan.
+
+    Maak een ZAAKTYPE aan.
 
     list:
-    Een verzameling van ZAAKTYPEn.
+    Alle ZAAKTYPEn opvragen.
+
+    Deze lijst kan gefilterd wordt met query-string parameters.
+
+    retrieve:
+    Een specifieke ZAAKTYPE opvragen.
+
+    Een specifieke ZAAKTYPE opvragen.
+
+    update:
+    Werk een ZAAKTYPE in zijn geheel bij.
+
+    Werk een ZAAKTYPE in zijn geheel bij. Dit kan alleen als het een concept
+    betreft.
+
+    partial_update:
+    Werk een ZAAKTYPE deels bij.
+
+    Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept betreft.
+
+    destroy:
+    Verwijder een ZAAKTYPE.
+
+    Verwijder een ZAAKTYPE. Dit kan alleen als het een concept betreft.
     """
     queryset = ZaakType.objects.prefetch_related(
         'statustypen',

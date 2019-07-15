@@ -54,16 +54,16 @@ class ZaakInformatieobjectTypeFilter(FilterSet):
         model = ZaakInformatieobjectType
         fields = (
             'zaaktype',
-            'informatie_object_type',
+            'informatieobjecttype',
             'richting',
             'status',
         )
 
     def status_filter_m2m(self, queryset, name, value):
         if value == 'concept':
-            return queryset.filter(zaaktype__concept=True, informatie_object_type__concept=True)
+            return queryset.filter(zaaktype__concept=True, informatieobjecttype__concept=True)
         elif value == 'definitief':
-            return queryset.filter(zaaktype__concept=False, informatie_object_type__concept=False)
+            return queryset.filter(zaaktype__concept=False, informatieobjecttype__concept=False)
         elif value == 'alles':
             return queryset
 

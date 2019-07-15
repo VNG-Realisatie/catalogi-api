@@ -49,7 +49,7 @@ class StatusType(models.Model):
     # relations
     zaaktype = models.ForeignKey(
         'ZaakType', verbose_name=_('is van'), related_name='statustypen', on_delete=models.CASCADE,
-        help_text=_('Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.')
+        help_text=_('URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.')
     )
 
     # attributes
