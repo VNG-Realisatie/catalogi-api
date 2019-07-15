@@ -34,7 +34,7 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
     # (ANDER BUITENLANDS NIET-NATUURLIJK PERSOON) heeft lengte 41. Daarom hebben wij het op max_length=50 gezet
     objecttype = models.CharField(_('objecttype'), max_length=50, help_text=_(
         'De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben.'))
-    ander_objecttype = models.BooleanField(_('ander objecttype'), help_text=_(
+    ander_objecttype = models.BooleanField(_('ander objecttype'), default=False, help_text=_(
         'Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft'))
     relatieomschrijving = models.CharField(_('relatieomschrijving'), max_length=80, help_text=_(
         'Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE.'))

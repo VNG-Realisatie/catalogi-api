@@ -6,7 +6,7 @@ from vng_api_common.constants import (
     RolOmschrijving, VertrouwelijkheidsAanduiding
 )
 
-from ztc.datamodel.choices import JaNee, ObjectTypen
+from ztc.datamodel.choices import ObjectTypen
 
 from .factories import (
     BesluitTypeFactory, CatalogusFactory, EigenschapFactory,
@@ -200,7 +200,7 @@ class HaaglandenMixin(object):
             statustype_omschrijving='Intake afgerond',
             statustypevolgnummer=1,
             doorlooptijd_status=2,  # werkdagen
-            informeren=JaNee.ja,
+            informeren=True,
             toelichting='''Er wordt beoordeeld of de
                 ontvangen aanvraag inderdaad in een reguliere
                 procedure behandeld kan worden en of de
@@ -235,7 +235,7 @@ class HaaglandenMixin(object):
             statustype_omschrijving='Getoetst op indieningsvereisten',
             statustypevolgnummer=2,
             doorlooptijd_status=4,  # werkdagen
-            informeren=JaNee.ja,
+            informeren=True,
             toelichting='''De aanvraag wordt beoordeeld
                 op de kwaliteit (aanvaardbaarheid) van de
                 ontvangen documenten. Als de aanvraag niet
@@ -266,7 +266,7 @@ class HaaglandenMixin(object):
             statustype_omschrijving='Inhoudelijk behandeld',
             statustypevolgnummer=3,
             doorlooptijd_status=21,  # 3 weken
-            informeren=JaNee.ja,
+            informeren=True,
             toelichting='''De aanvraag wordt allereerst
                 beoordeeld op de relevante wetgeving en
                 informatie over de milieu-inrichting of -locatie.
@@ -292,7 +292,7 @@ class HaaglandenMixin(object):
             statustype_omschrijving='Besluit genomen',
             statustypevolgnummer=4,
             doorlooptijd_status=2,  # werkdagen
-            informeren=JaNee.nee,
+            informeren=False,
             toelichting='''Op basis van de aanvraag en het advies met betrekking tot de
                 vergunning wordt het definitieve besluit op- en vastgesteld.''',
             roltypen=[
@@ -308,7 +308,7 @@ class HaaglandenMixin(object):
             statustype_omschrijving='Producten geleverd',
             statustypevolgnummer=6,  # NOTE: also refered to as '5' in de haaglanden doc
             doorlooptijd_status=3,  # werkdagen
-            informeren=JaNee.nee,
+            informeren=False,
             toelichting='''Het besluit wordt verzonden en gepubliceerd en het zaakdossier wordt afgesloten
                 en gearchiveerd (indien de provincie het bevoegd gezag is) dan wel ter archivering
                 overgedragen aan het bevoegd gezag (indien dat de gemeente is).''',
@@ -328,14 +328,14 @@ class HaaglandenMixin(object):
         # TODO: link these with StatusType.. but which one?
         self.zaakobjecttype_milieu = ZaakObjectTypeFactory.create(
             objecttype='Milieu-inrichting of -locatie',  # it's one that is not in the choices
-            ander_objecttype=JaNee.ja,
+            ander_objecttype=True,
             relatieomschrijving='De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.',
             # status_type=foreign key StatusType
             is_relevant_voor=self.zaaktype
         )
         self.zaakobjecttype_pand = ZaakObjectTypeFactory.create(
             objecttype=ObjectTypen.pand,
-            ander_objecttype=JaNee.nee,
+            ander_objecttype=False,
             relatieomschrijving='Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting '
                                 'gevestigd is waarop de zaak betrekking heeft.'[:80],
             # status_type=foreign key StatusType
@@ -343,7 +343,7 @@ class HaaglandenMixin(object):
         )
         self.zaakobjecttype_verblijfsobject = ZaakObjectTypeFactory.create(
             objecttype=ObjectTypen.verblijfsobject,
-            ander_objecttype=JaNee.nee,
+            ander_objecttype=False,
             relatieomschrijving='Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) '
                                 'waarin het deel van de milieu-inrichting gevestigd is waarop de zaak'
                                 'betrekking heeft.'[:80],
