@@ -47,7 +47,7 @@ class FactoryTests(TestCase):
         StatusTypeFactory.create()
         ZaakTypeFactory.create()
 
-    def test_informatie_object_type_factory(self):
+    def test_informatieobjecttype_factory(self):
         self.assertEqual(InformatieObjectType.objects.count(), 0)
         self.assertEqual(ZaakInformatieobjectType.objects.count(), 0)
         self.assertEqual(ZaakType.objects.count(), 0)

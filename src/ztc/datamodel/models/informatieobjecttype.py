@@ -97,7 +97,7 @@ class InformatieObjectType(GeldigheidMixin, ConceptMixin, models.Model):
 
     catalogus = models.ForeignKey(
         'datamodel.Catalogus', verbose_name=_('maakt deel uit van'),
-        on_delete=models.CASCADE, help_text=('De CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.')
+        on_delete=models.CASCADE, help_text=('URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.')
     )
 
     zaaktypes = models.ManyToManyField(

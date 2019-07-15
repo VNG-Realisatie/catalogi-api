@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = django_dbcache_fields
+SPHINXPROJ    = ZaakTypeCatalogus
 SOURCEDIR     = .
 BUILDDIR      = _build
 

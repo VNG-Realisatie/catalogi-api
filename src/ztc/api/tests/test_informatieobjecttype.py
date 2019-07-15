@@ -88,7 +88,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype,
-            informatie_object_type=informatieobjecttype,
+            informatieobjecttype=informatieobjecttype,
             volgnummer=1,
             richting='richting',
         )

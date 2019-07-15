@@ -46,7 +46,7 @@ class RolType(models.Model):
     )
     zaaktype = models.ForeignKey(
         'datamodel.ZaakType', verbose_name=_('is van'), on_delete=models.CASCADE,
-        help_text=_('De ROLTYPEn waarin BETROKKENEn een ROL kunnen uitoefenen in ZAAKen van dit ZAAKTYPE.')
+        help_text=_('URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn.')
     )
 
     class Meta:
@@ -72,8 +72,12 @@ class MogelijkeBetrokkene(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
     roltype = models.ForeignKey(RolType, on_delete=models.CASCADE)
 
-    betrokkene = models.URLField(help_text="Een betrokkene die kan gerelateerd worden aan een zaak")
-    betrokkene_type = models.CharField(max_length=100, choices=RolTypes.choices)
+    betrokkene = models.URLField(
+        help_text="URL-referentie naar een specifieke BETROKKENE die kan gerelateerd worden aan een ZAAK.")
+    betrokkene_type = models.CharField(
+        max_length=100, choices=RolTypes.choices,
+        help_text=_('Het type BETROKKENE waarnaar verwezen wordt in het attribuut `betrokkene`.')
+    )
 
     class Meta:
         verbose_name = _('mogelijke betrokkene')

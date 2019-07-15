@@ -13,12 +13,42 @@ class BesluitTypeViewSet(ConceptMixin,
                          mixins.DestroyModelMixin,
                          viewsets.ReadOnlyModelViewSet):
     """
-    retrieve:
-    Generieke aanduiding van de aard van een besluit.
+    Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten
+    API.
 
-    list:
     Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het
     zaakgericht werken van de behandelende organisatie(s).
+
+    create:
+    Maak een BESLUITTYPE aan.
+
+    Maak een BESLUITTYPE aan.
+
+    list:
+    Alle BESLUITTYPEn opvragen.
+
+    Deze lijst kan gefilterd wordt met query-string parameters.
+
+    retrieve:
+    Een specifieke BESLUITTYPE opvragen.
+
+    Een specifieke BESLUITTYPE opvragen.
+
+    update:
+    Werk een BESLUITTYPE in zijn geheel bij.
+
+    Werk een BESLUITTYPE in zijn geheel bij. Dit kan alleen als het een concept
+    betreft.
+
+    partial_update:
+    Werk een BESLUITTYPE deels bij.
+
+    Werk een BESLUITTYPE deels bij. Dit kan alleen als het een concept betreft.
+
+    destroy:
+    Verwijder een BESLUITTYPE.
+
+    Verwijder een BESLUITTYPE. Dit kan alleen als het een concept betreft.
     """
     queryset = BesluitType.objects.all().order_by('-pk')
     serializer_class = BesluitTypeSerializer

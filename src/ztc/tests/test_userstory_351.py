@@ -19,12 +19,12 @@ class US351TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         rol_type = RolTypeFactory.create(zaaktype=zaaktype)
 
-        status_type_1 = StatusTypeFactory.create(
+        statustype_1 = StatusTypeFactory.create(
             zaaktype=zaaktype,
             roltypen=[rol_type, ],
             statustypevolgnummer=1
         )
-        status_type_2 = StatusTypeFactory.create(
+        statustype_2 = StatusTypeFactory.create(
             zaaktype=zaaktype,
             roltypen=[rol_type, ],
             statustypevolgnummer=2
@@ -35,7 +35,7 @@ class US351TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             'statustype_read',
             catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid,
-            uuid=status_type_1.uuid,
+            uuid=statustype_1.uuid,
         )
 
         response = self.client.get(url)
@@ -50,7 +50,7 @@ class US351TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
             'statustype_read',
             catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid,
-            uuid=status_type_2.uuid
+            uuid=statustype_2.uuid
         )
 
         response = self.client.get(url)

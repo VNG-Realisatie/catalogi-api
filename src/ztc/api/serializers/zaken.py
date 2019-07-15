@@ -6,10 +6,13 @@ from rest_framework.serializers import (
 )
 from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import (
-    GegevensGroepSerializer, NestedGegevensGroepMixin
+    GegevensGroepSerializer, NestedGegevensGroepMixin,
+    add_choice_values_help_text
 )
 
+from ...datamodel.choices import AardRelatieChoices, RichtingChoices
 from ...datamodel.models import (
     BesluitType, BronCatalogus, BronZaakType, Formulier, ZaakObjectType,
     ZaakType, ZaakTypenRelatie
@@ -51,7 +54,7 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
             'einddatumObject',
             'isRelevantVoor',
             # NOTE: this field is not in the xsd
-            # 'status_type',
+            # 'statustype',
         )
         extra_kwargs = {
             'url': {'view_name': 'api:zaakobjecttype-detail'},
@@ -104,6 +107,12 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
             'zaaktype': {'source': 'gerelateerd_zaaktype'},
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(AardRelatieChoices)
+        self.fields['aard_relatie'].help_text += f"\n\n{value_display_mapping}"
+
 
 class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, HyperlinkedModelSerializer):
 
@@ -143,6 +152,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         source='heeft_relevant_informatieobjecttype',
         view_name='informatieobjecttype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     statustypen = HyperlinkedRelatedField(
@@ -150,6 +160,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         read_only=True,
         view_name='statustype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     resultaattypen = HyperlinkedRelatedField(
@@ -157,6 +168,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         read_only=True,
         view_name='resultaattype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     eigenschappen = HyperlinkedRelatedField(
@@ -165,6 +177,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         source='eigenschap_set',
         view_name='eigenschap-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE.')
     )
 
     roltypen = HyperlinkedRelatedField(
@@ -173,6 +186,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         source='roltype_set',
         view_name='roltype-detail',
         lookup_field='uuid',
+        help_text=_('URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     besluittypen = HyperlinkedRelatedField(
@@ -182,6 +196,7 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         view_name='besluittype-detail',
         lookup_field='uuid',
         queryset=BesluitType.objects.all(),
+        help_text=_('URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE.')
     )
 
     class Meta:
@@ -277,3 +292,12 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
         validators = [RelationCatalogValidator('besluittype_set')]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(VertrouwelijkheidsAanduiding)
+        self.fields['vertrouwelijkheidaanduiding'].help_text += f"\n\n{value_display_mapping}"
+
+        value_display_mapping = add_choice_values_help_text(RichtingChoices)
+        self.fields['indicatie_intern_of_extern'].help_text += f"\n\n{value_display_mapping}"

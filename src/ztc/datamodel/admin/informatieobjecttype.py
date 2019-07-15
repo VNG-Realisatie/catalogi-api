@@ -11,7 +11,7 @@ from .mixins import ConceptAdminMixin, GeldigheidAdminMixin
 class ZaakInformatieobjectTypeInline(admin.TabularInline):
     model = ZaakInformatieobjectType
     extra = 1
-    raw_id_fields = ('zaaktype', 'status_type', )
+    raw_id_fields = ('zaaktype', 'statustype', )
 
 
 @admin.register(InformatieObjectTypeOmschrijvingGeneriek)

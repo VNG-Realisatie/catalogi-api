@@ -14,11 +14,44 @@ class RolTypeViewSet(CheckQueryParamsMixin,
                      mixins.DestroyModelMixin,
                      viewsets.ReadOnlyModelViewSet):
     """
-    retrieve:
-    Generieke aanduiding van de aard van een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE.
+    Opvragen en bewerken van ROLTYPEn van een ZAAKTYPE.
+
+    Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
+    uitoefenen in ZAAKen van een ZAAKTYPE.
+
+    create:
+    Maak een ROLTYPE aan.
+
+    Maak een ROLTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een
+    concept betreft.
 
     list:
-    Een verzameling van ROLTYPEn.
+    Alle ROLTYPEn opvragen.
+
+    Deze lijst kan gefilterd wordt met query-string parameters.
+
+    retrieve:
+    Een specifieke ROLTYPE opvragen.
+
+    Een specifieke ROLTYPE opvragen.
+
+    update:
+    Werk een ROLTYPE in zijn geheel bij.
+
+    Werk een ROLTYPE in zijn geheel bij. Dit kan alleen als het
+    bijbehorende ZAAKTYPE een concept betreft.
+
+    partial_update:
+    Werk een ROLTYPE deels bij.
+
+    Werk een ROLTYPE deels bij. Dit kan alleen als het bijbehorende
+    ZAAKTYPE een concept betreft.
+
+    destroy:
+    Verwijder een ROLTYPE.
+
+    Verwijder een ROLTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een
+    concept betreft.
     """
     queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set').order_by('-pk')
     serializer_class = RolTypeSerializer

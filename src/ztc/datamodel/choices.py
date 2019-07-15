@@ -12,29 +12,19 @@ from djchoices import ChoiceItem, DjangoChoices
 # ResultaatType.brondatum_archiefprocedure: 'afgehandeld' dus geheel met kleine letters
 
 
-class JaNee(DjangoChoices):
-    ja = ChoiceItem('J', _('Ja'))
-    nee = ChoiceItem('N', _('Nee'))
-
-
 class FormaatChoices(DjangoChoices):
-    tekst = ChoiceItem('tekst', _('tekst'))
-    getal = ChoiceItem('getal', _('getal'))
-    datum = ChoiceItem('datum (jjjjmmdd)', _('datum'))
-    datum_tijd = ChoiceItem('datum/tijd (jjjjmmdduummss)', _('datum/tijd'))
-
-
-class ArchiefNominaties(DjangoChoices):
-    blijvend_bewaren = ChoiceItem('Blijvend bewaren', _('blijvend bewaren'))
-    vernietigen = ChoiceItem('vernietigen', _('vernietigen'))
+    tekst = ChoiceItem('tekst', _('Tekst'))
+    getal = ChoiceItem('getal', _('Getal'))
+    datum = ChoiceItem('datum (jjjjmmdd)', _('Datum'))
+    datum_tijd = ChoiceItem('datum/tijd (jjjjmmdduummss)', _('Datum/tijd'))
 
 
 class ArchiefProcedure(DjangoChoices):
-    afgehandeld = ChoiceItem('afgehandeld', _('afgehandeld'))
-    ingangsdatum_besluit = ChoiceItem('ingangsdatum besluit', _('ingangsdatum besluit'))
-    vervaldatum_besluit = ChoiceItem('vervaldatum besluit', _('vervaldatum besluit'))
-    eigenschap = ChoiceItem('eigenschap', _('eigenschap'))
-    ander_datumkenmerk = ChoiceItem('ander datumkenmerk', _('ander datumkenmerk'))
+    afgehandeld = ChoiceItem('afgehandeld', _('Afgehandeld'))
+    ingangsdatum_besluit = ChoiceItem('ingangsdatum_besluit', _('Ingangsdatum besluit'))
+    vervaldatum_besluit = ChoiceItem('vervaldatum_besluit', _('Vervaldatum besluit'))
+    eigenschap = ChoiceItem('eigenschap', _('Eigenschap'))
+    ander_datumkenmerk = ChoiceItem('ander_datumkenmerk', _('Ander datumkenmerk'))
 
 
 class ObjectTypen(DjangoChoices):
@@ -85,22 +75,22 @@ class ObjectTypen(DjangoChoices):
 
 
 class InternExtern(DjangoChoices):
-    intern = ChoiceItem('Intern', _('intern'))
-    extern = ChoiceItem('Extern', _('extern'))
+    intern = ChoiceItem('intern', _('Intern'))
+    extern = ChoiceItem('extern', _('Extern'))
 
 
 class RichtingChoices(DjangoChoices):
-    inkomend = ChoiceItem('Inkomend', _('Inkomend'))
-    intern = ChoiceItem('Intern', _('Intern'))
-    uitgaand = ChoiceItem('Uitgaand', _('Uitgaand'))
+    inkomend = ChoiceItem('inkomend', _('Inkomend'))
+    intern = ChoiceItem('intern', _('Intern'))
+    uitgaand = ChoiceItem('uitgaand', _('Uitgaand'))
 
 
 class ArchiefNominatieChoices(DjangoChoices):
-    blijvend_bewaren = ChoiceItem('Blijvend bewaren', _('Blijvend bewaren'))
-    vernietigen = ChoiceItem('Vernietigen', _('Vernietigen'))
+    blijvend_bewaren = ChoiceItem('blijvend_bewaren', _('Blijvend bewaren'))
+    vernietigen = ChoiceItem('vernietigen', _('Vernietigen'))
 
 
 class AardRelatieChoices(DjangoChoices):
-    vervolg = ChoiceItem('vervolg', _('vervolg'))  # een zaak van het ZAAKTYPE is een te plannen vervolg op een zaak van het andere ZAAKTYPE
-    bijdrage = ChoiceItem('bijdrage', _('bijdrage'))  # een zaak van het ZAAKTYPE levert een bijdrage aan het bereiken van de uitkomst van een zaak van het andere ZAAKTYPE
-    onderwerp = ChoiceItem('onderwerp', _('onderwerp'))  # een zaak van het ZAAKTYPE heeft betrekking op een zaak van het andere ZAAKTYPE of een zaak van het andere ZAAKTYPE is relevant voor of is onderwerp van een zaak van het ZAAKTYPE
+    vervolg = ChoiceItem('vervolg', _('Vervolg'))  # een zaak van het ZAAKTYPE is een te plannen vervolg op een zaak van het andere ZAAKTYPE
+    bijdrage = ChoiceItem('bijdrage', _('Bijdrage'))  # een zaak van het ZAAKTYPE levert een bijdrage aan het bereiken van de uitkomst van een zaak van het andere ZAAKTYPE
+    onderwerp = ChoiceItem('onderwerp', _('Onderwerp'))  # een zaak van het ZAAKTYPE heeft betrekking op een zaak van het andere ZAAKTYPE of een zaak van het andere ZAAKTYPE is relevant voor of is onderwerp van een zaak van het ZAAKTYPE

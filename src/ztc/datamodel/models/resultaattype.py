@@ -47,7 +47,7 @@ class ResultaatType(models.Model):
     zaaktype = models.ForeignKey(
         'datamodel.ZaakType', verbose_name=_("is relevant voor"),
         on_delete=models.CASCADE, related_name='resultaattypen',
-        help_text=_("Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.")
+        help_text=_("URL-referentie naar het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.")
     )
 
     # core data - used by ZRC to calculate archival-related dates
@@ -69,10 +69,9 @@ class ResultaatType(models.Model):
     # TODO: validate that this matches the Zaaktype.procestype
     selectielijstklasse = models.URLField(
         _("selectielijstklasse"), max_length=1000,
-        help_text=_("Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, "
-                    "categorie in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE "
-                    "verantwoordelijke overheidsorganisatie. Dit is een URL-referentie naar een resultaat "
-                    "uit de selectielijst API")
+        help_text=_("URL-referentie naar de, voor het archiefregime bij het RESULTAATTYPE relevante, "
+                    "categorie in de Selectielijst Archiefbescheiden (RESULTAAT in de Selectielijst API) "
+                    "van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie.")
     )
 
     # derived fields from selectielijstklasse

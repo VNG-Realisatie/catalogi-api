@@ -76,7 +76,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             'is_eindstatus',
             # 'doorlooptijd',
             # 'checklistitem',
-            # 'informeren',
+            'informeren',
             # 'toelichting',
 
             # 'ingangsdatumObject',

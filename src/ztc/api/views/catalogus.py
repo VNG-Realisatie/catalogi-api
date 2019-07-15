@@ -10,12 +10,41 @@ from ..serializers import CatalogusSerializer
 class CatalogusViewSet(mixins.CreateModelMixin,
                        viewsets.ReadOnlyModelViewSet):
     """
-    retrieve:
-    De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor een Domein die als één geheel beheerd
-    wordt.
+    Opvragen en bewerken van CATALOGUSsen.
+
+    De verzameling van ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn voor
+    een domein die als één geheel beheerd wordt.
+
+    create:
+    Maak een CATALOGUS aan.
+
+    Maak een CATALOGUS aan.
 
     list:
-    Een verzameling van CATALOGUSsen.
+    Alle CATALOGUSsen opvragen.
+
+    Deze lijst kan gefilterd wordt met query-string parameters.
+
+    retrieve:
+    Een specifieke CATALOGUS opvragen.
+
+    Een specifieke CATALOGUS opvragen.
+
+    update:
+    Werk een CATALOGUS in zijn geheel bij.
+
+    Werk een CATALOGUS in zijn geheel bij.
+
+    partial_update:
+    Werk een CATALOGUS deels bij.
+
+    Werk een CATALOGUS deels bij.
+
+    destroy:
+    Verwijder een CATALOGUS.
+
+    Verwijder een CATALOGUS. Dit kan alleen als er geen onderliggende
+    ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn zijn.
     """
     queryset = Catalogus.objects.all().order_by('-pk')
     serializer_class = CatalogusSerializer
