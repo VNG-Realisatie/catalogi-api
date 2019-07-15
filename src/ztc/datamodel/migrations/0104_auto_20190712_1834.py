@@ -4,6 +4,8 @@ from django.db import migrations
 from django.db.models import F, Value
 from django.db.models.functions import Lower, Replace
 
+from vng_api_common.db.operations import RolomschrijvingUpdate, RoltypesUpdate, ZaakobjecttypesUpdate
+
 
 def forward(apps, schema_editor):
     EigenschapSpecificatie = apps.get_model("datamodel", "EigenschapSpecificatie")
@@ -19,16 +21,6 @@ def forward(apps, schema_editor):
     MogelijkeBetrokkene = apps.get_model("datamodel", "MogelijkeBetrokkene")
     MogelijkeBetrokkene.objects.all().update(
         betrokkene_type=Lower(Replace(Replace(F('betrokkene_type'), Value(' '), Value('_')), Value('-'), Value('_'))),
-    )
-
-    ResultaatType = apps.get_model("datamodel", "ResultaatType")
-    ResultaatType.objects.all().update(
-        brondatum_archiefprocedure_objecttype=Lower(Replace(F('brondatum_archiefprocedure_objecttype'), Value(' '), Value('_'))),
-    )
-
-    RolType = apps.get_model("datamodel", "RolType")
-    RolType.objects.all().update(
-        omschrijving_generiek=Lower(Replace(Replace(Replace(F('omschrijving_generiek'), Value(' '), Value('_')), Value('-'), Value('_')), Value('ö'), Value('o'))),
     )
 
     ZaakType = apps.get_model("datamodel", "ZaakType")
@@ -60,5 +52,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(forward)
+        migrations.RunPython(forward, migrations.RunPython.noop),
+        RolomschrijvingUpdate("datamodel.RolType", "omschrijving_generiek"),
+        RoltypesUpdate("datamodel.MogelijkeBetrokkene", "betrokkene_type"),
+        ZaakobjecttypesUpdate("datamodel.ResultaatType", "brondatum_archiefprocedure_objecttype"),
     ]
