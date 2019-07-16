@@ -1,7 +1,11 @@
+from unittest.mock import patch
+
 import requests_mock
 from rest_framework import status
 from vng_api_common.constants import BrondatumArchiefprocedureAfleidingswijze
-from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
+from vng_api_common.tests import (
+    TypeCheckMixin, get_validation_errors, reverse, reverse_lazy
+)
 
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
@@ -120,7 +124,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         # Verify that the procestermijn was serialized correctly
         self.assertEqual(brondatumArchiefprocedure['procestermijn'], procestermijn)
 
-    def test_create_resultaattype(self):
+    @patch('vng_api_common.oas.fetcher.fetch', return_value={})
+    @patch('vng_api_common.validators.obj_has_shape', return_value=True)
+    def test_create_resultaattype(self, mock_shape, mock_fetch):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
@@ -160,7 +166,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             BrondatumArchiefprocedureAfleidingswijze.afgehandeld
         )
 
-    def test_create_resultaattype_fail_not_concept_zaaktype(self):
+    @patch('vng_api_common.oas.fetcher.fetch', return_value={})
+    @patch('vng_api_common.validators.obj_has_shape', return_value=True)
+    def test_create_resultaattype_fail_not_concept_zaaktype(self, mock_shape, mock_fetch):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
