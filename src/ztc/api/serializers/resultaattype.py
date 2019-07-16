@@ -6,6 +6,9 @@ from vng_api_common.serializers import (
     GegevensGroepSerializer, NestedGegevensGroepMixin,
     add_choice_values_help_text
 )
+from vng_api_common.validators import ResourceValidator
+
+from ztc.conf.api import REFERENTIELIJSTEN_API_SPEC
 
 from ...datamodel.models import ResultaatType
 
@@ -42,6 +45,9 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
         extra_kwargs = {
             'url': {
                 'lookup_field': 'uuid',
+            },
+            'resultaattypeomschrijving': {
+                'validators': [ResourceValidator('ResultaattypeOmschrijvingGeneriek', REFERENTIELIJSTEN_API_SPEC)],
             },
             'omschrijving_generiek': {
                 'read_only': True,
