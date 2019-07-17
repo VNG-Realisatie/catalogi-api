@@ -1,7 +1,11 @@
+from unittest.mock import patch
+
 import requests_mock
 from rest_framework import status
 from vng_api_common.constants import BrondatumArchiefprocedureAfleidingswijze
-from vng_api_common.tests import TypeCheckMixin, reverse, reverse_lazy
+from vng_api_common.tests import (
+    TypeCheckMixin, get_validation_errors, reverse, reverse_lazy
+)
 
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
@@ -120,7 +124,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         # Verify that the procestermijn was serialized correctly
         self.assertEqual(brondatumArchiefprocedure['procestermijn'], procestermijn)
 
-    def test_create_resultaattype(self):
+    @patch('vng_api_common.oas.fetcher.fetch', return_value={})
+    @patch('vng_api_common.validators.obj_has_shape', return_value=True)
+    def test_create_resultaattype(self, mock_shape, mock_fetch):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
@@ -160,7 +166,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             BrondatumArchiefprocedureAfleidingswijze.afgehandeld
         )
 
-    def test_create_resultaattype_fail_not_concept_zaaktype(self):
+    @patch('vng_api_common.oas.fetcher.fetch', return_value={})
+    @patch('vng_api_common.validators.obj_has_shape', return_value=True)
+    def test_create_resultaattype_fail_not_concept_zaaktype(self, mock_shape, mock_fetch):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
@@ -311,3 +319,42 @@ class ResultaatTypePaginationTestCase(APITestCase):
         self.assertEqual(response_data['count'], 2)
         self.assertIsNone(response_data['previous'])
         self.assertIsNone(response_data['next'])
+
+
+class ResultaatTypeValidationTests(APITestCase):
+    list_url = reverse_lazy(ResultaatType)
+
+    @patch('vng_api_common.oas.fetcher.fetch', return_value={})
+    @patch('vng_api_common.validators.obj_has_shape', return_value=False)
+    def test_validate_wrong_resultaattypeomschrijving(self, mock_shape, mock_fetch):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+        resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'illum',
+            'resultaattypeomschrijving': resultaattypeomschrijving_url,
+            'selectielijstklasse': 'https://garcia.org/',
+            'archiefnominatie': 'blijvend_bewaren',
+            'archiefactietermijn': 'P10Y',
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                'einddatumBekend': False,
+                'procestermijn': 'P10Y',
+                'datumkenmerk': '',
+                'objecttype': '',
+                'registratie': '',
+            }
+        }
+
+        with requests_mock.Mocker() as m:
+            m.register_uri('GET', resultaattypeomschrijving_url, json={
+                'omschrijving': 'test'
+            })
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, 'resultaattypeomschrijving')
+        self.assertEqual(error['code'], 'invalid-resource')
