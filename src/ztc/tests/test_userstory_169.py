@@ -10,9 +10,7 @@ from rest_framework.test import APITestCase
 from vng_api_common.tests import TypeCheckMixin, get_operation_url
 
 from ztc.api.tests.base import ClientAPITestMixin
-from ztc.datamodel.tests.factories import (
-    ZaakTypeFactory
-)
+from ztc.datamodel.tests.factories import ZaakTypeFactory
 
 
 class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
