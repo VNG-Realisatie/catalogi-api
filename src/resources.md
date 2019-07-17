@@ -119,23 +119,6 @@ Uitleg bij mogelijke waarden:
 * `vernietigen` - Het zaakdossier moet op of na de Archiefactiedatum vernietigd worden. | string | nee | C​R​U​D |
 | archiefactietermijn | De termijn, na het vervallen van het bedrjfsvoeringsbelang, waarna het zaakdossier (de ZAAK met alle bijbehorende INFORMATIEOBJECTen) van een ZAAK met een resultaat van dit RESULTAATTYPE vernietigd of overgebracht (naar een archiefbewaarplaats) moet worden. Voor te vernietigen dossiers betreft het de in die Selectielijst genoemde bewaartermjn. Voor blijvend te bewaren zaakdossiers betreft het de termijn vanaf afronding van de zaak tot overbrenging (de procestermijn is dan nihil). | string | nee | C​R​U​D |
 
-## MogelijkeBetrokkene
-
-Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/mogelijkebetrokkene)
-
-| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
-| --- | --- | --- | --- | --- |
-| betrokkene | URL-referentie naar een specifieke BETROKKENE die kan gerelateerd worden aan een ZAAK. | string | ja | C​R​U​D |
-| betrokkeneType | Het type BETROKKENE waarnaar verwezen wordt in het attribuut `betrokkene`.
-
-Uitleg bij mogelijke waarden:
-
-* `natuurlijk_persoon` - Natuurlijk persoon
-* `niet_natuurlijk_persoon` - Niet-natuurlijk persoon
-* `vestiging` - Vestiging
-* `organisatorische_eenheid` - Organisatorische eenheid
-* `medewerker` - Medewerker | string | ja | C​R​U​D |
-
 ## RolType
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/roltype)
@@ -157,7 +140,6 @@ Uitleg bij mogelijke waarden:
 * `klantcontacter` - (Klantcontacter) Het eerste aanspreekpunt zijn voor vragen van burgers en bedrijven ..
 * `zaakcoordinator` - (Zaakcoördinator) Er voor zorg dragen dat de behandeling van de zaak in samenhang uitgevoerd wordt conform de daarover gemaakte afspraken.
 * `mede_initiator` - Mede-initiator | string | ja | C​R​U​D |
-| mogelijkeBetrokkenen |  | array | ja | C​R​U​D |
 
 ## StatusType
 

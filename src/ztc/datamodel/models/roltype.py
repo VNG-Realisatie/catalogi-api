@@ -66,22 +66,3 @@ class RolType(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.zaaktype, self.omschrijving)
-
-
-class MogelijkeBetrokkene(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4)
-    roltype = models.ForeignKey(RolType, on_delete=models.CASCADE)
-
-    betrokkene = models.URLField(
-        help_text="URL-referentie naar een specifieke BETROKKENE die kan gerelateerd worden aan een ZAAK.")
-    betrokkene_type = models.CharField(
-        max_length=100, choices=RolTypes.choices,
-        help_text=_('Het type BETROKKENE waarnaar verwezen wordt in het attribuut `betrokkene`.')
-    )
-
-    class Meta:
-        verbose_name = _('mogelijke betrokkene')
-        verbose_name_plural = _('mogelijke betrokkenen')
-
-    def __str__(self):
-        return f"{self.roltype} - {self.betrokkene_type}"
