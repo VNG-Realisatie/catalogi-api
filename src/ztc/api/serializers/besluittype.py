@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from vng_api_common.utils import get_help_text
 
-
 from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
 from ..utils.validators import RelationCatalogValidator
 

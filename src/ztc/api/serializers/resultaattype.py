@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
@@ -6,6 +7,7 @@ from vng_api_common.serializers import (
     GegevensGroepSerializer, NestedGegevensGroepMixin,
     add_choice_values_help_text
 )
+from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.models import ResultaatType
 
@@ -42,6 +44,12 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
         extra_kwargs = {
             'url': {
                 'lookup_field': 'uuid',
+            },
+            'resultaattypeomschrijving': {
+                'validators': [ResourceValidator(
+                    'ResultaattypeOmschrijvingGeneriek', 
+                    settings.REFERENTIELIJSTEN_API_SPEC
+                )],
             },
             'omschrijving_generiek': {
                 'read_only': True,
