@@ -480,7 +480,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -635,7 +635,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1252,7 +1252,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1805,7 +1805,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -1960,7 +1960,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2513,7 +2513,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -2668,7 +2668,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3272,7 +3272,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3427,7 +3427,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -3997,7 +3997,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4152,7 +4152,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4704,7 +4704,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -4859,7 +4859,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5432,7 +5432,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -5587,7 +5587,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6154,7 +6154,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -6309,7 +6309,7 @@
                         }
                     },
                     "404": {
-                        "description": "Not_found",
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/Fout"
                         },
@@ -7143,41 +7143,11 @@
                 }
             }
         },
-        "MogelijkeBetrokkene": {
-            "required": [
-                "betrokkene",
-                "betrokkeneType"
-            ],
-            "type": "object",
-            "properties": {
-                "betrokkene": {
-                    "title": "Betrokkene",
-                    "description": "URL-referentie naar een specifieke BETROKKENE die kan gerelateerd worden aan een ZAAK.",
-                    "type": "string",
-                    "format": "uri",
-                    "maxLength": 200,
-                    "minLength": 1
-                },
-                "betrokkeneType": {
-                    "title": "Betrokkene type",
-                    "description": "Het type BETROKKENE waarnaar verwezen wordt in het attribuut `betrokkene`.\n\nUitleg bij mogelijke waarden:\n\n* `natuurlijk_persoon` - Natuurlijk persoon\n* `niet_natuurlijk_persoon` - Niet-natuurlijk persoon\n* `vestiging` - Vestiging\n* `organisatorische_eenheid` - Organisatorische eenheid\n* `medewerker` - Medewerker",
-                    "type": "string",
-                    "enum": [
-                        "natuurlijk_persoon",
-                        "niet_natuurlijk_persoon",
-                        "vestiging",
-                        "organisatorische_eenheid",
-                        "medewerker"
-                    ]
-                }
-            }
-        },
         "RolType": {
             "required": [
                 "zaaktype",
                 "omschrijving",
-                "omschrijvingGeneriek",
-                "mogelijkeBetrokkenen"
+                "omschrijvingGeneriek"
             ],
             "type": "object",
             "properties": {
@@ -7217,12 +7187,6 @@
                         "zaakcoordinator",
                         "mede_initiator"
                     ]
-                },
-                "mogelijkeBetrokkenen": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/MogelijkeBetrokkene"
-                    }
                 }
             }
         },

@@ -14,13 +14,3 @@ class RolTypeFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = RolType
-
-
-class MogelijkeBetrokkeneFactory(factory.django.DjangoModelFactory):
-
-    roltype = factory.SubFactory(RolTypeFactory)
-    betrokkene = factory.Faker('url')
-    betrokkene_type = factory.fuzzy.FuzzyChoice(choices=RolTypes.values)
-
-    class Meta:
-        model = 'datamodel.MogelijkeBetrokkene'
