@@ -2,6 +2,25 @@
 Wijzigingen
 ===========
 
+0.16.1 (2019-07-17)
+===================
+
+Consistency & bugfix release
+
+Includes the 0.16.0 changelog.
+
+* Updated to latest vng-api-common
+* Updated documentation
+* Added ``StatusType.informeren``
+* Fixed resource validation for ``ResultaatType.resultaattypeomschrijving``
+
+Breaking changes
+----------------
+
+* Renamed constants *snake_case* format
+* Replaced ``JaNee`` enum with ``BooleanField``
+* Lowercased relation names (``statusType`` etc. to ``statustype``)
+
 0.15.0 (2019-07-15)
 ===================
 
