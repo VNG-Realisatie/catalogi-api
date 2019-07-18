@@ -50,9 +50,6 @@ class RolTypeAPITests(APITestCase):
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'Vergunningaanvrager',
             'omschrijvingGeneriek': RolOmschrijving.initiator,
-            'mogelijkeBetrokkenen': [],
-            # 'soortBetrokkene': ['Aanvrager'],
-            # 'magZetten': [],
         }
         self.assertEqual(expected, response.json())
 
@@ -69,7 +66,6 @@ class RolTypeAPITests(APITestCase):
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'Vergunningaanvrager',
             'omschrijvingGeneriek': RolOmschrijving.initiator,
-            'mogelijkeBetrokkenen': [],
         }
 
         response = self.client.post(rol_type_list_url, data)
@@ -90,7 +86,6 @@ class RolTypeAPITests(APITestCase):
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'Vergunningaanvrager',
             'omschrijvingGeneriek': RolOmschrijving.initiator,
-            'mogelijkeBetrokkenen': [],
         }
 
         response = self.client.post(rol_type_list_url, data)

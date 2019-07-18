@@ -53,7 +53,7 @@ class RolTypeViewSet(CheckQueryParamsMixin,
     Verwijder een ROLTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een
     concept betreft.
     """
-    queryset = RolType.objects.prefetch_related('mogelijkebetrokkene_set').order_by('-pk')
+    queryset = RolType.objects.order_by('-pk')
     serializer_class = RolTypeSerializer
     filterset_class = RolTypeFilter
     lookup_field = 'uuid'

@@ -2,6 +2,19 @@
 Wijzigingen
 ===========
 
+1.0.0-rc1 (2019-07-18)
+======================
+
+Release candidate tag
+
+* Bumped to vng-api-common 1.0.0
+* Bumped version numbers to 1.0.0-rc
+
+Breaking changes
+----------------
+
+* ``RolType.mogelijkeBetrokkenen`` verwijderd
+
 0.16.1 (2019-07-17)
 ===================
 
