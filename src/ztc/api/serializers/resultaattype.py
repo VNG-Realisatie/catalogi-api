@@ -2,7 +2,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
-from vng_api_common.constants import Archiefnominatie
+from vng_api_common.constants import Archiefnominatie, BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze, ZaakobjectTypes
 from vng_api_common.serializers import (
     GegevensGroepSerializer, NestedGegevensGroepMixin,
     add_choice_values_help_text
@@ -16,6 +16,15 @@ class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
     class Meta:
         model = ResultaatType
         gegevensgroep = 'brondatum_archiefprocedure'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        value_display_mapping = add_choice_values_help_text(Afleidingswijze)
+        self.fields['afleidingswijze'].help_text += '\n\n{}'.format(value_display_mapping)
+
+        value_display_mapping = add_choice_values_help_text(ZaakobjectTypes)
+        self.fields['objecttype'].help_text += '\n\n{}'.format(value_display_mapping)
 
 
 class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer):
@@ -63,4 +72,6 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['archiefnominatie'].help_text += '\n\n{}'.format(add_choice_values_help_text(Archiefnominatie))
+
+        value_display_mapping = add_choice_values_help_text(Archiefnominatie)
+        self.fields['archiefnominatie'].help_text += '\n\n{}'.format(value_display_mapping)
