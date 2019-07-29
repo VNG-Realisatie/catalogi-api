@@ -465,7 +465,6 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
             raise ValidationError("'Servicenorm behandeling' periode mag niet langer zijn dan "
                                   "de periode van 'Doorlooptijd behandeling'.")
 
-        # TODO: if the resouce becomes writable unique constraint should be added to Validator
         if self.catalogus_id:
             query = ZaakType.objects.filter(
                 Q(catalogus=self.catalogus),

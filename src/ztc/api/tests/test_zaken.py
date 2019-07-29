@@ -2,6 +2,8 @@ import uuid
 from datetime import date
 from unittest import skip
 
+from django.urls import reverse as django_reverse
+
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import (
@@ -115,7 +117,7 @@ class ZaakTypeAPITests(APITestCase):
             'status': 404,
             'detail': "Niet gevonden.",
             'type': "http://testserver{}".format(
-                reverse('vng_api_common:error-detail', kwargs={'exception_class': 'NotFound'})
+                django_reverse('vng_api_common:error-detail', kwargs={'exception_class': 'NotFound'})
             )
         })
 
