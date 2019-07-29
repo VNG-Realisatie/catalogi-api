@@ -6825,13 +6825,13 @@
                 },
                 "formaat": {
                     "title": "Formaat",
-                    "description": "Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.\n\nUitleg bij mogelijke waarden:\n\n* `tekst` - Tekst\n* `getal` - Getal\n* `datum (jjjjmmdd)` - Datum\n* `datum/tijd (jjjjmmdduummss)` - Datum/tijd",
+                    "description": "Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.\n\nUitleg bij mogelijke waarden:\n\n* `tekst` - Tekst\n* `getal` - Getal\n* `datum` - Datum\n* `datum_tijd` - Datum/tijd",
                     "type": "string",
                     "enum": [
                         "tekst",
                         "getal",
-                        "datum (jjjjmmdd)",
-                        "datum/tijd (jjjjmmdduummss)"
+                        "datum",
+                        "datum_tijd"
                     ]
                 },
                 "lengte": {

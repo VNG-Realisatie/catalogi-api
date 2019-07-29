@@ -56,7 +56,3 @@ class FactoryTests(HaaglandenMixin, TestCase):
             list(set(ZaakObjectType.objects.values_list('datum_begin_geldigheid', flat=True))),
             expected_dates
         )
-
-        # TODO, following factories do not set the begin_datum yet, they will be empty ('') now..
-        # self.assertEqual(list(set(InformatieObjectTypeOmschrijvingGeneriek.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)
-        # self.assertEqual(list(set(InformatieObjectType.objects.values_list('datum_begin_geldigheid', flat=True))), expected_dates)

@@ -7,13 +7,14 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from django_better_admin_arrayfield.models.fields import ArrayField
+from vng_api_common.constants import ZaakobjectTypes
 from vng_api_common.descriptors import GegevensGroepType
 from vng_api_common.fields import (
     DaysDurationField, VertrouwelijkheidsAanduidingField
 )
 from vng_api_common.models import APIMixin
 
-from ..choices import InternExtern, ObjectTypen
+from ..choices import InternExtern
 from .mixins import ConceptMixin, GeldigheidMixin
 
 
@@ -84,7 +85,7 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
         """
         super().clean()
 
-        if self.ander_objecttype == JaNee.nee and self.objecttype not in ObjectTypen.values.keys():
+        if self.ander_objecttype == JaNee.nee and self.objecttype not in ZaakobjectTypes.values.keys():
             raise ValidationError(_("Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit het "
                                     "RSGB of het RGBZ. Bekende objecttypen zijn: {}").format(
                 ', '.join(ObjectTypen.values.keys())

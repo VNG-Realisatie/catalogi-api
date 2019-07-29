@@ -55,8 +55,8 @@ Uitleg bij mogelijke waarden:
 
 * `tekst` - Tekst
 * `getal` - Getal
-* `datum (jjjjmmdd)` - Datum
-* `datum/tijd (jjjjmmdduummss)` - Datum/tijd | string | ja | C​R​U​D |
+* `datum` - Datum
+* `datum_tijd` - Datum/tijd | string | ja | C​R​U​D |
 | lengte | Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP worden vastgelegd. | string | ja | C​R​U​D |
 | kardinaliteit | Het aantal mogelijke voorkomens van waarden van deze EIGENSCHAP bij een zaak van het ZAAKTYPE. | string | ja | C​R​U​D |
 | waardenverzameling | Waarden die deze EIGENSCHAP kan hebben. | array | nee | C​R​U​D |
