@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from drf_writable_nested import NestedCreateMixin
@@ -11,6 +12,7 @@ from vng_api_common.serializers import (
     GegevensGroepSerializer, NestedGegevensGroepMixin,
     add_choice_values_help_text
 )
+from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
 from ...datamodel.models import (
@@ -285,6 +287,12 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
             },
             'concept': {
                 'read_only': True,
+            },
+            'selectielijst_procestype': {
+                'validators': [ResourceValidator(
+                    'ProcesType',
+                    settings.REFERENTIELIJSTEN_API_SPEC
+                )],
             },
         }
 
