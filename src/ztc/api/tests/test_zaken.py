@@ -20,7 +20,7 @@ class ZaakTypeAPITests(APITestCase):
     maxDiff = None
 
     def test_get_list_default_definitief(self):
-        zaaktype1 = ZaakTypeFactory.create(concept=True)
+        zaaktype1 = ZaakTypeFactory.create(concept=True)  # noqa
         zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url('zaaktype_list')
         zaaktype2_url = get_operation_url('zaaktype_read', uuid=zaaktype2.uuid)
