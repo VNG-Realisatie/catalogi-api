@@ -19,6 +19,7 @@ from ...datamodel.models import (
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 from ..utils.validators import RelationCatalogValidator
+from ..validators import ZaaktypeGeldigheidValidator
 
 
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
@@ -38,7 +39,6 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
 
     class Meta:
         model = ZaakObjectType
-        ref_name = model.__name__
         source_mapping = {
             'ingangsdatumObject': 'datum_begin_geldigheid',
             'einddatumObject': 'datum_einde_geldigheid',
@@ -291,7 +291,10 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
         # expandable_fields = {
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
-        validators = [RelationCatalogValidator('besluittype_set')]
+        validators = [
+            ZaaktypeGeldigheidValidator(),
+            RelationCatalogValidator('besluittype_set'),
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -35,8 +35,11 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
     # (ANDER BUITENLANDS NIET-NATUURLIJK PERSOON) heeft lengte 41. Daarom hebben wij het op max_length=50 gezet
     objecttype = models.CharField(_('objecttype'), max_length=50, help_text=_(
         'De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben.'))
-    ander_objecttype = models.BooleanField(_('ander objecttype'), default=False, help_text=_(
-        'Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft'))
+    ander_objecttype = models.BooleanField(
+        _('ander objecttype'), default=False,
+        help_text=_('Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE '
+                    'een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft')
+    )
     relatieomschrijving = models.CharField(_('relatieomschrijving'), max_length=80, help_text=_(
         'Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE.'))
 
@@ -85,10 +88,10 @@ class ZaakObjectType(GeldigheidMixin, models.Model):
         """
         super().clean()
 
-        if self.ander_objecttype == JaNee.nee and self.objecttype not in ZaakobjectTypes.values.keys():
+        if not self.ander_objecttype and self.objecttype not in ZaakobjectTypes.values.keys():
             raise ValidationError(_("Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit het "
                                     "RSGB of het RGBZ. Bekende objecttypen zijn: {}").format(
-                ', '.join(ObjectTypen.values.keys())
+                ', '.join(ZaakobjectTypes.values.keys())
             ))
 
         self._clean_geldigheid(self.is_relevant_voor)
@@ -148,8 +151,12 @@ class BronCatalogus(models.Model):
     domein = models.CharField(_('domein'), max_length=30, help_text=_(
         'Het domein van de CATALOGUS waaraan het ZAAKTYPE is ontleend.'))
     # rsin is gespecificeerd als N9, ivm voorloopnullen gekozen voor CharField. Geen waardenverzameling gedefinieerd
-    rsin = models.CharField(_('rsin'), max_length=9, validators=[RegexValidator('^[0-9]*$')], help_text=_(
-        'Het RSIN van de INGESCHREVEN NIET-NATUURLIJK PERSOON die beheerder is van de CATALOGUS waaraan het ZAAKTYPE is ontleend.'))
+    rsin = models.CharField(
+        _('rsin'), max_length=9,
+        validators=[RegexValidator('^[0-9]*$')],
+        help_text=_('Het RSIN van de INGESCHREVEN NIET-NATUURLIJK PERSOON die '
+                    'beheerder is van de CATALOGUS waaraan het ZAAKTYPE is ontleend.')
+    )
 
     def __str__(self):
         return '{} - {}'.format(self.rsin, self.domein)
@@ -458,13 +465,12 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
             raise ValidationError("'Servicenorm behandeling' periode mag niet langer zijn dan "
                                   "de periode van 'Doorlooptijd behandeling'.")
 
-        # TODO: if the resouce becomes writable unique constraint should be added to Validator
         if self.catalogus_id:
             query = ZaakType.objects.filter(
                 Q(catalogus=self.catalogus),
                 Q(zaaktype_omschrijving=self.zaaktype_omschrijving),
                 Q(datum_einde_geldigheid=None)
-                | Q(datum_einde_geldigheid__gte=self.datum_begin_geldigheid)
+                | Q(datum_einde_geldigheid__gte=self.datum_begin_geldigheid)  # noqa
             )
             if self.datum_einde_geldigheid is not None:
                 query = query.filter(datum_begin_geldigheid__lte=self.datum_einde_geldigheid)

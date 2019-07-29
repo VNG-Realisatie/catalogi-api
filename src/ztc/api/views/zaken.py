@@ -41,6 +41,12 @@ class ZaakTypeViewSet(ConceptMixin,
 
     Maak een ZAAKTYPE aan.
 
+    Er wordt gevalideerd op:
+    - geldigheid `catalogus` URL, dit moet een catalogus binnen dezelfde API zijn
+    - Uniciteit `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel
+      opnieuw gebruikt worden als het zaaktype een andere geldigheidsperiode
+      kent dan bestaande zaaktypen.
+
     list:
     Alle ZAAKTYPEn opvragen.
 
