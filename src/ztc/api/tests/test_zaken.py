@@ -1,16 +1,18 @@
 import uuid
+from datetime import date
 from unittest import skip
-
-from django.urls import reverse
 
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
-from vng_api_common.tests import get_operation_url, get_validation_errors
+from vng_api_common.tests import (
+    get_operation_url, get_validation_errors, reverse
+)
 
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
 from ztc.datamodel.tests.factories import (
-    BesluitTypeFactory, ZaakObjectTypeFactory, ZaakTypeFactory
+    BesluitTypeFactory, CatalogusFactory, ZaakObjectTypeFactory,
+    ZaakTypeFactory
 )
 
 from .base import APITestCase
@@ -292,6 +294,145 @@ class ZaakTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
+
+
+class ZaakTypeCreateDuplicateTests(APITestCase):
+    """
+    Test the creation business rules w/r to duplicates.
+
+    A Zaaktype with the same code is allowed IF and ONLY IF it does not overlap
+    in validity period.
+    """
+    heeft_alle_autorisaties = True
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.catalogus = CatalogusFactory.create()
+
+        cls.url = get_operation_url('zaaktype_list')
+
+    def test_overlap_specified_dates(self):
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktype_identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=date(2020, 1, 1),
+            zaaktype_omschrijving="zaaktype"
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 1,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2019-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {
+                "naam": "ref",
+            },
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "beginGeldigheid")
+        self.assertEqual(error["code"], "overlap")
+
+    def test_overlap_open_end_date(self):
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktype_identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype_omschrijving="zaaktype"
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 1,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2019-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {
+                "naam": "ref",
+            },
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "beginGeldigheid")
+        self.assertEqual(error["code"], "overlap")
+
+    def test_no_overlap(self):
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktype_identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=date(2020, 1, 1),
+            zaaktype_omschrijving="zaaktype"
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 1,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2020-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {
+                "naam": "ref",
+                "link": "https://example.com"
+            },
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class ZaakTypeFilterAPITests(APITestCase):
