@@ -5693,15 +5693,15 @@ components:
 
             * `getal` - Getal
 
-            * `datum (jjjjmmdd)` - Datum
+            * `datum` - Datum
 
-            * `datum/tijd (jjjjmmdduummss)` - Datum/tijd'
+            * `datum_tijd` - Datum/tijd'
           type: string
           enum:
           - tekst
           - getal
-          - datum (jjjjmmdd)
-          - datum/tijd (jjjjmmdduummss)
+          - datum
+          - datum_tijd
         lengte:
           title: Lengte
           description: Het aantal karakters (lengte) waarmee waarden van de EIGENSCHAP
