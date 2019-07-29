@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from vng_api_common.utils import get_help_text
 
 from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
@@ -61,6 +62,10 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             'concept',
         )
         validators = [
+            UniqueTogetherValidator(
+                queryset=BesluitType.objects.all(),
+                fields=['catalogus', 'omschrijving'],
+            ),
             RelationCatalogValidator('informatieobjecttypes'),
             RelationCatalogValidator('zaaktypes'),
         ]
