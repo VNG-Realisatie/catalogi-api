@@ -47,7 +47,7 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
             },
             'resultaattypeomschrijving': {
                 'validators': [ResourceValidator(
-                    'ResultaattypeOmschrijvingGeneriek', 
+                    'ResultaattypeOmschrijvingGeneriek',
                     settings.REFERENTIELIJSTEN_API_SPEC
                 )],
             },
@@ -58,7 +58,13 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
             'zaaktype': {
                 'lookup_field': 'uuid',
                 'label': _('is van'),
-            }
+            },
+            'selectielijstklasse': {
+                'validators': [ResourceValidator(
+                    'Resultaat',
+                    settings.REFERENTIELIJSTEN_API_SPEC
+                )],
+            },
         }
 
     def __init__(self, *args, **kwargs):
