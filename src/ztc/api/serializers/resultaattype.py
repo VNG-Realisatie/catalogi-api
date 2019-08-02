@@ -2,6 +2,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from vng_api_common.constants import Archiefnominatie
 from vng_api_common.serializers import (
     GegevensGroepSerializer, NestedGegevensGroepMixin,
@@ -10,6 +11,7 @@ from vng_api_common.serializers import (
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.models import ResultaatType
+from ..utils.validators import ProcesTypeValidator
 
 
 class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
@@ -66,6 +68,13 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
                 )],
             },
         }
+        validators = [
+            UniqueTogetherValidator(
+                queryset=ResultaatType.objects.all(),
+                fields=['zaaktype', 'omschrijving'],
+            ),
+            ProcesTypeValidator('selectielijstklasse'),
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
