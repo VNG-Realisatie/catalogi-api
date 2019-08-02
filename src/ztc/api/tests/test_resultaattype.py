@@ -15,6 +15,9 @@ from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
 
 from .base import APITestCase
 
+PROCESTYPE_URL = 'http://referentielijsten.nl/procestypen/1234'
+SELECTIELIJSTKLASSE_URL = 'http://example.com/resultaten/1234'
+
 
 class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
     maxDiff = None
@@ -127,20 +130,22 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         # Verify that the procestermijn was serialized correctly
         self.assertEqual(brondatumArchiefprocedure['procestermijn'], procestermijn)
 
+    @override_settings(LINK_FETCHER='vng_api_common.mocks.link_fetcher_200')
     @patch('vng_api_common.oas.fetcher.fetch', return_value={})
     @patch('vng_api_common.validators.obj_has_shape', return_value=True)
     def test_create_resultaattype(self, mock_shape, mock_fetch):
-        zaaktype = ZaakTypeFactory.create()
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL,
+        )
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
         resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
-        selectielijstklasse_url = 'http://example.com/resultaten/1234'
         data = {
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'illum',
             'resultaattypeomschrijving': resultaattypeomschrijving_url,
-            'selectielijstklasse': selectielijstklasse_url,
+            'selectielijstklasse': SELECTIELIJSTKLASSE_URL,
             'archiefnominatie': 'blijvend_bewaren',
             'archiefactietermijn': 'P10Y',
             'brondatumArchiefprocedure': {
@@ -153,14 +158,20 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             }
         }
 
-        with requests_mock.Mocker() as m:
-            m.register_uri('GET', resultaattypeomschrijving_url, json={
-                'omschrijving': 'test'
-            })
-            m.register_uri('GET', selectielijstklasse_url, json={
-                'url': selectielijstklasse_url
-            })
-            response = self.client.post(self.list_url, data)
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                'url': SELECTIELIJSTKLASSE_URL,
+                'procesType': PROCESTYPE_URL,
+                'procestermijn': 'nihil',
+            },
+        }
+
+        with mock_client(responses):
+            with requests_mock.Mocker() as m:
+                m.register_uri('GET', resultaattypeomschrijving_url, json={
+                    'omschrijving': 'test'
+                })
+                response = self.client.post(self.list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -173,20 +184,23 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             BrondatumArchiefprocedureAfleidingswijze.afgehandeld
         )
 
+    @override_settings(LINK_FETCHER='vng_api_common.mocks.link_fetcher_200')
     @patch('vng_api_common.oas.fetcher.fetch', return_value={})
     @patch('vng_api_common.validators.obj_has_shape', return_value=True)
     def test_create_resultaattype_fail_not_concept_zaaktype(self, mock_shape, mock_fetch):
-        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL,
+            concept=False
+        )
         zaaktype_url = reverse('zaaktype-detail', kwargs={
             'uuid': zaaktype.uuid,
         })
         resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
-        selectielijstklasse_url = 'http://example.com/resultaten/1234'
         data = {
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'illum',
             'resultaattypeomschrijving': resultaattypeomschrijving_url,
-            'selectielijstklasse': selectielijstklasse_url,
+            'selectielijstklasse': SELECTIELIJSTKLASSE_URL,
             'archiefnominatie': 'blijvend_bewaren',
             'archiefactietermijn': 'P10Y',
             'brondatumArchiefprocedure': {
@@ -199,14 +213,20 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             }
         }
 
-        with requests_mock.Mocker() as m:
-            m.register_uri('GET', resultaattypeomschrijving_url, json={
-                'omschrijving': 'test'
-            })
-            m.register_uri('GET', selectielijstklasse_url, json={
-                'url': selectielijstklasse_url
-            })
-            response = self.client.post(self.list_url, data)
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                'url': SELECTIELIJSTKLASSE_URL,
+                'procesType': PROCESTYPE_URL,
+                'procestermijn': 'nihil',
+            },
+        }
+
+        with mock_client(responses):
+            with requests_mock.Mocker() as m:
+                m.register_uri('GET', resultaattypeomschrijving_url, json={
+                    'omschrijving': 'test'
+                })
+                response = self.client.post(self.list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
