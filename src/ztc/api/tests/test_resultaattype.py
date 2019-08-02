@@ -1,11 +1,14 @@
 from unittest.mock import patch
 
+from django.test import override_settings
+
 import requests_mock
 from rest_framework import status
 from vng_api_common.constants import BrondatumArchiefprocedureAfleidingswijze
 from vng_api_common.tests import (
     TypeCheckMixin, get_validation_errors, reverse, reverse_lazy
 )
+from zds_client.tests.mocks import mock_client
 
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
@@ -132,11 +135,12 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             'uuid': zaaktype.uuid,
         })
         resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
+        selectielijstklasse_url = 'http://example.com/resultaten/1234'
         data = {
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'illum',
             'resultaattypeomschrijving': resultaattypeomschrijving_url,
-            'selectielijstklasse': 'https://garcia.org/',
+            'selectielijstklasse': selectielijstklasse_url,
             'archiefnominatie': 'blijvend_bewaren',
             'archiefactietermijn': 'P10Y',
             'brondatumArchiefprocedure': {
@@ -152,6 +156,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         with requests_mock.Mocker() as m:
             m.register_uri('GET', resultaattypeomschrijving_url, json={
                 'omschrijving': 'test'
+            })
+            m.register_uri('GET', selectielijstklasse_url, json={
+                'url': selectielijstklasse_url
             })
             response = self.client.post(self.list_url, data)
 
@@ -174,11 +181,12 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             'uuid': zaaktype.uuid,
         })
         resultaattypeomschrijving_url = 'http://example.com/omschrijving/1'
+        selectielijstklasse_url = 'http://example.com/resultaten/1234'
         data = {
             'zaaktype': f'http://testserver{zaaktype_url}',
             'omschrijving': 'illum',
             'resultaattypeomschrijving': resultaattypeomschrijving_url,
-            'selectielijstklasse': 'https://garcia.org/',
+            'selectielijstklasse': selectielijstklasse_url,
             'archiefnominatie': 'blijvend_bewaren',
             'archiefactietermijn': 'P10Y',
             'brondatumArchiefprocedure': {
@@ -194,6 +202,9 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         with requests_mock.Mocker() as m:
             m.register_uri('GET', resultaattypeomschrijving_url, json={
                 'omschrijving': 'test'
+            })
+            m.register_uri('GET', selectielijstklasse_url, json={
+                'url': selectielijstklasse_url
             })
             response = self.client.post(self.list_url, data)
 
