@@ -56,3 +56,32 @@ class ProcesTypeValidator:
 
         if selectielijstklasse['procesType'] != zaaktype.selectielijst_procestype:
             raise ValidationError(self.message.format(self.relation_field, self.zaaktype_field), code=self.code)
+
+
+class ProcestermijnAfleidingswijzeValidator:
+    code = 'invalid-afleidingswijze-for-procestermijn'
+    message = _("afleidingswijze cannot be {} when selectielijstklasse.procestermijn is {}")
+
+    def __init__(self, selectielijstklasse_field: str, archiefprocedure_field='brondatum_archiefprocedure'):
+        self.selectielijstklasse_field = selectielijstklasse_field
+        self.archiefprocedure_field = archiefprocedure_field
+
+    def __call__(self, attrs: dict):
+        selectielijstklasse_url = attrs.get(self.selectielijstklasse_field)
+        archiefprocedure = attrs.get(self.archiefprocedure_field)
+
+        if not selectielijstklasse_url:
+            return
+
+        selectielijstklasse = fetch_object('resultaat', selectielijstklasse_url)
+        procestermijn = selectielijstklasse['procestermijn']
+        afleidingswijze = archiefprocedure['afleidingswijze']
+
+        error = False
+        if procestermijn == 'nihil' and afleidingswijze != 'afgehandeld':
+            error = True
+        elif procestermijn == 'ingeschatte_bestaansduur_procesobject' and afleidingswijze != 'termijn':
+            error = True
+
+        if error:
+            raise ValidationError(self.message.format(afleidingswijze, procestermijn), code=self.code)

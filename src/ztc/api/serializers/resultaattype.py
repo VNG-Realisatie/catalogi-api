@@ -11,7 +11,9 @@ from vng_api_common.serializers import (
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.models import ResultaatType
-from ..utils.validators import ProcesTypeValidator
+from ..utils.validators import (
+    ProcestermijnAfleidingswijzeValidator, ProcesTypeValidator
+)
 
 
 class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
@@ -74,6 +76,7 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
                 fields=['zaaktype', 'omschrijving'],
             ),
             ProcesTypeValidator('selectielijstklasse'),
+            ProcestermijnAfleidingswijzeValidator('selectielijstklasse'),
         ]
 
     def __init__(self, *args, **kwargs):
