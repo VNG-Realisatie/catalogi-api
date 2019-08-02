@@ -2,6 +2,7 @@ import uuid
 from datetime import date
 from unittest import skip
 
+from django.test import override_settings
 from django.urls import reverse as django_reverse
 
 from rest_framework import status
@@ -9,6 +10,7 @@ from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import (
     get_operation_url, get_validation_errors, reverse
 )
+from zds_client.tests.mocks import mock_client
 
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
@@ -586,3 +588,70 @@ class ZaakTypePaginationTestCase(APITestCase):
         self.assertEqual(response_data['count'], 2)
         self.assertIsNone(response_data['previous'])
         self.assertIsNone(response_data['next'])
+
+
+class ZaaktypeValidationTests(APITestCase):
+    maxDiff = None
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.catalogus = CatalogusFactory.create()
+
+        cls.url = get_operation_url('zaaktype_list')
+
+    @override_settings(LINK_FETCHER='vng_api_common.mocks.link_fetcher_200')
+    def test_selectielijstprocestype_invalid_resource(self):
+        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
+        besluittype_url = get_operation_url('besluittype_read', uuid=besluittype.uuid)
+
+        responses = {
+            'http://referentielijsten.nl/procestypen/1234': {
+                'some': 'incorrect property'
+            }
+        }
+
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+        data = {
+            'identificatie': 0,
+            'doel': 'some test',
+            'aanleiding': 'some test',
+            'indicatieInternOfExtern': InternExtern.extern,
+            'handelingInitiator': 'indienen',
+            'onderwerp': 'Klacht',
+            'handelingBehandelaar': 'uitvoeren',
+            'doorlooptijd': 'P30D',
+            'opschortingEnAanhoudingMogelijk': False,
+            'verlengingMogelijk': True,
+            'verlengingstermijn': 'P30D',
+            'publicatieIndicatie': True,
+            'verantwoordingsrelatie': [],
+            'productenOfDiensten': ['https://example.com/product/123'],
+            'vertrouwelijkheidaanduiding': VertrouwelijkheidsAanduiding.openbaar,
+            'omschrijving': 'some test',
+            'gerelateerdeZaaktypen': [
+                {
+                    'zaaktype': 'http://example.com/zaaktype/1',
+                    'aard_relatie': AardRelatieChoices.bijdrage,
+                    'toelichting': 'test relations'
+                },
+            ],
+            'referentieproces': {
+                'naam': 'ReferentieProces 0',
+                'link': ''
+            },
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'besluittypen': [f'http://testserver{besluittype_url}'],
+            'beginGeldigheid': '2018-01-01',
+            'versiedatum': '2018-01-01',
+            'selectielijstProcestype': 'http://referentielijsten.nl/procestypen/1234'
+        }
+
+        with mock_client(responses):
+            response = self.client.post(zaaktype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'selectielijstProcestype')
+        self.assertEqual(error['code'], 'invalid-resource')
