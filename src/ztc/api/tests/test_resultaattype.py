@@ -471,3 +471,91 @@ class ResultaatTypeValidationTests(APITestCase):
 
         error = get_validation_errors(response, 'nonFieldErrors')
         self.assertEqual(error['code'], 'procestype-mismatch')
+
+    @override_settings(LINK_FETCHER='vng_api_common.mocks.link_fetcher_200')
+    @patch('vng_api_common.validators.obj_has_shape', return_value=True)
+    def test_procestermijn_nihil_and_afleidingswijze_niet_afgehandeld_fails(self, *mocks):
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL,
+            concept=False
+        )
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                'url': SELECTIELIJSTKLASSE_URL,
+                'procesType': PROCESTYPE_URL,
+                'procestermijn': 'nihil',
+            },
+        }
+
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'illum',
+            'resultaattypeomschrijving': 'https://garcia.org/',
+            'selectielijstklasse': SELECTIELIJSTKLASSE_URL,
+            'archiefnominatie': 'blijvend_bewaren',
+            'archiefactietermijn': 'P10Y',
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.ander_datumkenmerk,
+                'einddatumBekend': False,
+                'procestermijn': 'P10Y',
+                'datumkenmerk': '',
+                'objecttype': '',
+                'registratie': '',
+            }
+        }
+
+        with mock_client(responses):
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'invalid-afleidingswijze-for-procestermijn')
+
+    @override_settings(LINK_FETCHER='vng_api_common.mocks.link_fetcher_200')
+    @patch('vng_api_common.validators.obj_has_shape', return_value=True)
+    def test_procestermijn_ingeschatte_bestaansduur_procesobject_and_afleidingswijze_niet_termijn_fails(self, *mocks):
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL,
+            concept=False
+        )
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                'url': SELECTIELIJSTKLASSE_URL,
+                'procesType': PROCESTYPE_URL,
+                'procestermijn': 'ingeschatte_bestaansduur_procesobject',
+            },
+        }
+
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'illum',
+            'resultaattypeomschrijving': 'https://garcia.org/',
+            'selectielijstklasse': SELECTIELIJSTKLASSE_URL,
+            'archiefnominatie': 'blijvend_bewaren',
+            'archiefactietermijn': 'P10Y',
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                'einddatumBekend': False,
+                'procestermijn': 'P10Y',
+                'datumkenmerk': '',
+                'objecttype': '',
+                'registratie': '',
+            }
+        }
+
+        with mock_client(responses):
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'invalid-afleidingswijze-for-procestermijn')
