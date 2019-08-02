@@ -369,3 +369,41 @@ class ResultaatTypeValidationTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         error = get_validation_errors(response, 'resultaattypeomschrijving')
         self.assertEqual(error['code'], 'invalid-resource')
+
+    @override_settings(LINK_FETCHER='vng_api_common.mocks.link_fetcher_200')
+    def test_selectielijstklasse_invalid_resource(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse('zaaktype-detail', kwargs={
+            'uuid': zaaktype.uuid,
+        })
+
+        responses = {
+            'http://example.com/resultaten/1234': {
+                'some': 'incorrect property'
+            }
+        }
+
+        data = {
+            'zaaktype': f'http://testserver{zaaktype_url}',
+            'omschrijving': 'illum',
+            'resultaattypeomschrijving': 'https://garcia.org/',
+            'selectielijstklasse': 'http://example.com/resultaten/1234',
+            'archiefnominatie': 'blijvend_bewaren',
+            'archiefactietermijn': 'P10Y',
+            'brondatumArchiefprocedure': {
+                'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                'einddatumBekend': False,
+                'procestermijn': 'P10Y',
+                'datumkenmerk': '',
+                'objecttype': '',
+                'registratie': '',
+            }
+        }
+
+        with mock_client(responses):
+            response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'selectielijstklasse')
+        self.assertEqual(error['code'], 'invalid-resource')
