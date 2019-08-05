@@ -3,7 +3,14 @@ from django.utils.module_loading import import_string
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.serializers import ValidationError
+from vng_api_common.constants import (
+    BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
+)
 from vng_api_common.models import APICredential
+
+from ztc.datamodel.constants import (
+    SelectielijstKlasseProcestermijn as Procestermijn
+)
 
 
 def fetch_object(resource: str, url: str) -> dict:
@@ -78,9 +85,9 @@ class ProcestermijnAfleidingswijzeValidator:
         afleidingswijze = archiefprocedure['afleidingswijze']
 
         error = False
-        if procestermijn == 'nihil' and afleidingswijze != 'afgehandeld':
+        if procestermijn == Procestermijn.nihil and afleidingswijze != Afleidingswijze.afgehandeld:
             error = True
-        elif procestermijn == 'ingeschatte_bestaansduur_procesobject' and afleidingswijze != 'termijn':
+        elif procestermijn == Procestermijn.ingeschatte_bestaansduur_procesobject and afleidingswijze != Afleidingswijze.termijn:
             error = True
 
         if error:

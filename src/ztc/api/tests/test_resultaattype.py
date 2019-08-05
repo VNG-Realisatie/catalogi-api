@@ -10,6 +10,9 @@ from vng_api_common.tests import (
 )
 from zds_client.tests.mocks import mock_client
 
+from ztc.datamodel.constants import (
+    SelectielijstKlasseProcestermijn as Procestermijn
+)
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
 
@@ -162,7 +165,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             SELECTIELIJSTKLASSE_URL: {
                 'url': SELECTIELIJSTKLASSE_URL,
                 'procesType': PROCESTYPE_URL,
-                'procestermijn': 'nihil',
+                'procestermijn': Procestermijn.nihil,
             },
         }
 
@@ -217,7 +220,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             SELECTIELIJSTKLASSE_URL: {
                 'url': SELECTIELIJSTKLASSE_URL,
                 'procesType': PROCESTYPE_URL,
-                'procestermijn': 'nihil',
+                'procestermijn': Procestermijn.nihil,
             },
         }
 
@@ -443,7 +446,7 @@ class ResultaatTypeValidationTests(APITestCase):
             SELECTIELIJSTKLASSE_URL: {
                 'url': SELECTIELIJSTKLASSE_URL,
                 'procesType': 'http://somedifferentprocestypeurl.com/',
-                'procestermijn': 'nihil',
+                'procestermijn': Procestermijn.nihil,
             },
         }
 
@@ -487,7 +490,7 @@ class ResultaatTypeValidationTests(APITestCase):
             SELECTIELIJSTKLASSE_URL: {
                 'url': SELECTIELIJSTKLASSE_URL,
                 'procesType': PROCESTYPE_URL,
-                'procestermijn': 'nihil',
+                'procestermijn': Procestermijn.nihil,
             },
         }
 
@@ -531,7 +534,7 @@ class ResultaatTypeValidationTests(APITestCase):
             SELECTIELIJSTKLASSE_URL: {
                 'url': SELECTIELIJSTKLASSE_URL,
                 'procesType': PROCESTYPE_URL,
-                'procestermijn': 'ingeschatte_bestaansduur_procesobject',
+                'procestermijn': Procestermijn.ingeschatte_bestaansduur_procesobject,
             },
         }
 
