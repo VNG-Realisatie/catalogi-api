@@ -2,6 +2,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from vng_api_common.constants import (
     Archiefnominatie,
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
@@ -14,6 +15,9 @@ from vng_api_common.serializers import (
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.models import ResultaatType
+from ..utils.validators import (
+    ProcestermijnAfleidingswijzeValidator, ProcesTypeValidator
+)
 
 
 class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
@@ -60,7 +64,7 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
             },
             'resultaattypeomschrijving': {
                 'validators': [ResourceValidator(
-                    'ResultaattypeOmschrijvingGeneriek', 
+                    'ResultaattypeOmschrijvingGeneriek',
                     settings.REFERENTIELIJSTEN_API_SPEC
                 )],
             },
@@ -71,8 +75,22 @@ class ResultaatTypeSerializer(NestedGegevensGroepMixin, serializers.HyperlinkedM
             'zaaktype': {
                 'lookup_field': 'uuid',
                 'label': _('is van'),
-            }
+            },
+            'selectielijstklasse': {
+                'validators': [ResourceValidator(
+                    'Resultaat',
+                    settings.REFERENTIELIJSTEN_API_SPEC
+                )],
+            },
         }
+        validators = [
+            UniqueTogetherValidator(
+                queryset=ResultaatType.objects.all(),
+                fields=['zaaktype', 'omschrijving'],
+            ),
+            ProcesTypeValidator('selectielijstklasse'),
+            ProcestermijnAfleidingswijzeValidator('selectielijstklasse'),
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
