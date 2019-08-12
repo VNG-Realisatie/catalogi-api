@@ -85,9 +85,11 @@ class ProcestermijnAfleidingswijzeValidator:
         afleidingswijze = archiefprocedure['afleidingswijze']
 
         error = False
-        if procestermijn == Procestermijn.nihil and afleidingswijze != Afleidingswijze.afgehandeld:
+        if procestermijn == Procestermijn.nihil and afleidingswijze != Afleidingswijze.afgehandeld or \
+           procestermijn != Procestermijn.nihil and afleidingswijze == Afleidingswijze.afgehandeld:
             error = True
-        elif procestermijn == Procestermijn.ingeschatte_bestaansduur_procesobject and afleidingswijze != Afleidingswijze.termijn:
+        elif procestermijn == Procestermijn.ingeschatte_bestaansduur_procesobject and afleidingswijze != Afleidingswijze.termijn or \
+             procestermijn != Procestermijn.ingeschatte_bestaansduur_procesobject and afleidingswijze == Afleidingswijze.termijn:
             error = True
 
         if error:
