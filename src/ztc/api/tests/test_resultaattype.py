@@ -154,7 +154,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             'brondatumArchiefprocedure': {
                 'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
                 'einddatumBekend': False,
-                'procestermijn': 'P10Y',
+                'procestermijn': None,
                 'datumkenmerk': '',
                 'objecttype': '',
                 'registratie': '',
@@ -209,7 +209,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             'brondatumArchiefprocedure': {
                 'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
                 'einddatumBekend': False,
-                'procestermijn': 'P10Y',
+                'procestermijn': None,
                 'datumkenmerk': '',
                 'objecttype': '',
                 'registratie': '',
@@ -460,7 +460,7 @@ class ResultaatTypeValidationTests(APITestCase):
             'brondatumArchiefprocedure': {
                 'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
                 'einddatumBekend': False,
-                'procestermijn': 'P10Y',
+                'procestermijn': None,
                 'datumkenmerk': '',
                 'objecttype': '',
                 'registratie': '',
@@ -504,10 +504,10 @@ class ResultaatTypeValidationTests(APITestCase):
             'brondatumArchiefprocedure': {
                 'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.ander_datumkenmerk,
                 'einddatumBekend': False,
-                'procestermijn': 'P10Y',
-                'datumkenmerk': '',
-                'objecttype': '',
-                'registratie': '',
+                'procestermijn': None,
+                'datumkenmerk': 'identificatie',
+                'objecttype': 'pand',
+                'registratie': 'test',
             }
         }
 
@@ -548,7 +548,7 @@ class ResultaatTypeValidationTests(APITestCase):
             'brondatumArchiefprocedure': {
                 'afleidingswijze': BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
                 'einddatumBekend': False,
-                'procestermijn': 'P10Y',
+                'procestermijn': None,
                 'datumkenmerk': '',
                 'objecttype': '',
                 'registratie': '',
