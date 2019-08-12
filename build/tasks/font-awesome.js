@@ -8,7 +8,10 @@ var paths = require('../paths');
  * Run using "gulp font-awesome"
  * Moves Font Awesome font files to paths.fontDir
  */
-gulp.task('font-awesome', function() {
-    gulp.src('node_modules/font-awesome/fonts/*')
+function fontAwesome() {
+    return gulp.src('node_modules/font-awesome/fonts/*')
         .pipe(gulp.dest(paths.fontsDir));
-});
+};
+
+gulp.task('font-awesome', fontAwesome);
+exports.fontAwesome = fontAwesome;
