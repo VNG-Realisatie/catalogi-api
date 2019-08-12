@@ -22,5 +22,5 @@ class DumpDataFixtureView(View):
     def get(self, request):
         response = HttpResponse(content_type='application/json')
         response['Content-Disposition'] = 'attachment; filename="fixture.json"'
-        call_command('dumpdata', args=['datamodel'], indent=4, stdout=response)
+        call_command('dumpdata', 'datamodel', indent=4, stdout=response)
         return response
