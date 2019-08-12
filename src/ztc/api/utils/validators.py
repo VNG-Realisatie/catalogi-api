@@ -2,6 +2,7 @@ from django.conf import settings
 from django.utils.module_loading import import_string
 from django.utils.translation import ugettext_lazy as _
 
+from rest_framework.exceptions import ErrorDetail
 from rest_framework.serializers import ValidationError
 from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
@@ -110,9 +111,10 @@ def validate_brondatumarchiefprocedure(data: dict, mapping: dict):
 
 
 class BrondatumArchiefprocedureValidator:
-    code = 'brondatum-archiefprocedure-invalid'
-    empty_message = _('{} must be empty for afleidingswijze `{}`')
-    required_message = _('{} may not be empty for afleidingswijze `{}`')
+    empty_code = 'must-be-empty'
+    empty_message = _('This field must be empty for afleidingswijze `{}`')
+    required_code = 'required'
+    required_message = _('This field is required for afleidingswijze `{}`')
 
     def __init__(self, archiefprocedure_field='brondatum_archiefprocedure'):
         self.archiefprocedure_field = archiefprocedure_field
@@ -184,8 +186,12 @@ class BrondatumArchiefprocedureValidator:
 
         if error:
             error_dict = {}
-            if empty:
-                error_dict.update({f'{self.archiefprocedure_field}_empty_values': [self.empty_message.format(empty, afleidingswijze)]})
-            if required:
-                error_dict.update({f'{self.archiefprocedure_field}_required_values': [self.required_message.format(required, afleidingswijze)]})
-            raise ValidationError(error_dict, code=self.code)
+            for fieldname in empty:
+                error_dict.update({
+                    f'{self.archiefprocedure_field}.{fieldname}': ErrorDetail(self.empty_message.format(afleidingswijze), self.empty_code)
+                })
+            for fieldname in required:
+                error_dict.update({
+                    f'{self.archiefprocedure_field}.{fieldname}': ErrorDetail(self.required_message.format(afleidingswijze), self.required_code)
+                })
+            raise ValidationError(error_dict)
