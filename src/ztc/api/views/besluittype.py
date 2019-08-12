@@ -1,7 +1,11 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.notifications.viewsets import (
+    NotificationCreateMixin, NotificationDestroyMixin
+)
 
 from ...datamodel.models import BesluitType
 from ..filters import BesluitTypeFilter
+from ..kanalen import KANAAL_BESLUITTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import BesluitTypeSerializer
 from .mixins import ConceptMixin, M2MConceptCreateMixin
@@ -9,6 +13,8 @@ from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 class BesluitTypeViewSet(ConceptMixin,
                          M2MConceptCreateMixin,
+                         NotificationCreateMixin,
+                         NotificationDestroyMixin,
                          mixins.CreateModelMixin,
                          mixins.DestroyModelMixin,
                          viewsets.ReadOnlyModelViewSet):
@@ -62,3 +68,4 @@ class BesluitTypeViewSet(ConceptMixin,
         'publish': SCOPE_ZAAKTYPES_WRITE,
     }
     concept_related_fields = ['informatieobjecttypes', 'zaaktypes']
+    notifications_kanaal = KANAAL_BESLUITTYPEN

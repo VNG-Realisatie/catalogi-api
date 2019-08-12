@@ -1,13 +1,19 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.notifications.viewsets import (
+    NotificationCreateMixin, NotificationDestroyMixin
+)
 
 from ...datamodel.models import InformatieObjectType
 from ..filters import InformatieObjectTypeFilter
+from ..kanalen import KANAAL_INFORMATIEOBJECTTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import InformatieObjectTypeSerializer
 from .mixins import ConceptMixin
 
 
 class InformatieObjectTypeViewSet(ConceptMixin,
+                                  NotificationCreateMixin,
+                                  NotificationDestroyMixin,
                                   mixins.CreateModelMixin,
                                   mixins.DestroyModelMixin,
                                   viewsets.ReadOnlyModelViewSet):
@@ -62,3 +68,4 @@ class InformatieObjectTypeViewSet(ConceptMixin,
         'destroy': SCOPE_ZAAKTYPES_WRITE,
         'publish': SCOPE_ZAAKTYPES_WRITE,
     }
+    notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN
