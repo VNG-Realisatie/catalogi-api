@@ -1,6 +1,8 @@
 import json
+
 from django.test import TestCase
 from django.urls import reverse
+
 
 class DumpDataFixtureViewTests(TestCase):
     def test_dumpdata_fixture(self):
