@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from drf_writable_nested import NestedCreateMixin
@@ -11,6 +12,7 @@ from vng_api_common.serializers import (
     GegevensGroepSerializer, NestedGegevensGroepMixin,
     add_choice_values_help_text
 )
+from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
 from ...datamodel.models import (
@@ -19,6 +21,7 @@ from ...datamodel.models import (
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 from ..utils.validators import RelationCatalogValidator
+from ..validators import ZaaktypeGeldigheidValidator
 
 
 class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer):
@@ -38,7 +41,6 @@ class ZaakObjectTypeSerializer(SourceMappingSerializerMixin, NestedHyperlinkedMo
 
     class Meta:
         model = ZaakObjectType
-        ref_name = model.__name__
         source_mapping = {
             'ingangsdatumObject': 'datum_begin_geldigheid',
             'einddatumObject': 'datum_einde_geldigheid',
@@ -286,12 +288,21 @@ class ZaakTypeSerializer(NestedGegevensGroepMixin, NestedCreateMixin, Hyperlinke
             'concept': {
                 'read_only': True,
             },
+            'selectielijst_procestype': {
+                'validators': [ResourceValidator(
+                    'ProcesType',
+                    settings.REFERENTIELIJSTEN_API_SPEC
+                )],
+            },
         }
 
         # expandable_fields = {
         #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
         # }
-        validators = [RelationCatalogValidator('besluittype_set')]
+        validators = [
+            ZaaktypeGeldigheidValidator(),
+            RelationCatalogValidator('besluittype_set'),
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

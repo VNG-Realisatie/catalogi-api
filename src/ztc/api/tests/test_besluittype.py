@@ -436,3 +436,35 @@ class BesluitTypePaginationTestCase(APITestCase):
         self.assertEqual(response_data['count'], 2)
         self.assertIsNone(response_data['previous'])
         self.assertIsNone(response_data['next'])
+
+
+class BesluitTypeValidationTests(APITestCase):
+    maxDiff = None
+
+    def test_besluittype_unique_catalogus_omschrijving_combination(self):
+        besluittype1 = BesluitTypeFactory(
+            catalogus=self.catalogus,
+            omschrijving='test',
+        )
+        besluittype_list_url = reverse('besluittype-list')
+        data = {
+            'catalogus': f'http://testserver{self.catalogus_detail_url}',
+            'zaaktypes': [],
+            'omschrijving': 'test',
+            'omschrijvingGeneriek': '',
+            'besluitcategorie': '',
+            'reactietermijn': 'P14D',
+            'publicatieIndicatie': True,
+            'publicatietekst': '',
+            'publicatietermijn': None,
+            'toelichting': '',
+            'informatieobjecttypes': [],
+            'beginGeldigheid': '2019-01-01',
+        }
+
+        response = self.client.post(besluittype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'unique')

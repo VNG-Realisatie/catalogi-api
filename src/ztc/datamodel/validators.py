@@ -1,6 +1,3 @@
-from datetime import datetime
-
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator, _lazy_re_compile
 from django.utils.deconstruct import deconstructible
@@ -13,6 +10,7 @@ class KardinaliteitValidator(object):
     Kardinaliteit: gehele getallen groter dan 0, 'N' voor ongelimiteerd
     (Max length of 3 is handled in the CharField)
     """
+
     def __call__(self, value):
         if value != 'N':
             try:

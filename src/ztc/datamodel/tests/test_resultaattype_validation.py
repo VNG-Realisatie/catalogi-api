@@ -15,6 +15,7 @@ from vng_api_common.constants import (
 )
 
 from ..admin.forms import ResultaatTypeForm
+from ..constants import SelectielijstKlasseProcestermijn as Procestermijn
 from .factories import ZaakTypeFactory
 
 RESULTAAT_URL = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/resultaten/{uuid}'
@@ -241,7 +242,7 @@ class ResultaattypeAfleidingswijzeSelectielijstValidationTests(TestCase):
         m.register_uri('GET', resultaat_url, json={
             'url': resultaat_url,
             'procesType': procestype,
-            'procestermijn': 'ingeschatte_bestaansduur_procesobject',
+            'procestermijn': Procestermijn.ingeschatte_bestaansduur_procesobject,
         })
 
         for value in Afleidingswijze.values:
@@ -427,7 +428,7 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         m.register_uri('GET', resultaat_url, json={
             'url': resultaat_url,
             'procesType': procestype,
-            'procestermijn': 'ingeschatte_bestaansduur_procesobject',
+            'procestermijn': Procestermijn.ingeschatte_bestaansduur_procesobject,
         })
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=procestype)
         form = self._get_form(Afleidingswijze.termijn, zaaktype, resultaat_url, **{
@@ -464,8 +465,8 @@ class ResultaattypeAfleidingswijzeAndParameterFieldsValidationTests(TestCase):
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=procestype)
 
         pairs = (
-            ('nihil', Afleidingswijze.afgehandeld),
-            ('ingeschatte_bestaansduur_procesobject', Afleidingswijze.termijn),
+            (Procestermijn.nihil, Afleidingswijze.afgehandeld),
+            (Procestermijn.ingeschatte_bestaansduur_procesobject, Afleidingswijze.termijn),
         )
 
         for procestermijn, afleidingswijze in pairs:

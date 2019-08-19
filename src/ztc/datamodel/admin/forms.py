@@ -10,6 +10,7 @@ from vng_api_common.constants import (
 )
 from vng_api_common.validators import ResourceValidator
 
+from ..constants import SelectielijstKlasseProcestermijn as Procestermijn
 from ..models import ResultaatType, ZaakType
 
 API_SPEC = 'https://ref.tst.vng.cloud/referentielijsten/api/v1/schema/openapi.yaml?v=3'
@@ -116,8 +117,8 @@ class ResultaatTypeForm(forms.ModelForm):
           afleidingswijze must be 'termijn'
         """
         MAPPING = {
-            'nihil': Afleidingswijze.afgehandeld,
-            'ingeschatte_bestaansduur_procesobject': Afleidingswijze.termijn
+            Procestermijn.nihil: Afleidingswijze.afgehandeld,
+            Procestermijn.ingeschatte_bestaansduur_procesobject: Afleidingswijze.termijn
         }
         REVERSE_MAPPING = {value: key for key, value in MAPPING.items()}
 

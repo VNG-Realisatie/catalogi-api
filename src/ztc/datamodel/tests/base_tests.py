@@ -3,10 +3,8 @@ from datetime import timedelta
 from django.utils import timezone
 
 from vng_api_common.constants import (
-    RolOmschrijving, VertrouwelijkheidsAanduiding
+    RolOmschrijving, VertrouwelijkheidsAanduiding, ZaakobjectTypes
 )
-
-from ztc.datamodel.choices import ObjectTypen
 
 from .factories import (
     BesluitTypeFactory, CatalogusFactory, EigenschapFactory,
@@ -334,7 +332,7 @@ class HaaglandenMixin(object):
             is_relevant_voor=self.zaaktype
         )
         self.zaakobjecttype_pand = ZaakObjectTypeFactory.create(
-            objecttype=ObjectTypen.pand,
+            objecttype=ZaakobjectTypes.pand,
             ander_objecttype=False,
             relatieomschrijving='Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting '
                                 'gevestigd is waarop de zaak betrekking heeft.'[:80],
@@ -342,7 +340,7 @@ class HaaglandenMixin(object):
             is_relevant_voor=self.zaaktype
         )
         self.zaakobjecttype_verblijfsobject = ZaakObjectTypeFactory.create(
-            objecttype=ObjectTypen.verblijfsobject,
+            objecttype=ZaakobjectTypes.adres,
             ander_objecttype=False,
             relatieomschrijving='Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) '
                                 'waarin het deel van de milieu-inrichting gevestigd is waarop de zaak'

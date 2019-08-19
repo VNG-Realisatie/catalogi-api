@@ -1,7 +1,11 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.notifications.viewsets import (
+    NotificationCreateMixin, NotificationDestroyMixin
+)
 
 from ...datamodel.models import ZaakType
 from ..filters import ZaakTypeFilter
+from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptCreateMixin
@@ -27,6 +31,8 @@ from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 class ZaakTypeViewSet(ConceptMixin,
                       M2MConceptCreateMixin,
+                      NotificationCreateMixin,
+                      NotificationDestroyMixin,
                       mixins.CreateModelMixin,
                       mixins.DestroyModelMixin,
                       viewsets.ReadOnlyModelViewSet):
@@ -40,6 +46,12 @@ class ZaakTypeViewSet(ConceptMixin,
     Maak een ZAAKTYPE aan.
 
     Maak een ZAAKTYPE aan.
+
+    Er wordt gevalideerd op:
+    - geldigheid `catalogus` URL, dit moet een catalogus binnen dezelfde API zijn
+    - Uniciteit `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel
+      opnieuw gebruikt worden als het zaaktype een andere geldigheidsperiode
+      kent dan bestaande zaaktypen.
 
     list:
     Alle ZAAKTYPEn opvragen.
@@ -88,3 +100,4 @@ class ZaakTypeViewSet(ConceptMixin,
         'publish': SCOPE_ZAAKTYPES_WRITE,
     }
     concept_related_fields = ['besluittype_set']
+    notifications_kanaal = KANAAL_ZAAKTYPEN
