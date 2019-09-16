@@ -42,7 +42,7 @@
                     {
                         "name": "catalogus",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde catalogus",
+                        "description": "URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -1381,7 +1381,7 @@
                     {
                         "name": "zaaktype",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde zaaktype",
+                        "description": "URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -2089,7 +2089,7 @@
                     {
                         "name": "catalogus",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde catalogus",
+                        "description": "URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -2848,7 +2848,7 @@
                     {
                         "name": "zaaktype",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde zaaktype",
+                        "description": "URL-referentie naar het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -3556,7 +3556,7 @@
                     {
                         "name": "zaaktype",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde zaaktype",
+                        "description": "URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -4280,7 +4280,7 @@
                     {
                         "name": "zaaktype",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde zaaktype",
+                        "description": "URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -4988,7 +4988,7 @@
                     {
                         "name": "zaaktype",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde zaaktype",
+                        "description": "URL-referentie naar het ZAAKTYPE.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -4996,7 +4996,7 @@
                     {
                         "name": "informatieobjecttype",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde informatieobjecttype",
+                        "description": "URL-referentie naar het INFORMATIEOBJECTTYPE.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -5716,7 +5716,7 @@
                     {
                         "name": "catalogus",
                         "in": "query",
-                        "description": "URL naar de/het gerelateerde catalogus",
+                        "description": "URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.",
                         "required": false,
                         "type": "string",
                         "format": "uri"
@@ -6979,8 +6979,7 @@
             "title": "Brondatum archiefprocedure",
             "description": "Specificatie voor het bepalen van de brondatum voor de start van de Archiefactietermijn (=brondatum) van het zaakdossier.",
             "required": [
-                "afleidingswijze",
-                "procestermijn"
+                "afleidingswijze"
             ],
             "type": "object",
             "properties": {
@@ -7059,7 +7058,8 @@
                     "title": "Procestermijn",
                     "description": "De periode dat het zaakdossier na afronding van de zaak actief gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening van de organisatie. Enkel relevant indien de afleidingswijze 'termijn' is.",
                     "type": "string",
-                    "format": "duration"
+                    "format": "duration",
+                    "x-nullable": true
                 }
             }
         },
