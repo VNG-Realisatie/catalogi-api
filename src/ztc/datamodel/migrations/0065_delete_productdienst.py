@@ -5,12 +5,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0064_auto_20190115_1301'),
-    ]
+    dependencies = [("datamodel", "0064_auto_20190115_1301")]
 
-    operations = [
-        migrations.DeleteModel(
-            name='ProductDienst',
-        ),
-    ]
+    operations = [migrations.DeleteModel(name="ProductDienst")]

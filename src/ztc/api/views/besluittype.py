@@ -1,6 +1,7 @@
 from rest_framework import mixins, viewsets
 from vng_api_common.notifications.viewsets import (
-    NotificationCreateMixin, NotificationDestroyMixin
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
 )
 
 from ...datamodel.models import BesluitType
@@ -11,13 +12,15 @@ from ..serializers import BesluitTypeSerializer
 from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 
-class BesluitTypeViewSet(ConceptMixin,
-                         M2MConceptCreateMixin,
-                         NotificationCreateMixin,
-                         NotificationDestroyMixin,
-                         mixins.CreateModelMixin,
-                         mixins.DestroyModelMixin,
-                         viewsets.ReadOnlyModelViewSet):
+class BesluitTypeViewSet(
+    ConceptMixin,
+    M2MConceptCreateMixin,
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.ReadOnlyModelViewSet,
+):
     """
     Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten
     API.
@@ -56,16 +59,17 @@ class BesluitTypeViewSet(ConceptMixin,
 
     Verwijder een BESLUITTYPE. Dit kan alleen als het een concept betreft.
     """
-    queryset = BesluitType.objects.all().order_by('-pk')
+
+    queryset = BesluitType.objects.all().order_by("-pk")
     serializer_class = BesluitTypeSerializer
     filterset_class = BesluitTypeFilter
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     required_scopes = {
-        'list': SCOPE_ZAAKTYPES_READ,
-        'retrieve': SCOPE_ZAAKTYPES_READ,
-        'create': SCOPE_ZAAKTYPES_WRITE,
-        'destroy': SCOPE_ZAAKTYPES_WRITE,
-        'publish': SCOPE_ZAAKTYPES_WRITE,
+        "list": SCOPE_ZAAKTYPES_READ,
+        "retrieve": SCOPE_ZAAKTYPES_READ,
+        "create": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE,
+        "publish": SCOPE_ZAAKTYPES_WRITE,
     }
-    concept_related_fields = ['informatieobjecttypes', 'zaaktypes']
+    concept_related_fields = ["informatieobjecttypes", "zaaktypes"]
     notifications_kanaal = KANAAL_BESLUITTYPEN

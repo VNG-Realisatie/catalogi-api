@@ -6,14 +6,16 @@ import vng_api_common.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0061_delete_referentieproces'),
-    ]
+    dependencies = [("datamodel", "0061_delete_referentieproces")]
 
     operations = [
         migrations.AlterField(
-            model_name='catalogus',
-            name='rsin',
-            field=vng_api_common.fields.RSINField(help_text='Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS.', max_length=9, verbose_name='rsin'),
-        ),
+            model_name="catalogus",
+            name="rsin",
+            field=vng_api_common.fields.RSINField(
+                help_text="Het door een kamer toegekend uniek nummer voor de INGESCHREVEN NIET-NATUURLIJK PERSOON die de eigenaar is van een CATALOGUS.",
+                max_length=9,
+                verbose_name="rsin",
+            ),
+        )
     ]

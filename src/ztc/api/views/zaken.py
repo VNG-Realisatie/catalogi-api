@@ -1,6 +1,7 @@
 from rest_framework import mixins, viewsets
 from vng_api_common.notifications.viewsets import (
-    NotificationCreateMixin, NotificationDestroyMixin
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
 )
 
 from ...datamodel.models import ZaakType
@@ -29,13 +30,15 @@ from .mixins import ConceptMixin, M2MConceptCreateMixin
 #     }
 
 
-class ZaakTypeViewSet(ConceptMixin,
-                      M2MConceptCreateMixin,
-                      NotificationCreateMixin,
-                      NotificationDestroyMixin,
-                      mixins.CreateModelMixin,
-                      mixins.DestroyModelMixin,
-                      viewsets.ReadOnlyModelViewSet):
+class ZaakTypeViewSet(
+    ConceptMixin,
+    M2MConceptCreateMixin,
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.ReadOnlyModelViewSet,
+):
     """
     Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.
 
@@ -79,25 +82,26 @@ class ZaakTypeViewSet(ConceptMixin,
 
     Verwijder een ZAAKTYPE. Dit kan alleen als het een concept betreft.
     """
+
     queryset = ZaakType.objects.prefetch_related(
-        'statustypen',
-        'zaaktypenrelaties',
-        'heeft_relevant_informatieobjecttype',
-        'statustypen',
-        'resultaattypen',
-        'eigenschap_set',
-        'roltype_set',
-        'besluittype_set',
-    ).order_by('-pk')
+        "statustypen",
+        "zaaktypenrelaties",
+        "heeft_relevant_informatieobjecttype",
+        "statustypen",
+        "resultaattypen",
+        "eigenschap_set",
+        "roltype_set",
+        "besluittype_set",
+    ).order_by("-pk")
     serializer_class = ZaakTypeSerializer
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     filterset_class = ZaakTypeFilter
     required_scopes = {
-        'list': SCOPE_ZAAKTYPES_READ,
-        'retrieve': SCOPE_ZAAKTYPES_READ,
-        'create': SCOPE_ZAAKTYPES_WRITE,
-        'destroy': SCOPE_ZAAKTYPES_WRITE,
-        'publish': SCOPE_ZAAKTYPES_WRITE,
+        "list": SCOPE_ZAAKTYPES_READ,
+        "retrieve": SCOPE_ZAAKTYPES_READ,
+        "create": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE,
+        "publish": SCOPE_ZAAKTYPES_WRITE,
     }
-    concept_related_fields = ['besluittype_set']
+    concept_related_fields = ["besluittype_set"]
     notifications_kanaal = KANAAL_ZAAKTYPEN

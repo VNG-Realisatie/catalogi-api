@@ -16,10 +16,6 @@ class FormaatUpdate(UpdateChoiceValues):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0108_delete_mogelijkebetrokkene'),
-    ]
+    dependencies = [("datamodel", "0108_delete_mogelijkebetrokkene")]
 
-    operations = [
-        FormaatUpdate("datamodel.EigenschapSpecificatie", "formaat"),
-    ]
+    operations = [FormaatUpdate("datamodel.EigenschapSpecificatie", "formaat")]

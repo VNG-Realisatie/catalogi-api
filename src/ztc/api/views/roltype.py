@@ -8,11 +8,13 @@ from ..serializers import RolTypeSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
-class RolTypeViewSet(CheckQueryParamsMixin,
-                     ZaakTypeConceptMixin,
-                     mixins.CreateModelMixin,
-                     mixins.DestroyModelMixin,
-                     viewsets.ReadOnlyModelViewSet):
+class RolTypeViewSet(
+    CheckQueryParamsMixin,
+    ZaakTypeConceptMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.ReadOnlyModelViewSet,
+):
     """
     Opvragen en bewerken van ROLTYPEn van een ZAAKTYPE.
 
@@ -53,13 +55,14 @@ class RolTypeViewSet(CheckQueryParamsMixin,
     Verwijder een ROLTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een
     concept betreft.
     """
-    queryset = RolType.objects.order_by('-pk')
+
+    queryset = RolType.objects.order_by("-pk")
     serializer_class = RolTypeSerializer
     filterset_class = RolTypeFilter
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     required_scopes = {
-        'list': SCOPE_ZAAKTYPES_READ,
-        'retrieve': SCOPE_ZAAKTYPES_READ,
-        'create': SCOPE_ZAAKTYPES_WRITE,
-        'destroy': SCOPE_ZAAKTYPES_WRITE,
+        "list": SCOPE_ZAAKTYPES_READ,
+        "retrieve": SCOPE_ZAAKTYPES_READ,
+        "create": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE,
     }

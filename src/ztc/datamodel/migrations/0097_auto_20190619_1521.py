@@ -5,22 +5,21 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0096_auto_20190619_1059'),
-    ]
+    dependencies = [("datamodel", "0096_auto_20190619_1059")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='eigenschap',
-            options={'ordering': ('zaaktype', 'eigenschapnaam'), 'verbose_name': 'Eigenschap', 'verbose_name_plural': 'Eigenschappen'},
+            name="eigenschap",
+            options={
+                "ordering": ("zaaktype", "eigenschapnaam"),
+                "verbose_name": "Eigenschap",
+                "verbose_name_plural": "Eigenschappen",
+            },
         ),
         migrations.RenameField(
-            model_name='eigenschap',
-            old_name='is_van',
-            new_name='zaaktype',
+            model_name="eigenschap", old_name="is_van", new_name="zaaktype"
         ),
         migrations.AlterUniqueTogether(
-            name='eigenschap',
-            unique_together={('zaaktype', 'eigenschapnaam')},
+            name="eigenschap", unique_together={("zaaktype", "eigenschapnaam")}
         ),
     ]

@@ -5,14 +5,16 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0065_delete_productdienst'),
-    ]
+    dependencies = [("datamodel", "0065_delete_productdienst")]
 
     operations = [
         migrations.AddField(
-            model_name='zaaktype',
-            name='selectielijst_procestype',
-            field=models.URLField(blank=True, help_text='Een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken. URL naar de referentielijsten API.', verbose_name='selectielijst procestype'),
-        ),
+            model_name="zaaktype",
+            name="selectielijst_procestype",
+            field=models.URLField(
+                blank=True,
+                help_text="Een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken. URL naar de referentielijsten API.",
+                verbose_name="selectielijst procestype",
+            ),
+        )
     ]

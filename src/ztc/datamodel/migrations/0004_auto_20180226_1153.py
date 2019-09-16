@@ -7,29 +7,39 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0003_auto_20180221_1119'),
-    ]
+    dependencies = [("datamodel", "0003_auto_20180221_1119")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='broncatalogus',
-            options={'verbose_name': 'Bron catalogus', 'verbose_name_plural': 'Bron catalogussen'},
+            name="broncatalogus",
+            options={
+                "verbose_name": "Bron catalogus",
+                "verbose_name_plural": "Bron catalogussen",
+            },
         ),
         migrations.AlterModelOptions(
-            name='bronzaaktype',
-            options={'verbose_name': 'Bron zaaktype', 'verbose_name_plural': 'Bron zaaktypen'},
+            name="bronzaaktype",
+            options={
+                "verbose_name": "Bron zaaktype",
+                "verbose_name_plural": "Bron zaaktypen",
+            },
         ),
         migrations.AlterModelOptions(
-            name='formulier',
-            options={'verbose_name': 'Formulier', 'verbose_name_plural': 'Formulieren'},
+            name="formulier",
+            options={"verbose_name": "Formulier", "verbose_name_plural": "Formulieren"},
         ),
         migrations.AlterModelOptions(
-            name='productdienst',
-            options={'verbose_name': 'Product / Dienst', 'verbose_name_plural': 'Product / Diensten'},
+            name="productdienst",
+            options={
+                "verbose_name": "Product / Dienst",
+                "verbose_name_plural": "Product / Diensten",
+            },
         ),
         migrations.AlterModelOptions(
-            name='referentieproces',
-            options={'verbose_name': 'Referentieprocess', 'verbose_name_plural': 'Referentieprocessen'},
+            name="referentieproces",
+            options={
+                "verbose_name": "Referentieprocess",
+                "verbose_name_plural": "Referentieprocessen",
+            },
         ),
     ]

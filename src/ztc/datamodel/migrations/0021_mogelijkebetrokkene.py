@@ -8,22 +8,51 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0020_auto_20180809_1747'),
-    ]
+    dependencies = [("datamodel", "0020_auto_20180809_1747")]
 
     operations = [
         migrations.CreateModel(
-            name='MogelijkeBetrokkene',
+            name="MogelijkeBetrokkene",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('betrokkene', models.URLField(help_text='Een betrokkene die kan gerelateerd worden aan een zaak')),
-                ('betrokkene_type', models.CharField(choices=[('Natuurlijk persoon', 'Natuurlijk persoon'), ('Niet-natuurlijk persoon', 'Niet-natuurlijk persoon'), ('Vestiging', 'Vestiging'), ('Organisatorische eenheid', 'Organisatorische eenheid'), ('Medewerker', 'Medewerker')], max_length=100)),
-                ('roltype', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='datamodel.RolType')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "betrokkene",
+                    models.URLField(
+                        help_text="Een betrokkene die kan gerelateerd worden aan een zaak"
+                    ),
+                ),
+                (
+                    "betrokkene_type",
+                    models.CharField(
+                        choices=[
+                            ("Natuurlijk persoon", "Natuurlijk persoon"),
+                            ("Niet-natuurlijk persoon", "Niet-natuurlijk persoon"),
+                            ("Vestiging", "Vestiging"),
+                            ("Organisatorische eenheid", "Organisatorische eenheid"),
+                            ("Medewerker", "Medewerker"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                (
+                    "roltype",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="datamodel.RolType",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'mogelijke betrokkene',
-                'verbose_name_plural': 'mogelijke betrokkenen',
+                "verbose_name": "mogelijke betrokkene",
+                "verbose_name_plural": "mogelijke betrokkenen",
             },
-        ),
+        )
     ]

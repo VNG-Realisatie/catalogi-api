@@ -5,30 +5,34 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0099_auto_20190620_1801'),
-    ]
+    dependencies = [("datamodel", "0099_auto_20190620_1801")]
 
     operations = [
         migrations.AddField(
-            model_name='besluittype',
-            name='concept',
-            field=models.BooleanField(default=True,
-                                      help_text='Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.',
-                                      verbose_name='concept'),
+            model_name="besluittype",
+            name="concept",
+            field=models.BooleanField(
+                default=True,
+                help_text="Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
+                verbose_name="concept",
+            ),
         ),
         migrations.AddField(
-            model_name='informatieobjecttype',
-            name='concept',
-            field=models.BooleanField(default=True,
-                                      help_text='Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.',
-                                      verbose_name='concept'),
+            model_name="informatieobjecttype",
+            name="concept",
+            field=models.BooleanField(
+                default=True,
+                help_text="Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
+                verbose_name="concept",
+            ),
         ),
         migrations.AddField(
-            model_name='zaaktype',
-            name='concept',
-            field=models.BooleanField(default=True,
-                                      help_text='Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.',
-                                      verbose_name='concept'),
+            model_name="zaaktype",
+            name="concept",
+            field=models.BooleanField(
+                default=True,
+                help_text="Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
+                verbose_name="concept",
+            ),
         ),
     ]

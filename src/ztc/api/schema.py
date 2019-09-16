@@ -3,9 +3,7 @@ from django.conf import settings
 from drf_yasg import openapi
 from vng_api_common.notifications.utils import notification_documentation
 
-from .kanalen import (
-    KANAAL_BESLUITTYPEN, KANAAL_INFORMATIEOBJECTTYPEN, KANAAL_ZAAKTYPEN
-)
+from .kanalen import KANAAL_BESLUITTYPEN, KANAAL_INFORMATIEOBJECTTYPEN, KANAAL_ZAAKTYPEN
 
 description = f"""Een API om een zaaktypecatalogus (ZTC) te benaderen.
 
@@ -52,10 +50,9 @@ info = openapi.Info(
     description=description,
     contact=openapi.Contact(
         email="standaarden.ondersteuning@vng.nl",
-        url="https://zaakgerichtwerken.vng.cloud"
+        url="https://zaakgerichtwerken.vng.cloud",
     ),
     license=openapi.License(
-        name="EUPL 1.2",
-        url='https://opensource.org/licenses/EUPL-1.2'
+        name="EUPL 1.2", url="https://opensource.org/licenses/EUPL-1.2"
     ),
 )

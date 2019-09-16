@@ -6,7 +6,7 @@ from django.urls import reverse
 
 class DumpDataFixtureViewTests(TestCase):
     def test_dumpdata_fixture(self):
-        url = reverse('dumpdata-fixture')
+        url = reverse("dumpdata-fixture")
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)

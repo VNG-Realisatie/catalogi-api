@@ -7,59 +7,87 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0008_auto_20180517_1547'),
-    ]
+    dependencies = [("datamodel", "0008_auto_20180517_1547")]
 
     operations = [
         migrations.AlterField(
-            model_name='besluittype',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="besluittype",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='eigenschap',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="eigenschap",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='informatieobjecttype',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="informatieobjecttype",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='informatieobjecttypeomschrijvinggeneriek',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="informatieobjecttypeomschrijvinggeneriek",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='resultaattype',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="resultaattype",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='roltype',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="roltype",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='statustype',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="statustype",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='zaakobjecttype',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="zaakobjecttype",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='zaaktype',
-            name='datum_begin_geldigheid',
-            field=models.DateField(help_text='De datum waarop het is ontstaan.', verbose_name='datum begin geldigheid'),
+            model_name="zaaktype",
+            name="datum_begin_geldigheid",
+            field=models.DateField(
+                help_text="De datum waarop het is ontstaan.",
+                verbose_name="datum begin geldigheid",
+            ),
         ),
         migrations.AlterField(
-            model_name='zaaktype',
-            name='versiedatum',
-            field=models.DateField(help_text='De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden', verbose_name='versiedatum'),
+            model_name="zaaktype",
+            name="versiedatum",
+            field=models.DateField(
+                help_text="De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden",
+                verbose_name="versiedatum",
+            ),
         ),
     ]

@@ -5,23 +5,30 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0089_auto_20190226_1302'),
-    ]
+    dependencies = [("datamodel", "0089_auto_20190226_1302")]
 
     operations = [
         migrations.RemoveField(
-            model_name='resultaattype',
-            name='_omschrijving_generiek',
+            model_name="resultaattype", name="_omschrijving_generiek"
         ),
         migrations.AddField(
-            model_name='resultaattype',
-            name='omschrijving_generiek',
-            field=models.CharField(blank=True, editable=False, help_text='Gecachete tekstuele waarde van de generieke resultaattypeomschrijving.', max_length=20, verbose_name='omschrijving generiek'),
+            model_name="resultaattype",
+            name="omschrijving_generiek",
+            field=models.CharField(
+                blank=True,
+                editable=False,
+                help_text="Gecachete tekstuele waarde van de generieke resultaattypeomschrijving.",
+                max_length=20,
+                verbose_name="omschrijving generiek",
+            ),
         ),
         migrations.AlterField(
-            model_name='resultaattype',
-            name='resultaattypeomschrijving',
-            field=models.URLField(help_text="Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit 'omschrijving generiek'", max_length=1000, verbose_name='resultaattypeomschrijving'),
+            model_name="resultaattype",
+            name="resultaattypeomschrijving",
+            field=models.URLField(
+                help_text="Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit 'omschrijving generiek'",
+                max_length=1000,
+                verbose_name="resultaattypeomschrijving",
+            ),
         ),
     ]

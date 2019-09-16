@@ -7,85 +7,44 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0006_migrate_stuf_date_to_date'),
-    ]
+    dependencies = [("datamodel", "0006_migrate_stuf_date_to_date")]
 
     operations = [
+        migrations.RemoveField(model_name="besluittype", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="besluittype", name="datum_einde_geldigheid"),
+        migrations.RemoveField(model_name="eigenschap", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="eigenschap", name="datum_einde_geldigheid"),
         migrations.RemoveField(
-            model_name='besluittype',
-            name='datum_begin_geldigheid',
+            model_name="informatieobjecttype", name="datum_begin_geldigheid"
         ),
         migrations.RemoveField(
-            model_name='besluittype',
-            name='datum_einde_geldigheid',
+            model_name="informatieobjecttype", name="datum_einde_geldigheid"
         ),
         migrations.RemoveField(
-            model_name='eigenschap',
-            name='datum_begin_geldigheid',
+            model_name="informatieobjecttypeomschrijvinggeneriek",
+            name="datum_begin_geldigheid",
         ),
         migrations.RemoveField(
-            model_name='eigenschap',
-            name='datum_einde_geldigheid',
+            model_name="informatieobjecttypeomschrijvinggeneriek",
+            name="datum_einde_geldigheid",
         ),
         migrations.RemoveField(
-            model_name='informatieobjecttype',
-            name='datum_begin_geldigheid',
+            model_name="resultaattype", name="datum_begin_geldigheid"
         ),
         migrations.RemoveField(
-            model_name='informatieobjecttype',
-            name='datum_einde_geldigheid',
+            model_name="resultaattype", name="datum_einde_geldigheid"
+        ),
+        migrations.RemoveField(model_name="roltype", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="roltype", name="datum_einde_geldigheid"),
+        migrations.RemoveField(model_name="statustype", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="statustype", name="datum_einde_geldigheid"),
+        migrations.RemoveField(
+            model_name="zaakobjecttype", name="datum_begin_geldigheid"
         ),
         migrations.RemoveField(
-            model_name='informatieobjecttypeomschrijvinggeneriek',
-            name='datum_begin_geldigheid',
+            model_name="zaakobjecttype", name="datum_einde_geldigheid"
         ),
-        migrations.RemoveField(
-            model_name='informatieobjecttypeomschrijvinggeneriek',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='resultaattype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='resultaattype',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='roltype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='roltype',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='statustype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='statustype',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='zaakobjecttype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='zaakobjecttype',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='versiedatum',
-        ),
+        migrations.RemoveField(model_name="zaaktype", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="zaaktype", name="datum_einde_geldigheid"),
+        migrations.RemoveField(model_name="zaaktype", name="versiedatum"),
     ]

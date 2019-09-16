@@ -5,24 +5,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0067_auto_20190115_1645'),
-    ]
+    dependencies = [("datamodel", "0067_auto_20190115_1645")]
 
     operations = [
         migrations.RenameField(
-            model_name='zaaktypenrelatie',
-            old_name='zaaktype_van',
-            new_name='zaaktype',
+            model_name="zaaktypenrelatie", old_name="zaaktype_van", new_name="zaaktype"
         ),
         migrations.AddField(
-            model_name='zaaktypenrelatie',
-            name='gerelateerd_zaaktype',
-            field=models.URLField(default='', help_text='URL referentie naar het gerelateerde zaaktype, mogelijks in een extern ZTC.', verbose_name='gerelateerd zaaktype'),
+            model_name="zaaktypenrelatie",
+            name="gerelateerd_zaaktype",
+            field=models.URLField(
+                default="",
+                help_text="URL referentie naar het gerelateerde zaaktype, mogelijks in een extern ZTC.",
+                verbose_name="gerelateerd zaaktype",
+            ),
             preserve_default=False,
         ),
         migrations.AlterUniqueTogether(
-            name='zaaktypenrelatie',
-            unique_together={('zaaktype', 'gerelateerd_zaaktype')},
+            name="zaaktypenrelatie",
+            unique_together={("zaaktype", "gerelateerd_zaaktype")},
         ),
     ]

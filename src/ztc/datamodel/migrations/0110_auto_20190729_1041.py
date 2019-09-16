@@ -5,14 +5,22 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0109_normalize_enums'),
-    ]
+    dependencies = [("datamodel", "0109_normalize_enums")]
 
     operations = [
         migrations.AlterField(
-            model_name='eigenschapspecificatie',
-            name='formaat',
-            field=models.CharField(choices=[('tekst', 'Tekst'), ('getal', 'Getal'), ('datum', 'Datum'), ('datum_tijd', 'Datum/tijd')], help_text='Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.', max_length=20, verbose_name='formaat'),
-        ),
+            model_name="eigenschapspecificatie",
+            name="formaat",
+            field=models.CharField(
+                choices=[
+                    ("tekst", "Tekst"),
+                    ("getal", "Getal"),
+                    ("datum", "Datum"),
+                    ("datum_tijd", "Datum/tijd"),
+                ],
+                help_text="Het soort tekens waarmee waarden van de EIGENSCHAP kunnen worden vastgelegd.",
+                max_length=20,
+                verbose_name="formaat",
+            ),
+        )
     ]

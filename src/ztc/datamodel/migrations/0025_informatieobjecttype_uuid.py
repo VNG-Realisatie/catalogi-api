@@ -8,14 +8,16 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0024_auto_20180813_1213'),
-    ]
+    dependencies = [("datamodel", "0024_auto_20180813_1213")]
 
     operations = [
         migrations.AddField(
-            model_name='informatieobjecttype',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', unique=True),
-        ),
+            model_name="informatieobjecttype",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                unique=True,
+            ),
+        )
     ]

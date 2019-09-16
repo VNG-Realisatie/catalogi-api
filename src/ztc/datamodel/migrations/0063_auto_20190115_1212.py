@@ -5,20 +5,23 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0062_auto_20190115_1135'),
-    ]
+    dependencies = [("datamodel", "0062_auto_20190115_1135")]
 
     operations = [
         migrations.RenameField(
-            model_name='zaaktype',
-            old_name='product_dienst',
-            new_name='producten_of_diensten',
+            model_name="zaaktype",
+            old_name="product_dienst",
+            new_name="producten_of_diensten",
         ),
         migrations.AlterField(
-            model_name='productdienst',
-            name='link',
-            field=models.URLField(blank=True, default='', help_text='De URL naar de beschrijving van het product of de dienst.', verbose_name='link'),
+            model_name="productdienst",
+            name="link",
+            field=models.URLField(
+                blank=True,
+                default="",
+                help_text="De URL naar de beschrijving van het product of de dienst.",
+                verbose_name="link",
+            ),
             preserve_default=False,
         ),
     ]

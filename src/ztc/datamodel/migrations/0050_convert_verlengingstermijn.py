@@ -5,7 +5,7 @@ from django.db import migrations
 
 
 def ints_to_timedelta(apps, _):
-    ZaakType = apps.get_model('datamodel.ZaakType')
+    ZaakType = apps.get_model("datamodel.ZaakType")
 
     ZaakType.objects.filter(verlenging_mogelijk=False).update(verlengingstermijn=None)
 
@@ -15,7 +15,7 @@ def ints_to_timedelta(apps, _):
 
 
 def timedelta_to_ints(apps, _):
-    ZaakType = apps.get_model('datamodel.ZaakType')
+    ZaakType = apps.get_model("datamodel.ZaakType")
 
     # not nullable, but we don't know what it should be...
     ZaakType.objects.filter(verlenging_mogelijk=False).update(old_verlengingstermijn=1)
@@ -27,10 +27,6 @@ def timedelta_to_ints(apps, _):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0049_auto_20190114_1546'),
-    ]
+    dependencies = [("datamodel", "0049_auto_20190114_1546")]
 
-    operations = [
-        migrations.RunPython(ints_to_timedelta, timedelta_to_ints)
-    ]
+    operations = [migrations.RunPython(ints_to_timedelta, timedelta_to_ints)]
