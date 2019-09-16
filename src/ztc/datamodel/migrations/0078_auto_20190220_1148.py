@@ -5,13 +5,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0077_auto_20190220_1147'),
-    ]
+    dependencies = [("datamodel", "0077_auto_20190220_1147")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='resultaattype',
-            options={'verbose_name': 'resultaattype', 'verbose_name_plural': 'resultaattypen'},
-        ),
+            name="resultaattype",
+            options={
+                "verbose_name": "resultaattype",
+                "verbose_name_plural": "resultaattypen",
+            },
+        )
     ]

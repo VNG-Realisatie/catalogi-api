@@ -5,42 +5,42 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0026_auto_20180816_1658'),
-    ]
+    dependencies = [("datamodel", "0026_auto_20180816_1658")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='besluittype',
-            options={'verbose_name': 'besluittype', 'verbose_name_plural': 'besluittypen'},
+            name="besluittype",
+            options={
+                "verbose_name": "besluittype",
+                "verbose_name_plural": "besluittypen",
+            },
         ),
         migrations.RenameField(
-            model_name='besluittype',
-            old_name='maakt_deel_uit_van',
-            new_name='catalogus',
+            model_name="besluittype",
+            old_name="maakt_deel_uit_van",
+            new_name="catalogus",
         ),
         migrations.RenameField(
-            model_name='besluittype',
-            old_name='wordt_vastgelegd_in',
-            new_name='informatieobjecttypes',
+            model_name="besluittype",
+            old_name="wordt_vastgelegd_in",
+            new_name="informatieobjecttypes",
         ),
         migrations.RenameField(
-            model_name='besluittype',
-            old_name='besluittype_omschrijving',
-            new_name='omschrijving',
+            model_name="besluittype",
+            old_name="besluittype_omschrijving",
+            new_name="omschrijving",
         ),
         migrations.RenameField(
-            model_name='besluittype',
-            old_name='besluittype_omschrijving_generiek',
-            new_name='omschrijving_generiek',
+            model_name="besluittype",
+            old_name="besluittype_omschrijving_generiek",
+            new_name="omschrijving_generiek",
         ),
         migrations.RenameField(
-            model_name='besluittype',
-            old_name='is_resultaat_van',
-            new_name='resultaattypes',
+            model_name="besluittype",
+            old_name="is_resultaat_van",
+            new_name="resultaattypes",
         ),
         migrations.AlterUniqueTogether(
-            name='besluittype',
-            unique_together={('catalogus', 'omschrijving')},
+            name="besluittype", unique_together={("catalogus", "omschrijving")}
         ),
     ]

@@ -8,30 +8,50 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0009_auto_20180517_1642'),
-    ]
+    dependencies = [("datamodel", "0009_auto_20180517_1642")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='catalogus',
-            options={'ordering': ('domein', 'rsin'), 'verbose_name': 'catalogus', 'verbose_name_plural': 'catalogussen'},
+            name="catalogus",
+            options={
+                "ordering": ("domein", "rsin"),
+                "verbose_name": "catalogus",
+                "verbose_name_plural": "catalogussen",
+            },
         ),
         migrations.AlterField(
-            model_name='catalogus',
-            name='contactpersoon_beheer_emailadres',
-            field=models.EmailField(blank=True, default='', help_text='Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.', max_length=254, verbose_name='emailadres'),
+            model_name="catalogus",
+            name="contactpersoon_beheer_emailadres",
+            field=models.EmailField(
+                blank=True,
+                default="",
+                help_text="Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.",
+                max_length=254,
+                verbose_name="emailadres",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='catalogus',
-            name='contactpersoon_beheer_telefoonnummer',
-            field=models.CharField(blank=True, default='', help_text='Het telefoonnummer van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.', max_length=20, verbose_name='telefoonnummer'),
+            model_name="catalogus",
+            name="contactpersoon_beheer_telefoonnummer",
+            field=models.CharField(
+                blank=True,
+                default="",
+                help_text="Het telefoonnummer van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.",
+                max_length=20,
+                verbose_name="telefoonnummer",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='statustype',
-            name='is_van',
-            field=models.ForeignKey(help_text='Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.', on_delete=django.db.models.deletion.CASCADE, related_name='zaaktypen', to='datamodel.ZaakType', verbose_name='is van'),
+            model_name="statustype",
+            name="is_van",
+            field=models.ForeignKey(
+                help_text="Het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.",
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="zaaktypen",
+                to="datamodel.ZaakType",
+                verbose_name="is van",
+            ),
         ),
     ]

@@ -5,14 +5,16 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0079_auto_20190220_1307'),
-    ]
+    dependencies = [("datamodel", "0079_auto_20190220_1307")]
 
     operations = [
         migrations.AddField(
-            model_name='resultaattype',
-            name='_omschrijving_generiek',
-            field=models.CharField(blank=True, max_length=20, verbose_name="Cached value of 'omschrijving generiek' field"),
-        ),
+            model_name="resultaattype",
+            name="_omschrijving_generiek",
+            field=models.CharField(
+                blank=True,
+                max_length=20,
+                verbose_name="Cached value of 'omschrijving generiek' field",
+            ),
+        )
     ]

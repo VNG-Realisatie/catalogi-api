@@ -25,15 +25,18 @@ def check_modelform_exclude(app_configs, **kwargs):
 
     for form in get_subclasses(ModelForm):
         # ok, fields is defined
-        if form._meta.fields or getattr(form.Meta, 'fields', None):
+        if form._meta.fields or getattr(form.Meta, "fields", None):
             continue
 
         # no `.fields` defined, so scream loud enough to prevent this
-        errors.append(Error(
-            'ModelForm %s.%s with Meta.exclude detected, this is a bad practice' % (form.__module__, form.__name__),
-            hint='Use ModelForm.Meta.fields instead',
-            obj=form,
-            id='utils.E001'
-        ))
+        errors.append(
+            Error(
+                "ModelForm %s.%s with Meta.exclude detected, this is a bad practice"
+                % (form.__module__, form.__name__),
+                hint="Use ModelForm.Meta.fields instead",
+                obj=form,
+                id="utils.E001",
+            )
+        )
 
     return errors

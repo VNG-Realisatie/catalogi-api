@@ -6,14 +6,18 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0082_auto_20190220_1443'),
-    ]
+    dependencies = [("datamodel", "0082_auto_20190220_1443")]
 
     operations = [
         migrations.AlterField(
-            model_name='resultaattype',
-            name='zaaktype',
-            field=models.ForeignKey(help_text='Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.', on_delete=django.db.models.deletion.CASCADE, related_name='resultaattypen', to='datamodel.ZaakType', verbose_name='is relevant voor'),
-        ),
+            model_name="resultaattype",
+            name="zaaktype",
+            field=models.ForeignKey(
+                help_text="Het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden.",
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="resultaattypen",
+                to="datamodel.ZaakType",
+                verbose_name="is relevant voor",
+            ),
+        )
     ]

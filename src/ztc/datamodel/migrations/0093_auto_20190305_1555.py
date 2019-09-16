@@ -6,38 +6,54 @@ import vng_api_common.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0092_auto_20190226_1602'),
-    ]
+    dependencies = [("datamodel", "0092_auto_20190226_1602")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='informatieobjecttype',
-            options={'ordering': ('catalogus', 'omschrijving'), 'verbose_name': 'Informatieobjecttype', 'verbose_name_plural': 'Informatieobjecttypen'},
+            name="informatieobjecttype",
+            options={
+                "ordering": ("catalogus", "omschrijving"),
+                "verbose_name": "Informatieobjecttype",
+                "verbose_name_plural": "Informatieobjecttypen",
+            },
         ),
         migrations.RenameField(
-            model_name='informatieobjecttype',
-            old_name='informatieobjecttype_omschrijving',
-            new_name='omschrijving',
+            model_name="informatieobjecttype",
+            old_name="informatieobjecttype_omschrijving",
+            new_name="omschrijving",
         ),
         migrations.RenameField(
-            model_name='informatieobjecttype',
-            old_name='informatieobjecttype_omschrijving_generiek',
-            new_name='omschrijving_generiek',
+            model_name="informatieobjecttype",
+            old_name="informatieobjecttype_omschrijving_generiek",
+            new_name="omschrijving_generiek",
         ),
         migrations.RenameField(
-            model_name='informatieobjecttype',
-            old_name='informatieobjecttypetrefwoord',
-            new_name='trefwoord',
+            model_name="informatieobjecttype",
+            old_name="informatieobjecttypetrefwoord",
+            new_name="trefwoord",
         ),
         migrations.AlterField(
-            model_name='informatieobjecttype',
-            name='vertrouwelijkheidaanduiding',
-            field=vng_api_common.fields.VertrouwelijkheidsAanduidingField(choices=[('openbaar', 'OPENBAAR'), ('beperkt openbaar', 'BEPERKT OPENBAAR'), ('intern', 'INTERN'), ('zaakvertrouwelijk', 'ZAAKVERTROUWELIJK'), ('vertrouwelijk', 'VERTROUWELIJK'), ('confidentieel', 'CONFIDENTIEEL'), ('geheim', 'GEHEIM'), ('zeer geheim', 'ZEER GEHEIM')], default='openbaar', help_text='Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn.', max_length=20, verbose_name='vertrouwelijkheidaanduiding'),
+            model_name="informatieobjecttype",
+            name="vertrouwelijkheidaanduiding",
+            field=vng_api_common.fields.VertrouwelijkheidsAanduidingField(
+                choices=[
+                    ("openbaar", "OPENBAAR"),
+                    ("beperkt openbaar", "BEPERKT OPENBAAR"),
+                    ("intern", "INTERN"),
+                    ("zaakvertrouwelijk", "ZAAKVERTROUWELIJK"),
+                    ("vertrouwelijk", "VERTROUWELIJK"),
+                    ("confidentieel", "CONFIDENTIEEL"),
+                    ("geheim", "GEHEIM"),
+                    ("zeer geheim", "ZEER GEHEIM"),
+                ],
+                default="openbaar",
+                help_text="Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn.",
+                max_length=20,
+                verbose_name="vertrouwelijkheidaanduiding",
+            ),
             preserve_default=False,
         ),
         migrations.AlterUniqueTogether(
-            name='informatieobjecttype',
-            unique_together={('catalogus', 'omschrijving')},
+            name="informatieobjecttype", unique_together={("catalogus", "omschrijving")}
         ),
     ]

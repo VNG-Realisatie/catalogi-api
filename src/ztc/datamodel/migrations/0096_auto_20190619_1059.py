@@ -5,13 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0095_merge_20190327_1650'),
-    ]
+    dependencies = [("datamodel", "0095_merge_20190327_1650")]
 
     operations = [
-        migrations.AlterUniqueTogether(
-            name='zaaktype',
-            unique_together=set(),
-        ),
+        migrations.AlterUniqueTogether(name="zaaktype", unique_together=set())
     ]

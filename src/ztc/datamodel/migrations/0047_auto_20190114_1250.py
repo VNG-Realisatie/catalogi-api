@@ -5,14 +5,12 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0046_ja_nee_to_boolean'),
-    ]
+    dependencies = [("datamodel", "0046_ja_nee_to_boolean")]
 
     operations = [
         migrations.RenameField(
-            model_name='zaaktype',
-            old_name='opschorting_aanhouding_mogelijk',
-            new_name='opschorting_en_aanhouding_mogelijk',
-        ),
+            model_name="zaaktype",
+            old_name="opschorting_aanhouding_mogelijk",
+            new_name="opschorting_en_aanhouding_mogelijk",
+        )
     ]

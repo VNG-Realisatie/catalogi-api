@@ -1,1 +1,1 @@
-default_app_config = 'ztc.utils.apps.UtilsConfig'
+default_app_config = "ztc.utils.apps.UtilsConfig"

@@ -5,13 +5,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0093_auto_20190305_1555'),
-    ]
+    dependencies = [("datamodel", "0093_auto_20190305_1555")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='informatieobjecttype',
-            options={'verbose_name': 'Informatieobjecttype', 'verbose_name_plural': 'Informatieobjecttypen'},
-        ),
+            name="informatieobjecttype",
+            options={
+                "verbose_name": "Informatieobjecttype",
+                "verbose_name_plural": "Informatieobjecttypen",
+            },
+        )
     ]

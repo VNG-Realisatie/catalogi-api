@@ -6,7 +6,7 @@ Zaaktypecatalogus
 :Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
-|build-status|
+|build-status| |black|
 
 Referentieimplementatie van het informatiemodel Zaaktypecatalogus (ImZTC) 2.1
 welke beheerd kan worden middels een webinterface en ontsloten wordt middels
@@ -64,5 +64,8 @@ Verwijzingen
 .. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
      :target: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements/?branch=master
      :alt: Requirements status
+
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
 
 .. _testomgeving: https://ref.tst.vng.cloud/ztc/

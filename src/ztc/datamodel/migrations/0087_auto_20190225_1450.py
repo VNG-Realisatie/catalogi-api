@@ -5,14 +5,12 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0086_auto_20190225_1450'),
-    ]
+    dependencies = [("datamodel", "0086_auto_20190225_1450")]
 
     operations = [
         migrations.RenameField(
-            model_name='resultaattype',
-            old_name='_archiefnominatie',
-            new_name='archiefnominatie',
-        ),
+            model_name="resultaattype",
+            old_name="_archiefnominatie",
+            new_name="archiefnominatie",
+        )
     ]

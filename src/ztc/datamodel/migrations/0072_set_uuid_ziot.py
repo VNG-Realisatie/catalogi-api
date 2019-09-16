@@ -5,7 +5,7 @@ from django.db import migrations
 
 
 def set_uuid(apps, _):
-    ZaakInformatieobjectType = apps.get_model('datamodel.ZaakInformatieobjectType')
+    ZaakInformatieobjectType = apps.get_model("datamodel.ZaakInformatieobjectType")
     for ziot in ZaakInformatieobjectType.objects.all():
         ziot.uuid = uuid.uuid4()
         ziot.save()
@@ -13,10 +13,6 @@ def set_uuid(apps, _):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0071_auto_20190117_1037'),
-    ]
+    dependencies = [("datamodel", "0071_auto_20190117_1037")]
 
-    operations = [
-        migrations.RunPython(set_uuid, migrations.RunPython.noop),
-    ]
+    operations = [migrations.RunPython(set_uuid, migrations.RunPython.noop)]

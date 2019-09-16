@@ -3,19 +3,13 @@ from vng_api_common.notifications.kanalen import Kanaal
 from ztc.datamodel.models import BesluitType, InformatieObjectType, ZaakType
 
 KANAAL_BESLUITTYPEN = Kanaal(
-    'besluittypen',
-    main_resource=BesluitType,
-    kenmerken=('catalogus',)
+    "besluittypen", main_resource=BesluitType, kenmerken=("catalogus",)
 )
 
 KANAAL_INFORMATIEOBJECTTYPEN = Kanaal(
-    'informatieobjecttypen',
+    "informatieobjecttypen",
     main_resource=InformatieObjectType,
-    kenmerken=('catalogus',)
+    kenmerken=("catalogus",),
 )
 
-KANAAL_ZAAKTYPEN = Kanaal(
-    'zaaktypen',
-    main_resource=ZaakType,
-    kenmerken=('catalogus',)
-)
+KANAAL_ZAAKTYPEN = Kanaal("zaaktypen", main_resource=ZaakType, kenmerken=("catalogus",))

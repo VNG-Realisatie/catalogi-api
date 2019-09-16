@@ -6,51 +6,50 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0080_resultaattype__omschrijving_generiek'),
-    ]
+    dependencies = [("datamodel", "0080_resultaattype__omschrijving_generiek")]
 
     operations = [
         migrations.RenameField(
-            model_name='resultaattype',
-            old_name='is_relevant_voor',
-            new_name='zaaktype',
+            model_name="resultaattype", old_name="is_relevant_voor", new_name="zaaktype"
         ),
         migrations.AddField(
-            model_name='resultaattype',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', unique=True),
+            model_name="resultaattype",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='resultaattype',
-            name='selectielijstklasse',
-            field=models.URLField(default='', help_text='Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, categorie in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie. Dit is een URL-referentie naar een resultaat uit de selectielijst API', max_length=1000, verbose_name='selectielijstklasse'),
+            model_name="resultaattype",
+            name="selectielijstklasse",
+            field=models.URLField(
+                default="",
+                help_text="Verwijzing naar de, voor het archiefregime bij het RESULTAATTYPE relevante, categorie in de Selectielijst Archiefbescheiden van de voor het ZAAKTYPE verantwoordelijke overheidsorganisatie. Dit is een URL-referentie naar een resultaat uit de selectielijst API",
+                max_length=1000,
+                verbose_name="selectielijstklasse",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='resultaattype',
-            name='toelichting',
-            field=models.TextField(blank=True, default='', help_text='Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd.', verbose_name='toelichting'),
+            model_name="resultaattype",
+            name="toelichting",
+            field=models.TextField(
+                blank=True,
+                default="",
+                help_text="Een toelichting op dit RESULTAATTYPE en het belang hiervan voor ZAAKen waarin een resultaat van dit RESULTAATTYPE wordt geselecteerd.",
+                verbose_name="toelichting",
+            ),
             preserve_default=False,
         ),
+        migrations.RemoveField(model_name="resultaattype", name="archiefactietermijn"),
+        migrations.RemoveField(model_name="resultaattype", name="archiefnominatie"),
         migrations.RemoveField(
-            model_name='resultaattype',
-            name='archiefactietermijn',
-        ),
-        migrations.RemoveField(
-            model_name='resultaattype',
-            name='archiefnominatie',
-        ),
-        migrations.RemoveField(
-            model_name='resultaattype',
-            name='brondatum_archiefprocedure',
+            model_name="resultaattype", name="brondatum_archiefprocedure"
         ),
         migrations.AlterUniqueTogether(
-            name='resultaattype',
-            unique_together={('zaaktype', 'omschrijving')},
+            name="resultaattype", unique_together={("zaaktype", "omschrijving")}
         ),
-        migrations.RemoveField(
-            model_name='resultaattype',
-            name='procesobjectaard',
-        ),
+        migrations.RemoveField(model_name="resultaattype", name="procesobjectaard"),
     ]

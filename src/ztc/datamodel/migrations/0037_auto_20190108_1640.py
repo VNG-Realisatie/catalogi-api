@@ -5,15 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0036_auto_20181227_1548'),
-    ]
+    dependencies = [("datamodel", "0036_auto_20181227_1548")]
 
     operations = [
         migrations.AlterField(
-            model_name='zaaktype',
-            name='zaakcategorie',
-            field=models.CharField(blank=True, default='', help_text='Typering van de aard van ZAAKen van het ZAAKTYPE.', max_length=40, verbose_name='zaakcategorie'),
+            model_name="zaaktype",
+            name="zaakcategorie",
+            field=models.CharField(
+                blank=True,
+                default="",
+                help_text="Typering van de aard van ZAAKen van het ZAAKTYPE.",
+                max_length=40,
+                verbose_name="zaakcategorie",
+            ),
             preserve_default=False,
-        ),
+        )
     ]
