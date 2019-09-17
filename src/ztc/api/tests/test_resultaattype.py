@@ -9,7 +9,8 @@ from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
 )
 from vng_api_common.tests import (
-    TypeCheckMixin, get_validation_errors, reverse, reverse_lazy
+    TypeCheckMixin, get_operation_url, get_validation_errors, reverse,
+    reverse_lazy
 )
 from zds_client.tests.mocks import mock_client
 
@@ -332,6 +333,19 @@ class ResultaatTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{resultaattype2_url}')
+
+
+class FilterValidationTests(APITestCase):
+    def test_unknown_query_params_give_error(self):
+        ResultaatTypeFactory.create_batch(2)
+        resultaattype_list_url = get_operation_url('resultaattype_list')
+
+        response = self.client.get(resultaattype_list_url, {'someparam': 'somevalue'})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'unknown-parameters')
 
 
 class ResultaatTypePaginationTestCase(APITestCase):

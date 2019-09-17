@@ -511,6 +511,19 @@ class ZaakTypeFilterAPITests(APITestCase):
         self.assertEqual(data[0]['url'], f'http://testserver{zaaktype1_url}')
 
 
+class FilterValidationTests(APITestCase):
+    def test_unknown_query_params_give_error(self):
+        ZaakTypeFactory.create_batch(2, concept=False)
+        zaaktype_list_url = get_operation_url('zaaktype_list')
+
+        response = self.client.get(zaaktype_list_url, {'someparam': 'somevalue'})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'unknown-parameters')
+
+
 @skip("Not in current MVP")
 class ZaakObjectTypeAPITests(APITestCase):
     maxDiff = None
