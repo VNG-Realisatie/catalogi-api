@@ -7,19 +7,24 @@ import vng_api_common.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0048_auto_20190114_1254'),
-    ]
+    dependencies = [("datamodel", "0048_auto_20190114_1254")]
 
     operations = [
         migrations.RenameField(
-            model_name='zaaktype',
-            old_name='verlengingstermijn',
-            new_name='old_verlengingstermijn',
+            model_name="zaaktype",
+            old_name="verlengingstermijn",
+            new_name="old_verlengingstermijn",
         ),
         migrations.AddField(
-            model_name='zaaktype',
-            name='verlengingstermijn',
-            field=vng_api_common.fields.DaysDurationField(blank=True, help_text="De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als 'DD 00:00'", max_duration=999, min_duration=1, null=True, verbose_name='verlengingstermijn'),
+            model_name="zaaktype",
+            name="verlengingstermijn",
+            field=vng_api_common.fields.DaysDurationField(
+                blank=True,
+                help_text="De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Specifieer de duur als 'DD 00:00'",
+                max_duration=999,
+                min_duration=1,
+                null=True,
+                verbose_name="verlengingstermijn",
+            ),
         ),
     ]

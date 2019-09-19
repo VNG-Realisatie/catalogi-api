@@ -8,19 +8,17 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0021_mogelijkebetrokkene'),
-    ]
+    dependencies = [("datamodel", "0021_mogelijkebetrokkene")]
 
     operations = [
         migrations.AddField(
-            model_name='mogelijkebetrokkene',
-            name='uuid',
+            model_name="mogelijkebetrokkene",
+            name="uuid",
             field=models.UUIDField(default=uuid.uuid4, null=True),
         ),
         migrations.AddField(
-            model_name='roltype',
-            name='uuid',
+            model_name="roltype",
+            name="uuid",
             field=models.UUIDField(default=uuid.uuid4, null=True),
         ),
     ]

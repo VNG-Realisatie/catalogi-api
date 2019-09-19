@@ -8,29 +8,43 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0015_auto_20180724_1434'),
-    ]
+    dependencies = [("datamodel", "0015_auto_20180724_1434")]
 
     operations = [
         migrations.AlterField(
-            model_name='catalogus',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', unique=True),
+            model_name="catalogus",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='eigenschap',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', unique=True),
+            model_name="eigenschap",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='statustype',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', unique=True),
+            model_name="statustype",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                unique=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='zaaktype',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', unique=True),
+            model_name="zaaktype",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                unique=True,
+            ),
         ),
     ]

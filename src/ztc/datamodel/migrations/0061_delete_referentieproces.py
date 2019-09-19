@@ -5,12 +5,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0060_remove_zaaktype_referentieproces_old'),
-    ]
+    dependencies = [("datamodel", "0060_remove_zaaktype_referentieproces_old")]
 
-    operations = [
-        migrations.DeleteModel(
-            name='ReferentieProces',
-        ),
-    ]
+    operations = [migrations.DeleteModel(name="ReferentieProces")]

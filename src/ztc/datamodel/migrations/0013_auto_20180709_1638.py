@@ -8,21 +8,34 @@ import ztc.datamodel.validators
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0012_auto_20180618_1102'),
-    ]
+    dependencies = [("datamodel", "0012_auto_20180618_1102")]
 
     operations = [
         migrations.AlterField(
-            model_name='eigenschap',
-            name='toelichting',
-            field=models.CharField(blank=True, default='', help_text='Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.', max_length=1000, verbose_name='toelichting'),
+            model_name="eigenschap",
+            name="toelichting",
+            field=models.CharField(
+                blank=True,
+                default="",
+                help_text="Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE.",
+                max_length=1000,
+                verbose_name="toelichting",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='eigenschapspecificatie',
-            name='groep',
-            field=models.CharField(blank=True, default='', help_text='Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert.', max_length=32, validators=[ztc.datamodel.validators.validate_letters_numbers_underscores], verbose_name='groep'),
+            model_name="eigenschapspecificatie",
+            name="groep",
+            field=models.CharField(
+                blank=True,
+                default="",
+                help_text="Benaming van het object of groepattribuut waarvan de EIGENSCHAP een inhoudelijk gegeven specificeert.",
+                max_length=32,
+                validators=[
+                    ztc.datamodel.validators.validate_letters_numbers_underscores
+                ],
+                verbose_name="groep",
+            ),
             preserve_default=False,
         ),
     ]

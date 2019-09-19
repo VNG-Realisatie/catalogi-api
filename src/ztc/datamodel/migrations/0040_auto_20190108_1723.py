@@ -5,15 +5,18 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0039_auto_20190108_1655'),
-    ]
+    dependencies = [("datamodel", "0039_auto_20190108_1655")]
 
     operations = [
         migrations.AlterField(
-            model_name='zaaktype',
-            name='toelichting',
-            field=models.TextField(blank=True, default='', help_text='Een eventuele toelichting op dit zaaktype, zoals een beschrijving van het procesverloop op de hoofdlijnen.', verbose_name='toelichting'),
+            model_name="zaaktype",
+            name="toelichting",
+            field=models.TextField(
+                blank=True,
+                default="",
+                help_text="Een eventuele toelichting op dit zaaktype, zoals een beschrijving van het procesverloop op de hoofdlijnen.",
+                verbose_name="toelichting",
+            ),
             preserve_default=False,
-        ),
+        )
     ]

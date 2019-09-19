@@ -4,22 +4,21 @@ from django.db import migrations
 
 
 def migrate_referentieproces_data(apps, _):
-    ZaakType = apps.get_model('datamodel.ZaakType')
+    ZaakType = apps.get_model("datamodel.ZaakType")
 
     for zaaktype in ZaakType.objects.all():
         zaaktype.referentieproces_naam = zaaktype.referentieproces_old.naam
-        zaaktype.referentieproces_link = zaaktype.referentieproces_old.link or ''
+        zaaktype.referentieproces_link = zaaktype.referentieproces_old.link or ""
         zaaktype.save()
 
 
 def migrate_referentieproces_data_reverse(apps, _):
-    ZaakType = apps.get_model('datamodel.ZaakType')
-    ReferentieProces = apps.get_model('datamodel.ReferentieProces')
+    ZaakType = apps.get_model("datamodel.ZaakType")
+    ReferentieProces = apps.get_model("datamodel.ReferentieProces")
 
     for zaaktype in ZaakType.objects.all():
         referentieproces, _ = ReferentieProces.objects.get_or_create(
-            naam=zaaktype.referentieproces_naam,
-            link=zaaktype.referentieproces_link
+            naam=zaaktype.referentieproces_naam, link=zaaktype.referentieproces_link
         )
         zaaktype.referentieproces_old = referentieproces
         zaaktype.save()
@@ -27,13 +26,10 @@ def migrate_referentieproces_data_reverse(apps, _):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0058_auto_20190115_1032'),
-    ]
+    dependencies = [("datamodel", "0058_auto_20190115_1032")]
 
     operations = [
         migrations.RunPython(
-            migrate_referentieproces_data,
-            migrate_referentieproces_data_reverse
+            migrate_referentieproces_data, migrate_referentieproces_data_reverse
         )
     ]

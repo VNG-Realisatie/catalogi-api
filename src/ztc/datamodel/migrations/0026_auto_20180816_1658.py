@@ -7,14 +7,26 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0025_informatieobjecttype_uuid'),
-    ]
+    dependencies = [("datamodel", "0025_informatieobjecttype_uuid")]
 
     operations = [
         migrations.AlterField(
-            model_name='roltype',
-            name='omschrijving_generiek',
-            field=models.CharField(choices=[('Adviseur', 'Adviseur'), ('Behandelaar', 'Behandelaar'), ('Belanghebbende', 'Belanghebbende'), ('Beslisser', 'Beslisser'), ('Initiator', 'Initiator'), ('Klantcontacter', 'Klantcontacter'), ('Zaakcoördinator', 'Zaakcoördinator'), ('Mede-initiator', 'Mede-initiator')], help_text='Algemeen gehanteerde omschrijving van de aard van de ROL.', max_length=20, verbose_name='omschrijving generiek'),
-        ),
+            model_name="roltype",
+            name="omschrijving_generiek",
+            field=models.CharField(
+                choices=[
+                    ("Adviseur", "Adviseur"),
+                    ("Behandelaar", "Behandelaar"),
+                    ("Belanghebbende", "Belanghebbende"),
+                    ("Beslisser", "Beslisser"),
+                    ("Initiator", "Initiator"),
+                    ("Klantcontacter", "Klantcontacter"),
+                    ("Zaakcoördinator", "Zaakcoördinator"),
+                    ("Mede-initiator", "Mede-initiator"),
+                ],
+                help_text="Algemeen gehanteerde omschrijving van de aard van de ROL.",
+                max_length=20,
+                verbose_name="omschrijving generiek",
+            ),
+        )
     ]

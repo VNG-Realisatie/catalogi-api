@@ -8,29 +8,43 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0013_auto_20180709_1638'),
-    ]
+    dependencies = [("datamodel", "0013_auto_20180709_1638")]
 
     operations = [
         migrations.AddField(
-            model_name='catalogus',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', null=True),
+            model_name="catalogus",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='eigenschap',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', null=True),
+            model_name="eigenschap",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='statustype',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', null=True),
+            model_name="statustype",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='zaaktype',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, help_text='Unieke resource identifier (UUID4)', null=True),
+            model_name="zaaktype",
+            name="uuid",
+            field=models.UUIDField(
+                default=uuid.uuid4,
+                help_text="Unieke resource identifier (UUID4)",
+                null=True,
+            ),
         ),
     ]

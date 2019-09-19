@@ -7,20 +7,23 @@ from vng_api_common.utils import get_resource_for_path
 
 
 def migrate_to_url(apps, _):
-    ZaakTypenRelatie = apps.get_model('datamodel.ZaakTypenRelatie')
+    ZaakTypenRelatie = apps.get_model("datamodel.ZaakTypenRelatie")
 
     for relation in ZaakTypenRelatie.objects.all():
-        url = reverse('zaaktype-detail', kwargs={
-            'version': '1',
-            'uuid': relation.zaaktype_naar.uuid,
-            'catalogus_uuid': relation.zaaktype_naar.catalogus.uuid,
-        })
+        url = reverse(
+            "zaaktype-detail",
+            kwargs={
+                "version": "1",
+                "uuid": relation.zaaktype_naar.uuid,
+                "catalogus_uuid": relation.zaaktype_naar.catalogus.uuid,
+            },
+        )
         relation.gerelateerd_zaaktype = url
         relation.save()
 
 
 def migrate_from_url(apps, _):
-    ZaakTypenRelatie = apps.get_model('datamodel.ZaakTypenRelatie')
+    ZaakTypenRelatie = apps.get_model("datamodel.ZaakTypenRelatie")
 
     for relation in ZaakTypenRelatie.objects.all():
         zaaktype_naar = get_resource_for_path(relation.gerelateerd_zaaktype)
@@ -30,10 +33,6 @@ def migrate_from_url(apps, _):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0068_auto_20190115_1651'),
-    ]
+    dependencies = [("datamodel", "0068_auto_20190115_1651")]
 
-    operations = [
-        migrations.RunPython(migrate_to_url, migrate_from_url),
-    ]
+    operations = [migrations.RunPython(migrate_to_url, migrate_from_url)]

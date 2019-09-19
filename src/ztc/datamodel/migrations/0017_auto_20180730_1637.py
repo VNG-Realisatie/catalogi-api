@@ -7,17 +7,9 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0016_auto_20180725_1418'),
-    ]
+    dependencies = [("datamodel", "0016_auto_20180725_1418")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='doorlooptijd_behandeling',
-        ),
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='servicenorm_behandeling',
-        ),
+        migrations.RemoveField(model_name="zaaktype", name="doorlooptijd_behandeling"),
+        migrations.RemoveField(model_name="zaaktype", name="servicenorm_behandeling"),
     ]

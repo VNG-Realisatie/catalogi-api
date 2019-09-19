@@ -6,14 +6,18 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0053_auto_20190114_1615'),
-    ]
+    dependencies = [("datamodel", "0053_auto_20190114_1615")]
 
     operations = [
         migrations.AlterField(
-            model_name='zaaktype',
-            name='trefwoorden',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=30, verbose_name='trefwoord'), blank=True, default=list, help_text='Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.', size=None),
-        ),
+            model_name="zaaktype",
+            name="trefwoorden",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(max_length=30, verbose_name="trefwoord"),
+                blank=True,
+                default=list,
+                help_text="Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd.",
+                size=None,
+            ),
+        )
     ]

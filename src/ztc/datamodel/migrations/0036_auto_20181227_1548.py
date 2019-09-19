@@ -6,14 +6,26 @@ import vng_api_common.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0035_auto_20181211_1746'),
-    ]
+    dependencies = [("datamodel", "0035_auto_20181211_1746")]
 
     operations = [
         migrations.AlterField(
-            model_name='zaaktype',
-            name='vertrouwelijkheidaanduiding',
-            field=vng_api_common.fields.VertrouwelijkheidsAanduidingField(choices=[('openbaar', 'OPENBAAR'), ('beperkt openbaar', 'BEPERKT OPENBAAR'), ('intern', 'INTERN'), ('zaakvertrouwelijk', 'ZAAKVERTROUWELIJK'), ('vertrouwelijk', 'VERTROUWELIJK'), ('confidentieel', 'CONFIDENTIEEL'), ('geheim', 'GEHEIM'), ('zeer geheim', 'ZEER GEHEIM')], help_text='Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.', max_length=20, verbose_name='vertrouwelijkheidaanduiding'),
-        ),
+            model_name="zaaktype",
+            name="vertrouwelijkheidaanduiding",
+            field=vng_api_common.fields.VertrouwelijkheidsAanduidingField(
+                choices=[
+                    ("openbaar", "OPENBAAR"),
+                    ("beperkt openbaar", "BEPERKT OPENBAAR"),
+                    ("intern", "INTERN"),
+                    ("zaakvertrouwelijk", "ZAAKVERTROUWELIJK"),
+                    ("vertrouwelijk", "VERTROUWELIJK"),
+                    ("confidentieel", "CONFIDENTIEEL"),
+                    ("geheim", "GEHEIM"),
+                    ("zeer geheim", "ZEER GEHEIM"),
+                ],
+                help_text="Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.",
+                max_length=20,
+                verbose_name="vertrouwelijkheidaanduiding",
+            ),
+        )
     ]

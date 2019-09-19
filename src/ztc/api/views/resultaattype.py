@@ -8,11 +8,13 @@ from ..serializers import ResultaatTypeSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
-class ResultaatTypeViewSet(CheckQueryParamsMixin,
-                           ZaakTypeConceptMixin,
-                           mixins.CreateModelMixin,
-                           mixins.DestroyModelMixin,
-                           viewsets.ReadOnlyModelViewSet):
+class ResultaatTypeViewSet(
+    CheckQueryParamsMixin,
+    ZaakTypeConceptMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.ReadOnlyModelViewSet,
+):
     """
     Opvragen en bewerken van RESULTAATTYPEn van een ZAAKTYPE.
 
@@ -53,13 +55,14 @@ class ResultaatTypeViewSet(CheckQueryParamsMixin,
     Verwijder een RESULTAATTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE
     een concept betreft.
     """
-    queryset = ResultaatType.objects.all().order_by('-pk')
+
+    queryset = ResultaatType.objects.all().order_by("-pk")
     serializer_class = ResultaatTypeSerializer
     filter_class = ResultaatTypeFilter
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     required_scopes = {
-        'list': SCOPE_ZAAKTYPES_READ,
-        'retrieve': SCOPE_ZAAKTYPES_READ,
-        'create': SCOPE_ZAAKTYPES_WRITE,
-        'destroy': SCOPE_ZAAKTYPES_WRITE,
+        "list": SCOPE_ZAAKTYPES_READ,
+        "retrieve": SCOPE_ZAAKTYPES_READ,
+        "create": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE,
     }

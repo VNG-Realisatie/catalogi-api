@@ -5,41 +5,19 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0097_auto_20190619_1521'),
-    ]
+    dependencies = [("datamodel", "0097_auto_20190619_1521")]
 
     operations = [
+        migrations.RemoveField(model_name="eigenschap", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="eigenschap", name="datum_einde_geldigheid"),
         migrations.RemoveField(
-            model_name='eigenschap',
-            name='datum_begin_geldigheid',
+            model_name="resultaattype", name="datum_begin_geldigheid"
         ),
         migrations.RemoveField(
-            model_name='eigenschap',
-            name='datum_einde_geldigheid',
+            model_name="resultaattype", name="datum_einde_geldigheid"
         ),
-        migrations.RemoveField(
-            model_name='resultaattype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='resultaattype',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='roltype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='roltype',
-            name='datum_einde_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='statustype',
-            name='datum_begin_geldigheid',
-        ),
-        migrations.RemoveField(
-            model_name='statustype',
-            name='datum_einde_geldigheid',
-        ),
+        migrations.RemoveField(model_name="roltype", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="roltype", name="datum_einde_geldigheid"),
+        migrations.RemoveField(model_name="statustype", name="datum_begin_geldigheid"),
+        migrations.RemoveField(model_name="statustype", name="datum_einde_geldigheid"),
     ]

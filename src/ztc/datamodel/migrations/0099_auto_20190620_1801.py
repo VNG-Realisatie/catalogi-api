@@ -6,19 +6,29 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0098_auto_20190619_1707'),
-    ]
+    dependencies = [("datamodel", "0098_auto_20190619_1707")]
 
     operations = [
         migrations.AlterField(
-            model_name='informatieobjecttype',
-            name='model',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.URLField(verbose_name='model'), blank=True, default=list, help_text='De URL naar het model / sjabloon dat wordt gebruikt voor de creatie van informatieobjecten van dit INFORMATIEOBJECTTYPE. (Gebruik een komma om waarden van elkaar te onderscheiden.)', size=None),
+            model_name="informatieobjecttype",
+            name="model",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.URLField(verbose_name="model"),
+                blank=True,
+                default=list,
+                help_text="De URL naar het model / sjabloon dat wordt gebruikt voor de creatie van informatieobjecten van dit INFORMATIEOBJECTTYPE. (Gebruik een komma om waarden van elkaar te onderscheiden.)",
+                size=None,
+            ),
         ),
         migrations.AlterField(
-            model_name='informatieobjecttype',
-            name='trefwoord',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=30, verbose_name='trefwoord'), blank=True, default=list, help_text='Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar te onderscheiden.)', size=None),
+            model_name="informatieobjecttype",
+            name="trefwoord",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(max_length=30, verbose_name="trefwoord"),
+                blank=True,
+                default=list,
+                help_text="Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar te onderscheiden.)",
+                size=None,
+            ),
         ),
     ]

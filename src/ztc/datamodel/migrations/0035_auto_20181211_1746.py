@@ -5,35 +5,38 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0034_auto_20181211_1725'),
-    ]
+    dependencies = [("datamodel", "0034_auto_20181211_1725")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='informatieobjecttype',
-            options={'ordering': ('catalogus', 'informatieobjecttype_omschrijving'), 'verbose_name': 'Informatieobjecttype', 'verbose_name_plural': 'Informatieobjecttypen'},
+            name="informatieobjecttype",
+            options={
+                "ordering": ("catalogus", "informatieobjecttype_omschrijving"),
+                "verbose_name": "Informatieobjecttype",
+                "verbose_name_plural": "Informatieobjecttypen",
+            },
         ),
         migrations.AlterModelOptions(
-            name='zaaktype',
-            options={'ordering': ('catalogus', 'zaaktype_identificatie'), 'verbose_name': 'Zaaktype', 'verbose_name_plural': 'Zaaktypen'},
+            name="zaaktype",
+            options={
+                "ordering": ("catalogus", "zaaktype_identificatie"),
+                "verbose_name": "Zaaktype",
+                "verbose_name_plural": "Zaaktypen",
+            },
         ),
         migrations.RenameField(
-            model_name='informatieobjecttype',
-            old_name='maakt_deel_uit_van',
-            new_name='catalogus',
+            model_name="informatieobjecttype",
+            old_name="maakt_deel_uit_van",
+            new_name="catalogus",
         ),
         migrations.RenameField(
-            model_name='zaaktype',
-            old_name='maakt_deel_uit_van',
-            new_name='catalogus',
+            model_name="zaaktype", old_name="maakt_deel_uit_van", new_name="catalogus"
         ),
         migrations.AlterUniqueTogether(
-            name='informatieobjecttype',
-            unique_together={('catalogus', 'informatieobjecttype_omschrijving')},
+            name="informatieobjecttype",
+            unique_together={("catalogus", "informatieobjecttype_omschrijving")},
         ),
         migrations.AlterUniqueTogether(
-            name='zaaktype',
-            unique_together={('catalogus', 'zaaktype_identificatie')},
+            name="zaaktype", unique_together={("catalogus", "zaaktype_identificatie")}
         ),
     ]

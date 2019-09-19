@@ -5,13 +5,11 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.serializers import ValidationError
 from vng_api_common.constants import (
-    BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze
+    BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
 )
 from vng_api_common.models import APICredential
 
-from ztc.datamodel.constants import (
-    SelectielijstKlasseProcestermijn as Procestermijn
-)
+from ztc.datamodel.constants import SelectielijstKlasseProcestermijn as Procestermijn
 
 
 def fetch_object(resource: str, url: str) -> dict:
@@ -23,10 +21,10 @@ def fetch_object(resource: str, url: str) -> dict:
 
 
 class RelationCatalogValidator:
-    code = 'relations-incorrect-catalogus'
+    code = "relations-incorrect-catalogus"
     message = _("The {} has catalogus different from created object")
 
-    def __init__(self, relation_field: str, catalogus_field='catalogus'):
+    def __init__(self, relation_field: str, catalogus_field="catalogus"):
         self.relation_field = relation_field
         self.catalogus_field = catalogus_field
 
@@ -42,14 +40,16 @@ class RelationCatalogValidator:
 
         for relation in relations:
             if relation.catalogus != catalogus:
-                raise ValidationError(self.message.format(self.relation_field), code=self.code)
+                raise ValidationError(
+                    self.message.format(self.relation_field), code=self.code
+                )
 
 
 class ProcesTypeValidator:
-    code = 'procestype-mismatch'
+    code = "procestype-mismatch"
     message = _("{} should belong to the same procestype as {}")
 
-    def __init__(self, relation_field: str, zaaktype_field='zaaktype'):
+    def __init__(self, relation_field: str, zaaktype_field="zaaktype"):
         self.relation_field = relation_field
         self.zaaktype_field = zaaktype_field
 
@@ -60,17 +60,26 @@ class ProcesTypeValidator:
         if not selectielijstklasse_url:
             return
 
-        selectielijstklasse = fetch_object('resultaat', selectielijstklasse_url)
+        selectielijstklasse = fetch_object("resultaat", selectielijstklasse_url)
 
-        if selectielijstklasse['procesType'] != zaaktype.selectielijst_procestype:
-            raise ValidationError(self.message.format(self.relation_field, self.zaaktype_field), code=self.code)
+        if selectielijstklasse["procesType"] != zaaktype.selectielijst_procestype:
+            raise ValidationError(
+                self.message.format(self.relation_field, self.zaaktype_field),
+                code=self.code,
+            )
 
 
 class ProcestermijnAfleidingswijzeValidator:
-    code = 'invalid-afleidingswijze-for-procestermijn'
-    message = _("afleidingswijze cannot be {} when selectielijstklasse.procestermijn is {}")
+    code = "invalid-afleidingswijze-for-procestermijn"
+    message = _(
+        "afleidingswijze cannot be {} when selectielijstklasse.procestermijn is {}"
+    )
 
-    def __init__(self, selectielijstklasse_field: str, archiefprocedure_field='brondatum_archiefprocedure'):
+    def __init__(
+        self,
+        selectielijstklasse_field: str,
+        archiefprocedure_field="brondatum_archiefprocedure",
+    ):
         self.selectielijstklasse_field = selectielijstklasse_field
         self.archiefprocedure_field = archiefprocedure_field
 
@@ -81,20 +90,31 @@ class ProcestermijnAfleidingswijzeValidator:
         if not selectielijstklasse_url:
             return
 
-        selectielijstklasse = fetch_object('resultaat', selectielijstklasse_url)
-        procestermijn = selectielijstklasse['procestermijn']
-        afleidingswijze = archiefprocedure['afleidingswijze']
+        selectielijstklasse = fetch_object("resultaat", selectielijstklasse_url)
+        procestermijn = selectielijstklasse["procestermijn"]
+        afleidingswijze = archiefprocedure["afleidingswijze"]
 
         error = False
-        if procestermijn == Procestermijn.nihil and afleidingswijze != Afleidingswijze.afgehandeld or \
-           procestermijn != Procestermijn.nihil and afleidingswijze == Afleidingswijze.afgehandeld:
+        if (
+            procestermijn == Procestermijn.nihil
+            and afleidingswijze != Afleidingswijze.afgehandeld
+            or procestermijn != Procestermijn.nihil
+            and afleidingswijze == Afleidingswijze.afgehandeld
+        ):
             error = True
-        elif procestermijn == Procestermijn.ingeschatte_bestaansduur_procesobject and afleidingswijze != Afleidingswijze.termijn or \
-             procestermijn != Procestermijn.ingeschatte_bestaansduur_procesobject and afleidingswijze == Afleidingswijze.termijn:
+        elif (
+            procestermijn == Procestermijn.ingeschatte_bestaansduur_procesobject
+            and afleidingswijze != Afleidingswijze.termijn
+            or procestermijn != Procestermijn.ingeschatte_bestaansduur_procesobject
+            and afleidingswijze == Afleidingswijze.termijn
+        ):
             error = True
 
         if error:
-            raise ValidationError(self.message.format(afleidingswijze, procestermijn), code=self.code)
+            raise ValidationError(
+                self.message.format(afleidingswijze, procestermijn), code=self.code
+            )
+
 
 def validate_brondatumarchiefprocedure(data: dict, mapping: dict):
     error = False
@@ -111,87 +131,98 @@ def validate_brondatumarchiefprocedure(data: dict, mapping: dict):
 
 
 class BrondatumArchiefprocedureValidator:
-    empty_code = 'must-be-empty'
-    empty_message = _('This field must be empty for afleidingswijze `{}`')
-    required_code = 'required'
-    required_message = _('This field is required for afleidingswijze `{}`')
+    empty_code = "must-be-empty"
+    empty_message = _("This field must be empty for afleidingswijze `{}`")
+    required_code = "required"
+    required_message = _("This field is required for afleidingswijze `{}`")
 
-    def __init__(self, archiefprocedure_field='brondatum_archiefprocedure'):
+    def __init__(self, archiefprocedure_field="brondatum_archiefprocedure"):
         self.archiefprocedure_field = archiefprocedure_field
 
     def __call__(self, attrs: dict):
         archiefprocedure = attrs.get(self.archiefprocedure_field)
-        afleidingswijze = archiefprocedure['afleidingswijze']
+        afleidingswijze = archiefprocedure["afleidingswijze"]
 
         mapping = {
             Afleidingswijze.afgehandeld: {
-                'procestermijn': False,
-                'datumkenmerk': False,
-                'einddatum_bekend': False,
-                'objecttype': False,
-                'registratie': False
+                "procestermijn": False,
+                "datumkenmerk": False,
+                "einddatum_bekend": False,
+                "objecttype": False,
+                "registratie": False,
             },
             Afleidingswijze.ander_datumkenmerk: {
-                'procestermijn': False,
-                'datumkenmerk': True,
-                'objecttype': True,
-                'registratie': True
+                "procestermijn": False,
+                "datumkenmerk": True,
+                "objecttype": True,
+                "registratie": True,
             },
             Afleidingswijze.eigenschap: {
-                'procestermijn': False,
-                'datumkenmerk': True,
-                'objecttype': False,
-                'registratie': False
+                "procestermijn": False,
+                "datumkenmerk": True,
+                "objecttype": False,
+                "registratie": False,
             },
             Afleidingswijze.gerelateerde_zaak: {
-                'procestermijn': False,
-                'datumkenmerk': False,
-                'objecttype': False,
-                'registratie': False
+                "procestermijn": False,
+                "datumkenmerk": False,
+                "objecttype": False,
+                "registratie": False,
             },
             Afleidingswijze.hoofdzaak: {
-                'procestermijn': False,
-                'datumkenmerk': False,
-                'objecttype': False,
-                'registratie': False
+                "procestermijn": False,
+                "datumkenmerk": False,
+                "objecttype": False,
+                "registratie": False,
             },
             Afleidingswijze.ingangsdatum_besluit: {
-                'procestermijn': False,
-                'datumkenmerk': False,
-                'objecttype': False,
-                'registratie': False
+                "procestermijn": False,
+                "datumkenmerk": False,
+                "objecttype": False,
+                "registratie": False,
             },
             Afleidingswijze.termijn: {
-                'procestermijn': True,
-                'datumkenmerk': False,
-                'einddatum_bekend': False,
-                'objecttype': False,
-                'registratie': False
+                "procestermijn": True,
+                "datumkenmerk": False,
+                "einddatum_bekend": False,
+                "objecttype": False,
+                "registratie": False,
             },
             Afleidingswijze.vervaldatum_besluit: {
-                'procestermijn': False,
-                'datumkenmerk': False,
-                'objecttype': False,
-                'registratie': False
+                "procestermijn": False,
+                "datumkenmerk": False,
+                "objecttype": False,
+                "registratie": False,
             },
             Afleidingswijze.zaakobject: {
-                'procestermijn': False,
-                'datumkenmerk': True,
-                'objecttype': True,
-                'registratie': False
+                "procestermijn": False,
+                "datumkenmerk": True,
+                "objecttype": True,
+                "registratie": False,
             },
         }
 
-        error, empty, required = validate_brondatumarchiefprocedure(archiefprocedure, mapping[afleidingswijze])
+        error, empty, required = validate_brondatumarchiefprocedure(
+            archiefprocedure, mapping[afleidingswijze]
+        )
 
         if error:
             error_dict = {}
             for fieldname in empty:
-                error_dict.update({
-                    f'{self.archiefprocedure_field}.{fieldname}': ErrorDetail(self.empty_message.format(afleidingswijze), self.empty_code)
-                })
+                error_dict.update(
+                    {
+                        f"{self.archiefprocedure_field}.{fieldname}": ErrorDetail(
+                            self.empty_message.format(afleidingswijze), self.empty_code
+                        )
+                    }
+                )
             for fieldname in required:
-                error_dict.update({
-                    f'{self.archiefprocedure_field}.{fieldname}': ErrorDetail(self.required_message.format(afleidingswijze), self.required_code)
-                })
+                error_dict.update(
+                    {
+                        f"{self.archiefprocedure_field}.{fieldname}": ErrorDetail(
+                            self.required_message.format(afleidingswijze),
+                            self.required_code,
+                        )
+                    }
+                )
             raise ValidationError(error_dict)

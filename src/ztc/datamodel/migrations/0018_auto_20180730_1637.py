@@ -12,20 +12,31 @@ days_30 = timedelta(days=30)
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0017_auto_20180730_1637'),
-    ]
+    dependencies = [("datamodel", "0017_auto_20180730_1637")]
 
     operations = [
         migrations.AddField(
-            model_name='zaaktype',
-            name='doorlooptijd_behandeling',
-            field=vng_api_common.fields.DaysDurationField(default=days_30, help_text='De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen.', max_duration=999, min_duration=1, verbose_name='doorlooptijd behandeling'),
+            model_name="zaaktype",
+            name="doorlooptijd_behandeling",
+            field=vng_api_common.fields.DaysDurationField(
+                default=days_30,
+                help_text="De periode waarbinnen volgens wet- en regelgeving een ZAAK van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen.",
+                max_duration=999,
+                min_duration=1,
+                verbose_name="doorlooptijd behandeling",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='zaaktype',
-            name='servicenorm_behandeling',
-            field=vng_api_common.fields.DaysDurationField(blank=True, help_text='De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s).', max_duration=999, min_duration=1, null=True, verbose_name='servicenorm behandeling'),
+            model_name="zaaktype",
+            name="servicenorm_behandeling",
+            field=vng_api_common.fields.DaysDurationField(
+                blank=True,
+                help_text="De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE afgerond wordt conform de geldende servicenormen van de zaakbehandelende organisatie(s).",
+                max_duration=999,
+                min_duration=1,
+                null=True,
+                verbose_name="servicenorm behandeling",
+            ),
         ),
     ]

@@ -1,6 +1,7 @@
 from rest_framework import mixins, viewsets
 from vng_api_common.notifications.viewsets import (
-    NotificationCreateMixin, NotificationDestroyMixin
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
 )
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -12,13 +13,15 @@ from ..serializers import InformatieObjectTypeSerializer
 from .mixins import ConceptMixin
 
 
-class InformatieObjectTypeViewSet(CheckQueryParamsMixin,
-                                  ConceptMixin,
-                                  NotificationCreateMixin,
-                                  NotificationDestroyMixin,
-                                  mixins.CreateModelMixin,
-                                  mixins.DestroyModelMixin,
-                                  viewsets.ReadOnlyModelViewSet):
+class InformatieObjectTypeViewSet(
+    CheckQueryParamsMixin,
+    ConceptMixin,
+    NotificationCreateMixin,
+    NotificationDestroyMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.ReadOnlyModelViewSet,
+):
     """
     Opvragen en bewerken van INFORMATIEOBJECTTYPEn nodig voor
     INFORMATIEOBJECTen in de Documenten API.
@@ -59,15 +62,16 @@ class InformatieObjectTypeViewSet(CheckQueryParamsMixin,
     Verwijder een INFORMATIEOBJECTTYPE. Dit kan alleen als het een concept
     betreft.
     """
-    queryset = InformatieObjectType.objects.all().order_by('-pk')
+
+    queryset = InformatieObjectType.objects.all().order_by("-pk")
     serializer_class = InformatieObjectTypeSerializer
     filterset_class = InformatieObjectTypeFilter
-    lookup_field = 'uuid'
+    lookup_field = "uuid"
     required_scopes = {
-        'list': SCOPE_ZAAKTYPES_READ,
-        'retrieve': SCOPE_ZAAKTYPES_READ,
-        'create': SCOPE_ZAAKTYPES_WRITE,
-        'destroy': SCOPE_ZAAKTYPES_WRITE,
-        'publish': SCOPE_ZAAKTYPES_WRITE,
+        "list": SCOPE_ZAAKTYPES_READ,
+        "retrieve": SCOPE_ZAAKTYPES_READ,
+        "create": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE,
+        "publish": SCOPE_ZAAKTYPES_WRITE,
     }
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN

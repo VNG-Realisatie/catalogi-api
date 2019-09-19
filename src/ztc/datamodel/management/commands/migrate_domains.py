@@ -8,7 +8,10 @@ BRC = ("https://ref.tst.vng.cloud/brc/", "https://besluiten-api.vng.cloud/")
 NRC = ("https://ref.tst.vng.cloud/nrc/", "https://notificaties-api.vng.cloud/")
 AC = ("https://ref.tst.vng.cloud/ac/", "https://autorisaties-api.vng.cloud/")
 
-VRL = ("https://ref.tst.vng.cloud/referentielijsten/", "https://referentielijsten-api.vng.cloud/")
+VRL = (
+    "https://ref.tst.vng.cloud/referentielijsten/",
+    "https://referentielijsten-api.vng.cloud/",
+)
 
 
 def _base_mapping(variable: tuple) -> tuple:
@@ -23,9 +26,9 @@ def _base_mapping(variable: tuple) -> tuple:
 
 
 BASE_MAPPING = (
-    _base_mapping(("vng_api_common.APICredential", "api_root")) +
-    _base_mapping(("authorizations.AuthorizationsConfig", "api_root")) +
-    _base_mapping(("notifications.NotificationsConfig", "api_root"))
+    _base_mapping(("vng_api_common.APICredential", "api_root"))
+    + _base_mapping(("authorizations.AuthorizationsConfig", "api_root"))
+    + _base_mapping(("notifications.NotificationsConfig", "api_root"))
 )
 
 MAPPING = BASE_MAPPING + (
@@ -47,9 +50,5 @@ class Command(BaseCommand):
             objects = model.objects.filter(**{f"{field}__startswith": old})
             self.stdout.write(f"  Updating {objects.count()} objects...\n\n")
             for obj in objects:
-                setattr(
-                    obj,
-                    field,
-                    getattr(obj, field).replace(old, new, 1)
-                )
+                setattr(obj, field, getattr(obj, field).replace(old, new, 1))
                 obj.save()

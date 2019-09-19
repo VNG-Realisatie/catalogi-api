@@ -6,14 +6,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0051_remove_zaaktype_old_verlengingstermijn'),
-    ]
+    dependencies = [("datamodel", "0051_remove_zaaktype_old_verlengingstermijn")]
 
     operations = [
         migrations.AlterField(
-            model_name='zaaktype',
-            name='trefwoord',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=30, verbose_name='trefwoord'), blank=True, help_text='Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd (gebruik een komma om waarden van elkaar te onderscheiden).', size=None),
-        ),
+            model_name="zaaktype",
+            name="trefwoord",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(max_length=30, verbose_name="trefwoord"),
+                blank=True,
+                help_text="Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden gekarakteriseerd (gebruik een komma om waarden van elkaar te onderscheiden).",
+                size=None,
+            ),
+        )
     ]

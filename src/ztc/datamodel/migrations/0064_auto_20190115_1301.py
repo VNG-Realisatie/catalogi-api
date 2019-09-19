@@ -6,19 +6,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0063_auto_20190115_1212'),
-    ]
+    dependencies = [("datamodel", "0063_auto_20190115_1212")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='producten_of_diensten',
-        ),
+        migrations.RemoveField(model_name="zaaktype", name="producten_of_diensten"),
         migrations.AddField(
-            model_name='zaaktype',
-            name='producten_of_diensten',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.URLField(verbose_name='URL naar product/dienst'), default=[], help_text='Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.', size=None),
+            model_name="zaaktype",
+            name="producten_of_diensten",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.URLField(verbose_name="URL naar product/dienst"),
+                default=[],
+                help_text="Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht.",
+                size=None,
+            ),
             preserve_default=False,
         ),
     ]

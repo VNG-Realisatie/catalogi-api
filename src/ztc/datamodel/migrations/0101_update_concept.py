@@ -4,9 +4,9 @@ from django.db import migrations
 
 
 def update_concept(apps, schema_editor):
-    ZaakType = apps.get_model('datamodel.ZaakType')
-    BesluitType = apps.get_model('datamodel.BesluitType')
-    InformatieObjectType = apps.get_model('datamodel.InformatieObjectType')
+    ZaakType = apps.get_model("datamodel.ZaakType")
+    BesluitType = apps.get_model("datamodel.BesluitType")
+    InformatieObjectType = apps.get_model("datamodel.InformatieObjectType")
 
     for model in [ZaakType, BesluitType, InformatieObjectType]:
         for model_object in model.objects.all():
@@ -16,10 +16,6 @@ def update_concept(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0100_auto_20190621_1021'),
-    ]
+    dependencies = [("datamodel", "0100_auto_20190621_1021")]
 
-    operations = [
-        migrations.RunPython(update_concept),
-    ]
+    operations = [migrations.RunPython(update_concept)]

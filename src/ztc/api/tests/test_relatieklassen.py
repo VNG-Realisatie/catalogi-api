@@ -2,14 +2,19 @@ from unittest import skip
 
 from rest_framework import status
 from vng_api_common.tests import (
-    get_operation_url, get_validation_errors, reverse, reverse_lazy
+    get_operation_url,
+    get_validation_errors,
+    reverse,
+    reverse_lazy,
 )
 
 from ztc.datamodel.choices import RichtingChoices
 from ztc.datamodel.models import ZaakInformatieobjectType
 from ztc.datamodel.tests.factories import (
-    InformatieObjectTypeFactory, ZaakInformatieobjectTypeArchiefregimeFactory,
-    ZaakInformatieobjectTypeFactory, ZaakTypeFactory
+    InformatieObjectTypeFactory,
+    ZaakInformatieobjectTypeArchiefregimeFactory,
+    ZaakInformatieobjectTypeFactory,
+    ZaakTypeFactory,
 )
 
 from .base import APITestCase
@@ -21,38 +26,44 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
     list_url = reverse_lazy(ZaakInformatieobjectType)
 
     def test_get_list_default_definitief(self):
-        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=True)
-        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=True)
-        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=False)
-        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=False)
+        ziot1 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=True
+        )
+        ziot2 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=True
+        )
+        ziot3 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=False
+        )
+        ziot4 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=False
+        )
         ziot4_url = reverse(ziot4)
 
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()['results']
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]['url'], f'http://testserver{ziot4_url}')
+        self.assertEqual(data[0]["url"], f"http://testserver{ziot4_url}")
 
     def test_get_detail(self):
         ztiot = ZaakInformatieobjectTypeFactory.create()
         url = reverse(ztiot)
         zaaktype_url = reverse(ztiot.zaaktype)
-        informatieobjecttype_url = reverse(
-            ztiot.informatieobjecttype,
-        )
+        informatieobjecttype_url = reverse(ztiot.informatieobjecttype)
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         expected = {
-            'url': f'http://testserver{url}',
-            'zaaktype': f'http://testserver{zaaktype_url}',
-            'informatieobjecttype': f'http://testserver{informatieobjecttype_url}',
-            'volgnummer': ztiot.volgnummer,
-            'richting': ztiot.richting,
-            'statustype': None,
+            "url": f"http://testserver{url}",
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "volgnummer": ztiot.volgnummer,
+            "richting": ztiot.richting,
+            "statustype": None,
         }
         self.assertEqual(response.json(), expected)
 
@@ -62,10 +73,10 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
-            'zaaktype': f'http://testserver{zaaktype_url}',
-            'informatieobjecttype': f'http://testserver{informatieobjecttype_url}',
-            'volgnummer': 13,
-            'richting': RichtingChoices.inkomend,
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "volgnummer": 13,
+            "richting": RichtingChoices.inkomend,
         }
 
         response = self.client.post(self.list_url, data)
@@ -83,10 +94,10 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
-            'zaaktype': f'http://testserver{zaaktype_url}',
-            'informatieobjecttype': f'http://testserver{informatieobjecttype_url}',
-            'volgnummer': 13,
-            'richting': RichtingChoices.inkomend,
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "volgnummer": 13,
+            "richting": RichtingChoices.inkomend,
         }
 
         response = self.client.post(self.list_url, data)
@@ -94,7 +105,10 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Creating relations between non-concept objects is forbidden')
+        self.assertEqual(
+            data["detail"],
+            "Creating relations between non-concept objects is forbidden",
+        )
 
     def test_create_ziot_fail_not_concept_informatieobjecttype(self):
         zaaktype = ZaakTypeFactory.create()
@@ -102,10 +116,10 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
-            'zaaktype': f'http://testserver{zaaktype_url}',
-            'informatieobjecttype': f'http://testserver{informatieobjecttype_url}',
-            'volgnummer': 13,
-            'richting': RichtingChoices.inkomend,
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "volgnummer": 13,
+            "richting": RichtingChoices.inkomend,
         }
 
         response = self.client.post(self.list_url, data)
@@ -113,7 +127,10 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Creating relations between non-concept objects is forbidden')
+        self.assertEqual(
+            data["detail"],
+            "Creating relations between non-concept objects is forbidden",
+        )
 
     def test_delete_ziot(self):
         ziot = ZaakInformatieobjectTypeFactory.create()
@@ -133,10 +150,12 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
+        self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
 
     def test_delete_ziot_fail_not_concept_informatieobjecttype(self):
-        ziot = ZaakInformatieobjectTypeFactory.create(informatieobjecttype__concept=False)
+        ziot = ZaakInformatieobjectTypeFactory.create(
+            informatieobjecttype__concept=False
+        )
         ziot_url = reverse(ziot)
 
         response = self.client.delete(ziot_url)
@@ -144,7 +163,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data['detail'], 'Alleen concepten kunnen worden verwijderd.')
+        self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
 
 
 class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
@@ -153,103 +172,129 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
 
     def test_filter_zaaktype(self):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(
-            2,
-            zaaktype__concept=False,
-            informatieobjecttype__concept=False
+            2, zaaktype__concept=False, informatieobjecttype__concept=False
         )
-        url = f'http://testserver{reverse(ztiot1)}'
+        url = f"http://testserver{reverse(ztiot1)}"
         zaaktype1_url = reverse(ztiot1.zaaktype)
         zaaktype2_url = reverse(ztiot2.zaaktype)
-        zaaktype1_url = f'http://testserver{zaaktype1_url}'
-        zaaktype2_url = f'http://testserver{zaaktype2_url}'
+        zaaktype1_url = f"http://testserver{zaaktype1_url}"
+        zaaktype2_url = f"http://testserver{zaaktype2_url}"
 
-        response = self.client.get(self.list_url, {'zaaktype': zaaktype1_url})
+        response = self.client.get(self.list_url, {"zaaktype": zaaktype1_url})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()['results']
+        data = response.json()["results"]
 
-        self.assertEqual(data[0]['url'], url)
-        self.assertEqual(data[0]['zaaktype'], zaaktype1_url)
-        self.assertNotEqual(data[0]['zaaktype'], zaaktype2_url)
+        self.assertEqual(data[0]["url"], url)
+        self.assertEqual(data[0]["zaaktype"], zaaktype1_url)
+        self.assertNotEqual(data[0]["zaaktype"], zaaktype2_url)
 
     def test_filter_informatieobjecttype(self):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(
-            2,
-            zaaktype__concept=False,
-            informatieobjecttype__concept=False
+            2, zaaktype__concept=False, informatieobjecttype__concept=False
         )
-        url = f'http://testserver{reverse(ztiot1)}'
+        url = f"http://testserver{reverse(ztiot1)}"
         informatieobjecttype1_url = reverse(ztiot1.informatieobjecttype)
         informatieobjecttype2_url = reverse(ztiot2.informatieobjecttype)
-        informatieobjecttype1_url = f'http://testserver{informatieobjecttype1_url}'
-        informatieobjecttype2_url = f'http://testserver{informatieobjecttype2_url}'
+        informatieobjecttype1_url = f"http://testserver{informatieobjecttype1_url}"
+        informatieobjecttype2_url = f"http://testserver{informatieobjecttype2_url}"
 
-        response = self.client.get(self.list_url, {'informatieobjecttype': informatieobjecttype1_url})
+        response = self.client.get(
+            self.list_url, {"informatieobjecttype": informatieobjecttype1_url}
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        data = response.json()['results']
+        data = response.json()["results"]
 
-        self.assertEqual(data[0]['url'], url)
-        self.assertEqual(data[0]['informatieobjecttype'], informatieobjecttype1_url)
-        self.assertNotEqual(data[0]['informatieobjecttype'], informatieobjecttype2_url)
+        self.assertEqual(data[0]["url"], url)
+        self.assertEqual(data[0]["informatieobjecttype"], informatieobjecttype1_url)
+        self.assertNotEqual(data[0]["informatieobjecttype"], informatieobjecttype2_url)
 
     def test_filter_ziot_status_alles(self):
-        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=True)
-        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=True)
-        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=False)
-        ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=False)
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=True
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=True
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=False
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=False
+        )
 
-        response = self.client.get(self.list_url, {'status': 'alles'})
+        response = self.client.get(self.list_url, {"status": "alles"})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()['results']
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 4)
 
     def test_filter_ziot_status_concept(self):
-        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=True)
-        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=True)
-        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=False)
-        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=False)
+        ziot1 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=True
+        )
+        ziot2 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=True
+        )
+        ziot3 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=False
+        )
+        ziot4 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=False
+        )
         ziot1_url = reverse(ziot1)
 
-        response = self.client.get(self.list_url, {'status': 'concept'})
+        response = self.client.get(self.list_url, {"status": "concept"})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()['results']
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]['url'], f'http://testserver{ziot1_url}')
+        self.assertEqual(data[0]["url"], f"http://testserver{ziot1_url}")
 
     def test_filter_ziot_status_definitief(self):
-        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=True)
-        ziot2 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=True)
-        ziot3 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=True, informatieobjecttype__concept=False)
-        ziot4 = ZaakInformatieobjectTypeFactory.create(zaaktype__concept=False, informatieobjecttype__concept=False)
+        ziot1 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=True
+        )
+        ziot2 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=True
+        )
+        ziot3 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=True, informatieobjecttype__concept=False
+        )
+        ziot4 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype__concept=False, informatieobjecttype__concept=False
+        )
         ziot4_url = reverse(ziot4)
 
-        response = self.client.get(self.list_url, {'status': 'definitief'})
+        response = self.client.get(self.list_url, {"status": "definitief"})
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()['results']
+        data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]['url'], f'http://testserver{ziot4_url}')
+        self.assertEqual(data[0]["url"], f"http://testserver{ziot4_url}")
 
 
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         ZaakInformatieobjectTypeFactory.create_batch(2)
-        zaakinformatieobjecttype_list_url = get_operation_url('zaakinformatieobjecttype_list')
+        zaakinformatieobjecttype_list_url = get_operation_url(
+            "zaakinformatieobjecttype_list"
+        )
 
-        response = self.client.get(zaakinformatieobjecttype_list_url, {'someparam': 'somevalue'})
+        response = self.client.get(
+            zaakinformatieobjecttype_list_url, {"someparam": "somevalue"}
+        )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        error = get_validation_errors(response, 'nonFieldErrors')
-        self.assertEqual(error['code'], 'unknown-parameters')
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "unknown-parameters")
 
 
 class ZaakInformatieobjectTypePaginationTestCase(APITestCase):
@@ -257,28 +302,32 @@ class ZaakInformatieobjectTypePaginationTestCase(APITestCase):
     list_url = reverse_lazy(ZaakInformatieobjectType)
 
     def test_pagination_default(self):
-        ZaakInformatieobjectTypeFactory.create_batch(2, zaaktype__concept=False, informatieobjecttype__concept=False)
+        ZaakInformatieobjectTypeFactory.create_batch(
+            2, zaaktype__concept=False, informatieobjecttype__concept=False
+        )
 
         response = self.client.get(self.list_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         response_data = response.json()
-        self.assertEqual(response_data['count'], 2)
-        self.assertIsNone(response_data['previous'])
-        self.assertIsNone(response_data['next'])
+        self.assertEqual(response_data["count"], 2)
+        self.assertIsNone(response_data["previous"])
+        self.assertIsNone(response_data["next"])
 
     def test_pagination_page_param(self):
-        ZaakInformatieobjectTypeFactory.create_batch(2, zaaktype__concept=False, informatieobjecttype__concept=False)
+        ZaakInformatieobjectTypeFactory.create_batch(
+            2, zaaktype__concept=False, informatieobjecttype__concept=False
+        )
 
-        response = self.client.get(self.list_url, {'page': 1})
+        response = self.client.get(self.list_url, {"page": 1})
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         response_data = response.json()
-        self.assertEqual(response_data['count'], 2)
-        self.assertIsNone(response_data['previous'])
-        self.assertIsNone(response_data['next'])
+        self.assertEqual(response_data["count"], 2)
+        self.assertIsNone(response_data["previous"])
+        self.assertIsNone(response_data["next"])
 
 
 @skip("Not MVP yet")
@@ -306,40 +355,52 @@ class ZaakInformatieobjectTypeArchiefregimeAPITests(APITestCase):
 
         self.resultaattype = self.rstiotarc.resultaattype
 
-        self.rstiotarc_list_url = reverse('api:rstiotarc-list', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk
-        })
+        self.rstiotarc_list_url = reverse(
+            "api:rstiotarc-list",
+            kwargs={
+                "version": self.API_VERSION,
+                "catalogus_pk": self.catalogus.pk,
+                "zaaktype_pk": self.zaaktype.pk,
+            },
+        )
 
-        self.rstiotarc_detail_url = reverse('api:rstiotarc-detail', kwargs={
-            'version': self.API_VERSION,
-            'catalogus_pk': self.catalogus.pk,
-            'zaaktype_pk': self.zaaktype.pk,
-            'pk': self.rstiotarc.pk,
-        })
+        self.rstiotarc_detail_url = reverse(
+            "api:rstiotarc-detail",
+            kwargs={
+                "version": self.API_VERSION,
+                "catalogus_pk": self.catalogus.pk,
+                "zaaktype_pk": self.zaaktype.pk,
+                "pk": self.rstiotarc.pk,
+            },
+        )
 
     def test_get_list(self):
         response = self.api_client.get(self.rstiotarc_list_url)
         self.assertEqual(response.status_code, 200)
 
-        data = response.json()['results']
+        data = response.json()["results"]
 
-        self.assertTrue('results' in data)
-        self.assertEqual(len(data['results']), 1)
+        self.assertTrue("results" in data)
+        self.assertEqual(len(data["results"]), 1)
 
     def test_get_detail(self):
         response = self.api_client.get(self.rstiotarc_detail_url)
         self.assertEqual(response.status_code, 200)
 
         expected = {
-            'url': 'http://testserver{}'.format(self.rstiotarc_detail_url),
-            'gerelateerde': 'http://testserver{}'.format(
-                reverse('api:informatieobjecttype-detail', args=[
-                    self.API_VERSION, self.catalogus.pk, self.informatieobjecttype.pk])
+            "url": "http://testserver{}".format(self.rstiotarc_detail_url),
+            "gerelateerde": "http://testserver{}".format(
+                reverse(
+                    "api:informatieobjecttype-detail",
+                    args=[
+                        self.API_VERSION,
+                        self.catalogus.pk,
+                        self.informatieobjecttype.pk,
+                    ],
+                )
             ),
-            'rstzdt.archiefactietermijn': 7,
-            'rstzdt.archiefnominatie': '',
-            'rstzdt.selectielijstklasse': None,
+            "rstzdt.archiefactietermijn": 7,
+            "rstzdt.archiefnominatie": "",
+            "rstzdt.selectielijstklasse": None,
         }
         self.assertEqual(response.json(), expected)

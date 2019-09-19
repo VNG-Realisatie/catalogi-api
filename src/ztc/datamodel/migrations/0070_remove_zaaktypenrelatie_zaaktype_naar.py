@@ -5,13 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0069_migrate_zaaktyperelaties'),
-    ]
+    dependencies = [("datamodel", "0069_migrate_zaaktyperelaties")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='zaaktypenrelatie',
-            name='zaaktype_naar',
-        ),
+        migrations.RemoveField(model_name="zaaktypenrelatie", name="zaaktype_naar")
     ]

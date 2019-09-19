@@ -4,18 +4,14 @@ from django.db import migrations
 
 
 # to postgres types
-MAPPING = {
-    'J': 'TRUE',
-    'N': 'FALSE',
-}
+MAPPING = {"J": "TRUE", "N": "FALSE"}
 
 REVERSE_MAPPING = {value: key for key, value in MAPPING.items()}
 
 
 def operation_factory(field: str, mapping: dict):
-
     def operation(apps, _):
-        ZaakType = apps.get_model('datamodel.ZaakType')
+        ZaakType = apps.get_model("datamodel.ZaakType")
 
         for old, new in mapping.items():
             filter_kwargs = {field: old}
@@ -27,21 +23,19 @@ def operation_factory(field: str, mapping: dict):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0045_auto_20190114_1246'),
-    ]
+    dependencies = [("datamodel", "0045_auto_20190114_1246")]
 
     operations = [
         migrations.RunPython(
-            operation_factory('opschorting_aanhouding_mogelijk', MAPPING),
-            operation_factory('opschorting_aanhouding_mogelijk', REVERSE_MAPPING)
+            operation_factory("opschorting_aanhouding_mogelijk", MAPPING),
+            operation_factory("opschorting_aanhouding_mogelijk", REVERSE_MAPPING),
         ),
         migrations.RunPython(
-            operation_factory('verlenging_mogelijk', MAPPING),
-            operation_factory('verlenging_mogelijk', REVERSE_MAPPING)
+            operation_factory("verlenging_mogelijk", MAPPING),
+            operation_factory("verlenging_mogelijk", REVERSE_MAPPING),
         ),
         migrations.RunPython(
-            operation_factory('publicatie_indicatie', MAPPING),
-            operation_factory('publicatie_indicatie', REVERSE_MAPPING)
+            operation_factory("publicatie_indicatie", MAPPING),
+            operation_factory("publicatie_indicatie", REVERSE_MAPPING),
         ),
     ]

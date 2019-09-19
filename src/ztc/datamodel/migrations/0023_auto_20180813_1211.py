@@ -8,8 +8,8 @@ from django.db import migrations
 
 
 def set_uuids(apps, _):
-    RolType = apps.get_model('datamodel', 'RolType')
-    MogelijkeBetrokkene = apps.get_model('datamodel', 'MogelijkeBetrokkene')
+    RolType = apps.get_model("datamodel", "RolType")
+    MogelijkeBetrokkene = apps.get_model("datamodel", "MogelijkeBetrokkene")
     for model in (RolType, MogelijkeBetrokkene):
         for obj in model.objects.all():
             obj.uuid = uuid.uuid4()
@@ -18,10 +18,6 @@ def set_uuids(apps, _):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0022_auto_20180813_1211'),
-    ]
+    dependencies = [("datamodel", "0022_auto_20180813_1211")]
 
-    operations = [
-        migrations.RunPython(set_uuids, migrations.RunPython.noop),
-    ]
+    operations = [migrations.RunPython(set_uuids, migrations.RunPython.noop)]

@@ -6,23 +6,25 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0070_remove_zaaktypenrelatie_zaaktype_naar'),
-    ]
+    dependencies = [("datamodel", "0070_remove_zaaktypenrelatie_zaaktype_naar")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='heeft_gerelateerd',
-        ),
+        migrations.RemoveField(model_name="zaaktype", name="heeft_gerelateerd"),
         migrations.AddField(
-            model_name='zaakinformatieobjecttype',
-            name='uuid',
-            field=models.UUIDField(help_text='Unieke resource identifier (UUID4)', null=True),
+            model_name="zaakinformatieobjecttype",
+            name="uuid",
+            field=models.UUIDField(
+                help_text="Unieke resource identifier (UUID4)", null=True
+            ),
         ),
         migrations.AlterField(
-            model_name='zaaktypenrelatie',
-            name='zaaktype',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='zaaktypenrelaties', to='datamodel.ZaakType', verbose_name='zaaktype van'),
+            model_name="zaaktypenrelatie",
+            name="zaaktype",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="zaaktypenrelaties",
+                to="datamodel.ZaakType",
+                verbose_name="zaaktype van",
+            ),
         ),
     ]

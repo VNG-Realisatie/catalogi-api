@@ -5,14 +5,16 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0081_auto_20190220_1436'),
-    ]
+    dependencies = [("datamodel", "0081_auto_20190220_1436")]
 
     operations = [
         migrations.AlterField(
-            model_name='resultaattype',
-            name='omschrijving_generiek',
-            field=models.URLField(help_text='Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen.', max_length=1000, verbose_name='omschrijving generiek'),
-        ),
+            model_name="resultaattype",
+            name="omschrijving_generiek",
+            field=models.URLField(
+                help_text="Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen.",
+                max_length=1000,
+                verbose_name="omschrijving generiek",
+            ),
+        )
     ]

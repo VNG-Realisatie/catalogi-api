@@ -5,13 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('datamodel', '0050_convert_verlengingstermijn'),
-    ]
+    dependencies = [("datamodel", "0050_convert_verlengingstermijn")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='zaaktype',
-            name='old_verlengingstermijn',
-        ),
+        migrations.RemoveField(model_name="zaaktype", name="old_verlengingstermijn")
     ]
