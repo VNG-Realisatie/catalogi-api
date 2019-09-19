@@ -2,6 +2,7 @@ from rest_framework import mixins, viewsets
 from vng_api_common.notifications.viewsets import (
     NotificationCreateMixin, NotificationDestroyMixin
 )
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import InformatieObjectType
 from ..filters import InformatieObjectTypeFilter
@@ -11,7 +12,8 @@ from ..serializers import InformatieObjectTypeSerializer
 from .mixins import ConceptMixin
 
 
-class InformatieObjectTypeViewSet(ConceptMixin,
+class InformatieObjectTypeViewSet(CheckQueryParamsMixin,
+                                  ConceptMixin,
                                   NotificationCreateMixin,
                                   NotificationDestroyMixin,
                                   mixins.CreateModelMixin,

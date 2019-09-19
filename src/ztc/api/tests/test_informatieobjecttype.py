@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
-from vng_api_common.tests import get_operation_url
+from vng_api_common.tests import get_operation_url, get_validation_errors
 
 from ...datamodel.models import InformatieObjectType
 from ...datamodel.tests.factories import (
@@ -205,6 +205,19 @@ class InformatieObjectTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{informatieobjecttype2_url}')
+
+
+class FilterValidationTests(APITestCase):
+    def test_unknown_query_params_give_error(self):
+        InformatieObjectTypeFactory.create_batch(2)
+        informatieobjecttype_list_url = get_operation_url('informatieobjecttype_list')
+
+        response = self.client.get(informatieobjecttype_list_url, {'someparam': 'somevalue'})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'unknown-parameters')
 
 
 class InformatieObjectTypePaginationTestCase(APITestCase):
