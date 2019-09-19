@@ -1,5 +1,7 @@
 from rest_framework import status
-from vng_api_common.tests import reverse
+from vng_api_common.tests import (
+    get_operation_url, get_validation_errors, reverse
+)
 
 from ztc.datamodel.models import Catalogus
 from ztc.datamodel.tests.factories import CatalogusFactory
@@ -53,6 +55,19 @@ class CatalogusAPITests(APITestCase):
         catalog = Catalogus.objects.get(domein='TEST')
 
         self.assertEqual(catalog.rsin, '100000009')
+
+
+class FilterValidationTests(APITestCase):
+    def test_unknown_query_params_give_error(self):
+        CatalogusFactory.create_batch(2)
+        catalogus_list_url = get_operation_url('catalogus_list')
+
+        response = self.client.get(catalogus_list_url, {'someparam': 'somevalue'})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'unknown-parameters')
 
 
 class CatalogusFilterAPITests(APITestCase):

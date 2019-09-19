@@ -1,4 +1,5 @@
 from rest_framework import status
+from vng_api_common.tests import get_operation_url, get_validation_errors
 
 from ztc.datamodel.models import StatusType
 from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
@@ -159,6 +160,19 @@ class StatusTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]['url'], f'http://testserver{statustype2_url}')
+
+
+class FilterValidationTests(APITestCase):
+    def test_unknown_query_params_give_error(self):
+        StatusTypeFactory.create_batch(2)
+        statustype_list_url = get_operation_url('statustype_list')
+
+        response = self.client.get(statustype_list_url, {'someparam': 'somevalue'})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, 'nonFieldErrors')
+        self.assertEqual(error['code'], 'unknown-parameters')
 
 
 class StatusTypePaginationTestCase(APITestCase):

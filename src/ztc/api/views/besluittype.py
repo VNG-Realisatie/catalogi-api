@@ -2,6 +2,7 @@ from rest_framework import mixins, viewsets
 from vng_api_common.notifications.viewsets import (
     NotificationCreateMixin, NotificationDestroyMixin
 )
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import BesluitType
 from ..filters import BesluitTypeFilter
@@ -11,7 +12,8 @@ from ..serializers import BesluitTypeSerializer
 from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 
-class BesluitTypeViewSet(ConceptMixin,
+class BesluitTypeViewSet(CheckQueryParamsMixin,
+                         ConceptMixin,
                          M2MConceptCreateMixin,
                          NotificationCreateMixin,
                          NotificationDestroyMixin,
