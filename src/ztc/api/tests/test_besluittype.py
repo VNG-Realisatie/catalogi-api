@@ -1,11 +1,13 @@
 from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.utils import underscore_to_camel
 
 from ...datamodel.models import BesluitType
 from ...datamodel.tests.factories import (
     BesluitTypeFactory,
     InformatieObjectTypeFactory,
     ZaakTypeFactory,
+    CatalogusFactory,
 )
 from .base import APITestCase
 
@@ -184,8 +186,7 @@ class BesluitTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(
-            data["detail"],
-            "Relations to a non-concept zaaktypes object can't be created",
+            data["detail"], "Relations to non-concept zaaktypes object can't be created"
         )
 
     def test_create_besluittype_fail_non_concept_informatieobjecttypes(self):
@@ -220,7 +221,7 @@ class BesluitTypeAPITests(APITestCase):
         data = response.json()
         self.assertEqual(
             data["detail"],
-            "Relations to a non-concept informatieobjecttypes object can't be created",
+            "Relations to non-concept informatieobjecttypes object can't be created",
         )
 
     def test_create_besluittype_fail_different_catalogus_for_zaaktypes(self):
@@ -324,6 +325,260 @@ class BesluitTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+
+    def test_update_besluittype(self):
+        besluittype = BesluitTypeFactory.create()
+        besluittype_url = reverse(
+            "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+        )
+
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "zaaktypes": [],
+            "omschrijving": "test",
+            "omschrijvingGeneriek": "",
+            "besluitcategorie": "",
+            "reactietermijn": "P14D",
+            "publicatieIndicatie": True,
+            "publicatietekst": "",
+            "publicatietermijn": None,
+            "toelichting": "aangepast",
+            "informatieobjecttypes": [],
+            "beginGeldigheid": "2019-01-01",
+        }
+
+        response = self.client.put(besluittype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["toelichting"], "aangepast")
+
+    def test_update_besluittype_fail_not_concept(self):
+        besluittype = BesluitTypeFactory.create(concept=False)
+        besluittype_url = reverse(
+            "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+        )
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "zaaktypes": [],
+            "omschrijving": "test",
+            "omschrijvingGeneriek": "",
+            "besluitcategorie": "",
+            "reactietermijn": "P14D",
+            "publicatieIndicatie": True,
+            "publicatietekst": "",
+            "publicatietermijn": None,
+            "toelichting": "",
+            "informatieobjecttypes": [],
+            "beginGeldigheid": "2019-01-01",
+        }
+
+        response = self.client.put(besluittype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data["detail"], "Alleen concepten kunnen worden bijgewerkt.")
+
+    def test_partial_update_besluittype(self):
+        besluittype = BesluitTypeFactory.create()
+        besluittype_url = reverse(
+            "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+        )
+
+        response = self.client.patch(besluittype_url, {"toelichting": "ja"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["toelichting"], "ja")
+
+    def test_partial_update_besluittype_fail_not_concept(self):
+        besluittype = BesluitTypeFactory.create(concept=False)
+        besluittype_url = reverse(
+            "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+        )
+
+        response = self.client.patch(besluittype_url, {"toelichting": "same"})
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data["detail"], "Alleen concepten kunnen worden bijgewerkt.")
+
+    def test_delete_besluittype_not_related_to_non_concept_resources(self):
+        zaaktype = ZaakTypeFactory.create()
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(**{resource: [related]})
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                response = self.client.delete(besluittype_url)
+
+                self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+                self.assertFalse(BesluitType.objects.exists())
+
+    def test_delete_besluittype_related_to_non_concept_resource_fails(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(**{resource: [related]})
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                response = self.client.delete(besluittype_url)
+
+                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+                data = response.json()
+                self.assertEqual(
+                    data["detail"],
+                    "Objects related to non-concept {} can't be destroyed".format(
+                        resource
+                    ),
+                )
+
+    def test_update_besluittype_not_related_to_non_concept_resource(self):
+        catalogus = CatalogusFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(
+                    catalogus=catalogus, **{resource: [related]}
+                )
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                data = {
+                    "catalogus": reverse(catalogus),
+                    "zaaktypes": [],
+                    "omschrijving": "test",
+                    "omschrijvingGeneriek": "",
+                    "besluitcategorie": "",
+                    "reactietermijn": "P14D",
+                    "publicatieIndicatie": True,
+                    "publicatietekst": "",
+                    "publicatietermijn": None,
+                    "toelichting": "aangepast",
+                    "informatieobjecttypes": [],
+                    "beginGeldigheid": "2019-01-01",
+                }
+                data[resource] = [reverse(related)]
+
+                response = self.client.put(besluittype_url, data)
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["toelichting"], "aangepast")
+                besluittype.delete()
+
+    def test_update_besluittype_related_to_non_concept_resource_fails(self):
+        catalogus = CatalogusFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus, concept=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(**{resource: [related]})
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                data = {
+                    "catalogus": reverse(catalogus),
+                    "zaaktypes": [],
+                    "omschrijving": "test",
+                    "omschrijvingGeneriek": "",
+                    "besluitcategorie": "",
+                    "reactietermijn": "P14D",
+                    "publicatieIndicatie": True,
+                    "publicatietekst": "",
+                    "publicatietermijn": None,
+                    "toelichting": "aangepast",
+                    "informatieobjecttypes": [],
+                    "beginGeldigheid": "2019-01-01",
+                }
+                data[resource] = [reverse(related)]
+
+                response = self.client.put(besluittype_url, data)
+
+                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+                data = response.json()
+                self.assertEqual(
+                    data["detail"],
+                    "Objects related to non-concept {} can't be updated".format(
+                        resource
+                    ),
+                )
+                besluittype.delete()
+
+    def test_partial_update_besluittype_not_related_to_non_concept_resource(self):
+        catalogus = CatalogusFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(
+                    catalogus=catalogus, **{resource: [related]}
+                )
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                response = self.client.patch(
+                    besluittype_url, {"toelichting": "aangepast"}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["toelichting"], "aangepast")
+                besluittype.delete()
+
+    def test_partial_update_besluittype_related_to_non_concept_resource_fails(self):
+        catalogus = CatalogusFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus, concept=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(
+                    catalogus=catalogus, **{resource: [related]}
+                )
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                response = self.client.patch(
+                    besluittype_url, {"toelichting": "aangepast"}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+                data = response.json()
+                self.assertEqual(
+                    data["detail"],
+                    "Objects related to non-concept {} can't be updated".format(
+                        resource
+                    ),
+                )
+                besluittype.delete()
 
 
 class BesluitTypeFilterAPITests(APITestCase):
@@ -481,3 +736,11 @@ class BesluitTypeValidationTests(APITestCase):
 
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "unique")
+
+
+class BesluittypeConceptTests(APITestCase):
+    def test_delete_concept_not_permitted(self):
+        besluittype1 = BesluitTypeFactory.create(concept=False)
+        besluittype2 = BesluitTypeFactory.create(concept=False)
+        zaaktype1 = besluittype1.zaaktypes.get()
+        zaaktype1_url = reverse(zaaktype1)
