@@ -612,6 +612,72 @@ class ZaakTypeAPITests(APITestCase):
                 )
                 zaaktype.delete()
 
+    def test_update_zaaktype_add_relation_to_non_concept_resource_fails(self):
+        catalogus = CatalogusFactory.create()
+
+        for resource in ["besluittype_set"]:
+            with self.subTest(resource=resource):
+                zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+                zaaktype_url = reverse(zaaktype)
+
+                data = {
+                    "identificatie": 0,
+                    "doel": "some test",
+                    "aanleiding": "aangepast",
+                    "indicatieInternOfExtern": InternExtern.extern,
+                    "handelingInitiator": "indienen",
+                    "onderwerp": "Klacht",
+                    "handelingBehandelaar": "uitvoeren",
+                    "doorlooptijd": "P30D",
+                    "opschortingEnAanhoudingMogelijk": False,
+                    "verlengingMogelijk": True,
+                    "verlengingstermijn": "P30D",
+                    "publicatieIndicatie": True,
+                    "verantwoordingsrelatie": [],
+                    "productenOfDiensten": ["https://example.com/product/123"],
+                    "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+                    "omschrijving": "some test",
+                    "gerelateerdeZaaktypen": [
+                        {
+                            "zaaktype": "http://example.com/zaaktype/1",
+                            "aard_relatie": AardRelatieChoices.bijdrage,
+                            "toelichting": "test relations",
+                        }
+                    ],
+                    "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+                    "catalogus": reverse(catalogus),
+                    # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+                    "besluittypen": [],
+                    "beginGeldigheid": "2018-01-01",
+                    "versiedatum": "2018-01-01",
+                }
+
+                if resource == "besluittype_set":
+                    besluittype = BesluitTypeFactory.create(
+                        catalogus=catalogus, concept=False
+                    )
+                    data["besluittypen"] = [reverse(besluittype)]
+                elif resource == "zaaktypen":
+                    zaaktype2 = ZaakTypeFactory.create(
+                        catalogus=catalogus, concept=False
+                    )
+                    ZaakTypenRelatieFactory.create(
+                        zaaktype=zaaktype2, gerelateerd_zaaktype=zaaktype
+                    )
+
+                response = self.client.put(zaaktype_url, data)
+
+                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+                data = response.json()
+                self.assertEqual(
+                    data["detail"],
+                    "Objects can't be updated with a relation to non-concept {}".format(
+                        resource
+                    ),
+                )
+                zaaktype.delete()
+
     def test_partial_update_zaaktype_not_related_to_non_concept_resource(self):
         catalogus = CatalogusFactory.create()
 
@@ -682,6 +748,51 @@ class ZaakTypeAPITests(APITestCase):
                 self.assertEqual(
                     data["detail"],
                     "Objects related to non-concept {} can't be updated".format(
+                        resource
+                    ),
+                )
+                zaaktype.delete()
+
+    def test_partial_update_zaaktype_add_relation_to_non_concept_resource_fails(self):
+        catalogus = CatalogusFactory.create()
+
+        for resource in ["besluittype_set"]:
+            with self.subTest(resource=resource):
+                zaaktype = ZaakTypeFactory.create(
+                    catalogus=catalogus,
+                    datum_begin_geldigheid="2018-03-01",
+                    datum_einde_geldigheid="2019-01-01",
+                )
+                zaaktype_url = reverse(zaaktype)
+
+                if resource == "besluittype_set":
+                    zaaktype_for_besluittype = ZaakTypeFactory.create(
+                        catalogus=catalogus,
+                        datum_begin_geldigheid="2015-01-01",
+                        datum_einde_geldigheid="2016-01-01",
+                    )
+                    besluittype = BesluitTypeFactory.create(
+                        catalogus=catalogus,
+                        concept=False,
+                        zaaktypes=[zaaktype_for_besluittype],
+                    )
+                    data = {"besluittypen": [reverse(besluittype)]}
+                elif resource == "zaaktypen":
+                    zaaktype2 = ZaakTypeFactory.create(
+                        catalogus=catalogus, concept=False
+                    )
+                    ZaakTypenRelatieFactory.create(
+                        zaaktype=zaaktype2, gerelateerd_zaaktype=zaaktype
+                    )
+
+                response = self.client.patch(zaaktype_url, data)
+
+                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+                data = response.json()
+                self.assertEqual(
+                    data["detail"],
+                    "Objects can't be updated with a relation to non-concept {}".format(
                         resource
                     ),
                 )

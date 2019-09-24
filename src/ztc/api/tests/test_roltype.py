@@ -149,6 +149,27 @@ class RolTypeAPITests(APITestCase):
             "Updating an object that has a relation to a non-concept object is forbidden",
         )
 
+    def test_update_roltype_add_relation_to_non_concept_zaaktype_fails(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create()
+        roltype_url = reverse(roltype)
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "aangepast",
+            "omschrijvingGeneriek": RolOmschrijving.initiator,
+        }
+
+        response = self.client.put(roltype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"], "Creating a relation to non-concept object is forbidden"
+        )
+
     def test_partial_update_roltype(self):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
@@ -174,6 +195,21 @@ class RolTypeAPITests(APITestCase):
         self.assertEqual(
             data["detail"],
             "Updating an object that has a relation to a non-concept object is forbidden",
+        )
+
+    def test_partial_update_roltype_add_relation_to_non_concept_zaaktype_fails(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create()
+        roltype_url = reverse(roltype)
+
+        response = self.client.patch(roltype_url, {"zaaktype": zaaktype_url})
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"], "Creating a relation to non-concept object is forbidden"
         )
 
 
