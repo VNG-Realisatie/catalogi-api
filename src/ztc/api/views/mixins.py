@@ -79,6 +79,24 @@ class ZaakTypeConceptCreateMixin:
         super().perform_create(serializer)
 
 
+class ZaakTypeConceptUpdateMixin:
+    def perform_update(self, serializer):
+        zaaktype = self.get_object().zaaktype
+        if not zaaktype.concept:
+            msg = _(
+                "Updating an object that has a relation to a non-concept object is forbidden"
+            )
+            raise PermissionDenied(detail=msg)
+
+        zaaktype_in_attrs = serializer.validated_data.get("zaaktype")
+        if zaaktype_in_attrs:
+            if not zaaktype_in_attrs.concept:
+                msg = _("Creating a relation to non-concept object is forbidden")
+                raise PermissionDenied(detail=msg)
+
+        super().perform_create(serializer)
+
+
 class ZaakTypeConceptDestroyMixin(ConceptDestroyMixin):
     def get_concept(self, instance):
         return instance.zaaktype.concept
@@ -90,7 +108,10 @@ class ZaakTypeConceptFilterMixin(ConceptFilterMixin):
 
 
 class ZaakTypeConceptMixin(
-    ZaakTypeConceptCreateMixin, ZaakTypeConceptDestroyMixin, ZaakTypeConceptFilterMixin
+    ZaakTypeConceptCreateMixin,
+    ZaakTypeConceptUpdateMixin,
+    ZaakTypeConceptDestroyMixin,
+    ZaakTypeConceptFilterMixin,
 ):
     """
     mixin for resources which have FK or one-to-one relations with ZaakType objects,
@@ -132,7 +153,9 @@ class M2MConceptUpdateMixin:
             if field_in_attrs:
                 for relation in field_in_attrs:
                     if not relation.concept:
-                        msg = _(f"Objects can't be updated with a relation to non-concept {field_name}")
+                        msg = _(
+                            f"Objects can't be updated with a relation to non-concept {field_name}"
+                        )
                         raise PermissionDenied(detail=msg)
 
         super().perform_update(instance)
