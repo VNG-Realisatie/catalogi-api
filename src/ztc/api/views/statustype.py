@@ -8,13 +8,7 @@ from ..serializers import StatusTypeSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
-class StatusTypeViewSet(
-    CheckQueryParamsMixin,
-    ZaakTypeConceptMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.ReadOnlyModelViewSet,
-):
+class StatusTypeViewSet(CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet):
     """
     Opvragen en bewerken van STATUSTYPEn van een ZAAKTYPE.
 
@@ -63,5 +57,7 @@ class StatusTypeViewSet(
         "list": SCOPE_ZAAKTYPES_READ,
         "retrieve": SCOPE_ZAAKTYPES_READ,
         "create": SCOPE_ZAAKTYPES_WRITE,
+        "update": SCOPE_ZAAKTYPES_WRITE,
+        "partial_update": SCOPE_ZAAKTYPES_WRITE,
         "destroy": SCOPE_ZAAKTYPES_WRITE,
     }
