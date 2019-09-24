@@ -8,16 +8,11 @@ from ...datamodel.models import ZaakInformatieobjectType
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakTypeInformatieObjectTypeSerializer
-from .mixins import ConceptDestroyMixin, ConceptFilterMixin
+from .mixins import ConceptDestroyMixin, ConceptFilterMixin, ConceptUpdateMixin
 
 
 class ZaakTypeInformatieObjectTypeViewSet(
-    CheckQueryParamsMixin,
-    ConceptFilterMixin,
-    ConceptDestroyMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.ReadOnlyModelViewSet,
+    CheckQueryParamsMixin, ConceptFilterMixin, ConceptUpdateMixin, ConceptDestroyMixin, viewsets.ModelViewSet
 ):
     """
     Opvragen en bewerken van ZAAKTYPE-INFORMATIEOBJECTTYPE relaties.
@@ -68,11 +63,18 @@ class ZaakTypeInformatieObjectTypeViewSet(
         "list": SCOPE_ZAAKTYPES_READ,
         "retrieve": SCOPE_ZAAKTYPES_READ,
         "create": SCOPE_ZAAKTYPES_WRITE,
+        "update": SCOPE_ZAAKTYPES_WRITE,
+        "partial_update": SCOPE_ZAAKTYPES_WRITE,
         "destroy": SCOPE_ZAAKTYPES_WRITE,
     }
 
     def get_concept(self, instance):
-        return instance.zaaktype.concept and instance.informatieobjecttype.concept
+        zaaktype = getattr(instance, "zaaktype", None) or self.get_object().zaaktype
+        informatieobjecttype = (
+            getattr(instance, "informatieobjecttype", None)
+            or self.get_object().informatieobjecttype
+        )
+        return zaaktype.concept and informatieobjecttype.concept
 
     def perform_create(self, serializer):
         zaaktype = serializer.validated_data["zaaktype"]
