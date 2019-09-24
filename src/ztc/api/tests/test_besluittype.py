@@ -656,6 +656,42 @@ class BesluitTypeAPITests(APITestCase):
                 )
                 besluittype.delete()
 
+    def test_partial_update_non_concept_besluittype_einde_geldigheid(self):
+        besluittype = BesluitTypeFactory.create()
+        besluittype_url = reverse(besluittype)
+
+        response = self.client.patch(besluittype_url, {"eindeGeldigheid": "2020-01-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+
+    def test_partial_update_besluittype_einde_geldigheid_related_to_non_concept_resource(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus, concept=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(
+                    catalogus=catalogus, **{resource: [related]}
+                )
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                response = self.client.patch(
+                    besluittype_url, {"eindeGeldigheid": "2020-01-01"}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+                besluittype.delete()
+
 
 class BesluitTypeFilterAPITests(APITestCase):
     maxDiff = None

@@ -798,6 +798,52 @@ class ZaakTypeAPITests(APITestCase):
                 )
                 zaaktype.delete()
 
+    def test_partial_update_non_concept_zaaktype_einde_geldigheid(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+
+        response = self.client.patch(zaaktype_url, {"eindeGeldigheid": "2020-01-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+
+    def test_partial_update_zaaktype_einde_geldigheid_related_to_non_concept_resource(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+
+        for resource in ["besluittype_set", "heeft_relevant_informatieobjecttype"]:
+            with self.subTest(resource=resource):
+                zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+                zaaktype_url = reverse(zaaktype)
+
+                if resource == "besluittype_set":
+                    besluittype = BesluitTypeFactory.create(
+                        catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+                    )
+                elif resource == "heeft_relevant_informatieobjecttype":
+                    informatieobjecttype = InformatieObjectTypeFactory.create(
+                        catalogus=catalogus, concept=False
+                    )
+                    ZaakInformatieobjectTypeFactory.create(
+                        zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+                    )
+                elif resource == "zaaktypen":
+                    zaaktype2 = ZaakTypeFactory.create(
+                        catalogus=catalogus, concept=False
+                    )
+                    ZaakTypenRelatieFactory.create(
+                        zaaktype=zaaktype2, gerelateerd_zaaktype=zaaktype
+                    )
+
+                response = self.client.patch(
+                    zaaktype_url, {"eindeGeldigheid": "2020-01-01"}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+                zaaktype.delete()
+
 
 class ZaakTypeCreateDuplicateTests(APITestCase):
     """
