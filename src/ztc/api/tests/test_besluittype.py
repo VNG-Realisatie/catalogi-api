@@ -525,6 +525,50 @@ class BesluitTypeAPITests(APITestCase):
                 )
                 besluittype.delete()
 
+    def test_update_besluittype_add_relation_to_non_concept_resource_fails(self):
+        catalogus = CatalogusFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus, concept=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create()
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                data = {
+                    "catalogus": reverse(catalogus),
+                    "zaaktypes": [],
+                    "omschrijving": "test",
+                    "omschrijvingGeneriek": "",
+                    "besluitcategorie": "",
+                    "reactietermijn": "P14D",
+                    "publicatieIndicatie": True,
+                    "publicatietekst": "",
+                    "publicatietermijn": None,
+                    "toelichting": "aangepast",
+                    "informatieobjecttypes": [],
+                    "beginGeldigheid": "2019-01-01",
+                }
+                data[resource] = [reverse(related)]
+
+                response = self.client.put(besluittype_url, data)
+
+                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+                data = response.json()
+                self.assertEqual(
+                    data["detail"],
+                    "Objects can't be updated with a relation to non-concept {}".format(
+                        resource
+                    ),
+                )
+                besluittype.delete()
+
     def test_partial_update_besluittype_not_related_to_non_concept_resource(self):
         catalogus = CatalogusFactory.create()
         zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
@@ -575,6 +619,38 @@ class BesluitTypeAPITests(APITestCase):
                 self.assertEqual(
                     data["detail"],
                     "Objects related to non-concept {} can't be updated".format(
+                        resource
+                    ),
+                )
+                besluittype.delete()
+
+    def test_partial_update_besluittype_add_relation_to_non_concept_resource_fails(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus, concept=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+
+        for resource in ["zaaktypes", "informatieobjecttypes"]:
+            with self.subTest(resource=resource):
+                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                besluittype = BesluitTypeFactory.create(catalogus=catalogus)
+                besluittype_url = reverse(
+                    "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+                )
+
+                response = self.client.patch(
+                    besluittype_url, {resource: [reverse(related)]}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+                data = response.json()
+                self.assertEqual(
+                    data["detail"],
+                    "Objects can't be updated with a relation to non-concept {}".format(
                         resource
                     ),
                 )
