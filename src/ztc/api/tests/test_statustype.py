@@ -5,7 +5,7 @@ from ztc.datamodel.models import StatusType
 from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
 
 from .base import APITestCase
-from .utils import reverse
+from vng_api_common.tests import reverse
 
 
 class StatusTypeAPITests(APITestCase):
@@ -115,6 +115,76 @@ class StatusTypeAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+
+    def test_update_statustype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        statustype = StatusTypeFactory.create(zaaktype=zaaktype)
+        statustype_url = reverse(statustype)
+
+        data = {
+            "omschrijving": "aangepast",
+            "omschrijvingGeneriek": "",
+            "statustekst": "",
+            "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "volgnummer": 2,
+        }
+
+        response = self.client.put(statustype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+    def test_update_statustype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        statustype = StatusTypeFactory.create(zaaktype=zaaktype)
+        statustype_url = reverse(statustype)
+
+        data = {
+            "omschrijving": "aangepast",
+            "omschrijvingGeneriek": "",
+            "statustekst": "",
+            "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "volgnummer": 2,
+        }
+
+        response = self.client.put(statustype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"],
+            "Updating an object that has a relation to a non-concept object is forbidden",
+        )
+
+    def test_partial_update_statustype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        statustype = StatusTypeFactory.create(zaaktype=zaaktype)
+        statustype_url = reverse(statustype)
+
+        response = self.client.patch(statustype_url, {"omschrijving": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+    def test_partial_update_statustype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        statustype = StatusTypeFactory.create(zaaktype=zaaktype)
+        statustype_url = reverse(statustype)
+
+        response = self.client.patch(statustype_url, {"omschrijving": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"],
+            "Updating an object that has a relation to a non-concept object is forbidden",
+        )
 
 
 class StatusTypeFilterAPITests(APITestCase):
