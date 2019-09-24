@@ -24,11 +24,16 @@ class ConceptUpdateMixin:
         return self.get_object().concept
 
     def perform_update(self, instance):
-        if not self.get_concept(instance):
-            msg = _("Alleen concepten kunnen worden bijgewerkt.")
-            raise PermissionDenied(detail=msg)
+        # It is only allowed to perform a PATCH with the field eindeGeldigheid
+        einde_geldigheid = instance.validated_data.get("datum_einde_geldigheid")
+        if einde_geldigheid and len(instance.validated_data) == 1:
+            super().perform_update(instance)
+        else:
+            if not self.get_concept(instance):
+                msg = _("Alleen concepten kunnen worden bijgewerkt.")
+                raise PermissionDenied(detail=msg)
 
-        super().perform_update(instance)
+            super().perform_update(instance)
 
 
 class ConceptDestroyMixin:
@@ -140,25 +145,32 @@ class M2MConceptCreateMixin:
 
 class M2MConceptUpdateMixin:
     def perform_update(self, instance):
-        for field_name in self.concept_related_fields:
-            field = getattr(self.get_object(), field_name)
-            related_non_concepts = field.filter(concept=False)
-            if related_non_concepts.exists():
-                msg = _(f"Objects related to non-concept {field_name} can't be updated")
-                raise PermissionDenied(detail=msg)
+        # It is only allowed to perform a PATCH with the field eindeGeldigheid
+        einde_geldigheid = instance.validated_data.get("datum_einde_geldigheid")
+        if einde_geldigheid and len(instance.validated_data) == 1:
+            super().perform_update(instance)
+        else:
+            for field_name in self.concept_related_fields:
+                field = getattr(self.get_object(), field_name)
+                related_non_concepts = field.filter(concept=False)
+                if related_non_concepts.exists():
+                    msg = _(
+                        f"Objects related to non-concept {field_name} can't be updated"
+                    )
+                    raise PermissionDenied(detail=msg)
 
-            # Validate that no new relations are created to resources with
-            # non-concept status
-            field_in_attrs = instance.validated_data.get(field_name)
-            if field_in_attrs:
-                for relation in field_in_attrs:
-                    if not relation.concept:
-                        msg = _(
-                            f"Objects can't be updated with a relation to non-concept {field_name}"
-                        )
-                        raise PermissionDenied(detail=msg)
+                # Validate that no new relations are created to resources with
+                # non-concept status
+                field_in_attrs = instance.validated_data.get(field_name)
+                if field_in_attrs:
+                    for relation in field_in_attrs:
+                        if not relation.concept:
+                            msg = _(
+                                f"Objects can't be updated with a relation to non-concept {field_name}"
+                            )
+                            raise PermissionDenied(detail=msg)
 
-        super().perform_update(instance)
+            super().perform_update(instance)
 
 
 class M2MConceptDestroyMixin:
