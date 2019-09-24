@@ -12,7 +12,7 @@ from ztc.datamodel.tests.factories import (
 )
 
 from .base import APITestCase
-from .utils import reverse
+from vng_api_common.tests import reverse
 
 
 class EigenschapAPITests(APITestCase):
@@ -162,6 +162,71 @@ class EigenschapAPITests(APITestCase):
 
         data = response.json()
         self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+
+    def test_update_eigenschap(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        eigenschap = EigenschapFactory.create()
+        eigenschap_url = reverse(eigenschap)
+
+        data = {
+            "naam": "aangepast",
+            "definitie": "test",
+            "toelichting": "",
+            "zaaktype": zaaktype_url,
+        }
+
+        response = self.client.put(eigenschap_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["naam"], "aangepast")
+
+    def test_update_eigenschap_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        eigenschap = EigenschapFactory.create(zaaktype=zaaktype)
+        eigenschap_url = reverse(eigenschap)
+
+        data = {
+            "naam": "aangepast",
+            "definitie": "test",
+            "toelichting": "",
+            "zaaktype": zaaktype_url,
+        }
+
+        response = self.client.put(eigenschap_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"],
+            "Updating an object that has a relation to a non-concept object is forbidden",
+        )
+
+    def test_partial_update_eigenschap(self):
+        eigenschap = EigenschapFactory.create()
+        eigenschap_url = reverse(eigenschap)
+
+        response = self.client.patch(eigenschap_url, {"naam": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["naam"], "aangepast")
+
+    def test_partial_update_eigenschap_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        eigenschap = EigenschapFactory.create(zaaktype=zaaktype)
+        eigenschap_url = reverse(eigenschap)
+
+        response = self.client.patch(eigenschap_url, {"naam": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"],
+            "Updating an object that has a relation to a non-concept object is forbidden",
+        )
 
 
 class EigenschapFilterAPITests(APITestCase):
