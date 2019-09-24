@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from drf_writable_nested import NestedCreateMixin
+from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
 from rest_framework.serializers import (
     HyperlinkedModelSerializer,
     HyperlinkedRelatedField,
@@ -114,7 +114,10 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
 
 
 class ZaakTypeSerializer(
-    NestedGegevensGroepMixin, NestedCreateMixin, HyperlinkedModelSerializer
+    NestedGegevensGroepMixin,
+    NestedCreateMixin,
+    NestedUpdateMixin,
+    HyperlinkedModelSerializer,
 ):
 
     # formulier = FormulierSerializer(many=True, read_only=True)

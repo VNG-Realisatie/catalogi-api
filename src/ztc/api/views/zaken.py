@@ -1,16 +1,15 @@
-from rest_framework import mixins, viewsets
-from vng_api_common.notifications.viewsets import (
-    NotificationCreateMixin,
-    NotificationDestroyMixin,
-)
+from rest_framework import viewsets
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
+from django.utils.translation import ugettext_lazy as _
+from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from ...datamodel.models import ZaakType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakTypeSerializer
-from .mixins import ConceptMixin, M2MConceptCreateMixin
+from .mixins import ConceptMixin, M2MConceptMixin
+from rest_framework.exceptions import PermissionDenied
 
 # class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
 #                             FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
@@ -34,12 +33,9 @@ from .mixins import ConceptMixin, M2MConceptCreateMixin
 class ZaakTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
-    M2MConceptCreateMixin,
-    NotificationCreateMixin,
-    NotificationDestroyMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.ReadOnlyModelViewSet,
+    M2MConceptMixin,
+    NotificationViewSetMixin,
+    viewsets.ModelViewSet,
 ):
     """
     Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.
@@ -102,8 +98,48 @@ class ZaakTypeViewSet(
         "list": SCOPE_ZAAKTYPES_READ,
         "retrieve": SCOPE_ZAAKTYPES_READ,
         "create": SCOPE_ZAAKTYPES_WRITE,
+        "update": SCOPE_ZAAKTYPES_WRITE,
+        "partial_update": SCOPE_ZAAKTYPES_WRITE,
         "destroy": SCOPE_ZAAKTYPES_WRITE,
         "publish": SCOPE_ZAAKTYPES_WRITE,
     }
-    concept_related_fields = ["besluittype_set"]
+    concept_related_fields = ["besluittype_set", "heeft_relevant_informatieobjecttype"]
     notifications_kanaal = KANAAL_ZAAKTYPEN
+    relation_fields = ["zaaktypenrelaties"]
+
+    def perform_create(self, serializer):
+        for field_name in self.relation_fields:
+            field = serializer.validated_data.get(field_name, [])
+            for related_object in field:
+                # TODO fix url lookup to check if concept
+                if not related_object["gerelateerd_zaaktype"]:
+                    msg = _(
+                        f"Relations to non-concept {field_name} object can't be created"
+                    )
+                    raise PermissionDenied(detail=msg)
+
+        super().perform_create(serializer)
+
+    def perform_update(self, instance):
+        for field_name in self.relation_fields:
+            field = getattr(self.get_object(), field_name)
+            # TODO fix url lookup to check if concept
+            related_non_concepts = field.filter(zaaktype__concept=False)
+            if related_non_concepts.exists():
+                msg = _(f"Objects related to non-concept {field_name} can't be updated")
+                raise PermissionDenied(detail=msg)
+
+        super().perform_update(instance)
+
+    def perform_destroy(self, instance):
+        for field_name in self.relation_fields:
+            field = getattr(instance, field_name)
+            # TODO fix url lookup to check if concept
+            related_non_concepts = field.filter(zaaktype__concept=False)
+            if related_non_concepts.exists():
+                msg = _(
+                    f"Objects related to non-concept {field_name} can't be destroyed"
+                )
+                raise PermissionDenied(detail=msg)
+
+        super().perform_destroy(instance)
