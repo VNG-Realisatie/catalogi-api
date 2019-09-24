@@ -273,6 +273,132 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         data = response.json()
         self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
 
+    @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
+    @patch("vng_api_common.oas.fetcher.fetch", return_value={})
+    @patch("vng_api_common.validators.obj_has_shape", return_value=True)
+    def test_update_resultaattype(self, *mocks):
+        zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
+        zaaktype_url = reverse(zaaktype)
+        resultaattype = ResultaatTypeFactory.create(zaaktype=zaaktype)
+        resultaattype_url = reverse(resultaattype)
+
+        resultaattypeomschrijving_url = "http://example.com/omschrijving/1"
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "aangepast",
+            "resultaattypeomschrijving": resultaattypeomschrijving_url,
+            "selectielijstklasse": SELECTIELIJSTKLASSE_URL,
+            "archiefnominatie": "blijvend_bewaren",
+            "archiefactietermijn": "P10Y",
+            "brondatumArchiefprocedure": {
+                "afleidingswijze": BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                "einddatumBekend": False,
+                "procestermijn": "P10Y",
+                "datumkenmerk": "",
+                "objecttype": "",
+                "registratie": "",
+            },
+        }
+
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                "url": SELECTIELIJSTKLASSE_URL,
+                "procesType": PROCESTYPE_URL,
+                "procestermijn": Procestermijn.nihil,
+            }
+        }
+
+        with mock_client(responses):
+            with requests_mock.Mocker() as m:
+                m.register_uri(
+                    "GET", resultaattypeomschrijving_url, json={"omschrijving": "test"}
+                )
+                response = self.client.put(resultaattype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+    @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
+    @patch("vng_api_common.oas.fetcher.fetch", return_value={})
+    @patch("vng_api_common.validators.obj_has_shape", return_value=True)
+    def test_update_resultaattype_fail_not_concept_zaaktype(self, *mocks):
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL, concept=False
+        )
+        zaaktype_url = reverse(zaaktype)
+        resultaattype = ResultaatTypeFactory.create(zaaktype=zaaktype)
+        resultaattype_url = reverse(resultaattype)
+
+        resultaattypeomschrijving_url = "http://example.com/omschrijving/1"
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "aangepast",
+            "resultaattypeomschrijving": resultaattypeomschrijving_url,
+            "selectielijstklasse": SELECTIELIJSTKLASSE_URL,
+            "archiefnominatie": "blijvend_bewaren",
+            "archiefactietermijn": "P10Y",
+            "brondatumArchiefprocedure": {
+                "afleidingswijze": BrondatumArchiefprocedureAfleidingswijze.afgehandeld,
+                "einddatumBekend": False,
+                "procestermijn": "P10Y",
+                "datumkenmerk": "",
+                "objecttype": "",
+                "registratie": "",
+            },
+        }
+
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                "url": SELECTIELIJSTKLASSE_URL,
+                "procesType": PROCESTYPE_URL,
+                "procestermijn": Procestermijn.nihil,
+            }
+        }
+
+        with mock_client(responses):
+            with requests_mock.Mocker() as m:
+                m.register_uri(
+                    "GET", resultaattypeomschrijving_url, json={"omschrijving": "test"}
+                )
+                response = self.client.put(resultaattype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"],
+            "Updating an object that has a relation to a non-concept object is forbidden",
+        )
+
+    def test_partial_update_resultaattype(self):
+        zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
+        zaaktype_url = reverse(zaaktype)
+        resultaattype = ResultaatTypeFactory.create(zaaktype=zaaktype)
+        resultaattype_url = reverse(resultaattype)
+
+        response = self.client.patch(resultaattype_url, {"omschrijving": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+    def test_partial_update_resultaattype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL, concept=False
+        )
+        zaaktype_url = reverse(zaaktype)
+        resultaattype = ResultaatTypeFactory.create(zaaktype=zaaktype)
+        resultaattype_url = reverse(resultaattype)
+
+        response = self.client.patch(resultaattype_url, {"omschrijving": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(
+            data["detail"],
+            "Updating an object that has a relation to a non-concept object is forbidden",
+        )
+
 
 class ResultaatTypeFilterAPITests(APITestCase):
     maxDiff = None
