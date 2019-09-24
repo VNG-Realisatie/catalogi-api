@@ -103,9 +103,11 @@ class EigenschapSpecificatie(models.Model):
                 raise ValidationError(_("Als formaat datum is, moet de lengte 8 zijn."))
 
         elif self.formaat == FormaatChoices.datum_tijd:
-            if self.lengte != 14:
+            if not (14 <= int(self.lengte) <= 25):
                 raise ValidationError(
-                    _("Als formaat datum/tijd is, moet de lengte 14 zijn.")
+                    _(
+                        "Als formaat datum/tijd is, moet de lengte tussen 14 en 25 liggen (ISO-6801 formaten)."
+                    )
                 )
 
 
