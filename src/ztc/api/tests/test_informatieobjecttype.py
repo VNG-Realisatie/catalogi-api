@@ -409,6 +409,48 @@ class InformatieObjectTypeAPITests(APITestCase):
                 )
                 informatieobjecttype.delete()
 
+    def test_partial_update_non_concept_informatieobjecttype_einde_geldigheid(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse(informatieobjecttype)
+
+        response = self.client.patch(
+            informatieobjecttype_url, {"eindeGeldigheid": "2020-01-01"}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+
+    def test_partial_update_informatieobjecttype_einde_geldigheid_related_to_non_concept_resource(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+        for resource in ["zaaktypes", "besluittype_set"]:
+            with self.subTest(resource=resource):
+                informatieobjecttype = InformatieObjectTypeFactory.create()
+                if resource == "zaaktypes":
+                    zaaktype = ZaakTypeFactory.create(
+                        catalogus=catalogus, concept=False
+                    )
+                    ZaakInformatieobjectTypeFactory(
+                        zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+                    )
+                elif resource == "besluittype_set":
+                    besluittype = BesluitTypeFactory.create(
+                        informatieobjecttypes=[informatieobjecttype],
+                        catalogus=catalogus,
+                        concept=False,
+                    )
+
+                informatieobjecttype_url = reverse(informatieobjecttype)
+
+                response = self.client.patch(
+                    informatieobjecttype_url, {"eindeGeldigheid": "2020-01-01"}
+                )
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+                informatieobjecttype.delete()
+
 
 class InformatieObjectTypeFilterAPITests(APITestCase):
     maxDiff = None
