@@ -28,9 +28,17 @@ class RelationCatalogValidator:
         self.relation_field = relation_field
         self.catalogus_field = catalogus_field
 
+    def set_context(self, serializer):
+        """
+        This hook is called by the serializer instance,
+        prior to the validation call being made.
+        """
+        # Determine the existing instance, if this is an update operation.
+        self.instance = getattr(serializer, "instance", None)
+
     def __call__(self, attrs: dict):
         relations = attrs.get(self.relation_field)
-        catalogus = attrs.get(self.catalogus_field)
+        catalogus = attrs.get(self.catalogus_field) or self.instance.catalogus
 
         if not relations:
             return
