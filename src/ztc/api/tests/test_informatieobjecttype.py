@@ -231,7 +231,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(data["detail"], "Alleen concepten kunnen worden bijgewerkt.")
 
     def test_delete_informatieobjecttype_not_related_to_non_concept_resources(self):
-        for resource in ["zaaktypes", "besluittype_set"]:
+        for resource in ["zaaktypes", "besluittypen"]:
             with self.subTest(resource=resource):
                 informatieobjecttype = InformatieObjectTypeFactory.create()
 
@@ -240,7 +240,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                     ZaakInformatieobjectTypeFactory(
                         zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
                     )
-                elif resource == "besluittype_set":
+                elif resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         informatieobjecttypes=[informatieobjecttype]
                     )
@@ -253,7 +253,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                 self.assertFalse(InformatieObjectType.objects.exists())
 
     def test_delete_informatieobjecttype_related_to_non_concept_resource_fails(self):
-        for resource in ["zaaktypes", "besluittype_set"]:
+        for resource in ["zaaktypes", "besluittypen"]:
             with self.subTest(resource=resource):
                 informatieobjecttype = InformatieObjectTypeFactory.create()
 
@@ -262,7 +262,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                     ZaakInformatieobjectTypeFactory(
                         zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
                     )
-                elif resource == "besluittype_set":
+                elif resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         informatieobjecttypes=[informatieobjecttype], concept=False
                     )
@@ -283,7 +283,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
     def test_update_informatieobjecttype_not_related_to_non_concept_resource(self):
         catalogus = CatalogusFactory.create()
-        for resource in ["zaaktypes", "besluittype_set"]:
+        for resource in ["zaaktypes", "besluittypen"]:
             with self.subTest(resource=resource):
                 informatieobjecttype = InformatieObjectTypeFactory.create()
 
@@ -292,7 +292,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                     ZaakInformatieobjectTypeFactory(
                         zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
                     )
-                elif resource == "besluittype_set":
+                elif resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         informatieobjecttypes=[informatieobjecttype]
                     )
@@ -314,7 +314,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
     def test_update_informatieobjecttype_related_to_non_concept_resource_fails(self):
         catalogs = CatalogusFactory.create()
-        for resource in ["zaaktypes", "besluittype_set"]:
+        for resource in ["zaaktypes", "besluittypen"]:
             with self.subTest(resource=resource):
                 informatieobjecttype = InformatieObjectTypeFactory.create()
 
@@ -323,7 +323,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                     ZaakInformatieobjectTypeFactory(
                         zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
                     )
-                elif resource == "besluittype_set":
+                elif resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         informatieobjecttypes=[informatieobjecttype], concept=False
                     )
@@ -347,7 +347,7 @@ class InformatieObjectTypeAPITests(APITestCase):
     ):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["zaaktypes", "besluittype_set"]:
+        for resource in ["zaaktypes", "besluittypen"]:
             with self.subTest(resource=resource):
                 informatieobjecttype = InformatieObjectTypeFactory.create()
                 if resource == "zaaktypes":
@@ -355,7 +355,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                     ZaakInformatieobjectTypeFactory(
                         zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
                     )
-                elif resource == "besluittype_set":
+                elif resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         informatieobjecttypes=[informatieobjecttype],
                         catalogus=catalogus,
@@ -375,7 +375,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         self
     ):
         catalogus = CatalogusFactory.create()
-        for resource in ["zaaktypes", "besluittype_set"]:
+        for resource in ["zaaktypes", "besluittypen"]:
             with self.subTest(resource=resource):
                 informatieobjecttype = InformatieObjectTypeFactory.create()
                 if resource == "zaaktypes":
@@ -385,7 +385,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                     ZaakInformatieobjectTypeFactory(
                         zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
                     )
-                elif resource == "besluittype_set":
+                elif resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         informatieobjecttypes=[informatieobjecttype],
                         catalogus=catalogus,
@@ -424,7 +424,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         self
     ):
         catalogus = CatalogusFactory.create()
-        for resource in ["zaaktypes", "besluittype_set"]:
+        for resource in ["zaaktypes", "besluittypen"]:
             with self.subTest(resource=resource):
                 informatieobjecttype = InformatieObjectTypeFactory.create()
                 if resource == "zaaktypes":
@@ -434,7 +434,7 @@ class InformatieObjectTypeAPITests(APITestCase):
                     ZaakInformatieobjectTypeFactory(
                         zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
                     )
-                elif resource == "besluittype_set":
+                elif resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         informatieobjecttypes=[informatieobjecttype],
                         catalogus=catalogus,
