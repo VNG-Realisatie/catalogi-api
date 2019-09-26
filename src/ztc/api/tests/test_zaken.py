@@ -87,7 +87,7 @@ class ZaakTypeAPITests(APITestCase):
             # 'verantwoordelijke': '',
             "omschrijving": "",
             "eigenschappen": [],
-            "informatieobjecttypen": [],
+            "informatieobjecttypes": [],
             "gerelateerdeZaaktypen": [],
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantZaakObjecttype': [],
@@ -160,7 +160,7 @@ class ZaakTypeAPITests(APITestCase):
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
             "besluittypen": [f"http://testserver{besluittype_url}"],
             "beginGeldigheid": "2018-01-01",
             "versiedatum": "2018-01-01",
@@ -172,7 +172,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype = ZaakType.objects.get(zaaktype_omschrijving="some test")
 
         self.assertEqual(zaaktype.catalogus, self.catalogus)
-        self.assertEqual(zaaktype.besluittype_set.get(), besluittype)
+        self.assertEqual(zaaktype.besluittypen.get(), besluittype)
         self.assertEqual(zaaktype.referentieproces_naam, "ReferentieProces 0")
         self.assertEqual(
             zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype,
@@ -211,7 +211,7 @@ class ZaakTypeAPITests(APITestCase):
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
             "besluittypen": [f"http://testserver{besluittype_url}"],
             "beginGeldigheid": "2018-01-01",
             "versiedatum": "2018-01-01",
@@ -224,7 +224,7 @@ class ZaakTypeAPITests(APITestCase):
         data = response.json()
         self.assertEqual(
             data["detail"],
-            "Relations to non-concept besluittype_set object can't be created",
+            "Relations to non-concept besluittypen object can't be created",
         )
 
     def test_create_zaaktype_fail_different_catalogus_zaaktypes(self):
@@ -258,7 +258,7 @@ class ZaakTypeAPITests(APITestCase):
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
             "besluittypen": [f"http://testserver{besluittype_url}"],
             "beginGeldigheid": "2018-01-01",
             "versiedatum": "2018-01-01",
@@ -366,7 +366,7 @@ class ZaakTypeAPITests(APITestCase):
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
             "besluittypen": [],
             "beginGeldigheid": "2018-01-01",
             "versiedatum": "2018-01-01",
@@ -407,7 +407,7 @@ class ZaakTypeAPITests(APITestCase):
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
             "besluittypen": [],
             "beginGeldigheid": "2018-01-01",
             "versiedatum": "2018-01-01",
@@ -443,7 +443,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_delete_zaaktype_not_related_to_non_concept_resources(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittypen", "informatieobjecttypen", "zaaktypen"]:
+        for resource in ["besluittypen", "informatieobjecttypes", "zaaktypen"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
                 zaaktype_url = reverse(zaaktype)
@@ -452,7 +452,7 @@ class ZaakTypeAPITests(APITestCase):
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, zaaktypes=[zaaktype]
                     )
-                elif resource == "informatieobjecttypen":
+                elif resource == "informatieobjecttypes":
                     informatieobjecttype = InformatieObjectTypeFactory.create(
                         catalogus=catalogus
                     )
@@ -473,16 +473,16 @@ class ZaakTypeAPITests(APITestCase):
     def test_delete_zaaktype_related_to_non_concept_resource_fails(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittype_set", "heeft_relevant_informatieobjecttype"]:
+        for resource in ["besluittypen", "informatieobjecttypes"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
                 zaaktype_url = reverse(zaaktype)
 
-                if resource == "besluittype_set":
+                if resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, zaaktypes=[zaaktype], concept=False
                     )
-                elif resource == "heeft_relevant_informatieobjecttype":
+                elif resource == "informatieobjecttypes":
                     informatieobjecttype = InformatieObjectTypeFactory.create(
                         catalogus=catalogus, concept=False
                     )
@@ -512,7 +512,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_update_zaaktype_not_related_to_non_concept_resource(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittypen", "informatieobjecttypen", "zaaktypen"]:
+        for resource in ["besluittypen", "informatieobjecttypes", "zaaktypen"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
                 zaaktype_url = reverse(zaaktype)
@@ -521,7 +521,7 @@ class ZaakTypeAPITests(APITestCase):
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, zaaktypes=[zaaktype]
                     )
-                elif resource == "informatieobjecttypen":
+                elif resource == "informatieobjecttypes":
                     informatieobjecttype = InformatieObjectTypeFactory.create(
                         catalogus=catalogus
                     )
@@ -560,7 +560,7 @@ class ZaakTypeAPITests(APITestCase):
                     ],
                     "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
                     "catalogus": reverse(catalogus),
-                    # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+                    # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
                     "besluittypen": [],
                     "beginGeldigheid": "2018-01-01",
                     "versiedatum": "2018-01-01",
@@ -575,16 +575,16 @@ class ZaakTypeAPITests(APITestCase):
     def test_update_zaaktype_related_to_non_concept_resource_fails(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittype_set", "heeft_relevant_informatieobjecttype"]:
+        for resource in ["besluittypen", "informatieobjecttypes"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
                 zaaktype_url = reverse(zaaktype)
 
-                if resource == "besluittype_set":
+                if resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, zaaktypes=[zaaktype], concept=False
                     )
-                elif resource == "heeft_relevant_informatieobjecttype":
+                elif resource == "informatieobjecttypes":
                     informatieobjecttype = InformatieObjectTypeFactory.create(
                         catalogus=catalogus, concept=False
                     )
@@ -625,7 +625,7 @@ class ZaakTypeAPITests(APITestCase):
                     ],
                     "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
                     "catalogus": reverse(catalogus),
-                    # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+                    # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
                     "besluittypen": [],
                     "beginGeldigheid": "2018-01-01",
                     "versiedatum": "2018-01-01",
@@ -647,7 +647,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_update_zaaktype_add_relation_to_non_concept_resource_fails(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittype_set"]:
+        for resource in ["besluittypen"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
                 zaaktype_url = reverse(zaaktype)
@@ -678,13 +678,13 @@ class ZaakTypeAPITests(APITestCase):
                     ],
                     "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
                     "catalogus": reverse(catalogus),
-                    # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+                    # 'informatieobjecttypes': [f'http://testserver{informatieobjecttype_url}'],
                     "besluittypen": [],
                     "beginGeldigheid": "2018-01-01",
                     "versiedatum": "2018-01-01",
                 }
 
-                if resource == "besluittype_set":
+                if resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, concept=False
                     )
@@ -713,7 +713,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_partial_update_zaaktype_not_related_to_non_concept_resource(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittypen", "informatieobjecttypen", "zaaktypen"]:
+        for resource in ["besluittypen", "informatieobjecttypes", "zaaktypen"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(
                     catalogus=catalogus, datum_einde_geldigheid="2019-01-01"
@@ -724,7 +724,7 @@ class ZaakTypeAPITests(APITestCase):
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, zaaktypes=[zaaktype]
                     )
-                elif resource == "informatieobjecttypen":
+                elif resource == "informatieobjecttypes":
                     informatieobjecttype = InformatieObjectTypeFactory.create(
                         catalogus=catalogus
                     )
@@ -748,16 +748,16 @@ class ZaakTypeAPITests(APITestCase):
     def test_partial_update_zaaktype_related_to_non_concept_resource_fails(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittype_set", "heeft_relevant_informatieobjecttype"]:
+        for resource in ["besluittypen", "informatieobjecttypes"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
                 zaaktype_url = reverse(zaaktype)
 
-                if resource == "besluittype_set":
+                if resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, zaaktypes=[zaaktype], concept=False
                     )
-                elif resource == "heeft_relevant_informatieobjecttype":
+                elif resource == "informatieobjecttypes":
                     informatieobjecttype = InformatieObjectTypeFactory.create(
                         catalogus=catalogus, concept=False
                     )
@@ -788,7 +788,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_partial_update_zaaktype_add_relation_to_non_concept_resource_fails(self):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittype_set"]:
+        for resource in ["besluittypen"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(
                     catalogus=catalogus,
@@ -797,7 +797,7 @@ class ZaakTypeAPITests(APITestCase):
                 )
                 zaaktype_url = reverse(zaaktype)
 
-                if resource == "besluittype_set":
+                if resource == "besluittypen":
                     zaaktype_for_besluittype = ZaakTypeFactory.create(
                         catalogus=catalogus,
                         datum_begin_geldigheid="2015-01-01",
@@ -844,16 +844,16 @@ class ZaakTypeAPITests(APITestCase):
     ):
         catalogus = CatalogusFactory.create()
 
-        for resource in ["besluittype_set", "heeft_relevant_informatieobjecttype"]:
+        for resource in ["besluittypen", "informatieobjecttypes"]:
             with self.subTest(resource=resource):
                 zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
                 zaaktype_url = reverse(zaaktype)
 
-                if resource == "besluittype_set":
+                if resource == "besluittypen":
                     besluittype = BesluitTypeFactory.create(
                         catalogus=catalogus, zaaktypes=[zaaktype], concept=False
                     )
-                elif resource == "heeft_relevant_informatieobjecttype":
+                elif resource == "informatieobjecttypes":
                     informatieobjecttype = InformatieObjectTypeFactory.create(
                         catalogus=catalogus, concept=False
                     )

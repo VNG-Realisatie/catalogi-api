@@ -152,10 +152,9 @@ class ZaakTypeSerializer(
     #         'catalogus_pk': 'catalogus__pk'
     #     },
     # )
-    informatieobjecttypen = HyperlinkedRelatedField(
+    informatieobjecttypes = HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        source="heeft_relevant_informatieobjecttype",
         view_name="informatieobjecttype-detail",
         lookup_field="uuid",
         help_text=_(
@@ -208,7 +207,6 @@ class ZaakTypeSerializer(
     besluittypen = HyperlinkedRelatedField(
         many=True,
         label=_("heeft relevante besluittypen"),
-        source="besluittype_set",
         view_name="besluittype-detail",
         lookup_field="uuid",
         queryset=BesluitType.objects.all(),
@@ -259,7 +257,7 @@ class ZaakTypeSerializer(
             "statustypen",
             "resultaattypen",
             "eigenschappen",
-            "informatieobjecttypen",
+            "informatieobjecttypes",
             "roltypen",
             "besluittypen",
             "gerelateerde_zaaktypen",
@@ -293,7 +291,7 @@ class ZaakTypeSerializer(
         # }
         validators = [
             ZaaktypeGeldigheidValidator(),
-            RelationCatalogValidator("besluittype_set"),
+            RelationCatalogValidator("besluittypen"),
         ]
 
     def __init__(self, *args, **kwargs):
