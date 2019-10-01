@@ -2,6 +2,37 @@
 Wijzigingen
 ===========
 
+1.0.0-rc2 (2019-09-19)
+======================
+
+Second release candidate.
+
+* Documented the validation rules for ``Zaaktype`` create
+* Documented the possible options for ``ResultaatType.afleidingswijze``
+* Documented the possible options for ``Objecttype``
+* Fixed dumpdata fixture view (thanks Bart Jeukendrup)
+* Added notifications channels for ``Zaaktype``, ``Besluittype`` and ``Infomratieobjecttype``
+* Updated dependencies to latest stable/secure versions
+* Fixed issue with incorrect serialization if ``Resultaattype.archiefactietermijn``
+  derived from ``selectielijstklasse``
+* Added validation of query parameters to all endpoints taking filter parameters
+
+Breaking changes
+----------------
+
+* Normalized enums to be lowercased, alpha-numeric with underscores only:
+    - ``EigenschapSpecificatie.formaat``
+* Added explicit UniqueTogetherValidator for ``Besluittype.catalogus`` and
+  ``Besluittype.omschrijving``
+* Added date overlap validation in ZTC while writing ``Zaaktype`` objects
+* Added resource validation for ``Zaaktype.selectielijstProcestype``
+* Added resource validation for ``Resultaattype.selectielijstklasse``
+* Added procestype match validation on ``Resultaattype.selectielijstklasse`` and
+  ``Resultaattype.zaaktype``
+* Added initial validation for ``Resultaattype.brondatumArchiefprocedure.afleidingwijze``
+  based on ``selectielijstklasse.procestermijn``
+* Added validation to ``Resultaattype.brondatumArchiefprocedure``
+
 1.0.0-rc1 (2019-07-18)
 ======================
 

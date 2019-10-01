@@ -1,6 +1,6 @@
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
-from vng_api_common.tests import reverse
+from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
 from ...datamodel.models import RolType
 from ...datamodel.tests.factories import RolTypeFactory, ZaakTypeFactory

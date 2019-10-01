@@ -3,6 +3,7 @@ from vng_api_common.notifications.viewsets import (
     NotificationCreateMixin,
     NotificationDestroyMixin,
 )
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import BesluitType
 from ..filters import BesluitTypeFilter
@@ -13,6 +14,7 @@ from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 
 class BesluitTypeViewSet(
+    CheckQueryParamsMixin,
     ConceptMixin,
     M2MConceptCreateMixin,
     NotificationCreateMixin,

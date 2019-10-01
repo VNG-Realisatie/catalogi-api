@@ -3,6 +3,7 @@ from vng_api_common.notifications.viewsets import (
     NotificationCreateMixin,
     NotificationDestroyMixin,
 )
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import ZaakType
 from ..filters import ZaakTypeFilter
@@ -31,6 +32,7 @@ from .mixins import ConceptMixin, M2MConceptCreateMixin
 
 
 class ZaakTypeViewSet(
+    CheckQueryParamsMixin,
     ConceptMixin,
     M2MConceptCreateMixin,
     NotificationCreateMixin,

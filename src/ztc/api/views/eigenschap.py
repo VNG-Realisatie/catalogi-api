@@ -1,4 +1,5 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ztc.datamodel.models import Eigenschap
 
@@ -9,6 +10,7 @@ from .mixins import ZaakTypeConceptMixin
 
 
 class EigenschapViewSet(
+    CheckQueryParamsMixin,
     ZaakTypeConceptMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,

@@ -1,4 +1,5 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ztc.datamodel.models import Catalogus
 
@@ -7,7 +8,9 @@ from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import CatalogusSerializer
 
 
-class CatalogusViewSet(mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet):
+class CatalogusViewSet(
+    CheckQueryParamsMixin, mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet
+):
     """
     Opvragen en bewerken van CATALOGUSsen.
 

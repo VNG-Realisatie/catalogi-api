@@ -3,6 +3,7 @@ from vng_api_common.notifications.viewsets import (
     NotificationCreateMixin,
     NotificationDestroyMixin,
 )
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import InformatieObjectType
 from ..filters import InformatieObjectTypeFilter
@@ -13,6 +14,7 @@ from .mixins import ConceptMixin
 
 
 class InformatieObjectTypeViewSet(
+    CheckQueryParamsMixin,
     ConceptMixin,
     NotificationCreateMixin,
     NotificationDestroyMixin,

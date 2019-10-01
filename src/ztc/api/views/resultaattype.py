@@ -1,4 +1,5 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import ResultaatType
 from ..filters import ResultaatTypeFilter
@@ -8,6 +9,7 @@ from .mixins import ZaakTypeConceptMixin
 
 
 class ResultaatTypeViewSet(
+    CheckQueryParamsMixin,
     ZaakTypeConceptMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,

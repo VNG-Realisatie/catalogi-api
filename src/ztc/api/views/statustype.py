@@ -1,4 +1,5 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import StatusType
 from ..filters import StatusTypeFilter
@@ -8,6 +9,7 @@ from .mixins import ZaakTypeConceptMixin
 
 
 class StatusTypeViewSet(
+    CheckQueryParamsMixin,
     ZaakTypeConceptMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
