@@ -149,6 +149,9 @@ class BrondatumArchiefprocedureValidator:
 
     def __call__(self, attrs: dict):
         archiefprocedure = attrs.get(self.archiefprocedure_field)
+        if not archiefprocedure:
+            return
+
         afleidingswijze = archiefprocedure["afleidingswijze"]
 
         mapping = {
