@@ -17,6 +17,7 @@ from ztc.datamodel.tests.factories import (
     CatalogusFactory,
     ZaakObjectTypeFactory,
     ZaakTypeFactory,
+    ZaakInformatieobjectTypeFactory,
 )
 
 from .base import APITestCase
@@ -271,6 +272,11 @@ class ZaakTypeAPITests(APITestCase):
 
     def test_publish_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
+        besluittype = BesluitTypeFactory.create(concept=False)
+        zaaktype.besluittype_set.add(besluittype)
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype__concept=False
+        )
         zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
         response = self.client.post(zaaktype_url)
@@ -280,6 +286,33 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.refresh_from_db()
 
         self.assertEqual(zaaktype.concept, False)
+
+    def test_publish_zaaktype_fail_not_concept_besluittype(self):
+        zaaktype = ZaakTypeFactory.create()
+        besluittype = BesluitTypeFactory.create()
+        zaaktype.besluittype_set.add(besluittype)
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
+
+        response = self.client.post(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data["detail"], "All relative resources should be published")
+
+    def test_publish_zaaktype_fail_not_concept_iotype(self):
+        zaaktype = ZaakTypeFactory.create()
+        ZaakInformatieobjectTypeFactory.create(zaaktype=zaaktype)
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
+
+        response = self.client.post(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+        data = response.json()
+        self.assertEqual(data["detail"], "All relative resources should be published")
 
     def test_delete_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
