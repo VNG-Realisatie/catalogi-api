@@ -2,8 +2,6 @@ import os
 
 # TODO: Make it disappear
 import django.db.models.options as options
-
-# Django-hijack (and Django-hijack-admin)
 from django.urls import reverse_lazy
 
 from .api import *  # noqa
