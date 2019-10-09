@@ -17,6 +17,11 @@ class StatusTypeFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = StatusType
 
+    class Params:
+        with_etag = factory.Trait(
+            _etag=factory.PostGenerationMethodCall("calculate_etag_value")
+        )
+
     @factory.post_generation
     def roltypen(self, create, extracted, **kwargs):
         # optional M2M, do nothing when no arguments are passed
