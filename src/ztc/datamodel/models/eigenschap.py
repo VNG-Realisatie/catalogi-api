@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from vng_api_common.caching import ETagMixin
+
 from ..choices import FormaatChoices
 from ..validators import (
     validate_kardinaliteit,
@@ -189,7 +191,7 @@ class EigenschapReferentie(models.Model):
         pass
 
 
-class Eigenschap(models.Model):
+class Eigenschap(ETagMixin, models.Model):
     """
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
     kenmerk is van een zaak.

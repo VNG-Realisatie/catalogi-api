@@ -4,12 +4,15 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import VertrouwelijkheidsAanduidingField
 
 from .mixins import ConceptMixin, GeldigheidMixin
 
 
-class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
+class InformatieObjectTypeOmschrijvingGeneriek(
+    ETagMixin, GeldigheidMixin, models.Model
+):
     """
     Algemeen binnen de overheid gehanteerde omschrijvingen van de typen informatieobjecten
 
@@ -71,7 +74,7 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         super().clean()
 
 
-class InformatieObjectType(GeldigheidMixin, ConceptMixin, models.Model):
+class InformatieObjectType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Model):
     """
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
 

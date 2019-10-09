@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from django_better_admin_arrayfield.models.fields import ArrayField
+from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import ZaakobjectTypes
 from vng_api_common.descriptors import GegevensGroepType
 from vng_api_common.fields import DaysDurationField, VertrouwelijkheidsAanduidingField
@@ -247,7 +248,7 @@ class BronZaakType(models.Model):
         verbose_name_plural = _("Bron zaaktypen")
 
 
-class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
+class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
     """
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort
 
