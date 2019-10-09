@@ -1,4 +1,5 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ztc.datamodel.models import Catalogus
@@ -8,6 +9,7 @@ from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import CatalogusSerializer
 
 
+@conditional_retrieve()
 class CatalogusViewSet(
     CheckQueryParamsMixin, mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet
 ):
