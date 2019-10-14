@@ -4,7 +4,7 @@ Test that the caching mechanisms are in place.
 from rest_framework import status
 from rest_framework.test import APITestCase, APITransactionTestCase
 from vng_api_common.caching import calculate_etag
-from vng_api_common.tests import CacheMixin, JWTAuthMixin, generate_jwt_auth, reverse
+from vng_api_common.tests import CacheMixin, JWTAuthMixin, reverse
 from vng_api_common.tests.schema import get_spec
 
 from ztc.datamodel.tests.factories import (
