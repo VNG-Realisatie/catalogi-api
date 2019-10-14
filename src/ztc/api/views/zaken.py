@@ -126,7 +126,7 @@ class ZaakTypeViewSet(
         for types in [besluittypen, informatieobjecttypen]:
             for relative_type in types:
                 if relative_type.concept:
-                    msg = _("All relative resources should be published")
+                    msg = _("All related resources should be published")
                     raise PermissionDenied(detail=msg)
 
         instance.concept = False

@@ -299,7 +299,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data["detail"], "All relative resources should be published")
+        self.assertEqual(data["detail"], "All related resources should be published")
 
     def test_publish_zaaktype_fail_not_concept_iotype(self):
         zaaktype = ZaakTypeFactory.create()
@@ -312,7 +312,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data["detail"], "All relative resources should be published")
+        self.assertEqual(data["detail"], "All related resources should be published")
 
     def test_delete_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
