@@ -4,6 +4,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from vng_api_common.caching import ETagMixin
+
 from ztc.datamodel.choices import (
     AardRelatieChoices,
     ArchiefNominatieChoices,
@@ -11,7 +13,7 @@ from ztc.datamodel.choices import (
 )
 
 
-class ZaakInformatieobjectType(models.Model):
+class ZaakInformatieobjectType(ETagMixin, models.Model):
     """
     ZAAK-INFORMATIEOBJECT-TYPE
 

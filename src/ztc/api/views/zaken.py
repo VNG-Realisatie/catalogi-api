@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import mixins, viewsets
+from vng_api_common.caching import conditional_retrieve
 from vng_api_common.notifications.viewsets import (
     NotificationCreateMixin,
     NotificationDestroyMixin,
@@ -36,6 +37,7 @@ from rest_framework.response import Response
 #     }
 
 
+@conditional_retrieve()
 class ZaakTypeViewSet(
     CheckQueryParamsMixin,
     ConceptDestroyMixin,
