@@ -5,6 +5,7 @@ from rest_framework.serializers import ModelSerializer
 
 from ...datamodel.models import CheckListItem, StatusType
 from ..utils.serializers import SourceMappingSerializerMixin
+from ..validators import ZaakTypeConceptValidator
 
 
 class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
@@ -83,3 +84,4 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "volgnummer": {"source": "statustypevolgnummer"},
             "zaaktype": {"lookup_field": "uuid"},
         }
+        validators = [ZaakTypeConceptValidator()]

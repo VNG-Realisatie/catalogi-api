@@ -8,7 +8,9 @@ from ..serializers import StatusTypeSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
-class StatusTypeViewSet(CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet):
+class StatusTypeViewSet(
+    CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet
+):
     """
     Opvragen en bewerken van STATUSTYPEn van een ZAAKTYPE.
 

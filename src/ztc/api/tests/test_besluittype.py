@@ -2,12 +2,18 @@ from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 from vng_api_common.utils import underscore_to_camel
 
+from ztc.api.validators import (
+    ConceptUpdateValidator,
+    M2MConceptCreateValidator,
+    M2MConceptUpdateValidator,
+)
+
 from ...datamodel.models import BesluitType
 from ...datamodel.tests.factories import (
     BesluitTypeFactory,
+    CatalogusFactory,
     InformatieObjectTypeFactory,
     ZaakTypeFactory,
-    CatalogusFactory,
 )
 from .base import APITestCase
 
@@ -182,12 +188,10 @@ class BesluitTypeAPITests(APITestCase):
 
         response = self.client.post(besluittype_list_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"], "Relations to non-concept zaaktypes object can't be created"
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptCreateValidator.code)
 
     def test_create_besluittype_fail_non_concept_informatieobjecttypes(self):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
@@ -216,13 +220,10 @@ class BesluitTypeAPITests(APITestCase):
 
         response = self.client.post(besluittype_list_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Relations to non-concept informatieobjecttypes object can't be created",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptCreateValidator.code)
 
     def test_create_besluittype_fail_different_catalogus_for_zaaktypes(self):
         zaaktype = ZaakTypeFactory.create()
@@ -321,10 +322,10 @@ class BesluitTypeAPITests(APITestCase):
 
         response = self.client.delete(besluittype_url)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-object")
 
     def test_update_besluittype(self):
         besluittype = BesluitTypeFactory.create()
@@ -352,6 +353,9 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["toelichting"], "aangepast")
 
+        besluittype.refresh_from_db()
+        self.assertEqual(besluittype.toelichting, "aangepast")
+
     def test_update_besluittype_fail_not_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False)
         besluittype_url = reverse(
@@ -374,10 +378,10 @@ class BesluitTypeAPITests(APITestCase):
 
         response = self.client.put(besluittype_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(data["detail"], "Alleen concepten kunnen worden bijgewerkt.")
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ConceptUpdateValidator.code)
 
     def test_partial_update_besluittype(self):
         besluittype = BesluitTypeFactory.create()
@@ -390,6 +394,9 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["toelichting"], "ja")
 
+        besluittype.refresh_from_db()
+        self.assertEqual(besluittype.toelichting, "ja")
+
     def test_partial_update_besluittype_fail_not_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False)
         besluittype_url = reverse(
@@ -398,10 +405,10 @@ class BesluitTypeAPITests(APITestCase):
 
         response = self.client.patch(besluittype_url, {"toelichting": "same"})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(data["detail"], "Alleen concepten kunnen worden bijgewerkt.")
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ConceptUpdateValidator.code)
 
     def test_delete_besluittype_not_related_to_non_concept_resources(self):
         zaaktype = ZaakTypeFactory.create()
@@ -434,15 +441,10 @@ class BesluitTypeAPITests(APITestCase):
 
                 response = self.client.delete(besluittype_url)
 
-                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-                data = response.json()
-                self.assertEqual(
-                    data["detail"],
-                    "Objects related to non-concept {} can't be destroyed".format(
-                        resource
-                    ),
-                )
+                error = get_validation_errors(response, "nonFieldErrors")
+                self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
 
     def test_update_besluittype_not_related_to_non_concept_resource(self):
         catalogus = CatalogusFactory.create()
@@ -514,15 +516,10 @@ class BesluitTypeAPITests(APITestCase):
 
                 response = self.client.put(besluittype_url, data)
 
-                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-                data = response.json()
-                self.assertEqual(
-                    data["detail"],
-                    "Objects related to non-concept {} can't be updated".format(
-                        resource
-                    ),
-                )
+                error = get_validation_errors(response, "nonFieldErrors")
+                self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
                 besluittype.delete()
 
     def test_update_besluittype_add_relation_to_non_concept_resource_fails(self):
@@ -558,15 +555,10 @@ class BesluitTypeAPITests(APITestCase):
 
                 response = self.client.put(besluittype_url, data)
 
-                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-                data = response.json()
-                self.assertEqual(
-                    data["detail"],
-                    "Objects can't be updated with a relation to non-concept {}".format(
-                        resource
-                    ),
-                )
+                error = get_validation_errors(response, "nonFieldErrors")
+                self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
                 besluittype.delete()
 
     def test_partial_update_besluittype_not_related_to_non_concept_resource(self):
@@ -613,15 +605,10 @@ class BesluitTypeAPITests(APITestCase):
                     besluittype_url, {"toelichting": "aangepast"}
                 )
 
-                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-                data = response.json()
-                self.assertEqual(
-                    data["detail"],
-                    "Objects related to non-concept {} can't be updated".format(
-                        resource
-                    ),
-                )
+                error = get_validation_errors(response, "nonFieldErrors")
+                self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
                 besluittype.delete()
 
     def test_partial_update_besluittype_add_relation_to_non_concept_resource_fails(
@@ -645,15 +632,10 @@ class BesluitTypeAPITests(APITestCase):
                     besluittype_url, {resource: [reverse(related)]}
                 )
 
-                self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-                data = response.json()
-                self.assertEqual(
-                    data["detail"],
-                    "Objects can't be updated with a relation to non-concept {}".format(
-                        resource
-                    ),
-                )
+                error = get_validation_errors(response, "nonFieldErrors")
+                self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
                 besluittype.delete()
 
     def test_partial_update_non_concept_besluittype_einde_geldigheid(self):
@@ -848,11 +830,3 @@ class BesluitTypeValidationTests(APITestCase):
 
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "unique")
-
-
-class BesluittypeConceptTests(APITestCase):
-    def test_delete_concept_not_permitted(self):
-        besluittype1 = BesluitTypeFactory.create(concept=False)
-        besluittype2 = BesluitTypeFactory.create(concept=False)
-        zaaktype1 = besluittype1.zaaktypes.get()
-        zaaktype1_url = reverse(zaaktype1)

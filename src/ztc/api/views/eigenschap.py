@@ -9,7 +9,9 @@ from ..serializers import EigenschapSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
-class EigenschapViewSet(CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet):
+class EigenschapViewSet(
+    CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet
+):
     """
     Opvragen en bewerken van EIGENSCHAPpen van een ZAAKTYPE.
 

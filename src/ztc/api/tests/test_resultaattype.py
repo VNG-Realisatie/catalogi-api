@@ -241,13 +241,10 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 )
                 response = self.client.post(self.list_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Creating a related object to non-concept object is forbidden",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-zaaktype")
 
     def test_delete_resultaattype(self):
         resultaattype = ResultaatTypeFactory.create()
@@ -268,10 +265,10 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
         response = self.client.delete(resultaattype_url)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-zaaktype")
 
     @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
     @patch("vng_api_common.oas.fetcher.fetch", return_value={})
@@ -362,13 +359,10 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 )
                 response = self.client.put(resultaattype_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Updating an object that has a relation to a non-concept object is forbidden",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-zaaktype")
 
     @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
     @patch("vng_api_common.oas.fetcher.fetch", return_value={})
@@ -416,12 +410,10 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 )
                 response = self.client.put(resultaattype_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"], "Creating a relation to non-concept object is forbidden"
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-zaaktype")
 
     def test_partial_update_resultaattype(self):
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
@@ -444,13 +436,10 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
         response = self.client.patch(resultaattype_url, {"omschrijving": "aangepast"})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Updating an object that has a relation to a non-concept object is forbidden",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-zaaktype")
 
     @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
     @patch("vng_api_common.oas.fetcher.fetch", return_value={})
@@ -478,12 +467,10 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         with mock_client(responses):
             response = self.client.patch(resultaattype_url, {"zaaktype": zaaktype_url})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"], "Creating a relation to non-concept object is forbidden"
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-zaaktype")
 
 
 class ResultaatTypeFilterAPITests(APITestCase):

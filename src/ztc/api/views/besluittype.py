@@ -7,13 +7,13 @@ from ..filters import BesluitTypeFilter
 from ..kanalen import KANAAL_BESLUITTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import BesluitTypeSerializer
-from .mixins import ConceptMixin, M2MConceptMixin
+from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 
 class BesluitTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
-    M2MConceptMixin,
+    M2MConceptDestroyMixin,
     NotificationViewSetMixin,
     viewsets.ModelViewSet,
 ):

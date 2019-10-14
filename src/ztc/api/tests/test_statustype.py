@@ -1,11 +1,11 @@
 from rest_framework import status
-from vng_api_common.tests import get_operation_url, get_validation_errors
+from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
+from ztc.api.validators import ZaakTypeConceptValidator
 from ztc.datamodel.models import StatusType
 from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
 
 from .base import APITestCase
-from vng_api_common.tests import reverse
 
 
 class StatusTypeAPITests(APITestCase):
@@ -88,13 +88,10 @@ class StatusTypeAPITests(APITestCase):
         }
         response = self.client.post(statustype_list_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Creating a related object to non-concept object is forbidden",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
     def test_delete_statustype(self):
         statustype = StatusTypeFactory.create()
@@ -111,10 +108,10 @@ class StatusTypeAPITests(APITestCase):
 
         response = self.client.delete(statustype_url)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
     def test_update_statustype(self):
         zaaktype = ZaakTypeFactory.create()
@@ -135,6 +132,9 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["omschrijving"], "aangepast")
 
+        statustype.refresh_from_db()
+        self.assertEqual(statustype.statustype_omschrijving, "aangepast")
+
     def test_update_statustype_fail_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse(zaaktype)
@@ -151,13 +151,10 @@ class StatusTypeAPITests(APITestCase):
 
         response = self.client.put(statustype_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Updating an object that has a relation to a non-concept object is forbidden",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
     def test_update_statustype_add_relation_to_non_concept_zaaktype_fails(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
@@ -175,12 +172,10 @@ class StatusTypeAPITests(APITestCase):
 
         response = self.client.put(statustype_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"], "Creating a relation to non-concept object is forbidden"
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
     def test_partial_update_statustype(self):
         zaaktype = ZaakTypeFactory.create()
@@ -193,6 +188,9 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["omschrijving"], "aangepast")
 
+        statustype.refresh_from_db()
+        self.assertEqual(statustype.statustype_omschrijving, "aangepast")
+
     def test_partial_update_statustype_fail_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse(zaaktype)
@@ -201,13 +199,10 @@ class StatusTypeAPITests(APITestCase):
 
         response = self.client.patch(statustype_url, {"omschrijving": "aangepast"})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Updating an object that has a relation to a non-concept object is forbidden",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
     def test_partial_update_statustype_add_relation_to_non_concept_zaaktype_fails(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
@@ -217,12 +212,10 @@ class StatusTypeAPITests(APITestCase):
 
         response = self.client.patch(statustype_url, {"zaaktype": zaaktype_url})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"], "Creating a relation to non-concept object is forbidden"
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
 
 class StatusTypeFilterAPITests(APITestCase):

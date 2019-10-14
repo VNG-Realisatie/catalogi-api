@@ -7,13 +7,13 @@ from ..filters import InformatieObjectTypeFilter
 from ..kanalen import KANAAL_INFORMATIEOBJECTTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import InformatieObjectTypeSerializer
-from .mixins import ConceptMixin, M2MConceptMixin
+from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 
 class InformatieObjectTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
-    M2MConceptMixin,
+    M2MConceptDestroyMixin,
     NotificationViewSetMixin,
     viewsets.ModelViewSet,
 ):

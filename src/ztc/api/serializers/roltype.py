@@ -4,6 +4,7 @@ from vng_api_common.constants import RolOmschrijving, RolTypes
 from vng_api_common.serializers import add_choice_values_help_text
 
 from ...datamodel.models import RolType
+from ..validators import ZaakTypeConceptValidator
 
 
 class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerializer):
@@ -34,6 +35,7 @@ class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerialize
             "url": {"lookup_field": "uuid"},
             "zaaktype": {"lookup_field": "uuid"},
         }
+        validators = [ZaakTypeConceptValidator()]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
