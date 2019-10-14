@@ -7,17 +7,17 @@ from vng_api_common.caching import calculate_etag
 from vng_api_common.tests import CacheMixin, JWTAuthMixin, generate_jwt_auth, reverse
 from vng_api_common.tests.schema import get_spec
 
-from ztc.datamodel.tests.factories.besluittype import BesluitTypeFactory
-from ztc.datamodel.tests.factories.catalogus import CatalogusFactory
-from ztc.datamodel.tests.factories.eigenschap import EigenschapFactory
-from ztc.datamodel.tests.factories.informatie_objecten import (
+from ztc.datamodel.tests.factories import (
+    BesluitTypeFactory,
+    CatalogusFactory,
+    EigenschapFactory,
     InformatieObjectTypeFactory,
+    ZaakInformatieobjectTypeFactory,
+    ResultaatTypeFactory,
+    RolTypeFactory,
+    StatusTypeFactory,
+    ZaakTypeFactory,
 )
-from ztc.datamodel.tests.factories.relatieklassen import ZaakInformatieobjectTypeFactory
-from ztc.datamodel.tests.factories.resultaattype import ResultaatTypeFactory
-from ztc.datamodel.tests.factories.roltype import RolTypeFactory
-from ztc.datamodel.tests.factories.statustype import StatusTypeFactory
-from ztc.datamodel.tests.factories.zaken import ZaakTypeFactory
 
 
 class BesluitTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
