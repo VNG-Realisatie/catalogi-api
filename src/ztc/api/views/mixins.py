@@ -4,6 +4,7 @@ from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
+from rest_framework.serializers import ValidationError
 
 
 class ConceptPublishMixin:
@@ -19,23 +20,6 @@ class ConceptPublishMixin:
         return Response(serializer.data)
 
 
-class ConceptUpdateMixin:
-    def get_concept(self, instance):
-        return self.get_object().concept
-
-    def perform_update(self, instance):
-        # It is only allowed to perform a PATCH with the field eindeGeldigheid
-        einde_geldigheid = instance.validated_data.get("datum_einde_geldigheid")
-        if einde_geldigheid and len(instance.validated_data) == 1:
-            super().perform_update(instance)
-        else:
-            if not self.get_concept(instance):
-                msg = _("Alleen concepten kunnen worden bijgewerkt.")
-                raise PermissionDenied(detail=msg)
-
-            super().perform_update(instance)
-
-
 class ConceptDestroyMixin:
     def get_concept(self, instance):
         return instance.concept
@@ -43,7 +27,7 @@ class ConceptDestroyMixin:
     def perform_destroy(self, instance):
         if not self.get_concept(instance):
             msg = _("Alleen concepten kunnen worden verwijderd.")
-            raise PermissionDenied(detail=msg)
+            raise ValidationError({"nonFieldErrors": msg}, code="non-concept-object")
 
         super().perform_destroy(instance)
 
@@ -66,45 +50,24 @@ class ConceptFilterMixin:
         return qs.filter(**self.get_concept_filter())
 
 
-class ConceptMixin(
-    ConceptPublishMixin, ConceptUpdateMixin, ConceptDestroyMixin, ConceptFilterMixin
-):
+class ConceptMixin(ConceptPublishMixin, ConceptDestroyMixin, ConceptFilterMixin):
     """ mixin for resources which have 'concept' field"""
 
     pass
 
 
-class ZaakTypeConceptCreateMixin:
-    def perform_create(self, serializer):
-        zaaktype = serializer.validated_data["zaaktype"]
-        if not zaaktype.concept:
-            msg = _("Creating a related object to non-concept object is forbidden")
-            raise PermissionDenied(detail=msg)
-
-        super().perform_create(serializer)
-
-
-class ZaakTypeConceptUpdateMixin:
-    def perform_update(self, serializer):
-        zaaktype = self.get_object().zaaktype
-        if not zaaktype.concept:
-            msg = _(
-                "Updating an object that has a relation to a non-concept object is forbidden"
-            )
-            raise PermissionDenied(detail=msg)
-
-        zaaktype_in_attrs = serializer.validated_data.get("zaaktype")
-        if zaaktype_in_attrs:
-            if not zaaktype_in_attrs.concept:
-                msg = _("Creating a relation to non-concept object is forbidden")
-                raise PermissionDenied(detail=msg)
-
-        super().perform_create(serializer)
-
-
 class ZaakTypeConceptDestroyMixin(ConceptDestroyMixin):
     def get_concept(self, instance):
         return instance.zaaktype.concept
+
+    def perform_destroy(self, instance):
+        if not self.get_concept(instance):
+            msg = _(
+                "Objecten gerelateerd aan non-concept zaaktypen kunnen niet verwijderd worden."
+            )
+            raise ValidationError({"nonFieldErrors": msg}, code="non-concept-zaaktype")
+
+        super().perform_destroy(instance)
 
 
 class ZaakTypeConceptFilterMixin(ConceptFilterMixin):
@@ -112,65 +75,13 @@ class ZaakTypeConceptFilterMixin(ConceptFilterMixin):
         return {"zaaktype__concept": False}
 
 
-class ZaakTypeConceptMixin(
-    ZaakTypeConceptCreateMixin,
-    ZaakTypeConceptUpdateMixin,
-    ZaakTypeConceptDestroyMixin,
-    ZaakTypeConceptFilterMixin,
-):
+class ZaakTypeConceptMixin(ZaakTypeConceptDestroyMixin, ZaakTypeConceptFilterMixin):
     """
     mixin for resources which have FK or one-to-one relations with ZaakType objects,
     which support concept functionality
     """
 
     pass
-
-
-class M2MConceptCreateMixin:
-
-    concept_related_fields = []
-
-    def perform_create(self, serializer):
-        for field_name in self.concept_related_fields:
-            field = serializer.validated_data.get(field_name, [])
-            for related_object in field:
-                if not related_object.concept:
-                    msg = _(
-                        f"Relations to non-concept {field_name} object can't be created"
-                    )
-                    raise PermissionDenied(detail=msg)
-
-        super().perform_create(serializer)
-
-
-class M2MConceptUpdateMixin:
-    def perform_update(self, instance):
-        # It is only allowed to perform a PATCH with the field eindeGeldigheid
-        einde_geldigheid = instance.validated_data.get("datum_einde_geldigheid")
-        if einde_geldigheid and len(instance.validated_data) == 1:
-            super().perform_update(instance)
-        else:
-            for field_name in self.concept_related_fields:
-                field = getattr(self.get_object(), field_name)
-                related_non_concepts = field.filter(concept=False)
-                if related_non_concepts.exists():
-                    msg = _(
-                        f"Objects related to non-concept {field_name} can't be updated"
-                    )
-                    raise PermissionDenied(detail=msg)
-
-                # Validate that no new relations are created to resources with
-                # non-concept status
-                field_in_attrs = instance.validated_data.get(field_name)
-                if field_in_attrs:
-                    for relation in field_in_attrs:
-                        if not relation.concept:
-                            msg = _(
-                                f"Objects can't be updated with a relation to non-concept {field_name}"
-                            )
-                            raise PermissionDenied(detail=msg)
-
-            super().perform_update(instance)
 
 
 class M2MConceptDestroyMixin:
@@ -182,12 +93,8 @@ class M2MConceptDestroyMixin:
                 msg = _(
                     f"Objects related to non-concept {field_name} can't be destroyed"
                 )
-                raise PermissionDenied(detail=msg)
+                raise ValidationError(
+                    {"nonFieldErrors": msg}, code="non-concept-relation"
+                )
 
         super().perform_destroy(instance)
-
-
-class M2MConceptMixin(
-    M2MConceptCreateMixin, M2MConceptUpdateMixin, M2MConceptDestroyMixin
-):
-    pass

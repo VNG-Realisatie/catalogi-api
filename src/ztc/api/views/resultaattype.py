@@ -8,7 +8,9 @@ from ..serializers import ResultaatTypeSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
-class ResultaatTypeViewSet(CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet):
+class ResultaatTypeViewSet(
+    CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet
+):
     """
     Opvragen en bewerken van RESULTAATTYPEn van een ZAAKTYPE.
 

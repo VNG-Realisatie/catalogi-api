@@ -1,15 +1,16 @@
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework import viewsets
+from rest_framework.exceptions import PermissionDenied
+from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from django.utils.translation import ugettext_lazy as _
-from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from ...datamodel.models import ZaakType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakTypeSerializer
-from .mixins import ConceptMixin, M2MConceptMixin
-from rest_framework.exceptions import PermissionDenied
+from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 # class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
 #                             FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
@@ -33,7 +34,7 @@ from rest_framework.exceptions import PermissionDenied
 class ZaakTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
-    M2MConceptMixin,
+    M2MConceptDestroyMixin,
     NotificationViewSetMixin,
     viewsets.ModelViewSet,
 ):
@@ -84,7 +85,7 @@ class ZaakTypeViewSet(
     queryset = ZaakType.objects.prefetch_related(
         "statustypen",
         "zaaktypenrelaties",
-        "informatieobjecttypes",
+        "informatieobjecttypen",
         "statustypen",
         "resultaattypen",
         "eigenschap_set",
@@ -103,7 +104,7 @@ class ZaakTypeViewSet(
         "destroy": SCOPE_ZAAKTYPES_WRITE,
         "publish": SCOPE_ZAAKTYPES_WRITE,
     }
-    concept_related_fields = ["besluittypen", "informatieobjecttypes"]
+    concept_related_fields = ["besluittypen", "informatieobjecttypen"]
     notifications_kanaal = KANAAL_ZAAKTYPEN
     relation_fields = ["zaaktypenrelaties"]
 

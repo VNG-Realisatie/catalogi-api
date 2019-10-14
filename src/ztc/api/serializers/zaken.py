@@ -29,7 +29,12 @@ from ...datamodel.models import (
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 from ..utils.validators import RelationCatalogValidator
-from ..validators import ZaaktypeGeldigheidValidator
+from ..validators import (
+    ConceptUpdateValidator,
+    M2MConceptCreateValidator,
+    M2MConceptUpdateValidator,
+    ZaaktypeGeldigheidValidator,
+)
 
 
 class ZaakObjectTypeSerializer(
@@ -152,7 +157,7 @@ class ZaakTypeSerializer(
     #         'catalogus_pk': 'catalogus__pk'
     #     },
     # )
-    informatieobjecttypes = HyperlinkedRelatedField(
+    informatieobjecttypen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
         view_name="informatieobjecttype-detail",
@@ -257,7 +262,7 @@ class ZaakTypeSerializer(
             "statustypen",
             "resultaattypen",
             "eigenschappen",
-            "informatieobjecttypes",
+            "informatieobjecttypen",
             "roltypen",
             "besluittypen",
             "gerelateerde_zaaktypen",
@@ -292,6 +297,9 @@ class ZaakTypeSerializer(
         validators = [
             ZaaktypeGeldigheidValidator(),
             RelationCatalogValidator("besluittypen"),
+            ConceptUpdateValidator(),
+            M2MConceptCreateValidator(["besluittypen", "informatieobjecttypen"]),
+            M2MConceptUpdateValidator(["besluittypen", "informatieobjecttypen"]),
         ]
 
     def __init__(self, *args, **kwargs):

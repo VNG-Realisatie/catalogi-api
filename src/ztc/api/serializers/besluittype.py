@@ -4,6 +4,11 @@ from vng_api_common.utils import get_help_text
 
 from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
 from ..utils.validators import RelationCatalogValidator
+from ..validators import (
+    ConceptUpdateValidator,
+    M2MConceptCreateValidator,
+    M2MConceptUpdateValidator,
+)
 
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -55,4 +60,7 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             ),
             RelationCatalogValidator("informatieobjecttypes"),
             RelationCatalogValidator("zaaktypes"),
+            ConceptUpdateValidator(),
+            M2MConceptCreateValidator(["zaaktypes", "informatieobjecttypes"]),
+            M2MConceptUpdateValidator(["zaaktypes", "informatieobjecttypes"]),
         ]
