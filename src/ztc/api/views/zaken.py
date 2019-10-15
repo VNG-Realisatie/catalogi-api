@@ -118,8 +118,8 @@ class ZaakTypeViewSet(
         instance = self.get_object()
 
         # check related objects
-        besluittypen = instance.besluittype_set.all()
-        informatieobjecttypen = instance.heeft_relevant_informatieobjecttype.all()
+        besluittypen = instance.besluittypen.all()
+        informatieobjecttypen = instance.informatieobjecttypen.all()
 
         for types in [besluittypen, informatieobjecttypen]:
             for relative_type in types:

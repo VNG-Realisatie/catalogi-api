@@ -277,7 +277,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_publish_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
         besluittype = BesluitTypeFactory.create(concept=False)
-        zaaktype.besluittype_set.add(besluittype)
+        zaaktype.besluittypen.add(besluittype)
         ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype, informatieobjecttype__concept=False
         )
@@ -294,7 +294,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_publish_zaaktype_fail_not_concept_besluittype(self):
         zaaktype = ZaakTypeFactory.create()
         besluittype = BesluitTypeFactory.create()
-        zaaktype.besluittype_set.add(besluittype)
+        zaaktype.besluittypen.add(besluittype)
 
         zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
