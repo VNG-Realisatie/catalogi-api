@@ -55,7 +55,7 @@
                         "type": "string"
                     },
                     {
-                        "name": "informatieobjecttypes",
+                        "name": "informatieobjecttypen",
                         "in": "query",
                         "description": "Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.",
                         "required": false,
@@ -9383,7 +9383,7 @@
                 "catalogus",
                 "zaaktypes",
                 "publicatieIndicatie",
-                "informatieobjecttypes",
+                "informatieobjecttypen",
                 "beginGeldigheid"
             ],
             "type": "object",
@@ -9460,7 +9460,7 @@
                     "description": "Een eventuele toelichting op dit BESLUITTYPE.",
                     "type": "string"
                 },
-                "informatieobjecttypes": {
+                "informatieobjecttypen": {
                     "description": "URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.",
                     "type": "array",
                     "items": {
@@ -10498,7 +10498,7 @@
                     "readOnly": true,
                     "uniqueItems": true
                 },
-                "informatieobjecttypes": {
+                "informatieobjecttypen": {
                     "description": "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
                     "type": "array",
                     "items": {
