@@ -2,6 +2,8 @@ from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
+from ztc.api.validators import ZaakTypeConceptValidator
+
 from ...datamodel.models import RolType
 from ...datamodel.tests.factories import RolTypeFactory, ZaakTypeFactory
 from .base import APITestCase
@@ -82,13 +84,10 @@ class RolTypeAPITests(APITestCase):
 
         response = self.client.post(rol_type_list_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Creating a related object to non-concept object is forbidden",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
     def test_delete_roltype(self):
         roltype = RolTypeFactory.create()
@@ -105,10 +104,108 @@ class RolTypeAPITests(APITestCase):
 
         response = self.client.delete(roltype_url)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
+
+    def test_update_roltype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create(zaaktype=zaaktype)
+        roltype_url = reverse(roltype)
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "aangepast",
+            "omschrijvingGeneriek": RolOmschrijving.initiator,
+        }
+
+        response = self.client.put(roltype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+        roltype.refresh_from_db()
+        self.assertEqual(roltype.omschrijving, "aangepast")
+
+    def test_update_roltype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create(zaaktype=zaaktype)
+        roltype_url = reverse(roltype)
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "aangepast",
+            "omschrijvingGeneriek": RolOmschrijving.initiator,
+        }
+
+        response = self.client.put(roltype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
+
+    def test_update_roltype_add_relation_to_non_concept_zaaktype_fails(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create()
+        roltype_url = reverse(roltype)
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "aangepast",
+            "omschrijvingGeneriek": RolOmschrijving.initiator,
+        }
+
+        response = self.client.put(roltype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
+
+    def test_partial_update_roltype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create(zaaktype=zaaktype)
+        roltype_url = reverse(roltype)
+
+        response = self.client.patch(roltype_url, {"omschrijving": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+        roltype.refresh_from_db()
+        self.assertEqual(roltype.omschrijving, "aangepast")
+
+    def test_partial_update_roltype_fail_not_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create(zaaktype=zaaktype)
+        roltype_url = reverse(roltype)
+
+        response = self.client.patch(roltype_url, {"omschrijving": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
+
+    def test_partial_update_roltype_add_relation_to_non_concept_zaaktype_fails(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create()
+        roltype_url = reverse(roltype)
+
+        response = self.client.patch(roltype_url, {"zaaktype": zaaktype_url})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ZaakTypeConceptValidator.code)
 
 
 class FilterValidationTests(APITestCase):
