@@ -69,7 +69,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [],
+            "informatieobjecttypen": [],
             "beginGeldigheid": "2018-01-01",
             "eindeGeldigheid": None,
             "concept": True,
@@ -77,14 +77,14 @@ class BesluitTypeAPITests(APITestCase):
         }
         self.assertEqual(response.json(), expected)
 
-    def test_get_detail_related_informatieobjecttypes(self):
+    def test_get_detail_related_informatieobjecttypen(self):
         """Retrieve the details of a single `BesluitType` object with related informatieonnjecttype."""
         besluittype = BesluitTypeFactory.create(
             catalogus=self.catalogus, publicatie_indicatie=True
         )
         iot1 = InformatieObjectTypeFactory.create(catalogus=self.catalogus)
         iot2 = InformatieObjectTypeFactory.create(catalogus=self.catalogus)
-        besluittype.informatieobjecttypes.add(iot1)
+        besluittype.informatieobjecttypen.add(iot1)
 
         besluittype_detail_url = reverse(
             "besluittype-detail", kwargs={"uuid": besluittype.uuid}
@@ -96,9 +96,9 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
-        self.assertEqual(len(data["informatieobjecttypes"]), 1)
+        self.assertEqual(len(data["informatieobjecttypen"]), 1)
         self.assertEqual(
-            data["informatieobjecttypes"][0], f"http://testserver{iot1_url}"
+            data["informatieobjecttypen"][0], f"http://testserver{iot1_url}"
         )
 
     def test_get_detail_related_zaaktypes(self):
@@ -145,7 +145,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [f"http://testserver{informatieobjecttype_url}"],
+            "informatieobjecttypen": [f"http://testserver{informatieobjecttype_url}"],
             "beginGeldigheid": "2019-01-01",
         }
 
@@ -158,7 +158,7 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(besluittype.omschrijving, "test")
         self.assertEqual(besluittype.catalogus, self.catalogus)
         self.assertEqual(besluittype.zaaktypes.get(), zaaktype)
-        self.assertEqual(besluittype.informatieobjecttypes.get(), informatieobjecttype)
+        self.assertEqual(besluittype.informatieobjecttypen.get(), informatieobjecttype)
         self.assertEqual(besluittype.concept, True)
 
     def test_create_besluittype_fail_non_concept_zaaktypes(self):
@@ -182,7 +182,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [f"http://testserver{informatieobjecttype_url}"],
+            "informatieobjecttypen": [f"http://testserver{informatieobjecttype_url}"],
             "beginGeldigheid": "2019-01-01",
         }
 
@@ -193,7 +193,7 @@ class BesluitTypeAPITests(APITestCase):
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], M2MConceptCreateValidator.code)
 
-    def test_create_besluittype_fail_non_concept_informatieobjecttypes(self):
+    def test_create_besluittype_fail_non_concept_informatieobjecttypen(self):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         informatieobjecttype = InformatieObjectTypeFactory.create(
@@ -214,7 +214,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [f"http://testserver{informatieobjecttype_url}"],
+            "informatieobjecttypen": [f"http://testserver{informatieobjecttype_url}"],
             "beginGeldigheid": "2019-01-01",
         }
 
@@ -246,7 +246,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [f"http://testserver{informatieobjecttype_url}"],
+            "informatieobjecttypen": [f"http://testserver{informatieobjecttype_url}"],
             "beginGeldigheid": "2019-01-01",
         }
 
@@ -257,7 +257,7 @@ class BesluitTypeAPITests(APITestCase):
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "relations-incorrect-catalogus")
 
-    def test_create_besluittype_fail_different_catalogus_for_informatieobjecttypes(
+    def test_create_besluittype_fail_different_catalogus_for_informatieobjecttypen(
         self
     ):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
@@ -278,7 +278,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [f"http://testserver{informatieobjecttype_url}"],
+            "informatieobjecttypen": [f"http://testserver{informatieobjecttype_url}"],
             "beginGeldigheid": "2019-01-01",
         }
 
@@ -344,7 +344,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "aangepast",
-            "informatieobjecttypes": [],
+            "informatieobjecttypen": [],
             "beginGeldigheid": "2019-01-01",
         }
 
@@ -372,7 +372,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [],
+            "informatieobjecttypen": [],
             "beginGeldigheid": "2019-01-01",
         }
 
@@ -414,7 +414,7 @@ class BesluitTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create()
         informatieobjecttype = InformatieObjectTypeFactory.create()
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(**{resource: [related]})
@@ -431,7 +431,7 @@ class BesluitTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(concept=False)
         informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(**{resource: [related]})
@@ -451,7 +451,7 @@ class BesluitTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(
@@ -472,7 +472,7 @@ class BesluitTypeAPITests(APITestCase):
                     "publicatietekst": "",
                     "publicatietermijn": None,
                     "toelichting": "aangepast",
-                    "informatieobjecttypes": [],
+                    "informatieobjecttypen": [],
                     "beginGeldigheid": "2019-01-01",
                 }
                 data[resource] = [reverse(related)]
@@ -490,7 +490,7 @@ class BesluitTypeAPITests(APITestCase):
             catalogus=catalogus, concept=False
         )
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(**{resource: [related]})
@@ -509,7 +509,7 @@ class BesluitTypeAPITests(APITestCase):
                     "publicatietekst": "",
                     "publicatietermijn": None,
                     "toelichting": "aangepast",
-                    "informatieobjecttypes": [],
+                    "informatieobjecttypen": [],
                     "beginGeldigheid": "2019-01-01",
                 }
                 data[resource] = [reverse(related)]
@@ -529,7 +529,7 @@ class BesluitTypeAPITests(APITestCase):
             catalogus=catalogus, concept=False
         )
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create()
@@ -548,7 +548,7 @@ class BesluitTypeAPITests(APITestCase):
                     "publicatietekst": "",
                     "publicatietermijn": None,
                     "toelichting": "aangepast",
-                    "informatieobjecttypes": [],
+                    "informatieobjecttypen": [],
                     "beginGeldigheid": "2019-01-01",
                 }
                 data[resource] = [reverse(related)]
@@ -566,7 +566,7 @@ class BesluitTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(
@@ -591,7 +591,7 @@ class BesluitTypeAPITests(APITestCase):
             catalogus=catalogus, concept=False
         )
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(
@@ -620,7 +620,7 @@ class BesluitTypeAPITests(APITestCase):
             catalogus=catalogus, concept=False
         )
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(catalogus=catalogus)
@@ -656,7 +656,7 @@ class BesluitTypeAPITests(APITestCase):
             catalogus=catalogus, concept=False
         )
 
-        for resource in ["zaaktypes", "informatieobjecttypes"]:
+        for resource in ["zaaktypes", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
                 related = zaaktype if resource == "zaaktypes" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(
@@ -739,17 +739,17 @@ class BesluitTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{besluittype1_url}")
 
-    def test_filter_informatieobjecttypes(self):
+    def test_filter_informatieobjecttypen(self):
         besluittype1 = BesluitTypeFactory.create(concept=False)
         besluittype2 = BesluitTypeFactory.create(concept=False)
         iot1 = InformatieObjectTypeFactory.create(catalogus=self.catalogus)
-        besluittype1.informatieobjecttypes.add(iot1)
+        besluittype1.informatieobjecttypen.add(iot1)
         besluittype_list_url = reverse("besluittype-list")
         besluittype1_url = reverse(besluittype1)
         iot1_url = reverse(iot1)
 
         response = self.client.get(
-            besluittype_list_url, {"informatieobjecttypes": iot1_url}
+            besluittype_list_url, {"informatieobjecttypen": iot1_url}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -820,7 +820,7 @@ class BesluitTypeValidationTests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypes": [],
+            "informatieobjecttypen": [],
             "beginGeldigheid": "2019-01-01",
         }
 

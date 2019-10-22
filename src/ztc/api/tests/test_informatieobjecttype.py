@@ -260,7 +260,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create()
 
         besluittype = BesluitTypeFactory.create(
-            informatieobjecttypes=[informatieobjecttype]
+            informatieobjecttypen=[informatieobjecttype]
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -291,7 +291,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create()
 
         besluittype = BesluitTypeFactory.create(
-            informatieobjecttypes=[informatieobjecttype], concept=False
+            informatieobjecttypen=[informatieobjecttype], concept=False
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -332,7 +332,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
 
         besluittype = BesluitTypeFactory.create(
-            informatieobjecttypes=[informatieobjecttype], catalogus=catalogus
+            informatieobjecttypen=[informatieobjecttype], catalogus=catalogus
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -381,7 +381,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
 
         besluittype = BesluitTypeFactory.create(
-            informatieobjecttypes=[informatieobjecttype],
+            informatieobjecttypen=[informatieobjecttype],
             concept=False,
             catalogus=catalogus,
         )
@@ -429,7 +429,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
         besluittype = BesluitTypeFactory.create(
-            informatieobjecttypes=[informatieobjecttype], catalogus=catalogus
+            informatieobjecttypen=[informatieobjecttype], catalogus=catalogus
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -468,7 +468,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         catalogus = CatalogusFactory.create()
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
         besluittype = BesluitTypeFactory.create(
-            informatieobjecttypes=[informatieobjecttype],
+            informatieobjecttypen=[informatieobjecttype],
             catalogus=catalogus,
             concept=False,
         )
@@ -522,7 +522,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         catalogus = CatalogusFactory.create()
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
         besluittype = BesluitTypeFactory.create(
-            informatieobjecttypes=[informatieobjecttype],
+            informatieobjecttypen=[informatieobjecttype],
             catalogus=catalogus,
             concept=False,
         )
