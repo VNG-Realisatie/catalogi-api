@@ -55,7 +55,7 @@ mccabe==0.6.1             # via pylint
 microsofttranslator==0.8
 oyaml==0.7
 pep8==1.7.1
-pip-tools==4.0.0
+pip-tools==4.2.0
 polib==1.1.0
 psycopg2==2.8.2
 pyjwt==1.6.4
@@ -76,5 +76,5 @@ text-unidecode==1.2       # via faker
 unidecode==1.0.22
 uritemplate==3.0.0
 urllib3==1.24.3
-vng-api-common==1.0.19
+vng-api-common==1.0.23
 wrapt==1.11.1             # via astroid

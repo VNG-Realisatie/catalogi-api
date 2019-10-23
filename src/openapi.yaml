@@ -8506,6 +8506,7 @@ components:
           type: string
           format: duration
           nullable: true
+      nullable: true
     ResultaatType:
       required:
       - zaaktype
