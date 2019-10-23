@@ -3,6 +3,7 @@ from vng_api_common.serializers import add_choice_values_help_text
 
 from ...datamodel.choices import FormaatChoices
 from ...datamodel.models import Eigenschap, EigenschapSpecificatie
+from ..validators import ZaakTypeConceptValidator
 
 # class EigenschapReferentieSerializer(SourceMappingSerializerMixin, ModelSerializer):
 #     class Meta:
@@ -48,3 +49,4 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             "naam": {"source": "eigenschapnaam"},
             "zaaktype": {"lookup_field": "uuid"},
         }
+        validators = [ZaakTypeConceptValidator()]

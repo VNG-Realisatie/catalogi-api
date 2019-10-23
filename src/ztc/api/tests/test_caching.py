@@ -12,10 +12,10 @@ from ztc.datamodel.tests.factories import (
     CatalogusFactory,
     EigenschapFactory,
     InformatieObjectTypeFactory,
-    ZaakInformatieobjectTypeFactory,
     ResultaatTypeFactory,
     RolTypeFactory,
     StatusTypeFactory,
+    ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
 )
 

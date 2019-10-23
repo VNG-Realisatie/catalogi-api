@@ -3,6 +3,11 @@ from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import add_choice_values_help_text
 
 from ...datamodel.models import InformatieObjectType
+from ..validators import (
+    ConceptUpdateValidator,
+    M2MConceptCreateValidator,
+    M2MConceptUpdateValidator,
+)
 
 
 class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -65,6 +70,11 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             # 'isRelevantVoor',
             # 'isVastleggingVoor',
         )
+        validators = [
+            ConceptUpdateValidator(),
+            M2MConceptCreateValidator(["besluittypen", "zaaktypes"]),
+            M2MConceptUpdateValidator(["besluittypen", "zaaktypes"]),
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

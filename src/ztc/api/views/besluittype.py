@@ -1,9 +1,6 @@
-from rest_framework import mixins, viewsets
+from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
-from vng_api_common.notifications.viewsets import (
-    NotificationCreateMixin,
-    NotificationDestroyMixin,
-)
+from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import BesluitType
@@ -11,19 +8,16 @@ from ..filters import BesluitTypeFilter
 from ..kanalen import KANAAL_BESLUITTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import BesluitTypeSerializer
-from .mixins import ConceptMixin, M2MConceptCreateMixin
+from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 
 @conditional_retrieve()
 class BesluitTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
-    M2MConceptCreateMixin,
-    NotificationCreateMixin,
-    NotificationDestroyMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.ReadOnlyModelViewSet,
+    M2MConceptDestroyMixin,
+    NotificationViewSetMixin,
+    viewsets.ModelViewSet,
 ):
     """
     Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten
@@ -72,8 +66,10 @@ class BesluitTypeViewSet(
         "list": SCOPE_ZAAKTYPES_READ,
         "retrieve": SCOPE_ZAAKTYPES_READ,
         "create": SCOPE_ZAAKTYPES_WRITE,
+        "update": SCOPE_ZAAKTYPES_WRITE,
+        "partial_update": SCOPE_ZAAKTYPES_WRITE,
         "destroy": SCOPE_ZAAKTYPES_WRITE,
         "publish": SCOPE_ZAAKTYPES_WRITE,
     }
-    concept_related_fields = ["informatieobjecttypes", "zaaktypes"]
+    concept_related_fields = ["informatieobjecttypen", "zaaktypes"]
     notifications_kanaal = KANAAL_BESLUITTYPEN

@@ -11,11 +11,7 @@ from .mixins import ZaakTypeConceptMixin
 
 @conditional_retrieve()
 class RolTypeViewSet(
-    CheckQueryParamsMixin,
-    ZaakTypeConceptMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.ReadOnlyModelViewSet,
+    CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet
 ):
     """
     Opvragen en bewerken van ROLTYPEn van een ZAAKTYPE.
@@ -66,5 +62,7 @@ class RolTypeViewSet(
         "list": SCOPE_ZAAKTYPES_READ,
         "retrieve": SCOPE_ZAAKTYPES_READ,
         "create": SCOPE_ZAAKTYPES_WRITE,
+        "update": SCOPE_ZAAKTYPES_WRITE,
+        "partial_update": SCOPE_ZAAKTYPES_WRITE,
         "destroy": SCOPE_ZAAKTYPES_WRITE,
     }

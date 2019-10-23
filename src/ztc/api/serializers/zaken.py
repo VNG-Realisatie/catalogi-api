@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from drf_writable_nested import NestedCreateMixin
+from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
 from rest_framework.serializers import (
     HyperlinkedModelSerializer,
     HyperlinkedRelatedField,
@@ -29,7 +29,12 @@ from ...datamodel.models import (
 )
 from ..utils.serializers import SourceMappingSerializerMixin
 from ..utils.validators import RelationCatalogValidator
-from ..validators import ZaaktypeGeldigheidValidator
+from ..validators import (
+    ConceptUpdateValidator,
+    M2MConceptCreateValidator,
+    M2MConceptUpdateValidator,
+    ZaaktypeGeldigheidValidator,
+)
 
 
 class ZaakObjectTypeSerializer(
@@ -114,7 +119,10 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
 
 
 class ZaakTypeSerializer(
-    NestedGegevensGroepMixin, NestedCreateMixin, HyperlinkedModelSerializer
+    NestedGegevensGroepMixin,
+    NestedCreateMixin,
+    NestedUpdateMixin,
+    HyperlinkedModelSerializer,
 ):
 
     # formulier = FormulierSerializer(many=True, read_only=True)
@@ -152,7 +160,6 @@ class ZaakTypeSerializer(
     informatieobjecttypen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        source="heeft_relevant_informatieobjecttype",
         view_name="informatieobjecttype-detail",
         lookup_field="uuid",
         help_text=_(
@@ -205,7 +212,6 @@ class ZaakTypeSerializer(
     besluittypen = HyperlinkedRelatedField(
         many=True,
         label=_("heeft relevante besluittypen"),
-        source="besluittype_set",
         view_name="besluittype-detail",
         lookup_field="uuid",
         queryset=BesluitType.objects.all(),
@@ -290,7 +296,10 @@ class ZaakTypeSerializer(
         # }
         validators = [
             ZaaktypeGeldigheidValidator(),
-            RelationCatalogValidator("besluittype_set"),
+            RelationCatalogValidator("besluittypen"),
+            ConceptUpdateValidator(),
+            M2MConceptCreateValidator(["besluittypen", "informatieobjecttypen"]),
+            M2MConceptUpdateValidator(["besluittypen", "informatieobjecttypen"]),
         ]
 
     def __init__(self, *args, **kwargs):

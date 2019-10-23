@@ -10,14 +10,21 @@ from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 from zds_client.tests.mocks import mock_client
 
+from ztc.api.validators import (
+    ConceptUpdateValidator,
+    M2MConceptCreateValidator,
+    M2MConceptUpdateValidator,
+)
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
 from ztc.datamodel.tests.factories import (
     BesluitTypeFactory,
     CatalogusFactory,
+    InformatieObjectTypeFactory,
+    ZaakInformatieobjectTypeFactory,
     ZaakObjectTypeFactory,
     ZaakTypeFactory,
-    ZaakInformatieobjectTypeFactory,
+    ZaakTypenRelatieFactory,
 )
 
 from .base import APITestCase
@@ -170,7 +177,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype = ZaakType.objects.get(zaaktype_omschrijving="some test")
 
         self.assertEqual(zaaktype.catalogus, self.catalogus)
-        self.assertEqual(zaaktype.besluittype_set.get(), besluittype)
+        self.assertEqual(zaaktype.besluittypen.get(), besluittype)
         self.assertEqual(zaaktype.referentieproces_naam, "ReferentieProces 0")
         self.assertEqual(
             zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype,
@@ -217,15 +224,12 @@ class ZaakTypeAPITests(APITestCase):
 
         response = self.client.post(zaaktype_list_url, data)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Relations to a non-concept besluittype_set object can't be created",
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptCreateValidator.code)
 
-    def test_create_zaaktype_fail_different_catalogus_besluittypes(self):
+    def test_create_zaaktype_fail_different_catalogus_zaaktypes(self):
         besluittype = BesluitTypeFactory.create()
         besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
 
@@ -273,7 +277,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_publish_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
         besluittype = BesluitTypeFactory.create(concept=False)
-        zaaktype.besluittype_set.add(besluittype)
+        zaaktype.besluittypen.add(besluittype)
         ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype, informatieobjecttype__concept=False
         )
@@ -290,7 +294,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_publish_zaaktype_fail_not_concept_besluittype(self):
         zaaktype = ZaakTypeFactory.create()
         besluittype = BesluitTypeFactory.create()
-        zaaktype.besluittype_set.add(besluittype)
+        zaaktype.besluittypen.add(besluittype)
 
         zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
@@ -329,10 +333,686 @@ class ZaakTypeAPITests(APITestCase):
 
         response = self.client.delete(zaaktype_url)
 
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-object")
+
+    def test_update_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+
+        zaaktype.refresh_from_db()
+        self.assertEqual(zaaktype.aanleiding, "aangepast")
+
+    def test_update_zaaktype_fail_not_concept(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ConceptUpdateValidator.code)
+
+    def test_partial_update_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+
+        zaaktype.refresh_from_db()
+        self.assertEqual(zaaktype.aanleiding, "aangepast")
+
+    def test_partial_update_zaaktype_fail_not_concept(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "same"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], ConceptUpdateValidator.code)
+
+    def test_delete_zaaktype_not_related_to_non_concept_besluittypen(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, zaaktypes=[zaaktype]
+        )
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ZaakType.objects.filter(id=zaaktype.id).exists())
+
+    def test_delete_zaaktype_not_related_to_non_concept_informatieobjecttypen(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ZaakType.objects.filter(id=zaaktype.id).exists())
+
+    def test_delete_zaaktype_not_related_to_non_concept_zaaktypes(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        zaaktype2 = ZaakTypeFactory.create(catalogus=catalogus)
+        ZaakTypenRelatieFactory.create(
+            zaaktype=zaaktype2, gerelateerd_zaaktype=zaaktype
+        )
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ZaakType.objects.filter(id=zaaktype.id).exists())
+
+    def test_delete_zaaktype_related_to_non_concept_besluittype_fails(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+        )
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-relation")
+
+    def test_delete_zaaktype_related_to_non_concept_informatieobjecttype_fails(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
+        response = self.client.delete(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-relation")
+
+    def test_update_zaaktype_not_related_to_non_concept_besluittypen(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, zaaktypes=[zaaktype]
+        )
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": reverse(catalogus),
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+        zaaktype.delete()
+
+    def test_update_zaaktype_not_related_to_non_concept_informatieobjecttypen(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": reverse(catalogus),
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+        zaaktype.delete()
+
+    def test_update_zaaktype_not_related_to_non_concept_zaaktypes(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        zaaktype2 = ZaakTypeFactory.create(catalogus=catalogus)
+        ZaakTypenRelatieFactory.create(
+            zaaktype=zaaktype2, gerelateerd_zaaktype=zaaktype
+        )
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": reverse(catalogus),
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+        zaaktype.delete()
+
+    def test_update_zaaktype_related_to_non_concept_besluittype_fails(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+        )
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": reverse(catalogus),
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
+        zaaktype.delete()
+
+    def test_update_zaaktype_related_to_non_concept_informatieobjecttype_fails(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": reverse(catalogus),
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
+        zaaktype.delete()
+
+    def test_update_zaaktype_add_relation_to_non_concept_besluittype_fails(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": reverse(catalogus),
+            # 'informatieobjecttypen': [f'http://testserver{informatieobjecttype_url}'],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+        }
+
+        besluittype = BesluitTypeFactory.create(catalogus=catalogus, concept=False)
+        data["besluittypen"] = [reverse(besluittype)]
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
+        zaaktype.delete()
+
+    def test_partial_update_zaaktype_not_related_to_non_concept_besluittype(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(
+            catalogus=catalogus, datum_einde_geldigheid="2019-01-01"
+        )
+        zaaktype_url = reverse(zaaktype)
+
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, zaaktypes=[zaaktype]
+        )
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+        zaaktype.delete()
+
+    def test_partial_update_zaaktype_not_related_to_non_concept_informatieobjecttype(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(
+            catalogus=catalogus, datum_einde_geldigheid="2019-01-01"
+        )
+        zaaktype_url = reverse(zaaktype)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+        zaaktype.delete()
+
+    def test_partial_update_zaaktype_not_related_to_non_concept_zaaktype(self):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(
+            catalogus=catalogus, datum_einde_geldigheid="2019-01-01"
+        )
+        zaaktype_url = reverse(zaaktype)
+
+        zaaktype2 = ZaakTypeFactory.create(
+            catalogus=catalogus, datum_begin_geldigheid="2020-01-01"
+        )
+        ZaakTypenRelatieFactory.create(
+            zaaktype=zaaktype2, gerelateerd_zaaktype=zaaktype
+        )
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+        zaaktype.delete()
+
+    def test_partial_update_zaaktype_related_to_non_concept_informatieobjecttype_fails(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+        )
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
+
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
         data = response.json()
-        self.assertEqual(data["detail"], "Alleen concepten kunnen worden verwijderd.")
+        self.assertEqual(
+            data["detail"],
+            "Objects related to non-concept {} can't be updated".format("besluittypen"),
+        )
+        zaaktype.delete()
+
+    def test_partial_update_zaaktype_related_to_non_concept_informatieobjecttype_fails(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
+        zaaktype.delete()
+
+    def test_partial_update_zaaktype_add_relation_to_non_concept_besluittype_fails(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(
+            catalogus=catalogus,
+            datum_begin_geldigheid="2018-03-01",
+            datum_einde_geldigheid="2019-01-01",
+        )
+        zaaktype_url = reverse(zaaktype)
+
+        zaaktype_for_besluittype = ZaakTypeFactory.create(
+            catalogus=catalogus,
+            datum_begin_geldigheid="2015-01-01",
+            datum_einde_geldigheid="2016-01-01",
+        )
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, concept=False, zaaktypes=[zaaktype_for_besluittype]
+        )
+        data = {"besluittypen": [reverse(besluittype)]}
+
+        response = self.client.patch(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
+        zaaktype.delete()
+
+    def test_partial_update_non_concept_zaaktype_einde_geldigheid(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse(zaaktype)
+
+        response = self.client.patch(zaaktype_url, {"eindeGeldigheid": "2020-01-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+
+    def test_partial_update_zaaktype_einde_geldigheid_related_to_non_concept_besluittype(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        besluittype = BesluitTypeFactory.create(
+            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+        )
+
+        response = self.client.patch(zaaktype_url, {"eindeGeldigheid": "2020-01-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+        zaaktype.delete()
+
+    def test_partial_update_zaaktype_einde_geldigheid_related_to_non_concept_informatieobjecttype(
+        self
+    ):
+        catalogus = CatalogusFactory.create()
+
+        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
+        zaaktype_url = reverse(zaaktype)
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            catalogus=catalogus, concept=False
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
+        response = self.client.patch(zaaktype_url, {"eindeGeldigheid": "2020-01-01"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
+        zaaktype.delete()
 
 
 class ZaakTypeCreateDuplicateTests(APITestCase):

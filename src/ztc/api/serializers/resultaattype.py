@@ -21,6 +21,7 @@ from ..utils.validators import (
     ProcestermijnAfleidingswijzeValidator,
     ProcesTypeValidator,
 )
+from ..validators import ZaakTypeConceptValidator
 
 
 class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
@@ -49,6 +50,7 @@ class ResultaatTypeSerializer(
     brondatum_archiefprocedure = BrondatumArchiefprocedureSerializer(
         label=_("Brondatum archiefprocedure"),
         required=False,
+        allow_null=True,
         help_text=(
             "Specificatie voor het bepalen van de brondatum voor de "
             "start van de Archiefactietermijn (=brondatum) van het zaakdossier."
@@ -100,6 +102,7 @@ class ResultaatTypeSerializer(
             ProcesTypeValidator("selectielijstklasse"),
             ProcestermijnAfleidingswijzeValidator("selectielijstklasse"),
             BrondatumArchiefprocedureValidator(),
+            ZaakTypeConceptValidator(),
         ]
 
     def __init__(self, *args, **kwargs):
