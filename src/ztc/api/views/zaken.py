@@ -1,7 +1,12 @@
 from django.utils.translation import ugettext_lazy as _
 
+from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.response import Response
+from rest_framework.serializers import ValidationError
+from rest_framework.settings import api_settings
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -11,10 +16,6 @@ from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptDestroyMixin
-from drf_yasg.utils import no_body, swagger_auto_schema
-from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.response import Response
 
 # class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
 #                             FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
@@ -118,14 +119,18 @@ class ZaakTypeViewSet(
         instance = self.get_object()
 
         # check related objects
-        besluittypen = instance.besluittypen.all()
-        informatieobjecttypen = instance.informatieobjecttypen.all()
-
-        for types in [besluittypen, informatieobjecttypen]:
-            for relative_type in types:
-                if relative_type.concept:
-                    msg = _("All related resources should be published")
-                    raise PermissionDenied(detail=msg)
+        if (
+            instance.besluittypen.filter(concept=True).exists()
+            or instance.informatieobjecttypen.filter(concept=True).exists()
+        ):
+            raise ValidationError(
+                {
+                    api_settings.NON_FIELD_ERRORS_KEY: _(
+                        "All related resources should be published"
+                    )
+                },
+                code="concept-relation",
+            )
 
         instance.concept = False
         instance.save()
