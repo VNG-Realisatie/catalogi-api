@@ -123,13 +123,9 @@ class ZaakTypeViewSet(
             instance.besluittypen.filter(concept=True).exists()
             or instance.informatieobjecttypen.filter(concept=True).exists()
         ):
+            msg = _("All related resources should be published")
             raise ValidationError(
-                {
-                    api_settings.NON_FIELD_ERRORS_KEY: _(
-                        "All related resources should be published"
-                    )
-                },
-                code="concept-relation",
+                {api_settings.NON_FIELD_ERRORS_KEY: msg}, code="concept-relation"
             )
 
         instance.concept = False
@@ -148,7 +144,10 @@ class ZaakTypeViewSet(
                     msg = _(
                         f"Relations to non-concept {field_name} object can't be created"
                     )
-                    raise PermissionDenied(detail=msg)
+                    raise ValidationError(
+                        {api_settings.NON_FIELD_ERRORS_KEY: msg},
+                        code="non-concept-relation",
+                    )
 
         super().perform_create(serializer)
 
@@ -159,7 +158,10 @@ class ZaakTypeViewSet(
             related_non_concepts = field.filter(zaaktype__concept=False)
             if related_non_concepts.exists():
                 msg = _(f"Objects related to non-concept {field_name} can't be updated")
-                raise PermissionDenied(detail=msg)
+                raise ValidationError(
+                    {api_settings.NON_FIELD_ERRORS_KEY: msg},
+                    code="non-concept-relation",
+                )
 
         super().perform_update(instance)
 
@@ -172,6 +174,9 @@ class ZaakTypeViewSet(
                 msg = _(
                     f"Objects related to non-concept {field_name} can't be destroyed"
                 )
-                raise PermissionDenied(detail=msg)
+                raise ValidationError(
+                    {api_settings.NON_FIELD_ERRORS_KEY: msg},
+                    code="non-concept-relation",
+                )
 
         super().perform_destroy(instance)
