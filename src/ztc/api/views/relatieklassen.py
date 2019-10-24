@@ -1,7 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import mixins, viewsets
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.serializers import ValidationError
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
