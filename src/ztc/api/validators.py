@@ -204,5 +204,6 @@ class ZaakInformatieObjectTypeCatalogusValidator:
         zaaktype = attrs.get("zaaktype")
         informatieobjecttype = attrs.get("informatieobjecttype")
 
-        if zaaktype.catalogus != informatieobjecttype.catalogus:
-            raise ValidationError(self.message, code=self.code)
+        if zaaktype and informatieobjecttype:  # check in case of PATCH action
+            if zaaktype.catalogus != informatieobjecttype.catalogus:
+                raise ValidationError(self.message, code=self.code)
