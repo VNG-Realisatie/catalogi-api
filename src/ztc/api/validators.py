@@ -208,10 +208,9 @@ class ZaakInformatieObjectTypeCatalogusValidator:
         self.instance = getattr(serializer, "instance", None)
 
     def __call__(self, attrs: dict):
-        zaaktype = attrs.get("zaaktype", None) or self.instance.zaaktype
+        zaaktype = attrs.get("zaaktype") or self.instance.zaaktype
         informatieobjecttype = (
-            attrs.get("informatieobjecttype", None)
-            or self.instance.informatieobjecttype
+            attrs.get("informatieobjecttype") or self.instance.informatieobjecttype
         )
 
         if zaaktype.catalogus != informatieobjecttype.catalogus:

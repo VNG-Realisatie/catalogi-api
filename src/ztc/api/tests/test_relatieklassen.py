@@ -229,6 +229,22 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         ziot.refresh_from_db()
         self.assertEqual(ziot.volgnummer, 12)
 
+    def test_partial_update_ziot_informatieobjecttype(self):
+        zaaktype = ZaakTypeFactory.create()
+        ziot = ZaakInformatieobjectTypeFactory.create(zaaktype=zaaktype)
+        ziot_url = reverse(ziot)
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse(informatieobjecttype)
+
+        response = self.client.patch(
+            ziot_url, {"informatieobjecttype": informatieobjecttype_url}
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "relations-incorrect-catalogus")
+
 
 class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
     maxDiff = None
