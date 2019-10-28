@@ -16,24 +16,6 @@ from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..serializers import ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
-# class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
-#                             FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
-#     """
-#     retrieve:
-#     De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
-#
-#     list:
-#     Een verzameling van ZAAKOBJECTTYPEn.
-#     """
-#     queryset = ZaakObjectType.objects.all()
-#     serializer_class = ZaakObjectTypeSerializer
-#
-#     required_scopes = {
-#         'list': SCOPE_ZAAKTYPES_READ,
-#         'retrieve': SCOPE_ZAAKTYPES_READ,
-#
-#     }
-
 
 class ZaakTypeViewSet(
     CheckQueryParamsMixin,

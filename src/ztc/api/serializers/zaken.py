@@ -7,8 +7,6 @@ from rest_framework.serializers import (
     HyperlinkedRelatedField,
     ModelSerializer,
 )
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
-from rest_framework_nested.serializers import NestedHyperlinkedModelSerializer
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import (
     GegevensGroepSerializer,
@@ -18,16 +16,7 @@ from vng_api_common.serializers import (
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
-from ...datamodel.models import (
-    BesluitType,
-    BronCatalogus,
-    BronZaakType,
-    Formulier,
-    ZaakObjectType,
-    ZaakType,
-    ZaakTypenRelatie,
-)
-from ..utils.serializers import SourceMappingSerializerMixin
+from ...datamodel.models import BesluitType, ZaakType, ZaakTypenRelatie
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
@@ -36,68 +25,6 @@ from ..validators import (
     M2MConceptUpdateValidator,
     ZaaktypeGeldigheidValidator,
 )
-
-
-class ZaakObjectTypeSerializer(
-    SourceMappingSerializerMixin, NestedHyperlinkedModelSerializer
-):
-    parent_lookup_kwargs = {
-        "catalogus_pk": "is_relevant_voor__catalogus__pk",
-        "zaaktype_pk": "is_relevant_voor__pk",
-    }
-
-    isRelevantVoor = NestedHyperlinkedRelatedField(
-        read_only=True,
-        source="is_relevant_voor",
-        view_name="api:zaaktype-detail",
-        parent_lookup_kwargs={"catalogus_pk": "catalogus__pk"},
-    )
-
-    class Meta:
-        model = ZaakObjectType
-        source_mapping = {
-            "ingangsdatumObject": "datum_begin_geldigheid",
-            "einddatumObject": "datum_einde_geldigheid",
-            "anderObject": "ander_objecttype",
-            "relatieOmschrijving": "relatieomschrijving",
-        }
-        fields = (
-            "url",
-            "objecttype",
-            "anderObject",
-            "relatieOmschrijving",
-            "ingangsdatumObject",
-            "einddatumObject",
-            "isRelevantVoor",
-            # NOTE: this field is not in the xsd
-            # 'statustype',
-        )
-        extra_kwargs = {"url": {"view_name": "api:zaakobjecttype-detail"}}
-
-
-class FormulierSerializer(ModelSerializer):
-    class Meta:
-        model = Formulier
-        ref_name = None  # Inline
-        fields = ("naam", "link")
-
-
-class BronCatalogusSerializer(ModelSerializer):
-    class Meta:
-        model = BronCatalogus
-        ref_name = None  # Inline
-        fields = ("domein", "rsin")
-
-
-class BronZaakTypeSerializer(SourceMappingSerializerMixin, ModelSerializer):
-    class Meta:
-        model = BronZaakType
-        ref_name = None  # Inline
-        source_mapping = {
-            "identificatie": "zaaktype_identificatie",
-            "omschrijving": "zaaktype_omschrijving",
-        }
-        fields = ("identificatie", "omschrijving")
 
 
 class ReferentieProcesSerializer(GegevensGroepSerializer):
@@ -125,39 +52,15 @@ class ZaakTypeSerializer(
     NestedUpdateMixin,
     HyperlinkedModelSerializer,
 ):
-
-    # formulier = FormulierSerializer(many=True, read_only=True)
     referentieproces = ReferentieProcesSerializer(
         required=True,
         help_text=_("Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE."),
     )
-    # broncatalogus = BronCatalogusSerializer(read_only=True)
-    # bronzaaktype = BronZaakTypeSerializer(read_only=True)
-
-    # heeftRelevantZaakObjecttype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='zaakobjecttype_set',
-    #     view_name='api:zaakobjecttype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_relevant_voor__catalogus__pk',
-    #         'zaaktype_pk': 'is_relevant_voor__pk',
-    #     }
-    # )
     gerelateerde_zaaktypen = ZaakTypenRelatieSerializer(
         many=True,
         source="zaaktypenrelaties",
         help_text="De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.",
     )
-    # isDeelzaaktypeVan = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='is_deelzaaktype_van',
-    #     view_name='api:zaaktype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'catalogus__pk'
-    #     },
-    # )
     informatieobjecttypen = HyperlinkedRelatedField(
         many=True,
         read_only=True,
@@ -229,7 +132,6 @@ class ZaakTypeSerializer(
             "omschrijving",
             "omschrijving_generiek",
             "vertrouwelijkheidaanduiding",
-            # 'zaakcategorie',
             "doel",
             "aanleiding",
             "toelichting",
@@ -243,21 +145,12 @@ class ZaakTypeSerializer(
             "verlenging_mogelijk",
             "verlengingstermijn",
             "trefwoorden",
-            # 'archiefclassificatiecode',
-            # 'vertrouwelijkheidAanduiding',
-            # 'verantwoordelijke',
             "publicatie_indicatie",
             "publicatietekst",
             "verantwoordingsrelatie",
             "producten_of_diensten",
             "selectielijst_procestype",
-            # 'formulier',
             "referentieproces",
-            # 'broncatalogus',
-            # 'bronzaaktype',
-            # 'ingangsdatumObject',
-            # 'versiedatum',
-            # 'einddatumObject',
             # relaties
             "catalogus",
             "statustypen",
@@ -268,8 +161,6 @@ class ZaakTypeSerializer(
             "besluittypen",
             "deelzaaktypen",
             "gerelateerde_zaaktypen",
-            # # 'heeftRelevantZaakObjecttype',
-            # # 'isDeelzaaktypeVan',
             "begin_geldigheid",
             "einde_geldigheid",
             "versiedatum",
@@ -294,9 +185,6 @@ class ZaakTypeSerializer(
             "deelzaaktypen": {"lookup_field": "uuid"},
         }
 
-        # expandable_fields = {
-        #     'catalogus': ('ztc.api.serializers.CatalogusSerializer', {'source': 'catalogus'}),
-        # }
         validators = [
             ZaaktypeGeldigheidValidator(),
             RelationCatalogValidator("besluittypen"),
