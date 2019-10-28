@@ -1,3 +1,4 @@
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from django_filters import rest_framework as filters
@@ -66,7 +67,8 @@ class ZaakInformatieobjectTypeFilter(FilterSet):
     def status_filter_m2m(self, queryset, name, value):
         if value == "concept":
             return queryset.filter(
-                zaaktype__concept=True, informatieobjecttype__concept=True
+                models.Q(zaaktype__concept=True)
+                | models.Q(informatieobjecttype__concept=True)
             )
         elif value == "definitief":
             return queryset.filter(

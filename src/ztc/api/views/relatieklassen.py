@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import viewsets
@@ -69,15 +70,15 @@ class ZaakTypeInformatieObjectTypeViewSet(
     }
 
     def get_concept(self, instance):
-        zaaktype = getattr(instance, "zaaktype", None) or self.get_object().zaaktype
+        ziot = self.get_object()
+        zaaktype = getattr(instance, "zaaktype", None) or ziot.zaaktype
         informatieobjecttype = (
-            getattr(instance, "informatieobjecttype", None)
-            or self.get_object().informatieobjecttype
+            getattr(instance, "informatieobjecttype", None) or ziot.informatieobjecttype
         )
-        return zaaktype.concept and informatieobjecttype.concept
+        return zaaktype.concept or informatieobjecttype.concept
 
     def get_concept_filter(self):
-        return {"zaaktype__concept": False, "informatieobjecttype__concept": False}
+        return ~(Q(zaaktype__concept=True) | Q(informatieobjecttype__concept=True))
 
     def perform_destroy(self, instance):
         if not self.get_concept(instance):
