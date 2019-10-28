@@ -1459,3 +1459,18 @@ class ZaaktypeValidationTests(APITestCase):
 
         error = get_validation_errors(response, "selectielijstProcestype")
         self.assertEqual(error["code"], "invalid-resource")
+
+    def test_deelzaaktype_different_catalogue(self):
+        zaaktype1 = ZaakTypeFactory.create()
+        assert zaaktype1.catalogus != self.catalogus
+        zaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus)
+
+        response = self.client.patch(
+            reverse(zaaktype2),
+            {"deelzaaktypen": [f"http://testserver{reverse(zaaktype1)}"]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "deelzaaktypen")
+
+        self.assertEqual(error["code"], "relations-incorrect-catalogus")
