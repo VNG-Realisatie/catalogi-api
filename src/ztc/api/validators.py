@@ -194,3 +194,24 @@ class M2MConceptUpdateValidator:
                             f"Objects can't be updated with a relation to non-concept {field_name}"
                         )
                         raise ValidationError(msg, code=self.code)
+
+
+class ZaakInformatieObjectTypeCatalogusValidator:
+    code = "relations-incorrect-catalogus"
+    message = _("The zaaktype has catalogus different from informatieobjecttype")
+
+    def set_context(self, serializer):
+        """
+        This hook is called by the serializer instance,
+        prior to the validation call being made.
+        """
+        self.instance = getattr(serializer, "instance", None)
+
+    def __call__(self, attrs: dict):
+        zaaktype = attrs.get("zaaktype") or self.instance.zaaktype
+        informatieobjecttype = (
+            attrs.get("informatieobjecttype") or self.instance.informatieobjecttype
+        )
+
+        if zaaktype.catalogus != informatieobjecttype.catalogus:
+            raise ValidationError(self.message, code=self.code)
