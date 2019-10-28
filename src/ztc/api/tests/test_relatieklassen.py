@@ -245,6 +245,30 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "relations-incorrect-catalogus")
 
+    def test_full_update_ziot_informatieobjecttype(self):
+        zaaktype = ZaakTypeFactory.create()
+        ziot = ZaakInformatieobjectTypeFactory.create(zaaktype=zaaktype)
+        ziot_url = reverse(ziot)
+        informatieobjecttype = InformatieObjectTypeFactory.create()
+        informatieobjecttype_url = reverse(informatieobjecttype)
+        zaaktype_url = reverse(ziot.zaaktype)
+
+        response = self.client.put(
+            ziot_url,
+            {
+                "zaaktype": f"http://testserver{zaaktype_url}",
+                "informatieobjecttype": informatieobjecttype_url,
+                "volgnummer": ziot.volgnummer,
+                "richting": ziot.richting,
+                "statustype": None,
+            }
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "relations-incorrect-catalogus")
+
 
 class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
     maxDiff = None
