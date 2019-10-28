@@ -10532,6 +10532,16 @@
                     },
                     "uniqueItems": true
                 },
+                "deelzaaktypen": {
+                    "description": "De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij ZAAKen van dit ZAAKTYPE.",
+                    "type": "array",
+                    "items": {
+                        "description": "De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij ZAAKen van dit ZAAKTYPE.",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "uniqueItems": true
+                },
                 "gerelateerdeZaaktypen": {
                     "description": "De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.",
                     "type": "array",

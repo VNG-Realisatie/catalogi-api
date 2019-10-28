@@ -265,6 +265,7 @@ class ZaakTypeSerializer(
             "informatieobjecttypen",
             "roltypen",
             "besluittypen",
+            "deelzaaktypen",
             "gerelateerde_zaaktypen",
             # # 'heeftRelevantZaakObjecttype',
             # # 'isDeelzaaktypeVan',
@@ -289,6 +290,7 @@ class ZaakTypeSerializer(
                     ResourceValidator("ProcesType", settings.REFERENTIELIJSTEN_API_SPEC)
                 ]
             },
+            "deelzaaktypen": {"lookup_field": "uuid"},
         }
 
         # expandable_fields = {

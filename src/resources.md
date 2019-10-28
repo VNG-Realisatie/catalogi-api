@@ -225,6 +225,7 @@ Uitleg bij mogelijke waarden:
 | informatieobjecttypen | URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | roltypen | URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | C​R​U​D |
+| deelzaaktypen | De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij ZAAKen van dit ZAAKTYPE. | array | nee | C​R​U​D |
 | gerelateerdeZaaktypen | De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE. | array | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
