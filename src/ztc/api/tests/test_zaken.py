@@ -1223,6 +1223,22 @@ class ZaakTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{zaaktype1_url}")
 
+    def test_filter_invalid_resource_url(self):
+        ZaakTypeFactory.create()
+        url = get_operation_url("zaaktype_list")
+
+        bad_urls = [
+            "https://google.nl",
+            "https://example.com/",
+            "https://example.com/404",
+        ]
+        for bad_url in bad_urls:
+            with self.subTest(bad_url=bad_url):
+                response = self.client.get(url, {"catalogus": bad_url})
+
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(response.data["count"], 0)
+
 
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
