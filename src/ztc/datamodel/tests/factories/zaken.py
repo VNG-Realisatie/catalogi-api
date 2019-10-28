@@ -95,14 +95,14 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
         return timedelta(days=30)
 
     @factory.post_generation
-    def is_deelzaaktype_van(self, create, extracted, **kwargs):
+    def deelzaaktypen(self, create, extracted, **kwargs):
         # optional M2M, do nothing when no arguments are passed
         if not create:
             return
 
         if extracted:
             for zaaktype in extracted:
-                self.is_deelzaaktype_van.add(zaaktype)
+                self.deelzaaktypen.add(zaaktype)
 
 
 class ZaakObjectTypeFactory(factory.django.DjangoModelFactory):

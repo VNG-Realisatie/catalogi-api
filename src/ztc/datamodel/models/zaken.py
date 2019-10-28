@@ -540,13 +540,14 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
     #
     # relaties
     #
-    is_deelzaaktype_van = models.ManyToManyField(
-        "datamodel.ZaakType",
-        verbose_name=_("is deelzaaktype van"),
+    deelzaaktypen = models.ManyToManyField(
+        "self",
+        symmetrical=False,
         blank=True,
-        related_name="zaak_typen_is_deelzaaktype_van",
+        related_name="hoofdzaaktypen",
         help_text=_(
-            "De ZAAKTYPEn (van de hoofdzaken) waaronder ZAAKen van dit ZAAKTYPE als deelzaak kunnen voorkomen."
+            "De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij "
+            "ZAAKen van dit ZAAKTYPE."
         ),
     )
 
@@ -561,26 +562,6 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
         verbose_name = _("Zaaktype")
         verbose_name_plural = _("Zaaktypen")
         ordering = ("catalogus", "zaaktype_identificatie")
-
-        filter_fields = (
-            "catalogus",
-            "publicatie_indicatie",
-            "verlenging_mogelijk",
-            "opschorting_en_aanhouding_mogelijk",
-            "indicatie_intern_of_extern",
-            "vertrouwelijkheidaanduiding",
-        )
-        ordering_fields = filter_fields
-        search_fields = (
-            "zaaktype_identificatie",
-            "zaaktype_omschrijving",
-            "zaaktype_omschrijving_generiek",
-            "zaakcategorie",
-            "doel",
-            "aanleiding",
-            "onderwerp",
-            "toelichting",
-        )
 
     def __str__(self):
         return "{} - {}".format(self.catalogus, self.zaaktype_identificatie)
