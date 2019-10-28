@@ -3,7 +3,6 @@ from django.utils.translation import ugettext_lazy as _
 from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.settings import api_settings
@@ -134,49 +133,3 @@ class ZaakTypeViewSet(
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
-
-    def perform_create(self, serializer):
-        for field_name in self.relation_fields:
-            field = serializer.validated_data.get(field_name, [])
-            for related_object in field:
-                # TODO fix url lookup to check if concept
-                if not related_object["gerelateerd_zaaktype"]:
-                    msg = _(
-                        f"Relations to non-concept {field_name} object can't be created"
-                    )
-                    raise ValidationError(
-                        {api_settings.NON_FIELD_ERRORS_KEY: msg},
-                        code="non-concept-relation",
-                    )
-
-        super().perform_create(serializer)
-
-    def perform_update(self, instance):
-        for field_name in self.relation_fields:
-            field = getattr(self.get_object(), field_name)
-            # TODO fix url lookup to check if concept
-            related_non_concepts = field.filter(zaaktype__concept=False)
-            if related_non_concepts.exists():
-                msg = _(f"Objects related to non-concept {field_name} can't be updated")
-                raise ValidationError(
-                    {api_settings.NON_FIELD_ERRORS_KEY: msg},
-                    code="non-concept-relation",
-                )
-
-        super().perform_update(instance)
-
-    def perform_destroy(self, instance):
-        for field_name in self.relation_fields:
-            field = getattr(instance, field_name)
-            # TODO fix url lookup to check if concept
-            related_non_concepts = field.filter(zaaktype__concept=False)
-            if related_non_concepts.exists():
-                msg = _(
-                    f"Objects related to non-concept {field_name} can't be destroyed"
-                )
-                raise ValidationError(
-                    {api_settings.NON_FIELD_ERRORS_KEY: msg},
-                    code="non-concept-relation",
-                )
-
-        super().perform_destroy(instance)
