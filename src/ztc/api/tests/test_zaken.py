@@ -138,6 +138,9 @@ class ZaakTypeAPITests(APITestCase):
         besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
         besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
 
+        deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
+        deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
+
         zaaktype_list_url = get_operation_url("zaaktype_list")
         data = {
             "identificatie": 0,
@@ -156,6 +159,10 @@ class ZaakTypeAPITests(APITestCase):
             "productenOfDiensten": ["https://example.com/product/123"],
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "omschrijving": "some test",
+            "deelzaaktypen": [
+                f"http://testserver{reverse(deelzaaktype1)}",
+                f"http://testserver{reverse(deelzaaktype2)}",
+            ],
             "gerelateerdeZaaktypen": [
                 {
                     "zaaktype": "http://example.com/zaaktype/1",
@@ -184,6 +191,12 @@ class ZaakTypeAPITests(APITestCase):
             "http://example.com/zaaktype/1",
         )
         self.assertEqual(zaaktype.concept, True)
+        self.assertQuerysetEqual(
+            zaaktype.deelzaaktypen.all(),
+            {deelzaaktype1.pk, deelzaaktype2.pk},
+            transform=lambda x: x.pk,
+            ordered=False,
+        )
 
     def test_create_zaaktype_fail_besluittype_non_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False, catalogus=self.catalogus)
