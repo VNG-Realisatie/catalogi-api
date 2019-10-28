@@ -61,68 +61,6 @@ class ZaakTypeSerializer(
         source="zaaktypenrelaties",
         help_text="De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.",
     )
-    informatieobjecttypen = HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name="informatieobjecttype-detail",
-        lookup_field="uuid",
-        help_text=_(
-            "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-        ),
-    )
-
-    statustypen = HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name="statustype-detail",
-        lookup_field="uuid",
-        help_text=_(
-            "URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-        ),
-    )
-
-    resultaattypen = HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name="resultaattype-detail",
-        lookup_field="uuid",
-        help_text=_(
-            "URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-        ),
-    )
-
-    eigenschappen = HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source="eigenschap_set",
-        view_name="eigenschap-detail",
-        lookup_field="uuid",
-        help_text=_(
-            "URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE."
-        ),
-    )
-
-    roltypen = HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        source="roltype_set",
-        view_name="roltype-detail",
-        lookup_field="uuid",
-        help_text=_(
-            "URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-        ),
-    )
-
-    besluittypen = HyperlinkedRelatedField(
-        many=True,
-        label=_("heeft relevante besluittypen"),
-        view_name="besluittype-detail",
-        lookup_field="uuid",
-        queryset=BesluitType.objects.all(),
-        help_text=_(
-            "URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-        ),
-    )
 
     class Meta:
         model = ZaakType
@@ -181,6 +119,50 @@ class ZaakTypeSerializer(
                 "validators": [
                     ResourceValidator("ProcesType", settings.REFERENTIELIJSTEN_API_SPEC)
                 ]
+            },
+            "informatieobjecttypen": {
+                "read_only": True,
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                ),
+            },
+            "statustypen": {
+                "read_only": True,
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                ),
+            },
+            "resultaattypen": {
+                "read_only": True,
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                ),
+            },
+            "eigenschappen": {
+                "read_only": True,
+                "source": "eigenschap_set",
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE."
+                ),
+            },
+            "roltypen": {
+                "read_only": True,
+                "source": "roltype_set",
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                ),
+            },
+            "besluittypen": {
+                "label": _("heeft relevante besluittypen"),
+                "lookup_field": "uuid",
+                "help_text": _(
+                    "URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                ),
             },
             "deelzaaktypen": {"lookup_field": "uuid"},
         }
