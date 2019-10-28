@@ -267,13 +267,15 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(
             2, zaaktype__concept=False, informatieobjecttype__concept=False
         )
-        url = f"http://testserver{reverse(ztiot1)}"
+        url = f"http://testserver.com{reverse(ztiot1)}"
         zaaktype1_url = reverse(ztiot1.zaaktype)
         zaaktype2_url = reverse(ztiot2.zaaktype)
-        zaaktype1_url = f"http://testserver{zaaktype1_url}"
-        zaaktype2_url = f"http://testserver{zaaktype2_url}"
+        zaaktype1_url = f"http://testserver.com{zaaktype1_url}"
+        zaaktype2_url = f"http://testserver.com{zaaktype2_url}"
 
-        response = self.client.get(self.list_url, {"zaaktype": zaaktype1_url})
+        response = self.client.get(
+            self.list_url, {"zaaktype": zaaktype1_url}, HTTP_HOST="testserver.com"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -287,14 +289,16 @@ class ZaakInformatieobjectTypeFilterAPITests(APITestCase):
         ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(
             2, zaaktype__concept=False, informatieobjecttype__concept=False
         )
-        url = f"http://testserver{reverse(ztiot1)}"
+        url = f"http://testserver.com{reverse(ztiot1)}"
         informatieobjecttype1_url = reverse(ztiot1.informatieobjecttype)
         informatieobjecttype2_url = reverse(ztiot2.informatieobjecttype)
-        informatieobjecttype1_url = f"http://testserver{informatieobjecttype1_url}"
-        informatieobjecttype2_url = f"http://testserver{informatieobjecttype2_url}"
+        informatieobjecttype1_url = f"http://testserver.com{informatieobjecttype1_url}"
+        informatieobjecttype2_url = f"http://testserver.com{informatieobjecttype2_url}"
 
         response = self.client.get(
-            self.list_url, {"informatieobjecttype": informatieobjecttype1_url}
+            self.list_url,
+            {"informatieobjecttype": informatieobjecttype1_url},
+            HTTP_HOST="testserver.com",
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

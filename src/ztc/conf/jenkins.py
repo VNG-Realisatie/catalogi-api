@@ -16,7 +16,7 @@ CACHES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/stable/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["testserver.com"]
 
 LOGGING["loggers"].update(
     {"django": {"handlers": ["django"], "level": "WARNING", "propagate": True}}
