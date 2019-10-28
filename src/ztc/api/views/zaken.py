@@ -58,6 +58,7 @@ class ZaakTypeViewSet(
     - Uniciteit `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel
       opnieuw gebruikt worden als het zaaktype een andere geldigheidsperiode
       kent dan bestaande zaaktypen.
+    - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.
 
     list:
     Alle ZAAKTYPEn opvragen.
@@ -75,10 +76,16 @@ class ZaakTypeViewSet(
     Werk een ZAAKTYPE in zijn geheel bij. Dit kan alleen als het een concept
     betreft.
 
+    Er wordt gevalideerd op:
+    - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.
+
     partial_update:
     Werk een ZAAKTYPE deels bij.
 
     Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept betreft.
+
+    Er wordt gevalideerd op:
+    - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.
 
     destroy:
     Verwijder een ZAAKTYPE.

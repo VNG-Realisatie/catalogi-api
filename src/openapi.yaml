@@ -7087,7 +7087,8 @@ paths:
         \ `catalogus` URL, dit moet een catalogus binnen dezelfde API zijn\n- Uniciteit\
         \ `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel\n  opnieuw\
         \ gebruikt worden als het zaaktype een andere geldigheidsperiode\n  kent dan\
-        \ bestaande zaaktypen."
+        \ bestaande zaaktypen.\n- `deelzaaktypen` moeten tot dezelfde catalogus behoren\
+        \ als het ZAAKTYPE."
       requestBody:
         $ref: '#/components/requestBodies/ZaakType'
       responses:
@@ -7359,7 +7360,12 @@ paths:
       description: 'Werk een ZAAKTYPE in zijn geheel bij. Dit kan alleen als het een
         concept
 
-        betreft.'
+        betreft.
+
+
+        Er wordt gevalideerd op:
+
+        - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.'
       requestBody:
         $ref: '#/components/requestBodies/ZaakType'
       responses:
@@ -7503,8 +7509,13 @@ paths:
     patch:
       operationId: zaaktype_partial_update
       summary: Werk een ZAAKTYPE deels bij.
-      description: Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept
+      description: 'Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept
         betreft.
+
+
+        Er wordt gevalideerd op:
+
+        - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.'
       requestBody:
         $ref: '#/components/requestBodies/ZaakType'
       responses:
