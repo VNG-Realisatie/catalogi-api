@@ -14,7 +14,7 @@ def forwards(apps, _):
 def backwards(apps, _):
     ZaakType = apps.get_model("datamodel.ZaakType")
 
-    for zaaktype in ZaakType.opbjects.prefetch_related("deelzaaktypen"):
+    for zaaktype in ZaakType.objects.prefetch_related("deelzaaktypen"):
         for deelzaaktype in zaaktype.deelzaaktypen.all():
             deelzaaktype.is_deelzaaktype_van.add(zaaktype)
 
