@@ -596,6 +596,8 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
         super().save(*args, **kwargs)
 
     def clean(self):
+        from ..utils import get_overlapping_zaaktypes
+
         super().clean()
 
         if self.verlenging_mogelijk and not self.verlengingstermijn:
@@ -616,19 +618,16 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
             )
 
         if self.catalogus_id:
-            query = ZaakType.objects.filter(
-                Q(catalogus=self.catalogus),
-                Q(zaaktype_omschrijving=self.zaaktype_omschrijving),
-                Q(datum_einde_geldigheid=None)
-                | Q(datum_einde_geldigheid__gt=self.datum_begin_geldigheid),  # noqa
+            query = get_overlapping_zaaktypes(
+                self.catalogus,
+                self.zaaktype_omschrijving,
+                self.datum_begin_geldigheid,
+                self.datum_einde_geldigheid,
+                self,
             )
-            if self.datum_einde_geldigheid is not None:
-                query = query.filter(
-                    datum_begin_geldigheid__lte=self.datum_einde_geldigheid
-                )
 
             # regel voor zaaktype omschrijving
-            if query.exclude(pk=self.pk).exists():
+            if query.exists():
                 raise ValidationError(
                     "Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS."
                 )
