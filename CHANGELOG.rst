@@ -12,6 +12,7 @@ Set aan fixes op RC2
 * Fixed schema of ``GegevensGroep`` - often allowed to be ``null``
 * Fixed handling of ``Zaaktype.einddatumGeldigheid`` - this is now exclusive
   instead of inclusive
+* Added support for ``Zaaktype.deelzaaktypen``
 
 Breaking changes
 ----------------
