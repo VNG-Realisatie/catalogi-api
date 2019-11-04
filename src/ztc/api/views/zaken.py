@@ -128,6 +128,7 @@ class ZaakTypeViewSet(
         if (
             instance.besluittypen.filter(concept=True).exists()
             or instance.informatieobjecttypen.filter(concept=True).exists()
+            or instance.deelzaaktypen.filter(concept=True).exists()
         ):
             msg = _("All related resources should be published")
             raise ValidationError(
