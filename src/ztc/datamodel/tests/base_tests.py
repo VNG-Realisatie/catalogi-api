@@ -2,11 +2,7 @@ from datetime import timedelta
 
 from django.utils import timezone
 
-from vng_api_common.constants import (
-    RolOmschrijving,
-    VertrouwelijkheidsAanduiding,
-    ZaakobjectTypes,
-)
+from vng_api_common.constants import RolOmschrijving, VertrouwelijkheidsAanduiding
 
 from .factories import (
     BesluitTypeFactory,
@@ -16,7 +12,6 @@ from .factories import (
     ResultaatTypeFactory,
     RolTypeFactory,
     StatusTypeFactory,
-    ZaakObjectTypeFactory,
     ZaakTypeFactory,
 )
 
@@ -79,7 +74,6 @@ class HaaglandenMixin(object):
             onderwerp="Milieu-gerelateerde vergunning",
             # TODO: behandeling door OD
             # TODO: generieke_aanduiding='',
-            # TODO: bronzaaktype is FK on the model, doc has two Bronnen..
             toelichting="""Bij dit zaaktype draagt het bevoegd gezag de behandeling van de
                 vergunningaanvraag op aan de ODH. De start van de zaakbehandeling
                 verschilt naar gelang de aanvraag ontvangen is door de gemeente dan
@@ -330,36 +324,6 @@ class HaaglandenMixin(object):
             ],
             zaaktype=self.zaaktype,
         )
-
-        #
-        # Objecten
-        #
-        # TODO: link these with StatusType.. but which one?
-        self.zaakobjecttype_milieu = ZaakObjectTypeFactory.create(
-            objecttype="Milieu-inrichting of -locatie",  # it's one that is not in the choices
-            ander_objecttype=True,
-            relatieomschrijving="De milieu-inrichting(en) en/of milieulocatie(s) waarop de zaak betrekking heeft.",
-            # statustype=foreign key StatusType
-            is_relevant_voor=self.zaaktype,
-        )
-        self.zaakobjecttype_pand = ZaakObjectTypeFactory.create(
-            objecttype=ZaakobjectTypes.pand,
-            ander_objecttype=False,
-            relatieomschrijving="Het (de) pand(en) (in de BAG) waarin het deel van de milieu-inrichting "
-            "gevestigd is waarop de zaak betrekking heeft."[:80],
-            # statustype=foreign key StatusType
-            is_relevant_voor=self.zaaktype,
-        )
-        self.zaakobjecttype_verblijfsobject = ZaakObjectTypeFactory.create(
-            objecttype=ZaakobjectTypes.adres,
-            ander_objecttype=False,
-            relatieomschrijving="Het (de) verblijfsobject(en) (in de BAG) met bijbehorend adres(sen) "
-            "waarin het deel van de milieu-inrichting gevestigd is waarop de zaak"
-            "betrekking heeft."[:80],
-            # statustype=foreign key StatusType
-            is_relevant_voor=self.zaaktype,
-        )
-        # NOTE: there are three more
 
         #
         # Eigenschappen

@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from vng_api_common.constants import RolOmschrijving, RolTypes
+from vng_api_common.constants import RolOmschrijving
 
 
 class RolType(models.Model):

@@ -36,16 +36,6 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
     #         'zaaktype_pk': 'is_van__pk'
     #     },
     # )
-    # heeftVerplichteZaakObjecttype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_verplichte_zaakobjecttype',
-    #     view_name='api:zaakobjecttype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_relevant_voor__catalogus__pk',
-    #         'zaaktype_pk': 'is_relevant_voor__pk',
-    #     },
-    # )
     # heeftVerplichteInformatieobjecttype = NestedHyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -75,7 +65,6 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             # 'einddatumObject',
             # 'heeftVerplichteInformatieobjecttype',
             # 'heeftVerplichteEigenschap',
-            # 'heeftVerplichteZaakObjecttype',
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
