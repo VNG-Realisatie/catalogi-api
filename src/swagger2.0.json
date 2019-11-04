@@ -7892,7 +7892,7 @@
             "post": {
                 "operationId": "zaakinformatieobjecttype_create",
                 "summary": "Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan.",
-                "description": "Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan. Dit kan alleen als het\nbijbehorende ZAAKTYPE een concept betreft.",
+                "description": "Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan. Dit kan alleen als het\nbijbehorende ZAAKTYPE een concept betreft.\n\nEr wordt gevalideerd op:\n- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
                 "parameters": [
                     {
                         "name": "data",
@@ -8300,7 +8300,7 @@
             "put": {
                 "operationId": "zaakinformatieobjecttype_update",
                 "summary": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij.",
-                "description": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij. Dit kan\nalleen als het bijbehorende ZAAKTYPE een concept betreft.",
+                "description": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij. Dit kan\nalleen als het bijbehorende ZAAKTYPE een concept betreft.\n\nEr wordt gevalideerd op:\n- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
                 "parameters": [
                     {
                         "name": "data",
@@ -8481,7 +8481,7 @@
             "patch": {
                 "operationId": "zaakinformatieobjecttype_partial_update",
                 "summary": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij.",
-                "description": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij. Dit kan alleen\nals het bijbehorende ZAAKTYPE een concept betreft.",
+                "description": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij. Dit kan alleen\nals het bijbehorende ZAAKTYPE een concept betreft.\n\nEr wordt gevalideerd op:\n- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
                 "parameters": [
                     {
                         "name": "data",
@@ -8662,7 +8662,7 @@
             "delete": {
                 "operationId": "zaakinformatieobjecttype_delete",
                 "summary": "Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie.",
-                "description": "Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie. Dit kan alleen als\nhet bijbehorende ZAAKTYPE een concept betreft.",
+                "description": "Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie. Dit kan alleen als\nhet bijbehorende ZAAKTYPE een concept betreft.\n\nEr wordt gevalideerd op:\n- `zaaktype` of `informatieobjecttype` is nog niet gepubliceerd",
                 "parameters": [],
                 "responses": {
                     "204": {

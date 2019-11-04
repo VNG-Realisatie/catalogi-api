@@ -479,18 +479,20 @@ class ResultaatTypeFilterAPITests(APITestCase):
     def test_filter_on_zaaktype(self):
         zt1, zt2 = ZaakTypeFactory.create_batch(2, concept=False)
         rt1 = ResultaatTypeFactory.create(zaaktype=zt1)
-        rt1_url = f"http://testserver{reverse(rt1)}"
+        rt1_url = f"http://testserver.com{reverse(rt1)}"
         rt2 = ResultaatTypeFactory.create(zaaktype=zt2)
-        rt2_url = f"http://testserver{reverse(rt2)}"
-        zt1_url = "http://testserver{}".format(
+        rt2_url = f"http://testserver.com{reverse(rt2)}"
+        zt1_url = "http://testserver.com{}".format(
             reverse("zaaktype-detail", kwargs={"uuid": zt1.uuid})
         )
-        zt2_url = "http://testserver{}".format(
+        zt2_url = "http://testserver.com{}".format(
             reverse("zaaktype-detail", kwargs={"uuid": zt2.uuid})
         )
         list_url = reverse("resultaattype-list")
 
-        response = self.client.get(list_url, {"zaaktype": zt1_url})
+        response = self.client.get(
+            list_url, {"zaaktype": zt1_url}, HTTP_HOST="testserver.com"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response_data = response.json()["results"]

@@ -40,5 +40,5 @@ GEMMA_URL_INFORMATIEMODEL_VERSIE = "2.1"
 repo = "VNG-Realisatie/VNG-referentielijsten"
 commit = "da1b2cfdaadb2d19a7d3fc14530923913a2560f2"
 REFERENTIELIJSTEN_API_SPEC = (
-    f"https://raw.githubusercontent.com/{repo}/{commit}/src/openapi.yaml"
-)  # noqa
+    f"https://raw.githubusercontent.com/{repo}/{commit}/src/openapi.yaml"  # noqa
+)
