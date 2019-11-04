@@ -93,6 +93,7 @@ class ZaakTypeAPITests(APITestCase):
             "omschrijving": "",
             "eigenschappen": [],
             "informatieobjecttypen": [],
+            "deelzaaktypen": [],
             "gerelateerdeZaaktypen": [],
             # 'heeftRelevantBesluittype': [],
             # 'heeftRelevantZaakObjecttype': [],
@@ -138,6 +139,9 @@ class ZaakTypeAPITests(APITestCase):
         besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
         besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
 
+        deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
+        deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
+
         zaaktype_list_url = get_operation_url("zaaktype_list")
         data = {
             "identificatie": 0,
@@ -156,6 +160,10 @@ class ZaakTypeAPITests(APITestCase):
             "productenOfDiensten": ["https://example.com/product/123"],
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "omschrijving": "some test",
+            "deelzaaktypen": [
+                f"http://testserver{reverse(deelzaaktype1)}",
+                f"http://testserver{reverse(deelzaaktype2)}",
+            ],
             "gerelateerdeZaaktypen": [
                 {
                     "zaaktype": "http://example.com/zaaktype/1",
@@ -184,6 +192,12 @@ class ZaakTypeAPITests(APITestCase):
             "http://example.com/zaaktype/1",
         )
         self.assertEqual(zaaktype.concept, True)
+        self.assertQuerysetEqual(
+            zaaktype.deelzaaktypen.all(),
+            {deelzaaktype1.pk, deelzaaktype2.pk},
+            transform=lambda x: x.pk,
+            ordered=False,
+        )
 
     def test_create_zaaktype_fail_besluittype_non_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False, catalogus=self.catalogus)
@@ -312,6 +326,19 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
         response = self.client.post(zaaktype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "concept-relation")
+
+    def test_publish_zaaktype_fail_concept_deelzaaktype(self):
+        deelzaaktype = ZaakTypeFactory.create(concept=True, catalogus=self.catalogus)
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
+        zaaktype.deelzaaktypen.add(deelzaaktype)
+        publish_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
+
+        response = self.client.post(publish_url)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1445,3 +1472,18 @@ class ZaaktypeValidationTests(APITestCase):
 
         error = get_validation_errors(response, "selectielijstProcestype")
         self.assertEqual(error["code"], "invalid-resource")
+
+    def test_deelzaaktype_different_catalogue(self):
+        zaaktype1 = ZaakTypeFactory.create()
+        assert zaaktype1.catalogus != self.catalogus
+        zaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus)
+
+        response = self.client.patch(
+            reverse(zaaktype2),
+            {"deelzaaktypen": [f"http://testserver{reverse(zaaktype1)}"]},
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        error = get_validation_errors(response, "deelzaaktypen")
+
+        self.assertEqual(error["code"], "relations-incorrect-catalogus")

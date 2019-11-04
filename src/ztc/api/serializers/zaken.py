@@ -31,6 +31,7 @@ from ..utils.serializers import SourceMappingSerializerMixin
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
+    DeelzaaktypeCatalogusValidator,
     M2MConceptCreateValidator,
     M2MConceptUpdateValidator,
     ZaaktypeGeldigheidValidator,
@@ -265,6 +266,7 @@ class ZaakTypeSerializer(
             "informatieobjecttypen",
             "roltypen",
             "besluittypen",
+            "deelzaaktypen",
             "gerelateerde_zaaktypen",
             # # 'heeftRelevantZaakObjecttype',
             # # 'isDeelzaaktypeVan',
@@ -289,6 +291,7 @@ class ZaakTypeSerializer(
                     ResourceValidator("ProcesType", settings.REFERENTIELIJSTEN_API_SPEC)
                 ]
             },
+            "deelzaaktypen": {"lookup_field": "uuid"},
         }
 
         # expandable_fields = {
@@ -300,6 +303,7 @@ class ZaakTypeSerializer(
             ConceptUpdateValidator(),
             M2MConceptCreateValidator(["besluittypen", "informatieobjecttypen"]),
             M2MConceptUpdateValidator(["besluittypen", "informatieobjecttypen"]),
+            DeelzaaktypeCatalogusValidator(),
         ]
 
     def __init__(self, *args, **kwargs):

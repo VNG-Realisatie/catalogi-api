@@ -93,7 +93,6 @@ class ZaakTypenRelatieInline(admin.TabularInline):
 @admin.register(ZaakType)
 class ZaakTypeAdmin(
     ListObjectActionsAdminMixin,
-    FilterSearchOrderingAdminMixin,
     GeldigheidAdminMixin,
     ConceptAdminMixin,
     DynamicArrayMixin,
@@ -111,6 +110,18 @@ class ZaakTypeAdmin(
         "uuid",
         "get_absolute_api_url",
     )
+    list_filter = ("catalogus", "concept", "vertrouwelijkheidaanduiding")
+    search_fields = (
+        "zaaktype_identificatie",
+        "zaaktype_omschrijving",
+        "zaaktype_omschrijving_generiek",
+        "zaakcategorie",
+        "doel",
+        "aanleiding",
+        "onderwerp",
+        "toelichting",
+    )
+    ordering = ("catalogus", "-pk")
 
     # Details
     fieldsets = (
@@ -158,14 +169,14 @@ class ZaakTypeAdmin(
             {
                 "fields": (
                     "catalogus",
-                    # m2m:
-                    "is_deelzaaktype_van",
+                    # TODO: validate that this belongs to the same catalogue!
+                    "deelzaaktypen",
                 )
             },
         ),
     )
-    filter_horizontal = ("is_deelzaaktype_van", "formulier")
-    raw_id_fields = ("catalogus",)
+    filter_horizontal = ("formulier",)
+    raw_id_fields = ("catalogus", "deelzaaktypen")
     inlines = (
         ZaakTypenRelatieInline,
         StatusTypeInline,
