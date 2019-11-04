@@ -62,8 +62,8 @@ INTERNAL_IPS = ("127.0.0.1",)
 DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 
 AXES_BEHIND_REVERSE_PROXY = (
-    False
-)  # Default: False (we are typically using Nginx as reverse proxy)
+    False  # Default: False (we are typically using Nginx as reverse proxy)
+)
 
 if "test" not in sys.argv:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += (
