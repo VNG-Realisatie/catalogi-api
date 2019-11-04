@@ -222,15 +222,6 @@ class ResultaatType(models.Model):
             "archiveringskenmerken van het ZAAKTYPE."
         ),
     )
-    heeft_verplichte_zot = models.ManyToManyField(
-        "datamodel.ZaakObjectType",
-        verbose_name=_("heeft verplichte"),
-        blank=True,
-        help_text=_(
-            "De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit ZAAKTYPE voordat een "
-            "resultaat van dit RESULTAATTYPE kan worden gezet."
-        ),
-    )
     heeft_verplichte_ziot = models.ManyToManyField(  # does not have a mnemonic, I choose 'ziot' here
         "datamodel.ZaakInformatieObjectType",
         verbose_name=_("heeft verplichte zaakinformatie objecttype"),

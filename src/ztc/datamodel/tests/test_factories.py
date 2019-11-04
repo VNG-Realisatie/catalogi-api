@@ -13,20 +13,16 @@ from ztc.datamodel.models import (
 
 from .factories import (
     BesluitTypeFactory,
-    BronCatalogusFactory,
-    BronZaakTypeFactory,
     CatalogusFactory,
     CheckListItemFactory,
     EigenschapFactory,
     EigenschapReferentieFactory,
     EigenschapSpecificatieFactory,
-    FormulierFactory,
     InformatieObjectTypeFactory,
     InformatieObjectTypeOmschrijvingGeneriekFactory,
     ResultaatTypeFactory,
     RolTypeFactory,
     StatusTypeFactory,
-    ZaakObjectTypeFactory,
     ZaakTypeFactory,
     ZaakTypenRelatieFactory,
 )
@@ -52,10 +48,6 @@ class FactoryTests(TestCase):
 
         ResultaatTypeFactory.create()
         RolTypeFactory.create()
-        ZaakObjectTypeFactory.create()
-        FormulierFactory.create()
-        BronCatalogusFactory.create()
-        BronZaakTypeFactory.create()
         CheckListItemFactory.create()
         StatusTypeFactory.create()
         ZaakTypeFactory.create()

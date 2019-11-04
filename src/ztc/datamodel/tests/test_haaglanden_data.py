@@ -8,20 +8,16 @@ from ztc.datamodel.tests.base_tests import HaaglandenMixin
 
 from ..models import (
     BesluitType,
-    BronCatalogus,
-    BronZaakType,
     Catalogus,
     CheckListItem,
     Eigenschap,
     EigenschapReferentie,
     EigenschapSpecificatie,
-    Formulier,
     InformatieObjectType,
     InformatieObjectTypeOmschrijvingGeneriek,
     ResultaatType,
     RolType,
     StatusType,
-    ZaakObjectType,
     ZaakType,
 )
 
@@ -48,14 +44,10 @@ class FactoryTests(HaaglandenMixin, TestCase):
         self.assertEqual(ResultaatType.objects.all().count(), 5)
         self.assertEqual(RolType.objects.all().count(), 7)
         self.assertEqual(StatusType.objects.all().count(), 5)
-        self.assertEqual(ZaakObjectType.objects.all().count(), 3)
 
-        self.assertEqual(BronCatalogus.objects.all().count(), 0)
-        self.assertEqual(BronZaakType.objects.all().count(), 0)
         self.assertEqual(CheckListItem.objects.all().count(), 0)
         self.assertEqual(EigenschapReferentie.objects.all().count(), 0)
         self.assertEqual(EigenschapSpecificatie.objects.all().count(), 0)
-        self.assertEqual(Formulier.objects.all().count(), 0)
 
         #
         # now test the datum_begin_geldigheid on all instances, duplicate code so the default error msg makes sense
@@ -67,16 +59,6 @@ class FactoryTests(HaaglandenMixin, TestCase):
             list(
                 set(
                     BesluitType.objects.values_list("datum_begin_geldigheid", flat=True)
-                )
-            ),
-            expected_dates,
-        )
-        self.assertEqual(
-            list(
-                set(
-                    ZaakObjectType.objects.values_list(
-                        "datum_begin_geldigheid", flat=True
-                    )
                 )
             ),
             expected_dates,
