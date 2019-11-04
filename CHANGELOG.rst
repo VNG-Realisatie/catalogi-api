@@ -2,6 +2,27 @@
 Wijzigingen
 ===========
 
+1.0.0-rc2 fixes (2019-09-19)
+============================
+
+Set aan fixes op RC2
+
+* Added support for (partial) updating (``PUT`` and ``PATCH`` operations)
+* Added concept-validation during updates
+* Fixed schema of ``GegevensGroep`` - often allowed to be ``null``
+* Fixed handling of ``Zaaktype.einddatumGeldigheid`` - this is now exclusive
+  instead of inclusive
+
+Breaking changes
+----------------
+
+* On publish of ``ZaakType``, check that there are no unpublished related objects
+* Changed permission errors to the correct validation errors during publishing
+* Added validation that requires related objects to belong to the same catalogus
+* Filtering on bad/unexpected URLs now returns an empty result list instead
+  of validation errors.
+
+
 1.0.0-rc2 (2019-09-19)
 ======================
 
