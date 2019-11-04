@@ -849,7 +849,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.delete()
 
     def test_partial_update_zaaktype_not_related_to_non_concept_informatieobjecttype(
-        self
+        self,
     ):
         catalogus = CatalogusFactory.create()
 
@@ -891,7 +891,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.delete()
 
     def test_partial_update_zaaktype_related_to_non_concept_informatieobjecttype_fails(
-        self
+        self,
     ):
         catalogus = CatalogusFactory.create()
 
@@ -914,7 +914,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.delete()
 
     def test_partial_update_zaaktype_related_to_non_concept_informatieobjecttype_fails(
-        self
+        self,
     ):
         catalogus = CatalogusFactory.create()
 
@@ -937,7 +937,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.delete()
 
     def test_partial_update_zaaktype_add_relation_to_non_concept_besluittype_fails(
-        self
+        self,
     ):
         catalogus = CatalogusFactory.create()
 
@@ -976,7 +976,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
 
     def test_partial_update_zaaktype_einde_geldigheid_related_to_non_concept_besluittype(
-        self
+        self,
     ):
         catalogus = CatalogusFactory.create()
 
@@ -994,7 +994,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.delete()
 
     def test_partial_update_zaaktype_einde_geldigheid_related_to_non_concept_informatieobjecttype(
-        self
+        self,
     ):
         catalogus = CatalogusFactory.create()
 
@@ -1125,6 +1125,45 @@ class ZaakTypeCreateDuplicateTests(APITestCase):
             "identificatie": 1,
             "catalogus": f"http://testserver{reverse(self.catalogus)}",
             "beginGeldigheid": "2020-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {"naam": "ref", "link": "https://example.com"},
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_overlap_exclusive(self):
+        """
+        Assert that the end date is exclusive.
+        """
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            zaaktype_identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=date(2020, 1, 1),
+            zaaktype_omschrijving="zaaktype",
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 1,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2020-01-01",
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "doel": "doel",
             "aanleiding": "aanleiding",
