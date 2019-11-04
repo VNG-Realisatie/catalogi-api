@@ -46,7 +46,7 @@ class ZaaktypeGeldigheidValidator:
             Q(catalogus=catalogus),
             Q(zaaktype_omschrijving=zaaktype_omschrijving),
             Q(datum_einde_geldigheid=None)
-            | Q(datum_einde_geldigheid__gte=datum_begin_geldigheid),  # noqa
+            | Q(datum_einde_geldigheid__gt=datum_begin_geldigheid),  # noqa
         )
         if datum_einde_geldigheid is not None:
             query = query.filter(datum_begin_geldigheid__lte=datum_einde_geldigheid)

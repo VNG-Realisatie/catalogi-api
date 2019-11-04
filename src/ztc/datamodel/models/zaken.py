@@ -620,7 +620,7 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
                 Q(catalogus=self.catalogus),
                 Q(zaaktype_omschrijving=self.zaaktype_omschrijving),
                 Q(datum_einde_geldigheid=None)
-                | Q(datum_einde_geldigheid__gte=self.datum_begin_geldigheid),  # noqa
+                | Q(datum_einde_geldigheid__gt=self.datum_begin_geldigheid),  # noqa
             )
             if self.datum_einde_geldigheid is not None:
                 query = query.filter(
