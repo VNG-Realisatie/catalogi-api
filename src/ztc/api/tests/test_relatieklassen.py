@@ -17,11 +17,14 @@ from ztc.datamodel.tests.factories import (
     ZaakTypeFactory,
 )
 
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from .base import APITestCase
 
 
 class ZaakInformatieobjectTypeAPITests(APITestCase):
     maxDiff = None
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
 
     list_url = reverse_lazy(ZaakInformatieobjectType)
 
