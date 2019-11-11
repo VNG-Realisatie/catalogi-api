@@ -3,7 +3,11 @@ from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import ResultaatType
 from ..filters import ResultaatTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import (
+    SCOPE_ZAAKTYPES_FORCED_DELETE,
+    SCOPE_ZAAKTYPES_READ,
+    SCOPE_ZAAKTYPES_WRITE,
+)
 from ..serializers import ResultaatTypeSerializer
 from .mixins import ZaakTypeConceptMixin
 
@@ -62,5 +66,5 @@ class ResultaatTypeViewSet(
         "create": SCOPE_ZAAKTYPES_WRITE,
         "update": SCOPE_ZAAKTYPES_WRITE,
         "partial_update": SCOPE_ZAAKTYPES_WRITE,
-        "destroy": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE | SCOPE_ZAAKTYPES_FORCED_DELETE,
     }

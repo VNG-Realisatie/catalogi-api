@@ -8,6 +8,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 
+from ..scopes import SCOPE_ZAAKTYPES_FORCED_DELETE
+
 
 class ConceptPublishMixin:
     @swagger_auto_schema(request_body=no_body)
@@ -23,13 +25,20 @@ class ConceptPublishMixin:
 
 
 class ConceptDestroyMixin:
+    message = _("Alleen concepten kunnen worden verwijderd.")
+    code = "non-concept-object"
+
     def get_concept(self, instance):
         return instance.concept
 
     def perform_destroy(self, instance):
-        if not self.get_concept(instance):
-            msg = _("Alleen concepten kunnen worden verwijderd.")
-            raise ValidationError({"nonFieldErrors": msg}, code="non-concept-object")
+        forced_delete = self.request.jwt_auth.has_auth(
+            scopes=SCOPE_ZAAKTYPES_FORCED_DELETE
+        )
+
+        if not forced_delete:
+            if not self.get_concept(instance):
+                raise ValidationError({"nonFieldErrors": self.message}, code=self.code)
 
         super().perform_destroy(instance)
 
@@ -63,17 +72,13 @@ class ConceptMixin(ConceptPublishMixin, ConceptDestroyMixin, ConceptFilterMixin)
 
 
 class ZaakTypeConceptDestroyMixin(ConceptDestroyMixin):
+    message = _(
+        "Objecten gerelateerd aan non-concept zaaktypen kunnen niet verwijderd worden."
+    )
+    code = "non-concept-zaaktype"
+
     def get_concept(self, instance):
         return instance.zaaktype.concept
-
-    def perform_destroy(self, instance):
-        if not self.get_concept(instance):
-            msg = _(
-                "Objecten gerelateerd aan non-concept zaaktypen kunnen niet verwijderd worden."
-            )
-            raise ValidationError({"nonFieldErrors": msg}, code="non-concept-zaaktype")
-
-        super().perform_destroy(instance)
 
 
 class ZaakTypeConceptFilterMixin(ConceptFilterMixin):
@@ -92,15 +97,20 @@ class ZaakTypeConceptMixin(ZaakTypeConceptDestroyMixin, ZaakTypeConceptFilterMix
 
 class M2MConceptDestroyMixin:
     def perform_destroy(self, instance):
-        for field_name in self.concept_related_fields:
-            field = getattr(instance, field_name)
-            related_non_concepts = field.filter(concept=False)
-            if related_non_concepts.exists():
-                msg = _(
-                    f"Objects related to non-concept {field_name} can't be destroyed"
-                )
-                raise ValidationError(
-                    {"nonFieldErrors": msg}, code="non-concept-relation"
-                )
+        forced_delete = self.request.jwt_auth.has_auth(
+            scopes=SCOPE_ZAAKTYPES_FORCED_DELETE
+        )
+
+        if not forced_delete:
+            for field_name in self.concept_related_fields:
+                field = getattr(instance, field_name)
+                related_non_concepts = field.filter(concept=False)
+                if related_non_concepts.exists():
+                    msg = _(
+                        f"Objects related to non-concept {field_name} can't be destroyed"
+                    )
+                    raise ValidationError(
+                        {"nonFieldErrors": msg}, code="non-concept-relation"
+                    )
 
         super().perform_destroy(instance)
