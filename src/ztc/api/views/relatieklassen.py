@@ -7,7 +7,11 @@ from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import ZaakInformatieobjectType
 from ..filters import ZaakInformatieobjectTypeFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import (
+    SCOPE_ZAAKTYPES_FORCED_DELETE,
+    SCOPE_ZAAKTYPES_READ,
+    SCOPE_ZAAKTYPES_WRITE,
+)
 from ..serializers import ZaakTypeInformatieObjectTypeSerializer
 from .mixins import ConceptFilterMixin
 
@@ -78,7 +82,7 @@ class ZaakTypeInformatieObjectTypeViewSet(
         "create": SCOPE_ZAAKTYPES_WRITE,
         "update": SCOPE_ZAAKTYPES_WRITE,
         "partial_update": SCOPE_ZAAKTYPES_WRITE,
-        "destroy": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE | SCOPE_ZAAKTYPES_FORCED_DELETE,
     }
 
     def get_concept(self, instance):
@@ -93,8 +97,15 @@ class ZaakTypeInformatieObjectTypeViewSet(
         return ~(Q(zaaktype__concept=True) | Q(informatieobjecttype__concept=True))
 
     def perform_destroy(self, instance):
-        if not self.get_concept(instance):
-            msg = _("Objects related to non-concept objects can't be destroyed")
-            raise ValidationError({"nonFieldErrors": msg}, code="non-concept-relation")
+        forced_delete = self.request.jwt_auth.has_auth(
+            scopes=SCOPE_ZAAKTYPES_FORCED_DELETE
+        )
+
+        if not forced_delete:
+            if not self.get_concept(instance):
+                msg = _("Objects related to non-concept objects can't be destroyed")
+                raise ValidationError(
+                    {"nonFieldErrors": msg}, code="non-concept-relation"
+                )
 
         super().perform_destroy(instance)

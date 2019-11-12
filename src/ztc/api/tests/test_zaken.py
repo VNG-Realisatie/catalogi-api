@@ -26,11 +26,14 @@ from ztc.datamodel.tests.factories import (
     ZaakTypenRelatieFactory,
 )
 
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from .base import APITestCase
 
 
 class ZaakTypeAPITests(APITestCase):
     maxDiff = None
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
 
     def test_get_list_default_definitief(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)  # noqa
@@ -911,9 +914,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.data["aanleiding"], "aangepast")
         zaaktype.delete()
 
-    def test_partial_update_zaaktype_related_to_non_concept_informatieobjecttype_fails(
-        self,
-    ):
+    def test_partial_update_zaaktype_related_to_non_concept_besluittype_fails(self):
         catalogus = CatalogusFactory.create()
 
         zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
@@ -925,13 +926,10 @@ class ZaakTypeAPITests(APITestCase):
 
         response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-        data = response.json()
-        self.assertEqual(
-            data["detail"],
-            "Objects related to non-concept {} can't be updated".format("besluittypen"),
-        )
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
         zaaktype.delete()
 
     def test_partial_update_zaaktype_related_to_non_concept_informatieobjecttype_fails(
