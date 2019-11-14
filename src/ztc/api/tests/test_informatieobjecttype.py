@@ -51,7 +51,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         informatieobjecttype = InformatieObjectTypeFactory.create(
             catalogus=self.catalogus,
-            zaaktypes=None,
+            zaaktypen=None,
             model=["http://www.example.com"],
             trefwoord=["abc", "def"],
             datum_begin_geldigheid="2019-01-01",
@@ -88,7 +88,7 @@ class InformatieObjectTypeAPITests(APITestCase):
     def test_is_relevant_voor(self):
         informatieobjecttype = InformatieObjectTypeFactory.create(
             catalogus=self.catalogus,
-            zaaktypes=None,
+            zaaktypen=None,
             model=["http://www.example.com"],
             trefwoord=["abc", "def"],
         )

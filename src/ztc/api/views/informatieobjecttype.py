@@ -75,5 +75,5 @@ class InformatieObjectTypeViewSet(
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
         "publish": SCOPE_CATALOGI_WRITE,
     }
-    concept_related_fields = ["besluittypen", "zaaktypes"]
+    concept_related_fields = ["besluittypen", "zaaktypen"]
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN

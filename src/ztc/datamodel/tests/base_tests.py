@@ -16,7 +16,7 @@ from .factories import (
 )
 
 # TODO: Catalogus and ResultaatTypeFacory are not used yet. Currently all other factories will indirectly create
-# things that we dont want, like random Catalogus, more ZaakTypes etc etc
+# things that we dont want, like random Catalogus, more ZaakTypen etc etc
 
 # TODO: for several fields the input from Haaglanden is too long. There are no To Do's on every line
 # search for '[:' in this file, since I kept the original string but used string indexing to cut it of[:100]
@@ -353,7 +353,7 @@ class HaaglandenMixin(object):
             informatieobjectcategorie="Aanvraag",
             vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
-            zaaktypes=[self.zaaktype],
+            zaaktypen=[self.zaaktype],
             # TODO: following fields are in haaglanden doc but not in the datamodel
             # volgnummer=1  # is pk...
             # bron=ontvangen
@@ -367,7 +367,7 @@ class HaaglandenMixin(object):
             informatieobjectcategorie="Brief",
             vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
-            zaaktypes=[self.zaaktype],
+            zaaktypen=[self.zaaktype],
             # TODO: following fields are in haaglanden doc but not in the datamodel
             # volgnummer=1  # is pk...
             # bron=ontvangen of uitgaand
@@ -450,7 +450,7 @@ class HaaglandenMixin(object):
         #
         # Gerelateerde zaken
         #
-        # TODO: 6 more zaaktypes
+        # TODO: 6 more zaaktypen
 
         #
         # Deelzaken
@@ -460,7 +460,7 @@ class HaaglandenMixin(object):
         #
         # Vervolgzaken
         #
-        # TODO: 3 more zaaktypes
+        # TODO: 3 more zaaktypen
 
 
 def create_haaglanden_test_data():
