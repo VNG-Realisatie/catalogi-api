@@ -6819,10 +6819,11 @@ paths:
           format: uri
       - name: identificatie
         in: query
-        description: ''
+        description: Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin
+          het ZAAKTYPE voorkomt.
         required: false
         schema:
-          type: number
+          type: string
       - name: trefwoorden
         in: query
         description: Multiple values may be separated by commas.
@@ -8777,7 +8778,6 @@ components:
           maxLength: 255
     ZaakType:
       required:
-      - identificatie
       - omschrijving
       - vertrouwelijkheidaanduiding
       - doel
@@ -8812,9 +8812,8 @@ components:
           title: Identificatie
           description: Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin
             het ZAAKTYPE voorkomt.
-          type: integer
-          maximum: 99999
-          minimum: 0
+          type: string
+          maxLength: 50
         omschrijving:
           title: Omschrijving
           description: Omschrijving van de aard van ZAAKen van het ZAAKTYPE.

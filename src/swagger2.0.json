@@ -8258,9 +8258,9 @@
                     {
                         "name": "identificatie",
                         "in": "query",
-                        "description": "",
+                        "description": "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.",
                         "required": false,
-                        "type": "number"
+                        "type": "string"
                     },
                     {
                         "name": "trefwoorden",
@@ -10265,7 +10265,6 @@
         },
         "ZaakType": {
             "required": [
-                "identificatie",
                 "omschrijving",
                 "vertrouwelijkheidaanduiding",
                 "doel",
@@ -10300,9 +10299,8 @@
                 "identificatie": {
                     "title": "Identificatie",
                     "description": "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.",
-                    "type": "integer",
-                    "maximum": 99999,
-                    "minimum": 0
+                    "type": "string",
+                    "maxLength": 50
                 },
                 "omschrijving": {
                     "title": "Omschrijving",

@@ -235,9 +235,7 @@ class ZaakTypeAPITests(APITestCase):
 
         zaaktype2 = ZaakType.objects.get(zaaktype_omschrijving="some test")
 
-        self.assertNotEqual(
-            zaaktype1.identificatie, zaaktype2.identificatie
-        )
+        self.assertNotEqual(zaaktype1.identificatie, zaaktype2.identificatie)
 
     def test_create_zaaktype_fail_besluittype_non_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False, catalogus=self.catalogus)
