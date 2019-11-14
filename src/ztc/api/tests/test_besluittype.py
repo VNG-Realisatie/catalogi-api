@@ -15,11 +15,14 @@ from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory,
     ZaakTypeFactory,
 )
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from .base import APITestCase
 
 
 class BesluitTypeAPITests(APITestCase):
     maxDiff = None
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE]
 
     def test_get_list_default_definitief(self):
         besluittype1 = BesluitTypeFactory.create(concept=True)

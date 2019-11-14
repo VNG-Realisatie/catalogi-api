@@ -2,7 +2,23 @@
 Wijzigingen
 ===========
 
-1.0.0-rc2 fixes (2019-09-19)
+1.0.0-rc2 fixes (2019-11-14)
+============================
+
+Set of fixes/features in RC2
+
+* Added unique validation on ``InformatieobjectType.catalogus`` and
+  ``InformatieobjectType.omschrijving`` (constraint existed in DB before that,
+  prevents crashes)
+* Added unique validation on ``ZaakInformatieobjectType.zaaktype`` and
+  ``ZaakInformatieobjectType.volgnummer`` (constraint existed in DB before that,
+  prevents crashes)
+* Added scope ``zaaktypes.geforceerd-verwijderen`` which allows deletion of
+  published resources - intended for administrators/superusers.
+* Relaxed format of ``Zaaktype.identificatie`` - now allows alpha-numeric
+  strings instead of integers.
+
+1.0.0-rc2 fixes (2019-11-04)
 ============================
 
 Set aan fixes op RC2
@@ -12,6 +28,7 @@ Set aan fixes op RC2
 * Fixed schema of ``GegevensGroep`` - often allowed to be ``null``
 * Fixed handling of ``Zaaktype.einddatumGeldigheid`` - this is now exclusive
   instead of inclusive
+* Added support for ``Zaaktype.deelzaaktypen``
 
 Breaking changes
 ----------------

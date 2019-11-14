@@ -1,6 +1,7 @@
 from django.conf import settings
 
 from drf_yasg import openapi
+from vng_api_common.doc import DOC_AUTH_JWT
 from vng_api_common.notifications.utils import notification_documentation
 
 from .kanalen import KANAAL_BESLUITTYPEN, KANAAL_INFORMATIEOBJECTTYPEN, KANAAL_ZAAKTYPEN
@@ -24,11 +25,7 @@ Deze API is afhankelijk van:
 * Gemeentelijke Selectielijst API
 * Autorisaties API *(optioneel)*
 
-**Autorisatie**
-
-Deze API vereist autorisatie. Je kan de
-[token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te
-genereren.
+{DOC_AUTH_JWT}
 
 ### Notificaties
 

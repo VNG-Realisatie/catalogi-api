@@ -14,6 +14,7 @@ from ...datamodel.tests.factories import (
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
 )
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from ..validators import (
     ConceptUpdateValidator,
     M2MConceptCreateValidator,
@@ -24,6 +25,8 @@ from .base import APITestCase
 
 class InformatieObjectTypeAPITests(APITestCase):
     maxDiff = None
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
 
     def test_get_list_default_definitief(self):
         informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=True)

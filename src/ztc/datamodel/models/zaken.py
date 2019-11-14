@@ -1,251 +1,19 @@
 import uuid
 
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from django_better_admin_arrayfield.models.fields import ArrayField
 from vng_api_common.caching import ETagMixin
-from vng_api_common.constants import ZaakobjectTypes
 from vng_api_common.descriptors import GegevensGroepType
 from vng_api_common.fields import DaysDurationField, VertrouwelijkheidsAanduidingField
 from vng_api_common.models import APIMixin
+from vng_api_common.utils import generate_unique_identification
+from vng_api_common.validators import alphanumeric_excluding_diacritic
 
 from ..choices import InternExtern
 from .mixins import ConceptMixin, GeldigheidMixin
-
-
-class ZaakObjectType(GeldigheidMixin, models.Model):
-    """
-    De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking
-    kan hebben.
-
-    Toelichting objecttype
-    Een zaak kan op ‘van alles en nog wat’ betrekking hebben.
-    Voor zover dit voorkomens (objecten) van de in het RSGB of RGBZ onderscheiden objecttypen
-    betreft, wordt met ZAAKOBJECTTYPE gespecificeerd op welke van de RSGB- en/of RGBZ- objecttypen
-    zaken van het gerelateerde ZAAKTYPE betrekking kunnen hebben.
-    Voor zover het andere objecten betreft, wordt met ZAAKOBJECTTYPE gespecificeerd welke
-    andere typen objecten dit betreft.
-    """
-
-    # TODO [KING]: objecttype is gespecificeerd als AN40 maar een van de mogelijke waarden
-    # (ANDER BUITENLANDS NIET-NATUURLIJK PERSOON) heeft lengte 41. Daarom hebben wij het op max_length=50 gezet
-    objecttype = models.CharField(
-        _("objecttype"),
-        max_length=50,
-        help_text=_(
-            "De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben."
-        ),
-    )
-    ander_objecttype = models.BooleanField(
-        _("ander objecttype"),
-        default=False,
-        help_text=_(
-            "Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE "
-            "een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft"
-        ),
-    )
-    relatieomschrijving = models.CharField(
-        _("relatieomschrijving"),
-        max_length=80,
-        help_text=_(
-            "Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE."
-        ),
-    )
-
-    statustype = models.ForeignKey(
-        "datamodel.StatusType",
-        verbose_name=_("status type"),
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        related_name="heeft_verplichte_zaakobjecttype",
-        help_text=_(
-            "TODO: dit is de related helptext: De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van "
-            "het ZAAKTYPE voordat een STATUS van dit STATUSTYPE kan worden gezet"
-        ),
-    )
-
-    is_relevant_voor = models.ForeignKey(
-        "datamodel.ZaakType",
-        verbose_name=_("is_relevant_voor"),
-        help_text=_(
-            "Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant zijn."
-        ),
-        on_delete=models.CASCADE,
-    )
-
-    class Meta:
-        mnemonic = "ZOT"
-        unique_together = ("is_relevant_voor", "objecttype")
-        verbose_name = _("Zaakobjecttype")
-        verbose_name_plural = _("Zaakobjecttypen")
-        ordering = unique_together
-
-        filter_fields = ("is_relevant_voor", "ander_objecttype")
-        ordering_fields = filter_fields
-        search_fields = ("objecttype", "relatieomschrijving")
-
-    def clean(self):
-        """
-        Voor het veld objecttype:
-        Indien Ander objecttype='N': objecttype moet een van de ObjectTypen zijn
-        Indien Ander objecttype='J': alle alfanumerieke tekens
-
-        Datum begin geldigheid:
-        - De datum is gelijk aan een Versiedatum van het gerelateerde zaaktype.
-
-        datum einde geldigheid:
-        - De datum is gelijk aan of gelegen na de datum zoals opgenomen onder 'Datum begin geldigheid zaakobjecttype’.
-        De datum is gelijk aan de dag voor een Versiedatum van het gerelateerde zaaktype.
-        """
-        super().clean()
-
-        if (
-            not self.ander_objecttype
-            and self.objecttype not in ZaakobjectTypes.values.keys()
-        ):
-            raise ValidationError(
-                _(
-                    "Indien Ander objecttype='N' moet objecttype een van de objecttypen zijn uit het "
-                    "RSGB of het RGBZ. Bekende objecttypen zijn: {}"
-                ).format(", ".join(ZaakobjectTypes.values.keys()))
-            )
-
-        self._clean_geldigheid(self.is_relevant_voor)
-
-    def __str__(self):
-        return "{} - {}{}".format(
-            self.is_relevant_voor, self.objecttype, self.ander_objecttype
-        )
-
-
-class Formulier(models.Model):
-    """
-    Het formulier dat ZAAKen van dit ZAAKTYPE initieert.
-
-    Regels
-    De groepattribuutsoort verandert alleen van waarde
-    (materiële historie) cq. één of meer van de subattributen
-    veranderen van waarde op een datum die gelijk is aan een
-    Versiedatum van het zaaktype.
-
-    Toelichting
-    Met deze groepattribuutsoort wordt de relatie gelegd naar het 'blanco' formulier / de
-    formulierdefinitie waarmee ZAAKen van dit ZAAKTYPE worden geïnitieerd. Formulier moet in deze
-    context in de ruimste zin van het woord worden opgevat; het kan zowel gaan om het sjabloon
-    voor het papieren formulier als het e-formulier dat wordt gebruikt voor de webintake. Om die
-    reden is de kardinaliteit 0-N: er kan per kanaal een ander formulier gedefinieerd zijn. De
-    kardinaliteit per kanaal is 0-1.
-    """
-
-    naam = models.CharField(
-        _("naam"), max_length=80, help_text=_("De naam van het formulier.")
-    )
-    link = models.URLField(
-        _("link"), blank=True, null=True, help_text=_("De URL naar het formulier.")
-    )
-
-    def __str__(self):
-        return self.naam
-
-    class Meta:
-        verbose_name = _("Formulier")
-        verbose_name_plural = _("Formulieren")
-
-
-class BronCatalogus(models.Model):
-    """
-    De CATALOGUS waaraan het ZAAKTYPE is ontleend.
-
-    Regels
-    De groepattribuutsoort verandert alleen van waarde
-    (materiële historie) cq. één of meer van de subattributen
-    veranderen van waarde op een datum die gelijk is aan een
-    Versiedatum van het zaaktype.
-
-    Toelichting
-    Met deze groepattribuutsoort kan een relatie worden gelegd naar de CATALOGUS waaraan de
-    configuratie van dit ZAAKTYPE is ontleend. Denk bijvoorbeeld aan het leggen van de relatie tussen
-    het 'lokale' ZAAKTYPE 'Aanvraag Uittreksel GBA behandelen' en een specifiek voor de sector
-    Burgerzaken ontwikkelde catalogus met alle zaaktypen voor Burgerzaken. De combinatie van deze
-    groepattribuutsoort met de attribuutsoort Bronzaaktype-identificatie identificeert het zaaktype
-    waarvan dit 'lokale' zaaktype is afgeleid uniek en stelt de beheerder van dit ZAAKTYPE in staat die
-    relatie te bewaken.
-    """
-
-    domein = models.CharField(
-        _("domein"),
-        max_length=30,
-        help_text=_("Het domein van de CATALOGUS waaraan het ZAAKTYPE is ontleend."),
-    )
-    # rsin is gespecificeerd als N9, ivm voorloopnullen gekozen voor CharField. Geen waardenverzameling gedefinieerd
-    rsin = models.CharField(
-        _("rsin"),
-        max_length=9,
-        validators=[RegexValidator("^[0-9]*$")],
-        help_text=_(
-            "Het RSIN van de INGESCHREVEN NIET-NATUURLIJK PERSOON die "
-            "beheerder is van de CATALOGUS waaraan het ZAAKTYPE is ontleend."
-        ),
-    )
-
-    def __str__(self):
-        return "{} - {}".format(self.rsin, self.domein)
-
-    class Meta:
-        verbose_name = _("Bron catalogus")
-        verbose_name_plural = _("Bron catalogussen")
-
-
-class BronZaakType(models.Model):
-    """
-    Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.
-
-    Regels
-    De groepattribuutsoort verandert alleen van waarde
-    (materiële historie) cq. één of meer van de subattributen
-    veranderen van waarde op een datum die gelijk is aan een
-    Versiedatum van het zaaktype.
-
-    Toelichting
-    Met de combinatie van deze groepattribuutsoort en de groepattribuutsoort Broncatalogus, kan
-    de relatie worden gelegd naar het zaaktype (de bron) dat de basis vormde voor dit ZAAKTYPE.
-    Uitgangspunt is dat het zaaktype is afgeleid van de versie van het bronzaaktype zoals dat bestond
-    ten tijde van de begindatum van het zaaktype.
-    Een voorbeeld is een zaaktype dat is overgenomen uit een landelijk gestandaardiseerde
-    CATALOGUS en vervolgens enigszins is aangepast voor toepassing in de eigen organisatie. Door
-    het vastleggen van deze relatie kunnen wijzigingen in het bronzaaktype worden gesignaleerd,
-    geëvalueerd en mogelijk leiden tot aanpassing van het 'eigen' zaaktype.
-    Idealiter is een organisatiespecifiek zaaktypen ontleend aan een referentiecatalogus. Aangezien
-    dat vooralsnog niet altijd het geval zal zijn heeft dit groepattribuutsoort de kardinaliteit 0-1.
-    Dringend wordt aanbevolen dit groepattribuutsoort wel van waarden te voorzien.
-    """
-
-    zaaktype_identificatie = models.PositiveIntegerField(
-        _("zaaktype identificatie"),
-        validators=[MaxValueValidator(99999)],
-        help_text=_(
-            "De Zaaktype-identificatie van het bronzaaktype binnen de CATALOGUS."
-        ),
-    )
-    zaaktype_omschrijving = models.CharField(
-        _("zaaktype omschrijving"),
-        max_length=80,
-        help_text=_(
-            "De Zaaktype-omschrijving van het bronzaaktype, zoals gehanteerd in de Broncatalogus."
-        ),
-    )
-
-    def __str__(self):
-        return "{} - {}".format(self.zaaktype_identificatie, self.zaaktype_omschrijving)
-
-    class Meta:
-        verbose_name = _("Bron zaaktype")
-        verbose_name_plural = _("Bron zaaktypen")
 
 
 class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
@@ -272,12 +40,15 @@ class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model)
     uuid = models.UUIDField(
         unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
     )
-    zaaktype_identificatie = models.PositiveIntegerField(  # N5, integer with max_length of 5
+    identificatie = models.CharField(
         _("identificatie"),
-        validators=[MaxValueValidator(99999)],
+        max_length=50,
+        blank=True,
         help_text=_(
             "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
         ),
+        validators=[alphanumeric_excluding_diacritic],
+        db_index=True,
     )
     zaaktype_omschrijving = models.CharField(
         _("omschrijving"),
@@ -497,13 +268,6 @@ class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model)
         ),
     )
 
-    formulier = models.ManyToManyField(
-        "datamodel.Formulier",
-        verbose_name=_("formulier"),
-        blank=True,
-        help_text=_("Formulier Het formulier dat ZAAKen van dit ZAAKTYPE initieert."),
-    )
-
     referentieproces_naam = models.CharField(
         _("referentieprocesnaam"),
         max_length=80,
@@ -519,35 +283,17 @@ class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model)
         optional=("link",),
     )
 
-    broncatalogus = models.ForeignKey(
-        "datamodel.BronCatalogus",
-        verbose_name=_("broncatalogus"),
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        help_text=_("De CATALOGUS waaraan het ZAAKTYPE is ontleend."),
-    )
-    bronzaaktype = models.ForeignKey(
-        "datamodel.BronZaakType",
-        verbose_name=("bronzaaktype"),
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        help_text=_(
-            "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
-        ),
-    )
-
     #
     # relaties
     #
-    is_deelzaaktype_van = models.ManyToManyField(
-        "datamodel.ZaakType",
-        verbose_name=_("is deelzaaktype van"),
+    deelzaaktypen = models.ManyToManyField(
+        "self",
+        symmetrical=False,
         blank=True,
-        related_name="zaak_typen_is_deelzaaktype_van",
+        related_name="hoofdzaaktypen",
         help_text=_(
-            "De ZAAKTYPEn (van de hoofdzaken) waaronder ZAAKen van dit ZAAKTYPE als deelzaak kunnen voorkomen."
+            "De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij "
+            "ZAAKen van dit ZAAKTYPE."
         ),
     )
 
@@ -558,35 +304,20 @@ class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model)
         help_text=_("URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort."),
     )
 
+    IDENTIFICATIE_PREFIX = "ZAAKTYPE"
+
     class Meta:
         verbose_name = _("Zaaktype")
         verbose_name_plural = _("Zaaktypen")
-        ordering = ("catalogus", "zaaktype_identificatie")
+        ordering = ("catalogus", "identificatie")
 
-        filter_fields = (
-            "catalogus",
-            "publicatie_indicatie",
-            "verlenging_mogelijk",
-            "opschorting_en_aanhouding_mogelijk",
-            "indicatie_intern_of_extern",
-            "vertrouwelijkheidaanduiding",
-        )
-        ordering_fields = filter_fields
-        search_fields = (
-            "zaaktype_identificatie",
-            "zaaktype_omschrijving",
-            "zaaktype_omschrijving_generiek",
-            "zaakcategorie",
-            "doel",
-            "aanleiding",
-            "onderwerp",
-            "toelichting",
-        )
-
-    def __str__(self):
-        return "{} - {}".format(self.catalogus, self.zaaktype_identificatie)
+    def __str__(self) -> str:
+        return self.identificatie
 
     def save(self, *args, **kwargs):
+        if not self.identificatie:
+            self.identificatie = generate_unique_identification(self, "versiedatum")
+
         if not self.verlenging_mogelijk:
             self.verlengingstermijn = None
         elif not self.verlengingstermijn:

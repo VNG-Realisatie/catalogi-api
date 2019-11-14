@@ -13,27 +13,13 @@ from vng_api_common.viewsets import CheckQueryParamsMixin
 from ...datamodel.models import ZaakType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import (
+    SCOPE_ZAAKTYPES_FORCED_DELETE,
+    SCOPE_ZAAKTYPES_READ,
+    SCOPE_ZAAKTYPES_WRITE,
+)
 from ..serializers import ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptDestroyMixin
-
-# class ZaakObjectTypeViewSet(NestedViewSetMixin, FilterSearchOrderingViewSetMixin,
-#                             FlexFieldsMixin, viewsets.ReadOnlyModelViewSet):
-#     """
-#     retrieve:
-#     De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
-#
-#     list:
-#     Een verzameling van ZAAKOBJECTTYPEn.
-#     """
-#     queryset = ZaakObjectType.objects.all()
-#     serializer_class = ZaakObjectTypeSerializer
-#
-#     required_scopes = {
-#         'list': SCOPE_ZAAKTYPES_READ,
-#         'retrieve': SCOPE_ZAAKTYPES_READ,
-#
-#     }
 
 
 @conditional_retrieve()
@@ -60,6 +46,7 @@ class ZaakTypeViewSet(
     - Uniciteit `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel
       opnieuw gebruikt worden als het zaaktype een andere geldigheidsperiode
       kent dan bestaande zaaktypen.
+    - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.
 
     list:
     Alle ZAAKTYPEn opvragen.
@@ -77,10 +64,16 @@ class ZaakTypeViewSet(
     Werk een ZAAKTYPE in zijn geheel bij. Dit kan alleen als het een concept
     betreft.
 
+    Er wordt gevalideerd op:
+    - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.
+
     partial_update:
     Werk een ZAAKTYPE deels bij.
 
     Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept betreft.
+
+    Er wordt gevalideerd op:
+    - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.
 
     destroy:
     Verwijder een ZAAKTYPE.
@@ -107,7 +100,7 @@ class ZaakTypeViewSet(
         "create": SCOPE_ZAAKTYPES_WRITE,
         "update": SCOPE_ZAAKTYPES_WRITE,
         "partial_update": SCOPE_ZAAKTYPES_WRITE,
-        "destroy": SCOPE_ZAAKTYPES_WRITE,
+        "destroy": SCOPE_ZAAKTYPES_WRITE | SCOPE_ZAAKTYPES_FORCED_DELETE,
         "publish": SCOPE_ZAAKTYPES_WRITE,
     }
     concept_related_fields = ["besluittypen", "informatieobjecttypen"]
@@ -123,6 +116,7 @@ class ZaakTypeViewSet(
         if (
             instance.besluittypen.filter(concept=True).exists()
             or instance.informatieobjecttypen.filter(concept=True).exists()
+            or instance.deelzaaktypen.filter(concept=True).exists()
         ):
             msg = _("All related resources should be published")
             raise ValidationError(
