@@ -22,7 +22,7 @@ from ztc.datamodel.constants import SelectielijstKlasseProcestermijn as Proceste
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
 
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
 from .constants import BrondatumArchiefprocedureExampleMapping as MAPPING
 
@@ -39,7 +39,7 @@ RESULTAATTYPEOMSCHRIJVING_URL = "http://example.com/omschrijving/1"
 class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
     maxDiff = None
     heeft_alle_autorisaties = False
-    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
+    scopes = [SCOPE_CATALOGI_WRITE, SCOPE_CATALOGI_READ]
 
     list_url = reverse_lazy(ResultaatType)
 

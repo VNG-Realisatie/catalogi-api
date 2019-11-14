@@ -60,7 +60,7 @@ paths:
         schema:
           type: string
           format: uri
-      - name: zaaktypes
+      - name: zaaktypen
         in: query
         description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
         required: false
@@ -236,7 +236,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: besluittype_create
       summary: Maak een BESLUITTYPE aan.
@@ -373,7 +373,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /besluittypen/{uuid}:
     get:
@@ -530,7 +530,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: besluittype_headers
       summary: De headers voor een specifiek(e) BESLUITTYPE opvragen
@@ -573,7 +573,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: besluittype_update
       summary: Werk een BESLUITTYPE in zijn geheel bij.
@@ -720,7 +720,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: besluittype_partial_update
       summary: Werk een BESLUITTYPE deels bij.
@@ -865,7 +865,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: besluittype_delete
       summary: Verwijder een BESLUITTYPE.
@@ -991,7 +991,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -1032,7 +1032,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters:
     - name: uuid
       in: path
@@ -1222,7 +1222,7 @@ paths:
       - catalogussen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: catalogus_create
       summary: Maak een CATALOGUS aan.
@@ -1363,7 +1363,7 @@ paths:
       - catalogussen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /catalogussen/{uuid}:
     get:
@@ -1520,7 +1520,7 @@ paths:
       - catalogussen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: catalogus_headers
       summary: De headers voor een specifiek(e) CATALOGUS opvragen
@@ -1563,7 +1563,7 @@ paths:
       - catalogussen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     parameters:
     - name: uuid
       in: path
@@ -1749,7 +1749,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: eigenschap_create
       summary: Maak een EIGENSCHAP aan.
@@ -1889,7 +1889,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /eigenschappen/{uuid}:
     get:
@@ -2046,7 +2046,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: eigenschap_headers
       summary: De headers voor een specifiek(e) EIGENSCHAP opvragen
@@ -2089,7 +2089,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: eigenschap_update
       summary: Werk een EIGENSCHAP in zijn geheel bij.
@@ -2235,7 +2235,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: eigenschap_partial_update
       summary: Werk een EIGENSCHAP deels bij.
@@ -2381,7 +2381,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: eigenschap_delete
       summary: Verwijder een EIGENSCHAP.
@@ -2510,7 +2510,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -2696,7 +2696,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: informatieobjecttype_create
       summary: Maak een INFORMATIEOBJECTTYPE aan.
@@ -2833,7 +2833,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /informatieobjecttypen/{uuid}:
     get:
@@ -2990,7 +2990,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: informatieobjecttype_headers
       summary: De headers voor een specifiek(e) INFORMATIEOBJECTTYPE opvragen
@@ -3033,7 +3033,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: informatieobjecttype_update
       summary: Werk een INFORMATIEOBJECTTYPE in zijn geheel bij.
@@ -3180,7 +3180,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: informatieobjecttype_partial_update
       summary: Werk een INFORMATIEOBJECTTYPE deels bij.
@@ -3327,7 +3327,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: informatieobjecttype_delete
       summary: Verwijder een INFORMATIEOBJECTTYPE.
@@ -3456,7 +3456,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -3497,7 +3497,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters:
     - name: uuid
       in: path
@@ -3683,7 +3683,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: resultaattype_create
       summary: Maak een RESULTAATTYPE aan.
@@ -3823,7 +3823,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /resultaattypen/{uuid}:
     get:
@@ -3980,7 +3980,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: resultaattype_headers
       summary: De headers voor een specifiek(e) RESULTAATTYPE opvragen
@@ -4023,7 +4023,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: resultaattype_update
       summary: Werk een RESULTAATTYPE in zijn geheel bij.
@@ -4170,7 +4170,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: resultaattype_partial_update
       summary: Werk een RESULTAATTYPE deels bij.
@@ -4316,7 +4316,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: resultaattype_delete
       summary: Verwijder een RESULTAATTYPE.
@@ -4445,7 +4445,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -4646,7 +4646,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: roltype_create
       summary: Maak een ROLTYPE aan.
@@ -4786,7 +4786,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /roltypen/{uuid}:
     get:
@@ -4943,7 +4943,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: roltype_headers
       summary: De headers voor een specifiek(e) ROLTYPE opvragen
@@ -4986,7 +4986,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: roltype_update
       summary: Werk een ROLTYPE in zijn geheel bij.
@@ -5132,7 +5132,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: roltype_partial_update
       summary: Werk een ROLTYPE deels bij.
@@ -5278,7 +5278,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: roltype_delete
       summary: Verwijder een ROLTYPE.
@@ -5407,7 +5407,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -5592,7 +5592,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: statustype_create
       summary: Maak een STATUSTYPE aan.
@@ -5732,7 +5732,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /statustypen/{uuid}:
     get:
@@ -5889,7 +5889,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: statustype_headers
       summary: De headers voor een specifiek(e) STATUSTYPE opvragen
@@ -5932,7 +5932,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: statustype_update
       summary: Werk een STATUSTYPE in zijn geheel bij.
@@ -6078,7 +6078,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: statustype_partial_update
       summary: Werk een STATUSTYPE deels bij.
@@ -6224,7 +6224,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: statustype_delete
       summary: Verwijder een STATUSTYPE.
@@ -6353,7 +6353,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -6556,7 +6556,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: zaakinformatieobjecttype_create
       summary: Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan.
@@ -6701,7 +6701,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /zaaktype-informatieobjecttypen/{uuid}:
     get:
@@ -6858,7 +6858,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: zaakinformatieobjecttype_headers
       summary: De headers voor een specifiek(e) ZAAKINFORMATIEOBJECTTYPE opvragen
@@ -6901,7 +6901,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: zaakinformatieobjecttype_update
       summary: Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij.
@@ -7053,7 +7053,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: zaakinformatieobjecttype_partial_update
       summary: Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij.
@@ -7205,7 +7205,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: zaakinformatieobjecttype_delete
       summary: Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie.
@@ -7339,7 +7339,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -7363,10 +7363,11 @@ paths:
           format: uri
       - name: identificatie
         in: query
-        description: ''
+        description: Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin
+          het ZAAKTYPE voorkomt.
         required: false
         schema:
-          type: number
+          type: string
       - name: trefwoorden
         in: query
         description: Multiple values may be separated by commas.
@@ -7536,7 +7537,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     post:
       operationId: zaaktype_create
       summary: Maak een ZAAKTYPE aan.
@@ -7678,7 +7679,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters: []
   /zaaktypen/{uuid}:
     get:
@@ -7835,7 +7836,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     head:
       operationId: zaaktype_headers
       summary: De headers voor een specifiek(e) ZAAKTYPE opvragen
@@ -7878,7 +7879,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.lezen
+        - catalogi.lezen
     put:
       operationId: zaaktype_update
       summary: Werk een ZAAKTYPE in zijn geheel bij.
@@ -8030,7 +8031,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     patch:
       operationId: zaaktype_partial_update
       summary: Werk een ZAAKTYPE deels bij.
@@ -8180,7 +8181,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     delete:
       operationId: zaaktype_delete
       summary: Verwijder een ZAAKTYPE.
@@ -8306,7 +8307,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
     parameters:
     - name: uuid
       in: path
@@ -8345,7 +8346,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - zaaktypes.schrijven
+        - catalogi.schrijven
     parameters:
     - name: uuid
       in: path
@@ -8415,7 +8416,7 @@ components:
     BesluitType:
       required:
       - catalogus
-      - zaaktypes
+      - zaaktypen
       - publicatieIndicatie
       - informatieobjecttypen
       - beginGeldigheid
@@ -8435,7 +8436,7 @@ components:
           description: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.
           type: string
           format: uri
-        zaaktypes:
+        zaaktypen:
           description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
           type: array
           items:
@@ -9182,7 +9183,7 @@ components:
           title: Omschrijving
           description: Omschrijving van de aard van de ROL.
           type: string
-          maxLength: 20
+          maxLength: 100
           minLength: 1
         omschrijvingGeneriek:
           title: Omschrijving generiek
@@ -9389,7 +9390,6 @@ components:
           maxLength: 255
     ZaakType:
       required:
-      - identificatie
       - omschrijving
       - vertrouwelijkheidaanduiding
       - doel
@@ -9424,9 +9424,8 @@ components:
           title: Identificatie
           description: Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin
             het ZAAKTYPE voorkomt.
-          type: integer
-          maximum: 99999
-          minimum: 0
+          type: string
+          maxLength: 50
         omschrijving:
           title: Omschrijving
           description: Omschrijving van de aard van ZAAKen van het ZAAKTYPE.

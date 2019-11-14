@@ -48,7 +48,7 @@
                         "format": "uri"
                     },
                     {
-                        "name": "zaaktypes",
+                        "name": "zaaktypen",
                         "in": "query",
                         "description": "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE",
                         "required": false,
@@ -249,7 +249,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -423,7 +423,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -606,7 +606,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -657,7 +657,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -838,7 +838,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -1019,7 +1019,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -1174,7 +1174,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -1225,7 +1225,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -1456,7 +1456,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -1630,7 +1630,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -1813,7 +1813,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -1864,7 +1864,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -2082,7 +2082,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -2256,7 +2256,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -2439,7 +2439,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -2490,7 +2490,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -2671,7 +2671,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -2852,7 +2852,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -3007,7 +3007,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -3225,7 +3225,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -3399,7 +3399,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -3582,7 +3582,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -3633,7 +3633,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -3814,7 +3814,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -3995,7 +3995,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -4150,7 +4150,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -4201,7 +4201,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -4419,7 +4419,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -4593,7 +4593,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -4776,7 +4776,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -4827,7 +4827,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -5008,7 +5008,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -5189,7 +5189,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -5344,7 +5344,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -5579,7 +5579,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -5753,7 +5753,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -5936,7 +5936,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -5987,7 +5987,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -6168,7 +6168,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -6349,7 +6349,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -6504,7 +6504,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -6721,7 +6721,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -6895,7 +6895,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -7078,7 +7078,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -7129,7 +7129,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -7310,7 +7310,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -7491,7 +7491,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -7646,7 +7646,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -7884,7 +7884,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -8058,7 +8058,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -8241,7 +8241,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -8292,7 +8292,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -8473,7 +8473,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -8654,7 +8654,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -8809,7 +8809,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -8842,9 +8842,9 @@
                     {
                         "name": "identificatie",
                         "in": "query",
-                        "description": "",
+                        "description": "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.",
                         "required": false,
-                        "type": "number"
+                        "type": "string"
                     },
                     {
                         "name": "trefwoorden",
@@ -9041,7 +9041,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -9215,7 +9215,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -9398,7 +9398,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -9449,7 +9449,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.lezen"
+                            "catalogi.lezen"
                         ]
                     }
                 ]
@@ -9630,7 +9630,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -9811,7 +9811,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -9966,7 +9966,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-verwijderen)"
                         ]
                     }
                 ]
@@ -10017,7 +10017,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "zaaktypes.schrijven"
+                            "catalogi.schrijven"
                         ]
                     }
                 ]
@@ -10038,7 +10038,7 @@
         "BesluitType": {
             "required": [
                 "catalogus",
-                "zaaktypes",
+                "zaaktypen",
                 "publicatieIndicatie",
                 "informatieobjecttypen",
                 "beginGeldigheid"
@@ -10060,7 +10060,7 @@
                     "type": "string",
                     "format": "uri"
                 },
-                "zaaktypes": {
+                "zaaktypen": {
                     "description": "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE",
                     "type": "array",
                     "items": {
@@ -10724,7 +10724,7 @@
                     "title": "Omschrijving",
                     "description": "Omschrijving van de aard van de ROL.",
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 100,
                     "minLength": 1
                 },
                 "omschrijvingGeneriek": {
@@ -10922,7 +10922,6 @@
         },
         "ZaakType": {
             "required": [
-                "identificatie",
                 "omschrijving",
                 "vertrouwelijkheidaanduiding",
                 "doel",
@@ -10957,9 +10956,8 @@
                 "identificatie": {
                     "title": "Identificatie",
                     "description": "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.",
-                    "type": "integer",
-                    "maximum": 99999,
-                    "minimum": 0
+                    "type": "string",
+                    "maxLength": 50
                 },
                 "omschrijving": {
                     "title": "Omschrijving",

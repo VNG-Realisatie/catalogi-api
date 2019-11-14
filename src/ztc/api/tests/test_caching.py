@@ -807,7 +807,7 @@ class M2MRelationCachingTests(JWTAuthMixin, APITransactionTestCase):
         zaaktype.save(update_fields=["_etag"])
         zaaktype_etag = zaaktype._etag
 
-        besluittype.zaaktypes.set([zaaktype])
+        besluittype.zaaktypen.set([zaaktype])
         besluittype.save()
 
         response = self.client.get(
@@ -835,7 +835,7 @@ class M2MRelationCachingTests(JWTAuthMixin, APITransactionTestCase):
         zaaktype.save(update_fields=["_etag"])
         zaaktype_etag = zaaktype._etag
 
-        besluittype.zaaktypes.set([zaaktype])
+        besluittype.zaaktypen.set([zaaktype])
         besluittype.save()
 
         response = self.client.get(

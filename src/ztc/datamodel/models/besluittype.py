@@ -105,7 +105,7 @@ class BesluitType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Model):
     informatieobjecttypen = models.ManyToManyField(
         "datamodel.InformatieObjectType",
         blank=True,
-        verbose_name=_("informatieobjecttype"),
+        verbose_name=_("informatieobjecttypen"),
         related_name="besluittypen",
         help_text=_(
             "URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit "
@@ -113,7 +113,7 @@ class BesluitType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Model):
         ),
     )
 
-    resultaattypes = models.ManyToManyField(
+    resultaattypen = models.ManyToManyField(
         "datamodel.ResultaatType",
         verbose_name=_("is resultaat van"),
         help_text=_(
@@ -122,9 +122,9 @@ class BesluitType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Model):
         ),
     )
 
-    zaaktypes = models.ManyToManyField(
+    zaaktypen = models.ManyToManyField(
         "datamodel.ZaakType",
-        verbose_name=_("zaaktypes"),
+        verbose_name=_("zaaktypen"),
         related_name="besluittypen",
         help_text=_(
             "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE"

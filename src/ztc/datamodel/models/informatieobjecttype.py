@@ -148,9 +148,9 @@ class InformatieObjectType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Mode
         ),
     )
 
-    zaaktypes = models.ManyToManyField(
+    zaaktypen = models.ManyToManyField(
         "datamodel.ZaakType",
-        verbose_name=_("zaaktypes"),
+        verbose_name=_("zaaktypen"),
         related_name="informatieobjecttypen",
         through="datamodel.ZaakInformatieobjectType",
         help_text=_(
