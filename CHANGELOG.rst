@@ -13,10 +13,22 @@ Set of fixes/features in RC2
 * Added unique validation on ``ZaakInformatieobjectType.zaaktype`` and
   ``ZaakInformatieobjectType.volgnummer`` (constraint existed in DB before that,
   prevents crashes)
-* Added scope ``zaaktypes.geforceerd-verwijderen`` which allows deletion of
+* Added scope ``catalogi.geforceerd-verwijderen`` which allows deletion of
   published resources - intended for administrators/superusers.
 * Relaxed format of ``Zaaktype.identificatie`` - now allows alpha-numeric
   strings instead of integers.
+
+Breaking changes
+----------------
+
+* The authorization scopes are renamed - the ``zaaktypes`` prefix is replaced
+  by ``catalogi``:
+    - ``catalogi.lezen``
+    - ``catalogi.schrijven``
+    - ``catalogi.geforceerd-verwijderen`` (new)
+
+* ``BesluitType.zaaktypes`` is renamed to ``Besluittype.zaaktypen`` to be
+  more consistent.
 
 1.0.0-rc2 fixes (2019-11-04)
 ============================
