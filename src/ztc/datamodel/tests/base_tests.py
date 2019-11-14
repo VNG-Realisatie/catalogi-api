@@ -411,8 +411,8 @@ class HaaglandenMixin(object):
             "gemachtigd is) van de aanvraag als ook het buiten behandeling stellen van de aanvraag",
             catalogus=self.catalogus,
             # wordt_vastgelegd_in=models.ManyToManyField('datamodel.InformatieObjectType'
-            resultaattypes=[self.resultaattype_niet_ontvankelijk],
-            zaaktypes=[self.zaaktype],
+            resultaattypen=[self.resultaattype_niet_ontvankelijk],
+            zaaktypen=[self.zaaktype],
         )
         self.besluittype_verlenging = BesluitTypeFactory.create(
             omschrijving="Verlengingsbesluit",
@@ -422,8 +422,8 @@ class HaaglandenMixin(object):
             toelichting="De beslissing dat meer tijd genomen wordt voor de behandeling van de aanvraag.",
             catalogus=self.catalogus,
             # Guess:
-            resultaattypes=[self.resultaattype_verleend],
-            zaaktypes=[self.zaaktype],
+            resultaattypen=[self.resultaattype_verleend],
+            zaaktypen=[self.zaaktype],
         )
         self.besluittype_op_aanvraag = BesluitTypeFactory.create(
             omschrijving="Besluit op aanvraag",
@@ -432,8 +432,8 @@ class HaaglandenMixin(object):
             publicatie_indicatie=False,  # required, but not in haaglanden
             catalogus=self.catalogus,
             # Guess:
-            resultaattypes=[self.resultaattype_verleend],
-            zaaktypes=[self.zaaktype],
+            resultaattypen=[self.resultaattype_verleend],
+            zaaktypen=[self.zaaktype],
         )
         self.besluittype_aanhoudingsbesluit = BesluitTypeFactory.create(
             omschrijving="Aanhoudingsbesluit",
@@ -443,8 +443,8 @@ class HaaglandenMixin(object):
             toelichting="",
             catalogus=self.catalogus,
             # Guess:
-            resultaattypes=[self.resultaattype_verleend],
-            zaaktypes=[self.zaaktype],
+            resultaattypen=[self.resultaattype_verleend],
+            zaaktypen=[self.zaaktype],
         )
 
         #

@@ -29,7 +29,7 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
                 self.informatieobjecttypen.add(informatieobjecttype)
 
     @factory.post_generation
-    def zaaktypes(self, create, extracted, **kwargs):
+    def zaaktypen(self, create, extracted, **kwargs):
         # required M2M, if it is not passed in, create one
         if not extracted:
             extracted = [ZaakTypeFactory.create(catalogus=self.catalogus)]
@@ -37,7 +37,7 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
         dates_begin_geldigheid = []
         for zaak_type in extracted:
             dates_begin_geldigheid.append(zaak_type.datum_begin_geldigheid)
-            self.zaaktypes.add(zaak_type)
+            self.zaaktypen.add(zaak_type)
 
         # sort the list on python datetime.date(), the first element of the tuple, and then
         # use the OnvolledigeDatum value (second element in tuple) as the value
@@ -45,10 +45,10 @@ class BesluitTypeFactory(factory.django.DjangoModelFactory):
         self.datum_begin_geldigheid = dates_begin_geldigheid[0]
 
     @factory.post_generation
-    def resultaattypes(self, create, extracted, **kwargs):
+    def resultaattypen(self, create, extracted, **kwargs):
         # required M2M, if it is not passed in, create one
         if not extracted:
-            extracted = [ResultaatTypeFactory.create(zaaktype=self.zaaktypes.get())]
+            extracted = [ResultaatTypeFactory.create(zaaktype=self.zaaktypen.get())]
 
         for resultaat_type in extracted:
-            self.resultaattypes.add(resultaat_type)
+            self.resultaattypen.add(resultaat_type)

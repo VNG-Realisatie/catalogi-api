@@ -73,5 +73,5 @@ class BesluitTypeViewSet(
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
         "publish": SCOPE_CATALOGI_WRITE,
     }
-    concept_related_fields = ["informatieobjecttypen", "zaaktypes"]
+    concept_related_fields = ["informatieobjecttypen", "zaaktypen"]
     notifications_kanaal = KANAAL_BESLUITTYPEN

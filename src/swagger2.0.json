@@ -48,7 +48,7 @@
                         "format": "uri"
                     },
                     {
-                        "name": "zaaktypes",
+                        "name": "zaaktypen",
                         "in": "query",
                         "description": "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE",
                         "required": false,
@@ -9381,7 +9381,7 @@
         "BesluitType": {
             "required": [
                 "catalogus",
-                "zaaktypes",
+                "zaaktypen",
                 "publicatieIndicatie",
                 "informatieobjecttypen",
                 "beginGeldigheid"
@@ -9403,7 +9403,7 @@
                     "type": "string",
                     "format": "uri"
                 },
-                "zaaktypes": {
+                "zaaktypen": {
                     "description": "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE",
                     "type": "array",
                     "items": {

@@ -130,8 +130,8 @@ class InformatieObjectTypeFilter(FilterSet):
 
 
 class BesluitTypeFilter(FilterSet):
-    zaaktypes = filters.CharFilter(
-        field_name="zaaktypes",
+    zaaktypen = filters.CharFilter(
+        field_name="zaaktypen",
         method=m2m_filter,
         help_text=_(
             "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE"
@@ -151,7 +151,7 @@ class BesluitTypeFilter(FilterSet):
 
     class Meta:
         model = BesluitType
-        fields = ("catalogus", "zaaktypes", "informatieobjecttypen", "status")
+        fields = ("catalogus", "zaaktypen", "informatieobjecttypen", "status")
 
 
 class CatalogusFilter(FilterSet):

@@ -60,7 +60,7 @@ paths:
         schema:
           type: string
           format: uri
-      - name: zaaktypes
+      - name: zaaktypen
         in: query
         description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
         required: false
@@ -7804,7 +7804,7 @@ components:
     BesluitType:
       required:
       - catalogus
-      - zaaktypes
+      - zaaktypen
       - publicatieIndicatie
       - informatieobjecttypen
       - beginGeldigheid
@@ -7824,7 +7824,7 @@ components:
           description: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.
           type: string
           format: uri
-        zaaktypes:
+        zaaktypen:
           description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
           type: array
           items:
