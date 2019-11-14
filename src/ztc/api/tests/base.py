@@ -4,12 +4,12 @@ from rest_framework.test import APITestCase as _APITestCase
 from vng_api_common.tests import JWTAuthMixin, get_operation_url
 
 from ...datamodel.tests.factories import CatalogusFactory
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 
 
 class ClientAPITestMixin(JWTAuthMixin):
 
-    scopes = [SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE]
+    scopes = [SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE]
 
     @property
     def api_client(self):

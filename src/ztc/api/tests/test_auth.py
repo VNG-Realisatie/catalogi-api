@@ -28,7 +28,7 @@ from ...datamodel.tests.factories import (
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
 )
-from ..scopes import SCOPE_ZAAKTYPES_FORCED_DELETE, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import SCOPE_CATALOGI_FORCED_DELETE, SCOPE_CATALOGI_WRITE
 from .base import APITestCase as _APITestCase
 
 
@@ -62,7 +62,7 @@ class ReadTests(AuthCheckMixin, APITestCase):
 
 class PublishedTypesForcedDeletionTests(_APITestCase):
     heeft_alle_autorisaties = False
-    scopes = [SCOPE_ZAAKTYPES_FORCED_DELETE]
+    scopes = [SCOPE_CATALOGI_FORCED_DELETE]
 
     def test_force_delete_besluittype_not_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False)

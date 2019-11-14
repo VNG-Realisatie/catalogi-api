@@ -26,14 +26,14 @@ from ztc.datamodel.tests.factories import (
     ZaakTypenRelatieFactory,
 )
 
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
 
 
 class ZaakTypeAPITests(APITestCase):
     maxDiff = None
     heeft_alle_autorisaties = False
-    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
+    scopes = [SCOPE_CATALOGI_WRITE, SCOPE_CATALOGI_READ]
 
     def test_get_list_default_definitief(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)  # noqa
