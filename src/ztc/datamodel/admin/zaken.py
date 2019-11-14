@@ -62,7 +62,7 @@ class ZaakTypeAdmin(
 
     # List
     list_display = (
-        "zaaktype_identificatie",
+        "identificatie",
         "zaaktype_omschrijving",
         "zaakcategorie",
         "catalogus",
@@ -71,7 +71,7 @@ class ZaakTypeAdmin(
     )
     list_filter = ("catalogus", "concept", "vertrouwelijkheidaanduiding")
     search_fields = (
-        "zaaktype_identificatie",
+        "identificatie",
         "zaaktype_omschrijving",
         "zaaktype_omschrijving_generiek",
         "zaakcategorie",
@@ -88,7 +88,7 @@ class ZaakTypeAdmin(
             _("Algemeen"),
             {
                 "fields": (
-                    "zaaktype_identificatie",
+                    "identificatie",
                     "zaaktype_omschrijving",
                     "zaaktype_omschrijving_generiek",
                     "zaakcategorie",

@@ -5,11 +5,14 @@ from ztc.api.validators import ZaakTypeConceptValidator
 from ztc.datamodel.models import StatusType
 from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
 
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from .base import APITestCase
 
 
 class StatusTypeAPITests(APITestCase):
     maxDiff = None
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
 
     def test_get_list_default_definitief(self):
         statustype1 = StatusTypeFactory.create(zaaktype__concept=True)

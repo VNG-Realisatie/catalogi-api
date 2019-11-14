@@ -6,11 +6,14 @@ from ztc.api.validators import ZaakTypeConceptValidator
 
 from ...datamodel.models import RolType
 from ...datamodel.tests.factories import RolTypeFactory, ZaakTypeFactory
+from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
 from .base import APITestCase
 
 
 class RolTypeAPITests(APITestCase):
     maxDiff = None
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
 
     def test_get_list_default_definitief(self):
         roltype1 = RolTypeFactory.create(zaaktype__concept=True)
