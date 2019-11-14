@@ -10067,7 +10067,7 @@
                     "title": "Omschrijving",
                     "description": "Omschrijving van de aard van de ROL.",
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 100,
                     "minLength": 1
                 },
                 "omschrijvingGeneriek": {
