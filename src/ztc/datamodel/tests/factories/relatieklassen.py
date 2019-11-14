@@ -12,7 +12,7 @@ from ...models import (
 class ZaakInformatieobjectTypeFactory(factory.django.DjangoModelFactory):
     zaaktype = factory.SubFactory("ztc.datamodel.tests.factories.ZaakTypeFactory")
     informatieobjecttype = factory.SubFactory(
-        "ztc.datamodel.tests.factories.InformatieObjectTypeFactory", zaaktypes=None
+        "ztc.datamodel.tests.factories.InformatieObjectTypeFactory", zaaktypen=None
     )
     volgnummer = factory.sequence(lambda x: x)
     richting = RichtingChoices.inkomend

@@ -28,7 +28,7 @@ from ...datamodel.tests.factories import (
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
 )
-from ..scopes import SCOPE_ZAAKTYPES_FORCED_DELETE, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import SCOPE_CATALOGI_FORCED_DELETE, SCOPE_CATALOGI_WRITE
 from .base import APITestCase as _APITestCase
 
 
@@ -62,7 +62,7 @@ class ReadTests(AuthCheckMixin, APITestCase):
 
 class PublishedTypesForcedDeletionTests(_APITestCase):
     heeft_alle_autorisaties = False
-    scopes = [SCOPE_ZAAKTYPES_FORCED_DELETE]
+    scopes = [SCOPE_CATALOGI_FORCED_DELETE]
 
     def test_force_delete_besluittype_not_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False)
@@ -77,9 +77,9 @@ class PublishedTypesForcedDeletionTests(_APITestCase):
         zaaktype = ZaakTypeFactory.create(concept=False)
         informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
 
-        for resource in ["zaaktypes", "informatieobjecttypen"]:
+        for resource in ["zaaktypen", "informatieobjecttypen"]:
             with self.subTest(resource=resource):
-                related = zaaktype if resource == "zaaktypes" else informatieobjecttype
+                related = zaaktype if resource == "zaaktypen" else informatieobjecttype
                 besluittype = BesluitTypeFactory.create(**{resource: [related]})
                 besluittype_url = reverse(besluittype)
 
@@ -197,7 +197,7 @@ class PublishedTypesForcedDeletionTests(_APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+            catalogus=catalogus, zaaktypen=[zaaktype], concept=False
         )
 
         response = self.client.delete(zaaktype_url)
@@ -212,7 +212,7 @@ class PublishedTypesForcedDeletionTests(_APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=catalogus, concept=False, zaaktypes=[]
+            catalogus=catalogus, concept=False, zaaktypen=[]
         )
         ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype, informatieobjecttype=informatieobjecttype

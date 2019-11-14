@@ -4,7 +4,7 @@ from vng_api_common.viewsets import CheckQueryParamsMixin
 from ztc.datamodel.models import Catalogus
 
 from ..filters import CatalogusFilter
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from ..serializers import CatalogusSerializer
 
 
@@ -54,8 +54,8 @@ class CatalogusViewSet(
     filter_class = CatalogusFilter
     lookup_field = "uuid"
     required_scopes = {
-        "list": SCOPE_ZAAKTYPES_READ,
-        "retrieve": SCOPE_ZAAKTYPES_READ,
-        "create": SCOPE_ZAAKTYPES_WRITE,
-        "destroy": SCOPE_ZAAKTYPES_WRITE,
+        "list": SCOPE_CATALOGI_READ,
+        "retrieve": SCOPE_CATALOGI_READ,
+        "create": SCOPE_CATALOGI_WRITE,
+        "destroy": SCOPE_CATALOGI_WRITE,
     }

@@ -26,14 +26,14 @@ from ztc.datamodel.tests.factories import (
     ZaakTypenRelatieFactory,
 )
 
-from ..scopes import SCOPE_ZAAKTYPES_READ, SCOPE_ZAAKTYPES_WRITE
+from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
 
 
 class ZaakTypeAPITests(APITestCase):
     maxDiff = None
     heeft_alle_autorisaties = False
-    scopes = [SCOPE_ZAAKTYPES_WRITE, SCOPE_ZAAKTYPES_READ]
+    scopes = [SCOPE_CATALOGI_WRITE, SCOPE_CATALOGI_READ]
 
     def test_get_list_default_definitief(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)  # noqa
@@ -235,9 +235,7 @@ class ZaakTypeAPITests(APITestCase):
 
         zaaktype2 = ZaakType.objects.get(zaaktype_omschrijving="some test")
 
-        self.assertNotEqual(
-            zaaktype1.identificatie, zaaktype2.identificatie
-        )
+        self.assertNotEqual(zaaktype1.identificatie, zaaktype2.identificatie)
 
     def test_create_zaaktype_fail_besluittype_non_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False, catalogus=self.catalogus)
@@ -522,7 +520,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype]
+            catalogus=catalogus, zaaktypen=[zaaktype]
         )
 
         response = self.client.delete(zaaktype_url)
@@ -569,7 +567,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+            catalogus=catalogus, zaaktypen=[zaaktype], concept=False
         )
 
         response = self.client.delete(zaaktype_url)
@@ -606,7 +604,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype]
+            catalogus=catalogus, zaaktypen=[zaaktype]
         )
 
         data = {
@@ -752,7 +750,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+            catalogus=catalogus, zaaktypen=[zaaktype], concept=False
         )
 
         data = {
@@ -906,7 +904,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype]
+            catalogus=catalogus, zaaktypen=[zaaktype]
         )
 
         response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
@@ -964,7 +962,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+            catalogus=catalogus, zaaktypen=[zaaktype], concept=False
         )
 
         response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
@@ -1016,7 +1014,7 @@ class ZaakTypeAPITests(APITestCase):
             datum_einde_geldigheid="2016-01-01",
         )
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, concept=False, zaaktypes=[zaaktype_for_besluittype]
+            catalogus=catalogus, concept=False, zaaktypen=[zaaktype_for_besluittype]
         )
         data = {"besluittypen": [reverse(besluittype)]}
 
@@ -1046,7 +1044,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         besluittype = BesluitTypeFactory.create(
-            catalogus=catalogus, zaaktypes=[zaaktype], concept=False
+            catalogus=catalogus, zaaktypen=[zaaktype], concept=False
         )
 
         response = self.client.patch(zaaktype_url, {"eindeGeldigheid": "2020-01-01"})
