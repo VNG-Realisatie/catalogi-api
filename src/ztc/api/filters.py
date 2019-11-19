@@ -1,3 +1,4 @@
+from django.core.validators import URLValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -136,6 +137,7 @@ class BesluitTypeFilter(FilterSet):
         help_text=_(
             "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE"
         ),
+        validators=[URLValidator()],
     )
     informatieobjecttypen = filters.CharFilter(
         field_name="informatieobjecttypen",
@@ -144,6 +146,7 @@ class BesluitTypeFilter(FilterSet):
             "Het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit "
             "BESLUITTYPE worden vastgelegd."
         ),
+        validators=[URLValidator()],
     )
     status = filters.CharFilter(
         field_name="concept", method=status_filter, help_text=STATUS_HELP_TEXT
