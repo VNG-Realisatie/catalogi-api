@@ -2,9 +2,11 @@ import uuid as _uuid
 
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.fields import VertrouwelijkheidsAanduidingField
+from vng_api_common.models import APIMixin
 
 from .mixins import ConceptMixin, GeldigheidMixin
 
@@ -71,7 +73,7 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
         super().clean()
 
 
-class InformatieObjectType(GeldigheidMixin, ConceptMixin, models.Model):
+class InformatieObjectType(APIMixin, GeldigheidMixin, ConceptMixin, models.Model):
     """
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.
 
@@ -162,3 +164,9 @@ class InformatieObjectType(GeldigheidMixin, ConceptMixin, models.Model):
 
     def __str__(self):
         return "{} - {}".format(self.catalogus, self.omschrijving)
+
+    def get_absolute_api_url(self, request=None, **kwargs) -> str:
+        kwargs["version"] = "1"
+        path = super().get_absolute_api_url(request=request, **kwargs)
+        tpl = '<a href="{path}">{path}</a>'
+        return format_html(tpl, path=path)
