@@ -50,13 +50,20 @@ class InformatieObjectTypeOmschrijvingGeneriekAdmin(
 class InformatieObjectTypeAdmin(
     GeldigheidAdminMixin, ConceptAdminMixin, admin.ModelAdmin
 ):
-    list_display = ("catalogus", "omschrijving", "informatieobjectcategorie")
+    list_display = (
+        "catalogus",
+        "omschrijving",
+        "informatieobjectcategorie",
+        "uuid",
+        "get_absolute_api_url",
+    )
     list_filter = ("catalogus", "informatieobjectcategorie")
     search_fields = (
         "omschrijving",
         "informatieobjectcategorie",
         "trefwoord",
         "toelichting",
+        "uuid",
     )
     ordering = ("catalogus", "omschrijving")
 
@@ -66,6 +73,7 @@ class InformatieObjectTypeAdmin(
             _("Algemeen"),
             {
                 "fields": (
+                    "uuid",
                     "omschrijving",
                     "informatieobjectcategorie",
                     "trefwoord",
@@ -77,4 +85,5 @@ class InformatieObjectTypeAdmin(
         ),
         (_("Relaties"), {"fields": ("catalogus", "omschrijving_generiek")}),
     )
+    readonly_fields = ("uuid",)
     inlines = (ZaakInformatieobjectTypeInline,)  # zaaktypes

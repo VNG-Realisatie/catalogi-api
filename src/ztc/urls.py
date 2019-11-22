@@ -17,6 +17,7 @@ urlpatterns = [
     path("data/", DumpDataView.as_view(), name="dumpdata"),
     path("data/fixture/", DumpDataFixtureView.as_view(), name="dumpdata-fixture"),
     path("ref/", include("vng_api_common.urls")),
+    path("ref/", include("vng_api_common.notifications.urls")),
     path("view-config/", ViewConfigView.as_view(), name="view-config"),
 ]
 

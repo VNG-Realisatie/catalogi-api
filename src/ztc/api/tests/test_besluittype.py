@@ -733,7 +733,9 @@ class BesluitTypeFilterAPITests(APITestCase):
         besluittype_list_url = reverse("besluittype-list")
         besluittype1_url = reverse(besluittype1)
 
-        response = self.client.get(besluittype_list_url, {"zaaktypen": zaaktype1_url})
+        response = self.client.get(
+            besluittype_list_url, {"zaaktypen": f"http://testserver.com{zaaktype1_url}"}
+        )
 
         self.assertEqual(response.status_code, 200)
 
@@ -752,7 +754,8 @@ class BesluitTypeFilterAPITests(APITestCase):
         iot1_url = reverse(iot1)
 
         response = self.client.get(
-            besluittype_list_url, {"informatieobjecttypen": iot1_url}
+            besluittype_list_url,
+            {"informatieobjecttypen": f"http://testserver.com{iot1_url}"},
         )
 
         self.assertEqual(response.status_code, 200)
