@@ -8355,6 +8355,45 @@ paths:
       schema:
         type: string
         format: uuid
+tags:
+- name: besluittypen
+  description: 'Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van
+    het
+
+    zaakgericht werken van de behandelende organisatie(s).'
+- name: catalogussen
+  description: "De verzameling van ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn\
+    \ voor\neen domein die als \xE9\xE9n geheel beheerd wordt."
+- name: eigenschappen
+  description: 'Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE
+
+    geregistreerd moet kunnen worden en geen standaard kenmerk is van een zaak.'
+- name: informatieobjecttypen
+  description: 'Een INFORMATIEOBJECTTYPE beschijft de karakteristieken van een document
+    of
+
+    ander object dat informatie bevat.'
+- name: resultaattypen
+  description: 'Het betreft de indeling of groepering van resultaten van zaken van
+    hetzelfde
+
+    ZAAKTYPE naar hun aard, zoals ''verleend'', ''geweigerd'', ''verwerkt'', etc.'
+- name: roltypen
+  description: 'Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
+
+    uitoefenen in ZAAKen van een ZAAKTYPE.'
+- name: statustypen
+  description: Generieke aanduiding van de aard van een status.
+- name: zaaktype-informatieobjecttypen
+  description: 'Geeft aan welke INFORMATIEOBJECTTYPEn binnen een ZAAKTYPE mogelijk
+    zijn en
+
+    hoe de richting is.'
+- name: zaaktypen
+  description: 'Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen
+    van
+
+    zaken van eenzelfde soort.'
 servers:
 - url: /api/v1
 components:
