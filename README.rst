@@ -57,9 +57,9 @@ Verwijzingen
 * `Issues <https://github.com/VNG-Realisatie/zaaktypecataloguscomponent/issues>`_
 * `Code <https://github.com/VNG-Realisatie/zaaktypecataloguscomponent>`_
 
-.. |build-status| image:: http://jenkins.nlx.io/buildStatus/icon?job=gemma-zaaktypecatalogus-stable
+.. |build-status| image:: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=develop
     :alt: Build status
-    :target: http://jenkins.nlx.io/job/gemma-zaaktypecatalogus-stable
+    :target: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=develop
 
 .. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
      :target: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements/?branch=master
