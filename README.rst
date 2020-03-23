@@ -59,7 +59,7 @@ Verwijzingen
 
 .. |build-status| image:: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=develop
     :alt: Build status
-    :target: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=develop
+    :target: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus
 
 .. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
      :target: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements/?branch=master
