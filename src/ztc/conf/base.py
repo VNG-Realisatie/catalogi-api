@@ -331,3 +331,6 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
     "ordering_fields",
     "search_fields",
 )
+
+# URL for documentation that's shown in API schema
+DOCUMENTATION_URL = "https://vng-realisatie.github.io/gemma-zaken"
