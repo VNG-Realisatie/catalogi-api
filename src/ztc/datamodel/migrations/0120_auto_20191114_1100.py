@@ -16,7 +16,9 @@ class Migration(migrations.Migration):
             new_name="resultaattypen",
         ),
         migrations.RenameField(
-            model_name="besluittype", old_name="zaaktypes", new_name="zaaktypen",
+            model_name="besluittype",
+            old_name="zaaktypes",
+            new_name="zaaktypen",
         ),
         migrations.AlterField(
             model_name="besluittype",
