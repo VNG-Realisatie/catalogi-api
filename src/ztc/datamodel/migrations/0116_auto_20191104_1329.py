@@ -10,17 +10,44 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(name="zaakobjecttype", unique_together=None,),
-        migrations.RemoveField(model_name="zaakobjecttype", name="is_relevant_voor",),
-        migrations.RemoveField(model_name="zaakobjecttype", name="statustype",),
-        migrations.RemoveField(
-            model_name="resultaattype", name="heeft_verplichte_zot",
+        migrations.AlterUniqueTogether(
+            name="zaakobjecttype",
+            unique_together=None,
         ),
-        migrations.RemoveField(model_name="zaaktype", name="broncatalogus",),
-        migrations.RemoveField(model_name="zaaktype", name="bronzaaktype",),
-        migrations.RemoveField(model_name="zaaktype", name="formulier",),
-        migrations.DeleteModel(name="BronCatalogus",),
-        migrations.DeleteModel(name="BronZaakType",),
-        migrations.DeleteModel(name="Formulier",),
-        migrations.DeleteModel(name="ZaakObjectType",),
+        migrations.RemoveField(
+            model_name="zaakobjecttype",
+            name="is_relevant_voor",
+        ),
+        migrations.RemoveField(
+            model_name="zaakobjecttype",
+            name="statustype",
+        ),
+        migrations.RemoveField(
+            model_name="resultaattype",
+            name="heeft_verplichte_zot",
+        ),
+        migrations.RemoveField(
+            model_name="zaaktype",
+            name="broncatalogus",
+        ),
+        migrations.RemoveField(
+            model_name="zaaktype",
+            name="bronzaaktype",
+        ),
+        migrations.RemoveField(
+            model_name="zaaktype",
+            name="formulier",
+        ),
+        migrations.DeleteModel(
+            name="BronCatalogus",
+        ),
+        migrations.DeleteModel(
+            name="BronZaakType",
+        ),
+        migrations.DeleteModel(
+            name="Formulier",
+        ),
+        migrations.DeleteModel(
+            name="ZaakObjectType",
+        ),
     ]
