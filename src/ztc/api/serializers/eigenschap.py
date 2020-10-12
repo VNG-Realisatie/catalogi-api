@@ -37,7 +37,7 @@ class EigenschapSpecificatieSerializer(serializers.ModelSerializer):
 class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
 
     specificatie = EigenschapSpecificatieSerializer(
-        read_only=True, source="specificatie_van_eigenschap"
+        source="specificatie_van_eigenschap"
     )
     # referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
 
@@ -50,3 +50,18 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             "zaaktype": {"lookup_field": "uuid"},
         }
         validators = [ZaakTypeConceptValidator()]
+
+    def create(self, validated_data):
+        specificatie = validated_data.pop("specificatie_van_eigenschap")
+        specificatie = EigenschapSpecificatieSerializer().create(specificatie)
+
+        validated_data["specificatie_van_eigenschap"] = specificatie
+        eigenschap = super().create(validated_data)
+        return eigenschap
+
+    def update(self, instance, validated_data):
+        specificatie_data = validated_data.pop("specificatie_van_eigenschap", {})
+        if specificatie_data:
+            specificatie = instance.specificatie_van_eigenschap
+            EigenschapSpecificatieSerializer().update(specificatie, specificatie_data)
+        return super().update(instance, validated_data)
