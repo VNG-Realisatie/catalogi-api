@@ -249,8 +249,6 @@ class Eigenschap(models.Model):
     specificatie_van_eigenschap = models.ForeignKey(
         "datamodel.EigenschapSpecificatie",
         verbose_name=_("specificatie van eigenschap"),
-        blank=True,
-        null=True,
         help_text=_("Attribuutkenmerken van de eigenschap"),
         on_delete=models.CASCADE,
     )
