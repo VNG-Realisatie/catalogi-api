@@ -9433,7 +9433,7 @@
                 },
                 "reactietermijn": {
                     "title": "Reactietermijn",
-                    "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.",
+                    "description": "Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.",
                     "type": "string",
                     "format": "duration",
                     "x-nullable": true
@@ -9450,7 +9450,7 @@
                 },
                 "publicatietermijn": {
                     "title": "Publicatietermijn",
-                    "description": "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.",
+                    "description": "Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.",
                     "type": "string",
                     "format": "duration",
                     "x-nullable": true
@@ -9798,7 +9798,7 @@
                     "maxLength": 1000
                 },
                 "zaaktype": {
-                    "title": "Is van",
+                    "title": "Zaaktype",
                     "description": "URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.",
                     "type": "string",
                     "format": "uri"
@@ -9824,7 +9824,7 @@
                     "minLength": 1
                 },
                 "catalogus": {
-                    "title": "Maakt deel uit van",
+                    "title": "Catalogus",
                     "description": "URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.",
                     "type": "string",
                     "format": "uri"
@@ -10059,7 +10059,7 @@
                     "minLength": 1
                 },
                 "zaaktype": {
-                    "title": "Is van",
+                    "title": "Zaaktype",
                     "description": "URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn.",
                     "type": "string",
                     "format": "uri"
@@ -10125,7 +10125,7 @@
                     "maxLength": 1000
                 },
                 "zaaktype": {
-                    "title": "Is van",
+                    "title": "Zaaktype",
                     "description": "URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden.",
                     "type": "string",
                     "format": "uri"
@@ -10403,7 +10403,7 @@
                 },
                 "verlengingstermijn": {
                     "title": "Verlengingstermijn",
-                    "description": "De termijn in dagen waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging mogelijk is.",
+                    "description": "Een tijdsduur in ISO 8601 formaat waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging mogelijk is.",
                     "type": "string",
                     "format": "duration",
                     "x-nullable": true
@@ -10460,7 +10460,7 @@
                     "$ref": "#/definitions/ReferentieProces"
                 },
                 "catalogus": {
-                    "title": "Maakt deel uit van",
+                    "title": "Catalogus",
                     "description": "URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.",
                     "type": "string",
                     "format": "uri"
