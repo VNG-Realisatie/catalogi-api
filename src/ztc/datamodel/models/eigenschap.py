@@ -286,7 +286,7 @@ class Eigenschap(models.Model):
     )
     zaaktype = models.ForeignKey(
         "datamodel.ZaakType",
-        verbose_name=_("is van"),
+        verbose_name=_("Zaaktype"),
         help_text=_(
             "URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is."
         ),
