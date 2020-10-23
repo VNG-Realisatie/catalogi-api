@@ -177,7 +177,7 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
         blank=True,
         null=True,
         help_text=_(
-            "De termijn in dagen waarmee de Doorlooptijd behandeling van "
+            "Een tijdsduur in ISO 8601 formaat waarmee de Doorlooptijd behandeling van "
             "ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde "
             "bevatten als verlenging mogelijk is."
         ),
