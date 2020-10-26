@@ -19,9 +19,14 @@ API specificaties
 =================
 |lint-oas| |generate-sdks| |generate-postman-collection|
 
+|lint-oas| |generate-sdks| |generate-postman-collection|
+
 ==========  ==============  =============================
 Versie      Release datum   API specificatie
 ==========  ==============  =============================
+master      n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_,
+                            `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_
+                            (`verschillen <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/compare/1.0.0..master?diff=split#diff-b9c28fec6c3f3fa5cff870d24601d6ab7027520f3b084cc767aefd258cb8c40a>`_)
 1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,
                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_
 ==========  ==============  =============================
@@ -40,7 +45,7 @@ Versie      Release datum   Einddatum ondersteuning     Documentatie
 Referentie implementatie
 ========================
 
-|build-status| |coverage| |docker|
+|build-status| |coverage| |docker| |black| |python-versions|
 
 Referentieimplementatie van de Catalogi API. Ook wel
 Zaaktypencatalogus (ZTC) genoemd.
@@ -81,7 +86,6 @@ Licensed under the EUPL_
     :target: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus
 
 .. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
-     :target: https://hub.docker.com/r/vngr/gemma-drc
      :alt: Requirements status
 
 .. |coverage| image:: https://codecov.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/branch/master/graphs/badge.svg?branch=master
@@ -90,7 +94,7 @@ Licensed under the EUPL_
 
 .. |docker| image:: https://img.shields.io/badge/docker-latest-blue.svg
     :alt: Docker image
-    :target: https://hub.docker.com/r/vngr/gemma-drc/
+    :target: https://hub.docker.com/r/vngr/gemma-ztc
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :alt: Code style
@@ -98,7 +102,6 @@ Licensed under the EUPL_
 
 .. |python-versions| image:: https://img.shields.io/badge/python-3.6%2B-blue.svg
     :alt: Supported Python version
-    :target: https://hub.docker.com/r/vngr/gemma-drc/
 
 .. |lint-oas| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/lint-oas/badge.svg
     :alt: Lint OAS
@@ -111,5 +114,3 @@ Licensed under the EUPL_
 .. |generate-postman-collection| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/generate-postman-collection/badge.svg
     :alt: Generate Postman collection
     :target: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/actions?query=workflow%3Agenerate-postman-collection
-
-.. _testomgeving: https://ref.tst.vng.cloud/ztc/
