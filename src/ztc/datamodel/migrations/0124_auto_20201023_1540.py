@@ -7,23 +7,44 @@ import vng_api_common.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('datamodel', '0123_auto_20201012_1042'),
+        ("datamodel", "0123_auto_20201012_1042"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='besluittype',
-            name='publicatietermijn',
-            field=vng_api_common.fields.DaysDurationField(blank=True, help_text='Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.', max_duration=999, min_duration=1, null=True, verbose_name='publicatietermijn'),
+            model_name="besluittype",
+            name="publicatietermijn",
+            field=vng_api_common.fields.DaysDurationField(
+                blank=True,
+                help_text="Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.",
+                max_duration=999,
+                min_duration=1,
+                null=True,
+                verbose_name="publicatietermijn",
+            ),
         ),
         migrations.AlterField(
-            model_name='besluittype',
-            name='reactietermijn',
-            field=vng_api_common.fields.DaysDurationField(blank=True, help_text='Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.', max_duration=999, min_duration=1, null=True, verbose_name='reactietermijn'),
+            model_name="besluittype",
+            name="reactietermijn",
+            field=vng_api_common.fields.DaysDurationField(
+                blank=True,
+                help_text="Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype mogelijk is.",
+                max_duration=999,
+                min_duration=1,
+                null=True,
+                verbose_name="reactietermijn",
+            ),
         ),
         migrations.AlterField(
-            model_name='zaaktype',
-            name='verlengingstermijn',
-            field=vng_api_common.fields.DaysDurationField(blank=True, help_text='Een tijdsduur in ISO 8601 formaat waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging mogelijk is.', max_duration=999, min_duration=1, null=True, verbose_name='verlengingstermijn'),
+            model_name="zaaktype",
+            name="verlengingstermijn",
+            field=vng_api_common.fields.DaysDurationField(
+                blank=True,
+                help_text="Een tijdsduur in ISO 8601 formaat waarmee de Doorlooptijd behandeling van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten als verlenging mogelijk is.",
+                max_duration=999,
+                min_duration=1,
+                null=True,
+                verbose_name="verlengingstermijn",
+            ),
         ),
     ]
