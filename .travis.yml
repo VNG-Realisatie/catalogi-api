@@ -32,12 +32,16 @@ jobs:
     # First stage is 'Tests' by default and populated from env matrix
     # expansion
     - stage: Docker images
-      name: Test docker image build
+      name: "Docker image build"
+      before_install: skip
+      install: skip
+      before_script: skip
+      script: docker build . --build-arg COMMIT_HASH=${TRAVIS_COMMIT:-`git rev-parse HEAD`}
+
+    - stage: Publication
+      name: Publish Docker image
       services:
         - docker
-      install: skip
-      script:
-        - bash bin/release-docker-image.sh
       after_success: echo "deploying..."
       deploy:
         - provider: script
