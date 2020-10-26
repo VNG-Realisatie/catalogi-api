@@ -781,6 +781,92 @@ class ResultaatTypeValidationTests(APITestCase):
         self.assertEqual(error["code"], "invalid-afleidingswijze-for-procestermijn")
 
     @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
+    @patch("vng_api_common.oas.fetcher.fetch", return_value={})
+    @patch("vng_api_common.validators.obj_has_shape", return_value=True)
+    def test_procestermijn_empty_and_afleidingswijze_afgehandeld(
+        self, mock_shape, mock_fetch
+    ):
+        zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        resultaattypeomschrijving_url = "http://example.com/omschrijving/1"
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "illum",
+            "resultaattypeomschrijving": resultaattypeomschrijving_url,
+            "selectielijstklasse": SELECTIELIJSTKLASSE_URL,
+            "archiefnominatie": "blijvend_bewaren",
+            "archiefactietermijn": "P10Y",
+            "brondatumArchiefprocedure": {
+                "afleidingswijze": Afleidingswijze.afgehandeld,
+                "einddatumBekend": False,
+                "procestermijn": None,
+                "datumkenmerk": "",
+                "objecttype": "",
+                "registratie": "",
+            },
+        }
+
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                "url": SELECTIELIJSTKLASSE_URL,
+                "procesType": PROCESTYPE_URL,
+                "procestermijn": "",
+            }
+        }
+
+        with mock_client(responses):
+            with requests_mock.Mocker() as m:
+                m.register_uri(
+                    "GET", resultaattypeomschrijving_url, json={"omschrijving": "test"}
+                )
+                response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
+    @patch("vng_api_common.oas.fetcher.fetch", return_value={})
+    @patch("vng_api_common.validators.obj_has_shape", return_value=True)
+    def test_procestermijn_empty_and_afleidingswijze_termijn(
+        self, mock_shape, mock_fetch
+    ):
+        zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        resultaattypeomschrijving_url = "http://example.com/omschrijving/1"
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "illum",
+            "resultaattypeomschrijving": resultaattypeomschrijving_url,
+            "selectielijstklasse": SELECTIELIJSTKLASSE_URL,
+            "archiefnominatie": "blijvend_bewaren",
+            "archiefactietermijn": "P10Y",
+            "brondatumArchiefprocedure": {
+                "afleidingswijze": Afleidingswijze.termijn,
+                "einddatumBekend": False,
+                "procestermijn": "P5Y",
+                "datumkenmerk": "",
+                "objecttype": "",
+                "registratie": "",
+            },
+        }
+
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                "url": SELECTIELIJSTKLASSE_URL,
+                "procesType": PROCESTYPE_URL,
+                "procestermijn": "",
+            }
+        }
+
+        with mock_client(responses):
+            with requests_mock.Mocker() as m:
+                m.register_uri(
+                    "GET", resultaattypeomschrijving_url, json={"omschrijving": "test"}
+                )
+                response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
     @patch("vng_api_common.validators.obj_has_shape", return_value=True)
     def test_procestermijn_ingeschatte_bestaansduur_procesobject_and_afleidingswijze_niet_termijn_fails(
         self, *mocks
