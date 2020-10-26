@@ -69,7 +69,7 @@ class StatusType(models.Model):
     # relations
     zaaktype = models.ForeignKey(
         "ZaakType",
-        verbose_name=_("is van"),
+        verbose_name=_("Zaaktype"),
         related_name="statustypen",
         on_delete=models.CASCADE,
         help_text=_(

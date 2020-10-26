@@ -53,7 +53,7 @@ class RolType(models.Model):
     )
     zaaktype = models.ForeignKey(
         "datamodel.ZaakType",
-        verbose_name=_("is van"),
+        verbose_name=_("Zaaktype"),
         on_delete=models.CASCADE,
         help_text=_(
             "URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn."

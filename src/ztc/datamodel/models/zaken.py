@@ -177,7 +177,7 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
         blank=True,
         null=True,
         help_text=_(
-            "De termijn in dagen waarmee de Doorlooptijd behandeling van "
+            "Een tijdsduur in ISO 8601 formaat waarmee de Doorlooptijd behandeling van "
             "ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde "
             "bevatten als verlenging mogelijk is."
         ),
@@ -298,7 +298,7 @@ class ZaakType(APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
 
     catalogus = models.ForeignKey(
         "datamodel.Catalogus",
-        verbose_name=_("maakt deel uit van"),
+        verbose_name=_("Catalogus"),
         on_delete=models.CASCADE,
         help_text=_("URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort."),
     )
