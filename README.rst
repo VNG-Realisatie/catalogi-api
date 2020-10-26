@@ -1,71 +1,100 @@
-=================
-Zaaktypecatalogus
-=================
+============
+Catalogi API
+============
 
 :Version: 1.0.0
 :Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
-|build-status| |black|
-
-Referentieimplementatie van het informatiemodel Zaaktypecatalogus (ImZTC) 2.1
-welke beheerd kan worden middels een webinterface en ontsloten wordt middels
-een RESTful API.
-
-Ontwikkeld door `Maykin Media B.V. <https://www.maykinmedia.nl>`_ in opdracht
-van VNG.
-
-
 Introductie
 ===========
 
-De GEMMA Zaaktypecatalogus 2 (ZTC2, ofwel de 2e generatie zaaktypecatalogus)
-helpt gemeenten om het proces vanuit de 'vraag van een klant' (productaanvraag,
-melding, aangifte, informatieverzoek e.d.) tot en met het leveren van een
-passend antwoord daarop in te richten, inclusief de bijbehorende
-informatievoorziening. Opslag van gegevens gebeurt conform het ImZTC (2.1).
+De Catalogi API is gebaseerd op de GEMMA Zaaktypencatalogus (ZTC2, ofwel de 
+2e generatie zaaktypecatalogus) en helpt gemeenten om het proces vanuit de 
+'vraag van een klant' (productaanvraag, melding, aangifte, informatieverzoek 
+e.d.) tot en met het leveren van een passend antwoord daarop in te richten, 
+inclusief de bijbehorende informatievoorziening.
 
-KING heeft onderkend dat er niet één landelijke zaaktypecatalogus kan bestaan
-waarin alle zaaktypen van alle overheidsorganisaties volledig uitgewerkt een
-plaats hebben of krijgen. Het gevolg is dat er niet één, maar vele
-zaaktypecatalogi zullen ontstaan.
+API specificaties
+=================
 
-De ZTC2 ondersteunt de volgende functionaliteiten:
+==========  ==============  =============================
+Versie      Release datum   API specificatie 
+==========  ==============  =============================
+1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,
+                            `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_
+==========  ==============  =============================
 
-* Webinterface voor het aanmaken, wijzigen en verwijderen van catalogi en alle
-  bijbehorende zakentypen, besluittypen, etc.
-* Ontsluiten van catalogi middels een RESTful API
-* Uitgebreide API documentatie.
+Zie ook: `Alle versies en wijzigingen <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/blob/master/CHANGELOG.rst>`_
 
-Deze component heeft ook een `testomgeving`_ waar leveranciers tegenaan kunnen
+Ondersteuning
+-------------
+
+==========  ==============  ==========================  =================
+Versie      Release datum   Einddatum ondersteuning     Documentatie
+==========  ==============  ==========================  =================
+1.x         2019-11-18      (nog niet bekend)           `Documentatie <https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/index>`_
+==========  ==============  ==========================  =================
+
+Referentie implementatie
+========================
+
+|build-status| |coverage| |docker|
+
+Referentieimplementatie van de Catalogi API. Ook wel 
+Zaaktypencatalogus (ZTC) genoemd.
+
+Ontwikkeld door `Maykin Media B.V. <https://www.maykinmedia.nl>`_ in opdracht
+van VNG Realisatie.
+
+Deze referentieimplementatie toont aan dat de API specificatie voor de
+Catalogi API implementeerbaar is, en vormt een voorbeeld voor andere 
+implementaties indien ergens twijfel bestaat.
+
+Deze component heeft ook een `demo omgeving`_ waar leveranciers tegenaan kunnen
 testen.
 
-Documentatie
-============
+Links
+=====
 
-Zie ``INSTALL.rst`` voor installatie instructies, commando's en instellingen.
+* Deze API is onderdeel van de `VNG standaard "API's voor Zaakgericht werken" <https://github.com/VNG-Realisatie/gemma-zaken>`_.
+* Lees de `functionele specificatie <https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/index>`_ bij de API specificatie.
+* Bekijk de `demo omgeving`_ met de laatst gepubliceerde versie.
+* Bekijk de `test omgeving <https://catalogi-api.test.vng.cloud/>`_ met de laatste ontwikkel versie.
+* Rapporteer `issues <https://github.com/VNG-Realisatie/gemma-zaken/issues>`_ bij vragen, fouten of wensen.
+* Bekijk de `code <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/>`_ van de referentie implementatie.
 
-* `Informatiemodel Zaaktypen/Zaaktypecatalogus 2.1 (ImZTC) <http://www.gemmaonline.nl/index.php/Informatiemodel_Zaaktypen_(ImZTC)>`_
-* `GEMMA Zaaktypecatalogus <https://www.gemmaonline.nl/index.php/GEMMA_Zaaktypecatalogus>`_
+.. _`demo omgeving`: https://catalogi-api.vng.cloud/
 
+Licentie
+========
 
+Copyright © VNG Realisatie 2018 - 2020
 
-Verwijzingen
-============
+Licensed under the EUPL_
 
-* `Ontwikkeling ZDS 2.0 standaard <https://github.com/VNG-Realisatie/gemma-zaken/>`_
-* `Issues <https://github.com/VNG-Realisatie/zaaktypecataloguscomponent/issues>`_
-* `Code <https://github.com/VNG-Realisatie/zaaktypecataloguscomponent>`_
+.. _EUPL: LICENCE.md
 
-.. |build-status| image:: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=develop
+.. |build-status| image:: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=master
     :alt: Build status
     :target: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus
 
 .. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
-     :target: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements/?branch=master
+     :target: https://hub.docker.com/r/vngr/gemma-drc
      :alt: Requirements status
 
+.. |coverage| image:: https://codecov.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/branch/master/graphs/badge.svg?branch=master
+    :alt: Coverage
+    :target: https://codecov.io/gh/VNG-Realisatie/gemma-zaaktypecatalogus
+
+.. |docker| image:: https://img.shields.io/badge/docker-latest-blue.svg
+    :alt: Docker image
+    :target: https://hub.docker.com/r/vngr/gemma-drc/
+
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :alt: Code style
     :target: https://github.com/psf/black
 
-.. _testomgeving: https://ref.tst.vng.cloud/ztc/
+.. |python-versions| image:: https://img.shields.io/badge/python-3.6%2B-blue.svg
+    :alt: Supported Python version
+    :target: https://hub.docker.com/r/vngr/gemma-drc/

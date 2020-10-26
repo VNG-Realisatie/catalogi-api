@@ -54,6 +54,38 @@ class CatalogusAPITests(APITestCase):
 
         self.assertEqual(catalog.rsin, "100000009")
 
+    def test_create_catalogus_rsin_only_digits(self):
+        data = {
+            "domein": "TEST",
+            "contactpersoonBeheerTelefoonnummer": "0612345679",
+            "rsin": "blabla",
+            "contactpersoonBeheerNaam": "test",
+            "contactpersoonBeheerEmailadres": "test@test.com",
+        }
+
+        response = self.client.post(self.catalogus_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "rsin")
+        self.assertEqual(error["code"], "only-digits")
+
+    def test_create_catalogus_rsin_invalid_length(self):
+        data = {
+            "domein": "TEST",
+            "contactpersoonBeheerTelefoonnummer": "0612345679",
+            "rsin": "0000",
+            "contactpersoonBeheerNaam": "test",
+            "contactpersoonBeheerEmailadres": "test@test.com",
+        }
+
+        response = self.client.post(self.catalogus_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "rsin")
+        self.assertEqual(error["code"], "invalid-length")
+
 
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):

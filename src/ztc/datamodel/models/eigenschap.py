@@ -251,8 +251,6 @@ class Eigenschap(ETagMixin, models.Model):
     specificatie_van_eigenschap = models.ForeignKey(
         "datamodel.EigenschapSpecificatie",
         verbose_name=_("specificatie van eigenschap"),
-        blank=True,
-        null=True,
         help_text=_("Attribuutkenmerken van de eigenschap"),
         on_delete=models.CASCADE,
     )
@@ -290,7 +288,7 @@ class Eigenschap(ETagMixin, models.Model):
     )
     zaaktype = models.ForeignKey(
         "datamodel.ZaakType",
-        verbose_name=_("is van"),
+        verbose_name=_("Zaaktype"),
         help_text=_(
             "URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is."
         ),

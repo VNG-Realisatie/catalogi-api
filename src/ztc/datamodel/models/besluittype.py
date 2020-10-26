@@ -56,8 +56,9 @@ class BesluitType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Model):
         blank=True,
         null=True,
         help_text=_(
-            "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, waarbinnen verweer tegen "
-            "een besluit van het besluittype mogelijk is."
+            "Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of "
+            "publicatiedatum, waarbinnen verweer tegen een besluit van het "
+            "besluittype mogelijk is."
         ),
     )
 
@@ -82,7 +83,8 @@ class BesluitType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Model):
         blank=True,
         null=True,
         help_text=_(
-            "Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit "
+            "Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend- of "
+            "publicatiedatum, dat BESLUITen van dit "
             "BESLUITTYPE gepubliceerd moeten blijven."
         ),
     )

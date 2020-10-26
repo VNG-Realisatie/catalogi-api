@@ -391,12 +391,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -546,12 +546,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1381,12 +1381,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1536,12 +1536,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1907,12 +1907,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -2062,12 +2062,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -2851,12 +2851,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -3006,12 +3006,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -3841,12 +3841,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -3996,12 +3996,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -4804,12 +4804,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -4959,12 +4959,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -5750,12 +5750,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -5905,12 +5905,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -6719,12 +6719,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -6874,12 +6874,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -7697,12 +7697,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -7852,12 +7852,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -8448,9 +8448,9 @@ components:
       required: true
   securitySchemes:
     JWT-Claims:
-      bearerFormat: JWT
-      scheme: bearer
       type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     BesluitType:
       required:
@@ -8501,8 +8501,9 @@ components:
           maxLength: 40
         reactietermijn:
           title: Reactietermijn
-          description: Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum,
-            waarbinnen verweer tegen een besluit van het besluittype mogelijk is.
+          description: Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend-
+            of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype
+            mogelijk is.
           type: string
           format: duration
           nullable: true
@@ -8518,8 +8519,9 @@ components:
           type: string
         publicatietermijn:
           title: Publicatietermijn
-          description: Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum,
-            dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.
+          description: Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend-
+            of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten
+            blijven.
           type: string
           format: duration
           nullable: true
@@ -8803,6 +8805,7 @@ components:
       required:
       - naam
       - definitie
+      - specificatie
       - zaaktype
       type: object
       properties:
@@ -8836,7 +8839,7 @@ components:
           type: string
           maxLength: 1000
         zaaktype:
-          title: Is van
+          title: Zaaktype
           description: URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze
             EIGENSCHAP van belang is.
           type: string
@@ -8859,7 +8862,7 @@ components:
           maxLength: 1000
           minLength: 1
         catalogus:
-          title: Maakt deel uit van
+          title: Catalogus
           description: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
             behoort.
           type: string
@@ -9213,7 +9216,7 @@ components:
           maxLength: 1000
           minLength: 1
         zaaktype:
-          title: Is van
+          title: Zaaktype
           description: URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken
             kunnen zijn.
           type: string
@@ -9286,7 +9289,7 @@ components:
           type: string
           maxLength: 1000
         zaaktype:
-          title: Is van
+          title: Zaaktype
           description: URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen
             van dit STATUSTYPE bereikt kunnen worden.
           type: string
@@ -9592,9 +9595,9 @@ components:
           type: boolean
         verlengingstermijn:
           title: Verlengingstermijn
-          description: De termijn in dagen waarmee de Doorlooptijd behandeling van
-            ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde bevatten
-            als verlenging mogelijk is.
+          description: Een tijdsduur in ISO 8601 formaat waarmee de Doorlooptijd behandeling
+            van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde
+            bevatten als verlenging mogelijk is.
           type: string
           format: duration
           nullable: true
@@ -9646,7 +9649,7 @@ components:
         referentieproces:
           $ref: '#/components/schemas/ReferentieProces'
         catalogus:
-          title: Maakt deel uit van
+          title: Catalogus
           description: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.
           type: string
           format: uri
