@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import viewsets
 from rest_framework.serializers import ValidationError
+from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import ZaakInformatieobjectType
@@ -16,6 +17,7 @@ from ..serializers import ZaakTypeInformatieObjectTypeSerializer
 from .mixins import ConceptFilterMixin
 
 
+@conditional_retrieve()
 class ZaakTypeInformatieObjectTypeViewSet(
     CheckQueryParamsMixin, ConceptFilterMixin, viewsets.ModelViewSet
 ):

@@ -103,6 +103,10 @@ class ProcestermijnAfleidingswijzeValidator:
         afleidingswijze = archiefprocedure["afleidingswijze"]
 
         error = False
+
+        if not procestermijn:
+            return
+
         if (
             procestermijn == Procestermijn.nihil
             and afleidingswijze != Afleidingswijze.afgehandeld

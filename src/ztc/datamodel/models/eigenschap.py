@@ -6,6 +6,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from vng_api_common.caching import ETagMixin
+
 from ..choices import FormaatChoices
 from ..validators import (
     validate_kardinaliteit,
@@ -21,15 +23,17 @@ class EigenschapSpecificatie(models.Model):
     door middel van het groepattribuutsoort ‘Referentie naar eigenschap’.
     """
 
-    groep = models.CharField(  # waardenverzameling Letters, cijfers en liggende streepjes
-        _("groep"),
-        max_length=32,
-        blank=True,
-        validators=[validate_letters_numbers_underscores],
-        help_text=_(
-            "Benaming van het object of groepattribuut waarvan de EIGENSCHAP een "
-            "inhoudelijk gegeven specificeert."
-        ),
+    groep = (
+        models.CharField(  # waardenverzameling Letters, cijfers en liggende streepjes
+            _("groep"),
+            max_length=32,
+            blank=True,
+            validators=[validate_letters_numbers_underscores],
+            help_text=_(
+                "Benaming van het object of groepattribuut waarvan de EIGENSCHAP een "
+                "inhoudelijk gegeven specificeert."
+            ),
+        )
     )
     # waardenverzameling gedefinieerd als tekst, getal, datum (jjjjmmdd), datum/tijd (jjjjmmdduummss), met AN20
     formaat = models.CharField(
@@ -89,8 +93,8 @@ class EigenschapSpecificatie(models.Model):
                 )
 
         elif self.formaat == FormaatChoices.getal:
-            try:  # specificatie spreekt over kommagescheiden decimaal, wij nemen echter aan dat het punt gescheiden is
-                Decimal(self.lengte)
+            try:
+                Decimal(self.lengte.replace(",", "."))
             except (InvalidOperation, TypeError):
                 raise ValidationError(
                     _(
@@ -189,7 +193,7 @@ class EigenschapReferentie(models.Model):
         pass
 
 
-class Eigenschap(models.Model):
+class Eigenschap(ETagMixin, models.Model):
     """
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
     kenmerk is van een zaak.

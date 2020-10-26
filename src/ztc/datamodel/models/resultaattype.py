@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import requests
 from relativedeltafield import RelativeDeltaField, parse_relativedelta
+from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import (
     Archiefnominatie,
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
@@ -13,7 +14,7 @@ from vng_api_common.constants import (
 from vng_api_common.descriptors import GegevensGroepType
 
 
-class ResultaatType(models.Model):
+class ResultaatType(ETagMixin, models.Model):
     """
     Het betreft de indeling of groepering van resultaten van zaken van hetzelfde
     ZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', et cetera.

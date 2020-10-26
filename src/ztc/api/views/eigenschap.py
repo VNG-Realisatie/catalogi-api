@@ -1,4 +1,5 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ztc.datamodel.models import Eigenschap
@@ -13,6 +14,7 @@ from ..serializers import EigenschapSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
+@conditional_retrieve()
 class EigenschapViewSet(
     CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet
 ):

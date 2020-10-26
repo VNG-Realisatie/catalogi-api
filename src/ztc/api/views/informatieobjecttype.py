@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from vng_api_common.caching import conditional_retrieve
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -14,6 +15,7 @@ from ..serializers import InformatieObjectTypeSerializer
 from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 
+@conditional_retrieve()
 class InformatieObjectTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
