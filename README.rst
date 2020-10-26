@@ -6,7 +6,7 @@ Zaaktypecatalogus
 :Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
-|build-status| |black|
+|build-status| |black| |lint-oas| |generate-sdks| |generate-postman-collection|
 
 Referentieimplementatie van het informatiemodel Zaaktypecatalogus (ImZTC) 2.1
 welke beheerd kan worden middels een webinterface en ontsloten wordt middels
@@ -67,5 +67,17 @@ Verwijzingen
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://github.com/psf/black
+
+.. |lint-oas| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/lint-oas/badge.svg
+    :alt: Lint OAS
+    :target: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/actions?query=workflow%3Alint-oas
+
+.. |generate-sdks| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/generate-sdks/badge.svg
+    :alt: Generate SDKs
+    :target: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/actions?query=workflow%3Agenerate-sdks
+
+.. |generate-postman-collection| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/generate-postman-collection/badge.svg
+    :alt: Generate Postman collection
+    :target: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/actions?query=workflow%3Agenerate-postman-collection
 
 .. _testomgeving: https://ref.tst.vng.cloud/ztc/
