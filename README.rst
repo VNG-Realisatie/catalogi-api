@@ -40,7 +40,7 @@ Versie      Release datum   Einddatum ondersteuning     Documentatie
 Referentie implementatie
 ========================
 
-|build-status| |coverage| |docker|
+|build-status| |coverage| |docker| |black| |python-versions|
 
 Referentieimplementatie van de Catalogi API. Ook wel
 Zaaktypencatalogus (ZTC) genoemd.
@@ -81,7 +81,6 @@ Licensed under the EUPL_
     :target: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus
 
 .. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
-     :target: https://hub.docker.com/r/vngr/gemma-drc
      :alt: Requirements status
 
 .. |coverage| image:: https://codecov.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/branch/master/graphs/badge.svg?branch=master
@@ -90,7 +89,7 @@ Licensed under the EUPL_
 
 .. |docker| image:: https://img.shields.io/badge/docker-latest-blue.svg
     :alt: Docker image
-    :target: https://hub.docker.com/r/vngr/gemma-drc/
+    :target: https://hub.docker.com/r/vngr/gemma-ztc/
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :alt: Code style
@@ -98,7 +97,6 @@ Licensed under the EUPL_
 
 .. |python-versions| image:: https://img.shields.io/badge/python-3.6%2B-blue.svg
     :alt: Supported Python version
-    :target: https://hub.docker.com/r/vngr/gemma-drc/
 
 .. |lint-oas| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/lint-oas/badge.svg
     :alt: Lint OAS
