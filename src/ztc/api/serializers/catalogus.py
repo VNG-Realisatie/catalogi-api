@@ -1,6 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
+from vng_api_common.validators import validate_rsin
 
 from ...datamodel.models import Catalogus
 
@@ -52,4 +53,7 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
             "besluittypen",
             "informatieobjecttypen",
         )
-        extra_kwargs = {"url": {"lookup_field": "uuid"}}
+        extra_kwargs = {
+            "url": {"lookup_field": "uuid"},
+            "rsin": {"validators": [validate_rsin]},
+        }

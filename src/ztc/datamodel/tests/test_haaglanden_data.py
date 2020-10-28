@@ -47,7 +47,7 @@ class FactoryTests(HaaglandenMixin, TestCase):
 
         self.assertEqual(CheckListItem.objects.all().count(), 0)
         self.assertEqual(EigenschapReferentie.objects.all().count(), 0)
-        self.assertEqual(EigenschapSpecificatie.objects.all().count(), 0)
+        self.assertEqual(EigenschapSpecificatie.objects.all().count(), 2)
 
         #
         # now test the datum_begin_geldigheid on all instances, duplicate code so the default error msg makes sense

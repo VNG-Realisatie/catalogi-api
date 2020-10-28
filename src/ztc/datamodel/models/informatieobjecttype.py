@@ -145,7 +145,7 @@ class InformatieObjectType(
 
     catalogus = models.ForeignKey(
         "datamodel.Catalogus",
-        verbose_name=_("maakt deel uit van"),
+        verbose_name=_("Catalogus"),
         on_delete=models.CASCADE,
         help_text=(
             "URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort."
