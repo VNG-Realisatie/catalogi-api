@@ -8,7 +8,7 @@ release_tag=$1
 do_deploy=$2
 shift
 
-JOB_NAME=push ./bin/release-docker-image.sh $release_tag
+JOB_NAME=push ./bin/docker_push.sh $release_tag
 
 
 deploy() {
