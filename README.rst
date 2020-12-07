@@ -2,7 +2,7 @@
 Catalogi API
 ============
 
-:Version: 1.0.0
+:Version: master
 :Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
@@ -22,6 +22,9 @@ API specificaties
 ==========  ==============  =============================
 Versie      Release datum   API specificatie
 ==========  ==============  =============================
+master      n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_,
+                            `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_
+                            (`verschillen <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/compare/stable/1.0.x..master?diff=split#diff-b9c28fec6c3f3fa5cff870d24601d6ab7027520f3b084cc767aefd258cb8c40a>`_)
 1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,
                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_
 ==========  ==============  =============================
