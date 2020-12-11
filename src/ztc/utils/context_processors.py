@@ -8,6 +8,8 @@ def settings(request):
         "SHOW_ALERT",
         "PROJECT_NAME",
         "SITE_TITLE",
+        "API_VERSION",
+        "GIT_SHA",
     )
 
     return {
