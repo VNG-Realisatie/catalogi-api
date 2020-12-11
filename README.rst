@@ -7,7 +7,7 @@ Catalogi API
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
 Introductie
-=======
+===========
 
 De Catalogi API is gebaseerd op de GEMMA Zaaktypencatalogus (ZTC2, ofwel de
 2e generatie zaaktypecatalogus) en helpt gemeenten om het proces vanuit de
@@ -19,12 +19,12 @@ API specificaties
 =================
 |lint-oas| |generate-sdks| |generate-postman-collection|
 
-==========  ==============  =============================
-Versie      Release datum   API specificatie
-==========  ==============  =============================
-1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
+Versie      Release datum   API specificatie                                                                                                                                                                                      Autorisaties                                                                                                             Notificaties
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
+1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,                                                      `Scopes <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/blob/1.0.0/src/autorisaties.md>`_                     `Berichtkenmerken <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/blob/1.0.0/src/notificaties.md>`_
                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_
-==========  ==============  =============================
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
 
 Zie ook: `Alle versies en wijzigingen <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/blob/master/CHANGELOG.rst>`_
 
