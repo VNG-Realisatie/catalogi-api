@@ -1,7 +1,8 @@
+black
 coverage
 factory_boy
 freezegun
-isort==4.3.20
+isort
 pep8
 pylint==1.9.2
 requests-mock

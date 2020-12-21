@@ -76,9 +76,9 @@ Licensed under the EUPL_
 
 .. _EUPL: LICENCE.md
 
-.. |build-status| image:: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=master
+.. |build-status| image:: https://github.com/VNG-Realisatie/catalogi-api/workflows/ci-build/badge.svg
     :alt: Build status
-    :target: https://travis-ci.org/VNG-Realisatie/gemma-zaaktypecatalogus
+    :target: https://github.com/VNG-Realisatie/catalogi-api/actions?query=workflow%3Aci-build
 
 .. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
      :alt: Requirements status
