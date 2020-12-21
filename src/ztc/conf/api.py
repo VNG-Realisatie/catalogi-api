@@ -45,6 +45,6 @@ REFERENTIELIJSTEN_API_SPEC = (
     f"https://raw.githubusercontent.com/{repo}/{commit}/src/openapi.yaml"  # noqa
 )
 
-SELF_REPO = "VNG-Realisatie/gemma-zaaktypecatalogus"
+SELF_REPO = "VNG-Realisatie/catalogi-api"
 SELF_BRANCH = os.getenv("SELF_BRANCH") or API_VERSION
 GITHUB_API_SPEC = f"https://raw.githubusercontent.com/{SELF_REPO}/{SELF_BRANCH}/src/openapi.yaml"  # noqa
