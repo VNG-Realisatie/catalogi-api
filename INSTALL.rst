@@ -18,12 +18,12 @@ The easiest way to get started is by using
 `Docker Compose <https://docs.docker.com/compose/install/>`_.
 
 1. Clone or download the code from
-   `Github <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus>`_ in a
+   `Github <https://github.com/VNG-Realisatie/catalogi-api>`_ in a
    folder like ``ztc``:
 
    .. code-block:: bash
 
-       $ git clone git@github.com:VNG-Realisatie/gemma-zaaktypecatalogus.git ztc
+       $ git clone git@github.com:VNG-Realisatie/catalogi-api.git ztc
        Cloning into 'ztc'...
        ...
 

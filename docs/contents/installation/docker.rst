@@ -19,7 +19,7 @@ Docker basics
 
    .. code-block:: bash
 
-       $ git clone https://github.com/VNG-realisatie/gemma-zaaktypecatalogus.git ztc
+       $ git clone https://github.com/VNG-realisatie/catalogi-api.git ztc
        Cloning into 'ztc'...
        ...
 
@@ -104,6 +104,6 @@ You can override this location through the ``FIXTURES_DIR`` environment
 variable. Only ``*.json`` files are considered.
 
 
-.. _Github: https://github.com/VNG-realisatie/gemma-zaaktypecatalogus
+.. _Github: https://github.com/VNG-realisatie/catalogi-api
 .. _Docker: https://docs.docker.com/install/
 .. _Docker Compose: https://docs.docker.com/compose/install/

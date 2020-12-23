@@ -85,7 +85,7 @@ typing-extensions==3.7.4.3  # via black
 unidecode==1.0.22
 uritemplate==3.0.0
 urllib3==1.24.3
-vng-api-common==1.0.53
+vng-api-common==1.0.56
 wrapt==1.10.11            # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:

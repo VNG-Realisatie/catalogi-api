@@ -91,8 +91,7 @@ html_theme = "alabaster"
 html_theme_options = {
     "github_user": "VNG-Realisatie",
     "github_banner": True,
-    "github_repo": "gemma-zaaktypecatalogus",
-    "travis_button": True,
+    "github_repo": "catalogi-api",
     "codecov_button": True,
     # 'analytics_id':  '',
 }
