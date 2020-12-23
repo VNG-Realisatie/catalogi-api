@@ -8,6 +8,11 @@ def settings(request):
         "SHOW_ALERT",
         "PROJECT_NAME",
         "SITE_TITLE",
+        "API_VERSION",
+        "GIT_SHA",
+        "GITHUB_API_SPEC",
+        "SELF_REPO",
+        "SELF_BRANCH",
     )
 
     return {

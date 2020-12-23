@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:VNG-Realisatie/gemma-zaaktypecatalogus"
+    "url": "git+ssh://git@github.com:VNG-Realisatie/catalogi-api"
   },
   "author": "VNG-Realisatie",
   "license": "EUPL-1.2",

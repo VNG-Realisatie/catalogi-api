@@ -12,7 +12,7 @@ set +x
 git_hash=${TRAVIS_COMMIT:-`git rev-parse HEAD`}
 
 # Login to Docker Hub
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 # Echo script commands
 set -x

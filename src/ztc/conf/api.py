@@ -1,3 +1,5 @@
+import os
+
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
 API_VERSION = "1.1.0-alpha"
@@ -42,3 +44,7 @@ commit = "da1b2cfdaadb2d19a7d3fc14530923913a2560f2"
 REFERENTIELIJSTEN_API_SPEC = (
     f"https://raw.githubusercontent.com/{repo}/{commit}/src/openapi.yaml"  # noqa
 )
+
+SELF_REPO = "VNG-Realisatie/catalogi-api"
+SELF_BRANCH = os.getenv("SELF_BRANCH") or API_VERSION
+GITHUB_API_SPEC = f"https://raw.githubusercontent.com/{SELF_REPO}/{SELF_BRANCH}/src/openapi.yaml"  # noqa

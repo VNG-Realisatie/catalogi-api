@@ -32,13 +32,13 @@ You can retrieve the source code using the following command:
 
    .. code-block:: bash
 
-        $ git clone git@github.com:VNG-realisatie/gemma-zaaktypecatalogus.git ztc
+        $ git clone git@github.com:VNG-realisatie/catalogi-api.git ztc
 
 **Note:** You can also use the HTTPS syntax:
 
    .. code-block:: bash
 
-        $ git clone https://github.com/VNG-realisatie/gemma-zaaktypecatalogus.git ztc
+        $ git clone https://github.com/VNG-realisatie/catalogi-api.git ztc
 
 Setting up virtualenv
 ^^^^^^^^^^^^^^^^^^^^^^

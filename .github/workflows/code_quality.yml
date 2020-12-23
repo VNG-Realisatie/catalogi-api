@@ -1,0 +1,43 @@
+name: Code quality checks
+
+# Run this workflow every time a new commit pushed to your repository
+on:
+  push:
+    branches:
+      - master
+      - stable/1.0.x
+    paths:
+      - '**.py'
+  pull_request:
+    paths:
+      - '**.py'
+  workflow_dispatch:
+
+jobs:
+  isort:
+    name: Code imports
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+      - name: Install dependencies
+        run: pip install -r requirements/jenkins.txt
+      - name: Run isort
+        run: isort --check-only --diff .
+
+  black:
+    name: Code format
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+      - name: Install dependencies
+        run: pip install -r requirements/jenkins.txt
+      - name: Run black
+        run: black --check --diff src docs

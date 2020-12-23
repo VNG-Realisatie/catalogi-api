@@ -7,7 +7,7 @@ Catalogi API
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
 Introductie
-=======
+===========
 
 De Catalogi API is gebaseerd op de GEMMA Zaaktypencatalogus (ZTC2, ofwel de
 2e generatie zaaktypecatalogus) en helpt gemeenten om het proces vanuit de
@@ -19,17 +19,17 @@ API specificaties
 =================
 |lint-oas| |generate-sdks| |generate-postman-collection|
 
-==========  ==============  =============================
-Versie      Release datum   API specificatie
-==========  ==============  =============================
-master      n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_,
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
+Versie      Release datum   API specificatie                                                                                                                                                                                      Autorisaties                                                                                                             Notificaties
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
+master      n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_,                                                     `Scopes <https://github.com/VNG-Realisatie/catalogi-api/blob/master/src/autorisaties.md>`_                               `Berichtkenmerken <https://github.com/VNG-Realisatie/catalogi-api/blob/master/src/notificaties.md>`_
                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_
                             (`verschillen <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/compare/stable/1.0.x..master?diff=split#diff-b9c28fec6c3f3fa5cff870d24601d6ab7027520f3b084cc767aefd258cb8c40a>`_)
-1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,
+1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,                                                      `Scopes <https://github.com/VNG-Realisatie/catalogi-api/blob/1.0.0/src/autorisaties.md>`_                                `Berichtkenmerken <https://github.com/VNG-Realisatie/catalogi-api/blob/1.0.0/src/notificaties.md>`_
                             `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_
-==========  ==============  =============================
+==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
 
-Zie ook: `Alle versies en wijzigingen <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/blob/master/CHANGELOG.rst>`_
+Zie ook: `Alle versies en wijzigingen <https://github.com/VNG-Realisatie/catalogi-api/blob/master/CHANGELOG.rst>`_
 
 Ondersteuning
 -------------
@@ -66,7 +66,7 @@ Links
 * Bekijk de `demo omgeving`_ met de laatst gepubliceerde versie.
 * Bekijk de `test omgeving <https://catalogi-api.test.vng.cloud/>`_ met de laatste ontwikkel versie.
 * Rapporteer `issues <https://github.com/VNG-Realisatie/gemma-zaken/issues>`_ bij vragen, fouten of wensen.
-* Bekijk de `code <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/>`_ van de referentie implementatie.
+* Bekijk de `code <https://github.com/VNG-Realisatie/catalogi-api/>`_ van de referentie implementatie.
 
 .. _`demo omgeving`: https://catalogi-api.vng.cloud/
 
@@ -79,16 +79,16 @@ Licensed under the EUPL_
 
 .. _EUPL: LICENCE.md
 
-.. |build-status| image:: https://travis-ci.com/VNG-Realisatie/gemma-zaaktypecatalogus.svg?branch=master
+.. |build-status| image:: https://github.com/VNG-Realisatie/catalogi-api/workflows/ci-build/badge.svg
     :alt: Build status
-    :target: https://travis-ci.com/VNG-Realisatie/gemma-zaaktypecatalogus
+    :target: https://github.com/VNG-Realisatie/catalogi-api/actions?query=workflow%3Aci-build
 
-.. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
+.. |requirements| image:: https://requires.io/github/VNG-Realisatie/catalogi-api/requirements.svg?branch=master
      :alt: Requirements status
 
-.. |coverage| image:: https://codecov.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/branch/master/graphs/badge.svg?branch=master
+.. |coverage| image:: https://codecov.io/github/VNG-Realisatie/catalogi-api/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage
-    :target: https://codecov.io/gh/VNG-Realisatie/gemma-zaaktypecatalogus
+    :target: https://codecov.io/gh/VNG-Realisatie/catalogi-api
 
 .. |docker| image:: https://img.shields.io/badge/docker-latest-blue.svg
     :alt: Docker image
@@ -101,16 +101,16 @@ Licensed under the EUPL_
 .. |python-versions| image:: https://img.shields.io/badge/python-3.6%2B-blue.svg
     :alt: Supported Python version
 
-.. |lint-oas| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/lint-oas/badge.svg
+.. |lint-oas| image:: https://github.com/VNG-Realisatie/catalogi-api/workflows/lint-oas/badge.svg
     :alt: Lint OAS
-    :target: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/actions?query=workflow%3Alint-oas
+    :target: https://github.com/VNG-Realisatie/catalogi-api/actions?query=workflow%3Alint-oas
 
-.. |generate-sdks| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/generate-sdks/badge.svg
+.. |generate-sdks| image:: https://github.com/VNG-Realisatie/catalogi-api/workflows/generate-sdks/badge.svg
     :alt: Generate SDKs
-    :target: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/actions?query=workflow%3Agenerate-sdks
+    :target: https://github.com/VNG-Realisatie/catalogi-api/actions?query=workflow%3Agenerate-sdks
 
-.. |generate-postman-collection| image:: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/workflows/generate-postman-collection/badge.svg
+.. |generate-postman-collection| image:: https://github.com/VNG-Realisatie/catalogi-api/workflows/generate-postman-collection/badge.svg
     :alt: Generate Postman collection
-    :target: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/actions?query=workflow%3Agenerate-postman-collection
+    :target: https://github.com/VNG-Realisatie/catalogi-api/actions?query=workflow%3Agenerate-postman-collection
 
 .. _testomgeving: https://ref.tst.vng.cloud/ztc/

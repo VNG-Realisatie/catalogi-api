@@ -3,7 +3,7 @@ zaaktypecatalogus
 =================
 
 :Version: 0.1.0
-:Source: https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus
+:Source: https://github.com/VNG-Realisatie/catalogi-api
 :Keywords: zaken, zaakgericht werken, GEMMA, RGBZ, ZTC
 :PythonVersion: 3.6
 
@@ -45,16 +45,16 @@ Contents
 References
 ============
 
-* `Issues <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/issues>`_
-* `Code <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/>`_
+* `Issues <https://github.com/VNG-Realisatie/catalogi-api/issues>`_
+* `Code <https://github.com/VNG-Realisatie/catalogi-api/>`_
 
 
-.. |build-status| image:: http://jenkins.nlx.io/buildStatus/icon?job=gemma-zaaktypecatalogus-stable
+.. |build-status| image:: http://jenkins.nlx.io/buildStatus/icon?job=catalogi-api-stable
     :alt: Build status
-    :target: http://jenkins.nlx.io/job/gemma-zaaktypecatalogus-stable
+    :target: http://jenkins.nlx.io/job/catalogi-api-stable
 
-.. |requirements| image:: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements.svg?branch=master
-     :target: https://requires.io/github/VNG-Realisatie/gemma-zaaktypecatalogus/requirements/?branch=master
+.. |requirements| image:: https://requires.io/github/VNG-Realisatie/catalogi-api/requirements.svg?branch=master
+     :target: https://requires.io/github/VNG-Realisatie/catalogi-api/requirements/?branch=master
      :alt: Requirements status
 
 .. _testomgeving: https://catalogi-api.vng.cloud/
