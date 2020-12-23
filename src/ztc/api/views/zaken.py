@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.settings import api_settings
+from vng_api_common.caching import conditional_retrieve
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -21,6 +22,7 @@ from ..serializers import ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 
+@conditional_retrieve()
 class ZaakTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,

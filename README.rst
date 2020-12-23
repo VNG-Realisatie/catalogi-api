@@ -2,7 +2,7 @@
 Catalogi API
 ============
 
-:Version: 1.0.0
+:Version: master
 :Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
@@ -22,8 +22,11 @@ API specificaties
 ==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
 Versie      Release datum   API specificatie                                                                                                                                                                                      Autorisaties                                                                                                             Notificaties
 ==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
-1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/catalogi-api/1.0.0/src/openapi.yaml>`_,                                                                 `Scopes <https://github.com/VNG-Realisatie/catalogi-api/blob/1.0.0/src/autorisaties.md>`_                                `Berichtkenmerken <https://github.com/VNG-Realisatie/catalogi-api/blob/1.0.0/src/notificaties.md>`_
-                            `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/catalogi-api/1.0.0/src/openapi.yaml>`_
+master      n.v.t.          `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_,                                                     `Scopes <https://github.com/VNG-Realisatie/catalogi-api/blob/master/src/autorisaties.md>`_                               `Berichtkenmerken <https://github.com/VNG-Realisatie/catalogi-api/blob/master/src/notificaties.md>`_
+                            `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/master/src/openapi.yaml>`_
+                            (`verschillen <https://github.com/VNG-Realisatie/gemma-zaaktypecatalogus/compare/stable/1.0.x..master?diff=split#diff-b9c28fec6c3f3fa5cff870d24601d6ab7027520f3b084cc767aefd258cb8c40a>`_)
+1.0.0       2019-11-18      `ReDoc <https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_,                                                      `Scopes <https://github.com/VNG-Realisatie/catalogi-api/blob/1.0.0/src/autorisaties.md>`_                                `Berichtkenmerken <https://github.com/VNG-Realisatie/catalogi-api/blob/1.0.0/src/notificaties.md>`_
+                            `Swagger <https://petstore.swagger.io/?url=https://raw.githubusercontent.com/VNG-Realisatie/gemma-zaaktypecatalogus/1.0.0/src/openapi.yaml>`_
 ==========  ==============  ====================================================================================================================================================================================================  =======================================================================================================================  =================================================================================================================================
 
 Zie ook: `Alle versies en wijzigingen <https://github.com/VNG-Realisatie/catalogi-api/blob/master/CHANGELOG.rst>`_

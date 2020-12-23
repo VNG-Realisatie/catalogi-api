@@ -912,6 +912,49 @@ class ResultaatTypeValidationTests(APITestCase):
     @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
     @patch("vng_api_common.validators.fetcher")
     @patch("vng_api_common.validators.obj_has_shape", return_value=True)
+    def test_procestermijn_empty_and_afleidingswijze_niet_termijn(self, *mocks):
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL, concept=True
+        )
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+
+        responses = {
+            SELECTIELIJSTKLASSE_URL: {
+                "url": SELECTIELIJSTKLASSE_URL,
+                "procesType": PROCESTYPE_URL,
+                "procestermijn": "",
+            }
+        }
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "illum",
+            "resultaattypeomschrijving": "https://garcia.org/",
+            "selectielijstklasse": SELECTIELIJSTKLASSE_URL,
+            "archiefnominatie": "blijvend_bewaren",
+            "archiefactietermijn": "P10Y",
+            "brondatumArchiefprocedure": {
+                "afleidingswijze": Afleidingswijze.afgehandeld,
+                "einddatumBekend": False,
+                "procestermijn": None,
+                "datumkenmerk": "",
+                "objecttype": "",
+                "registratie": "",
+            },
+        }
+
+        with mock_client(responses):
+            with requests_mock.Mocker() as m:
+                m.register_uri(
+                    "GET", "https://garcia.org/", json={"omschrijving": "bla"}
+                )
+                response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
+    @patch("vng_api_common.validators.fetcher")
+    @patch("vng_api_common.validators.obj_has_shape", return_value=True)
     def test_value_for_datumkenmerk(self, *mocks):
         zaaktype = ZaakTypeFactory.create(
             selectielijst_procestype=PROCESTYPE_URL, concept=True

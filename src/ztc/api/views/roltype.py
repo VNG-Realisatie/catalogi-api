@@ -1,4 +1,5 @@
 from rest_framework import mixins, viewsets
+from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import RolType
@@ -12,6 +13,7 @@ from ..serializers import RolTypeSerializer
 from .mixins import ZaakTypeConceptMixin
 
 
+@conditional_retrieve()
 class RolTypeViewSet(
     CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet
 ):

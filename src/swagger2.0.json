@@ -2,16 +2,16 @@
     "swagger": "2.0",
     "info": {
         "title": "Catalogi API",
-        "description": "Een API om een zaaktypecatalogus (ZTC) te benaderen.\n\nDe zaaktypecatalogus helpt gemeenten om het proces vanuit de 'vraag van een\nklant' (productaanvraag, melding, aangifte, informatieverzoek e.d.) tot en met\nhet leveren van een passend antwoord daarop in te richten, inclusief de\nbijbehorende informatievoorziening.\n\nEen CATALOGUS bestaat uit ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn en\nwordt typisch gebruikt om een ZAAK (in de Zaken API), INFORMATIEOBJECT (in de\nDocumenten API) en BESLUIT (in de Besluiten API) te voorzien van type,\nstandaardwaarden en processtructuur.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Gemeentelijke Selectielijst API\n* Autorisaties API *(optioneel)*\n\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om een token te\ngenereren.\n\n_Zelf een token genereren_\n\nDe tokens die gebruikt worden voor autorisatie zijn [jwt.io][JWT's] (JSON web\ntoken). In de API calls moeten deze gebruikt worden in de `Authorization`\nheader:\n\n```\nAuthorization: Bearer <token>\n```\n\nOm een JWT te genereren heb je een `client ID` en een `secret` nodig. Het JWT\nmoet gebouwd worden volgens het `HS256` algoritme. De vereiste payload is:\n\n```json\n{\n    \"iss\": \"<client ID>\",\n    \"iat\": 1572863906,\n    \"client_id\": \"<client ID>\",\n    \"user_id\": \"<user identifier>\",\n    \"user_representation\": \"<user representation>\"\n}\n```\n\nAls `issuer` gebruik je dus je eigen client ID. De `iat` timestamp is een\nUNIX-timestamp die aangeeft op welk moment het token gegenereerd is.\n\n`user_id` en `user_representation` zijn nodig voor de audit trails. Het zijn\nvrije velden met als enige beperking dat de lengte maximaal de lengte van\nde overeenkomstige velden in de audit trail resources is (zie rest API spec).\n\n\n### Notificaties\n\nDeze API publiceert notificaties op het kanaal `zaaktypen`.\n\n**Main resource**\n\n`zaaktype`\n\n\n\n**Kenmerken**\n\n* `catalogus`: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.\n\n**Resources en acties**\n- `zaaktype`: create, update, destroy\n\n\nDeze API publiceert notificaties op het kanaal `besluittypen`.\n\n**Main resource**\n\n`besluittype`\n\n\n\n**Kenmerken**\n\n* `catalogus`: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.\n\n**Resources en acties**\n- `besluittype`: create, update, destroy\n\n\nDeze API publiceert notificaties op het kanaal `informatieobjecttypen`.\n\n**Main resource**\n\n`informatieobjecttype`\n\n\n\n**Kenmerken**\n\n* `catalogus`: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.\n\n**Resources en acties**\n- `informatieobjecttype`: create, update, destroy\n\n\n**Handige links**\n\n* [Documentatie](https://zaakgerichtwerken.vng.cloud/standaard)\n* [Zaakgericht werken](https://zaakgerichtwerken.vng.cloud)\n",
+        "description": "Een API om een zaaktypecatalogus (ZTC) te benaderen.\n\nDe zaaktypecatalogus helpt gemeenten om het proces vanuit de 'vraag van een\nklant' (productaanvraag, melding, aangifte, informatieverzoek e.d.) tot en met\nhet leveren van een passend antwoord daarop in te richten, inclusief de\nbijbehorende informatievoorziening.\n\nEen CATALOGUS bestaat uit ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn en\nwordt typisch gebruikt om een ZAAK (in de Zaken API), INFORMATIEOBJECT (in de\nDocumenten API) en BESLUIT (in de Besluiten API) te voorzien van type,\nstandaardwaarden en processtructuur.\n\n**Afhankelijkheden**\n\nDeze API is afhankelijk van:\n\n* Gemeentelijke Selectielijst API\n* Autorisaties API *(optioneel)*\n\n\n**Autorisatie**\n\nDeze API vereist autorisatie. Je kan de\n[token-tool](https://zaken-auth.vng.cloud/) gebruiken om een token te\ngenereren.\n\n_Zelf een token genereren_\n\nDe tokens die gebruikt worden voor autorisatie zijn [jwt.io][JWT's] (JSON web\ntoken). In de API calls moeten deze gebruikt worden in de `Authorization`\nheader:\n\n```\nAuthorization: Bearer <token>\n```\n\nOm een JWT te genereren heb je een `client ID` en een `secret` nodig. Het JWT\nmoet gebouwd worden volgens het `HS256` algoritme. De vereiste payload is:\n\n```json\n{\n    \"iss\": \"<client ID>\",\n    \"iat\": 1572863906,\n    \"client_id\": \"<client ID>\",\n    \"user_id\": \"<user identifier>\",\n    \"user_representation\": \"<user representation>\"\n}\n```\n\nAls `issuer` gebruik je dus je eigen client ID. De `iat` timestamp is een\nUNIX-timestamp die aangeeft op welk moment het token gegenereerd is.\n\n`user_id` en `user_representation` zijn nodig voor de audit trails. Het zijn\nvrije velden met als enige beperking dat de lengte maximaal de lengte van\nde overeenkomstige velden in de audit trail resources is (zie rest API spec).\n\n\n### Notificaties\n\nDeze API publiceert notificaties op het kanaal `zaaktypen`.\n\n**Main resource**\n\n`zaaktype`\n\n\n\n**Kenmerken**\n\n* `catalogus`: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.\n\n**Resources en acties**\n- `zaaktype`: create, update, destroy\n\n\nDeze API publiceert notificaties op het kanaal `besluittypen`.\n\n**Main resource**\n\n`besluittype`\n\n\n\n**Kenmerken**\n\n* `catalogus`: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.\n\n**Resources en acties**\n- `besluittype`: create, update, destroy\n\n\nDeze API publiceert notificaties op het kanaal `informatieobjecttypen`.\n\n**Main resource**\n\n`informatieobjecttype`\n\n\n\n**Kenmerken**\n\n* `catalogus`: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort.\n\n**Resources en acties**\n- `informatieobjecttype`: create, update, destroy\n\n\n**Handige links**\n\n* [Documentatie](https://vng-realisatie.github.io/gemma-zaken/standaard)\n* [Zaakgericht werken](https://vng-realisatie.github.io/gemma-zaken)\n",
         "contact": {
-            "url": "https://zaakgerichtwerken.vng.cloud",
+            "url": "https://vng-realisatie.github.io/gemma-zaken",
             "email": "standaarden.ondersteuning@vng.nl"
         },
         "license": {
             "name": "EUPL 1.2",
             "url": "https://opensource.org/licenses/EUPL-1.2"
         },
-        "version": "1.0.0"
+        "version": "1.1.0-alpha"
     },
     "basePath": "/api/v1",
     "consumes": [
@@ -161,6 +161,16 @@
                 "description": "Maak een BESLUITTYPE aan.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -237,7 +247,25 @@
                 "operationId": "besluittype_read",
                 "summary": "Een specifieke BESLUITTYPE opvragen.",
                 "description": "Een specifieke BESLUITTYPE opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -245,6 +273,10 @@
                             "$ref": "#/definitions/BesluitType"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -292,11 +324,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "besluittype_headers",
+                "summary": "De headers voor een specifiek(e) BESLUITTYPE opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "besluittypen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "besluittype_update",
                 "summary": "Werk een BESLUITTYPE in zijn geheel bij.",
                 "description": "Werk een BESLUITTYPE in zijn geheel bij. Dit kan alleen als het een concept\nbetreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -368,6 +461,16 @@
                 "summary": "Werk een BESLUITTYPE deels bij.",
                 "description": "Werk een BESLUITTYPE deels bij. Dit kan alleen als het een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -506,7 +609,18 @@
                 "operationId": "besluittype_publish",
                 "summary": "Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten\nAPI.",
                 "description": "Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het\nzaakgericht werken van de behandelende organisatie(s).",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -679,6 +793,16 @@
                 "description": "Maak een CATALOGUS aan.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -755,7 +879,25 @@
                 "operationId": "catalogus_read",
                 "summary": "Een specifieke CATALOGUS opvragen.",
                 "description": "Een specifieke CATALOGUS opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -763,6 +905,10 @@
                             "$ref": "#/definitions/Catalogus"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -797,6 +943,57 @@
                     },
                     "500": {
                         "$ref": "#/responses/500"
+                    }
+                },
+                "tags": [
+                    "catalogussen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
+            "head": {
+                "operationId": "catalogus_headers",
+                "summary": "De headers voor een specifiek(e) CATALOGUS opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
                     }
                 },
                 "tags": [
@@ -935,6 +1132,16 @@
                 "description": "Maak een EIGENSCHAP aan. Dit kan alleen als het bijbehorende ZAAKTYPE een\nconcept betreft.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -1011,7 +1218,25 @@
                 "operationId": "eigenschap_read",
                 "summary": "Een specifieke EIGENSCHAP opvragen.",
                 "description": "Een specifieke EIGENSCHAP opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1019,6 +1244,10 @@
                             "$ref": "#/definitions/Eigenschap"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -1066,11 +1295,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "eigenschap_headers",
+                "summary": "De headers voor een specifiek(e) EIGENSCHAP opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "eigenschappen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "eigenschap_update",
                 "summary": "Werk een EIGENSCHAP in zijn geheel bij.",
                 "description": "Werk een EIGENSCHAP in zijn geheel bij. Dit kan alleen als het\nbijbehorende ZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -1142,6 +1432,16 @@
                 "summary": "Werk een EIGENSCHAP deels bij.",
                 "description": "Werk een EIGENSCHAP deels bij. Dit kan alleen als het bijbehorende\nZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -1389,6 +1689,16 @@
                 "description": "Maak een INFORMATIEOBJECTTYPE aan.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -1465,7 +1775,25 @@
                 "operationId": "informatieobjecttype_read",
                 "summary": "Een specifieke INFORMATIEOBJECTTYPE opvragen.",
                 "description": "Een specifieke INFORMATIEOBJECTTYPE opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1473,6 +1801,10 @@
                             "$ref": "#/definitions/InformatieObjectType"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -1520,11 +1852,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "informatieobjecttype_headers",
+                "summary": "De headers voor een specifiek(e) INFORMATIEOBJECTTYPE opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "informatieobjecttypen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "informatieobjecttype_update",
                 "summary": "Werk een INFORMATIEOBJECTTYPE in zijn geheel bij.",
                 "description": "Werk een INFORMATIEOBJECTTYPE in zijn geheel bij. Dit kan alleen als het een\nconcept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -1596,6 +1989,16 @@
                 "summary": "Werk een INFORMATIEOBJECTTYPE deels bij.",
                 "description": "Werk een INFORMATIEOBJECTTYPE deels bij. Dit kan alleen als het een concept\nbetreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -1734,7 +2137,18 @@
                 "operationId": "informatieobjecttype_publish",
                 "summary": "Opvragen en bewerken van INFORMATIEOBJECTTYPEn nodig voor\nINFORMATIEOBJECTen in de Documenten API.",
                 "description": "Een INFORMATIEOBJECTTYPE beschijft de karakteristieken van een document of\nander object dat informatie bevat.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -1894,6 +2308,16 @@
                 "description": "Maak een RESULTAATTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een\nconcept betreft.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -1970,7 +2394,25 @@
                 "operationId": "resultaattype_read",
                 "summary": "Een specifieke RESULTAATTYPE opvragen.",
                 "description": "Een specifieke RESULTAATTYPE opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1978,6 +2420,10 @@
                             "$ref": "#/definitions/ResultaatType"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -2025,11 +2471,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "resultaattype_headers",
+                "summary": "De headers voor een specifiek(e) RESULTAATTYPE opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "resultaattypen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "resultaattype_update",
                 "summary": "Werk een RESULTAATTYPE in zijn geheel bij.",
                 "description": "Werk een RESULTAATTYPE in zijn geheel bij. Dit kan alleen als het\nbijbehorende ZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -2101,6 +2608,16 @@
                 "summary": "Werk een RESULTAATTYPE deels bij.",
                 "description": "Werk een RESULTAATTYPE deels bij. Dit kan alleen als het bijbehorende\nZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -2365,6 +2882,16 @@
                 "description": "Maak een ROLTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een\nconcept betreft.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -2441,7 +2968,25 @@
                 "operationId": "roltype_read",
                 "summary": "Een specifieke ROLTYPE opvragen.",
                 "description": "Een specifieke ROLTYPE opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2449,6 +2994,10 @@
                             "$ref": "#/definitions/RolType"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -2496,11 +3045,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "roltype_headers",
+                "summary": "De headers voor een specifiek(e) ROLTYPE opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "roltypen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "roltype_update",
                 "summary": "Werk een ROLTYPE in zijn geheel bij.",
                 "description": "Werk een ROLTYPE in zijn geheel bij. Dit kan alleen als het\nbijbehorende ZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -2572,6 +3182,16 @@
                 "summary": "Werk een ROLTYPE deels bij.",
                 "description": "Werk een ROLTYPE deels bij. Dit kan alleen als het bijbehorende\nZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -2818,6 +3438,16 @@
                 "description": "Maak een STATUSTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een\nconcept betreft.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -2894,7 +3524,25 @@
                 "operationId": "statustype_read",
                 "summary": "Een specifieke STATUSTYPE opvragen.",
                 "description": "Een specifieke STATUSTYPE opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2902,6 +3550,10 @@
                             "$ref": "#/definitions/StatusType"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -2949,11 +3601,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "statustype_headers",
+                "summary": "De headers voor een specifiek(e) STATUSTYPE opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "statustypen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "statustype_update",
                 "summary": "Werk een STATUSTYPE in zijn geheel bij.",
                 "description": "Werk een STATUSTYPE in zijn geheel bij. Dit kan alleen als het\nbijbehorende ZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -3025,6 +3738,16 @@
                 "summary": "Werk een STATUSTYPE deels bij.",
                 "description": "Werk een STATUSTYPE deels bij. Dit kan alleen als het bijbehorende\nZAAKTYPE een concept betreft.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -3292,6 +4015,16 @@
                 "description": "Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan. Dit kan alleen als het\nbijbehorende ZAAKTYPE een concept betreft.\n\nEr wordt gevalideerd op:\n- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -3368,7 +4101,25 @@
                 "operationId": "zaakinformatieobjecttype_read",
                 "summary": "Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.",
                 "description": "Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3376,6 +4127,10 @@
                             "$ref": "#/definitions/ZaakTypeInformatieObjectType"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -3423,11 +4178,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "zaakinformatieobjecttype_headers",
+                "summary": "De headers voor een specifiek(e) ZAAKINFORMATIEOBJECTTYPE opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "zaaktype-informatieobjecttypen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "zaakinformatieobjecttype_update",
                 "summary": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij.",
                 "description": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij. Dit kan\nalleen als het bijbehorende ZAAKTYPE een concept betreft.\n\nEr wordt gevalideerd op:\n- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -3499,6 +4315,16 @@
                 "summary": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij.",
                 "description": "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij. Dit kan alleen\nals het bijbehorende ZAAKTYPE een concept betreft.\n\nEr wordt gevalideerd op:\n- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -3760,6 +4586,16 @@
                 "description": "Maak een ZAAKTYPE aan.\n\nEr wordt gevalideerd op:\n- geldigheid `catalogus` URL, dit moet een catalogus binnen dezelfde API zijn\n- Uniciteit `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel\n  opnieuw gebruikt worden als het zaaktype een andere geldigheidsperiode\n  kent dan bestaande zaaktypen.\n- `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.",
                 "parameters": [
                     {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
+                    {
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -3836,7 +4672,25 @@
                 "operationId": "zaaktype_read",
                 "summary": "Een specifieke ZAAKTYPE opvragen.",
                 "description": "Een specifieke ZAAKTYPE opvragen.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3844,6 +4698,10 @@
                             "$ref": "#/definitions/ZaakType"
                         },
                         "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
                             "API-version": {
                                 "schema": {
                                     "type": "string"
@@ -3891,11 +4749,72 @@
                     }
                 ]
             },
+            "head": {
+                "operationId": "zaaktype_headers",
+                "summary": "De headers voor een specifiek(e) ZAAKTYPE opvragen",
+                "description": "Vraag de headers op die je bij een GET request zou krijgen.",
+                "parameters": [
+                    {
+                        "name": "If-None-Match",
+                        "in": "header",
+                        "description": "Voer een voorwaardelijk verzoek uit. Deze header moet \u00e9\u00e9n of meerdere ETag-waardes bevatten van resources die de consumer gecached heeft. Indien de waarde van de ETag van de huidige resource voorkomt in deze set, dan antwoordt de provider met een lege HTTP 304 request. Zie [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match) voor meer informatie.",
+                        "required": false,
+                        "type": "string",
+                        "examples": {
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {
+                            "ETag": {
+                                "description": "De ETag berekend op de response body JSON. Indien twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek aan elkaar. Je kan de ETag gebruiken om caching te implementeren.",
+                                "type": "string"
+                            },
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "zaaktypen"
+                ],
+                "security": [
+                    {
+                        "JWT-Claims": [
+                            "catalogi.lezen"
+                        ]
+                    }
+                ]
+            },
             "put": {
                 "operationId": "zaaktype_update",
                 "summary": "Werk een ZAAKTYPE in zijn geheel bij.",
                 "description": "Werk een ZAAKTYPE in zijn geheel bij. Dit kan alleen als het een concept\nbetreft.\n\nEr wordt gevalideerd op:\n- `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -3967,6 +4886,16 @@
                 "summary": "Werk een ZAAKTYPE deels bij.",
                 "description": "Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept betreft.\n\nEr wordt gevalideerd op:\n- `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.",
                 "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    },
                     {
                         "name": "data",
                         "in": "body",
@@ -4105,7 +5034,18 @@
                 "operationId": "zaaktype_publish",
                 "summary": "Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.",
                 "description": "Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen van\nzaken van eenzelfde soort.",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "description": "Content type van de verzoekinhoud.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "application/json"
+                        ]
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -5507,5 +6447,43 @@
                 }
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "besluittypen",
+            "description": "Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het\nzaakgericht werken van de behandelende organisatie(s)."
+        },
+        {
+            "name": "catalogussen",
+            "description": "De verzameling van ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn voor\neen domein die als \u00e9\u00e9n geheel beheerd wordt."
+        },
+        {
+            "name": "eigenschappen",
+            "description": "Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE\ngeregistreerd moet kunnen worden en geen standaard kenmerk is van een zaak."
+        },
+        {
+            "name": "informatieobjecttypen",
+            "description": "Een INFORMATIEOBJECTTYPE beschijft de karakteristieken van een document of\nander object dat informatie bevat."
+        },
+        {
+            "name": "resultaattypen",
+            "description": "Het betreft de indeling of groepering van resultaten van zaken van hetzelfde\nZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', etc."
+        },
+        {
+            "name": "roltypen",
+            "description": "Generieke aanduiding van de aard van een ROL die een BETROKKENE kan\nuitoefenen in ZAAKen van een ZAAKTYPE."
+        },
+        {
+            "name": "statustypen",
+            "description": "Generieke aanduiding van de aard van een status."
+        },
+        {
+            "name": "zaaktype-informatieobjecttypen",
+            "description": "Geeft aan welke INFORMATIEOBJECTTYPEn binnen een ZAAKTYPE mogelijk zijn en\nhoe de richting is."
+        },
+        {
+            "name": "zaaktypen",
+            "description": "Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen van\nzaken van eenzelfde soort."
+        }
+    ]
 }
