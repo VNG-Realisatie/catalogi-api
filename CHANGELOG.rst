@@ -2,6 +2,14 @@
 Wijzigingen
 ===========
 
+1.1.0 (2021-01-08)
+==================
+
+* Added ETag headers to the several resources.
+* Added HEAD-method operation to several resources.
+* Fixed several field descriptions.
+* Compacted common response bodies in the schema.
+
 1.0.0 final (2019-11-18)
 ========================
 
