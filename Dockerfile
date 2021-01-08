@@ -58,6 +58,9 @@ COPY ./bin/runtests.sh /runtests.sh
 COPY --from=frontend-build /app/src/ztc/static/fonts /app/src/ztc/static/fonts
 COPY --from=frontend-build /app/src/ztc/static/css /app/src/ztc/static/css
 COPY ./src /app/src
+ARG COMMIT_HASH
+ENV GIT_SHA=${COMMIT_HASH}
+
 RUN mkdir /app/log && rm /app/src/ztc/conf/test.py
 CMD ["/runtests.sh"]
 
@@ -88,6 +91,8 @@ RUN mkdir /app/log
 COPY --from=frontend-build /app/src/ztc/static/fonts /app/src/ztc/static/fonts
 COPY --from=frontend-build /app/src/ztc/static/css /app/src/ztc/static/css
 COPY ./src /app/src
+ARG COMMIT_HASH
+ENV GIT_SHA=${COMMIT_HASH}
 
 ENV DJANGO_SETTINGS_MODULE=ztc.conf.docker
 
