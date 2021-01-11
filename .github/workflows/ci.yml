@@ -111,6 +111,7 @@ jobs:
         env: # Or as an environment variable
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DEPLOY_BOT_TOKEN: ${{ secrets.DEPLOY_BOT_TOKEN }}
         run: |
           BRANCH=$(git rev-parse --abbrev-ref HEAD)
           if [ "$BRANCH" == "master" ]; then
@@ -121,6 +122,7 @@ jobs:
         env: # Or as an environment variable
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          DEPLOY_BOT_TOKEN: ${{ secrets.DEPLOY_BOT_TOKEN }}
         run: |
           TAG=$(git name-rev --tags --name-only $(git rev-parse HEAD))
           if [ "$TAG" != "undefined" ]; then
