@@ -1395,3 +1395,41 @@ class ResultaatTypeValidationTests(APITestCase):
                 else:
                     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
                     ResultaatType.objects.get().delete()
+
+    @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
+    @patch("vng_api_common.validators.fetcher")
+    @patch("vng_api_common.validators.obj_has_shape", return_value=True)
+    def test_selectielijstklasse_bewaartermijn_empty_allowed(self, *mocks):
+        zaaktype = ZaakTypeFactory.create(
+            selectielijst_procestype=PROCESTYPE_URL, concept=True
+        )
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+
+        afleidingswijze = "afgehandeld"
+
+        archiefprocedure = deepcopy(MAPPING[afleidingswijze])
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "illum",
+            "resultaattypeomschrijving": RESULTAATTYPEOMSCHRIJVING_URL,
+            "selectielijstklasse": self._get_selectielijstklasse_url(afleidingswijze),
+            "archiefnominatie": "blijvend_bewaren",
+            "brondatumArchiefprocedure": archiefprocedure,
+        }
+
+        with requests_mock.Mocker() as m:
+            m.register_uri(
+                "GET",
+                RESULTAATTYPEOMSCHRIJVING_URL,
+                json={"omschrijving": "test"},
+            )
+            m.register_uri(
+                "GET",
+                SELECTIELIJSTKLASSE_PROCESTERMIJN_NIHIL_URL,
+                json={"bewaartermijn": None},
+            )
+            with mock_client(self.RESPONSES):
+                response = self.client.post(self.list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
