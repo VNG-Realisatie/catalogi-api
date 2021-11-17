@@ -39,6 +39,7 @@ class GeldigheidMixin(models.Model):
             EXTRA: veld 'versie datum'
             De Versiedatum is gelijk aan of ligt na de Datum begin geldigheid zaaktype
             en is gelijk aan of ligt voor de Datum einde geldigheid zaaktype
+        - ZaakObjectType
 
         """
         super().clean()

@@ -209,6 +209,17 @@ class ResultaatType(ETagMixin, models.Model):
         ),
     )
 
+    zaakobjecttypen = models.ManyToManyField(
+        "ZaakObjectType",
+        verbose_name=_("Zaakobjecttypen"),
+        related_name="resultaattypen",
+        help_text=_(
+            "De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan "
+            "ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE "
+            "kan worden gezet."
+        ),
+    )
+
     # 'old' fields, not actively used at the moment
 
     bepaalt_afwijkend_archiefregime_van = models.ManyToManyField(

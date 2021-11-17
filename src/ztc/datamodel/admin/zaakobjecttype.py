@@ -12,8 +12,8 @@ class ZaakObjectTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
     # List
     list_display = (
         "ander_objecttype",
-        "begin_geldigheid",
-        "einde_geldigheid",
+        "datum_begin_geldigheid",
+        "datum_einde_geldigheid",
         "zaaktype",
         "uuid"
     )
@@ -26,14 +26,15 @@ class ZaakObjectTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
                 "fields": (
                     "uuid",
                     "ander_objecttype",
-                    "begin_geldigheid",
-                    "einde_geldigheid",
+                    "datum_begin_geldigheid",
+                    "datum_einde_geldigheid",
                     "objecttype",
                     "relatie_omschrijving",
                 )
             },
         ),
-        (_("Relaties"), {"fields": ("catalogus", "zaaktype",)}),
+        # zonder inlines aangezien deze erg uitgebreid zouden zijn
+        (_("Relaties"), {"fields": ("catalogus", "zaaktype")}),
     )
 
     readonly_fields = ("uuid",)

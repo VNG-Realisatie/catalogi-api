@@ -79,6 +79,15 @@ class StatusType(ETagMixin, models.Model):
         ),
     )
 
+    zaakobjecttype = models.ForeignKey(
+        "ZaakObjectType",
+        blank=True,
+        null=True,
+        verbose_name=_("Zaakobjecttypen"),
+        related_name="statustypen",
+        on_delete=models.CASCADE,
+    )
+
     # attributes
     statustype_omschrijving = models.CharField(
         _("omschrijving"),
