@@ -9,7 +9,7 @@ from ztc.datamodel.models.mixins import GeldigheidMixin
 from ztc.datamodel.validators import validate_letters_numbers_underscores_spaces
 
 
-class ZaakObjectType(ETagMixin, GeldigheidMixin, models.Model):
+class ZaakObjectType(ETagMixin, GeldigheidMixin):
     uuid = models.UUIDField(
         unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
     )
