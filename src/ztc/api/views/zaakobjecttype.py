@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-
 from vng_api_common.caching.decorators import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
