@@ -6,7 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.caching import ETagMixin
 
 from ztc.datamodel.models.mixins import GeldigheidMixin
-from ztc.datamodel.validators import validate_letters_numbers_underscores_spaces
 
 
 class ZaakObjectType(ETagMixin, GeldigheidMixin):
@@ -22,14 +21,10 @@ class ZaakObjectType(ETagMixin, GeldigheidMixin):
         ),
     )
 
-    objecttype = models.CharField(
+    objecttype = models.URLField(
         _("Objecttype"),
-        max_length=40,
-        blank=True,
-        null=True,
-        validators=[validate_letters_numbers_underscores_spaces],
         help_text=_(
-            "De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben."
+            "URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE behoort."
         ),
     )
 

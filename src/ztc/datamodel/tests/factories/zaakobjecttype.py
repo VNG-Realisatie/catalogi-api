@@ -10,6 +10,7 @@ from .zaken import ZaakTypeFactory
 class ZaakObjectTypeFactory(factory.django.DjangoModelFactory):
     datum_begin_geldigheid = factory.Faker("date_this_year")
     relatie_omschrijving = factory.Faker("text", max_nb_chars=40)
+    objecttype = factory.Faker("url")
     catalogus = factory.SubFactory(CatalogusFactory)
     zaaktype = factory.SubFactory(ZaakTypeFactory)
 

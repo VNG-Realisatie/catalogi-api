@@ -76,7 +76,7 @@ class ZaakObjectTypeAPITests(APITestCase):
                 "anderObjecttype": False,
                 "beginGeldigheid": date(2021, 10, 30),
                 "eindeGeldigheid": date(2021, 11, 30),
-                "objecttype": "objecttype_1_2_3",
+                "objecttype": "https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc",
                 "relatieOmschrijving": "Test omschrijving",
                 "zaaktype": f"http://testserver{reverse(zaaktype)}",
                 "catalogus": f"http://testserver{reverse(catalogus)}",
@@ -149,22 +149,30 @@ class ZaakObjectTypeAPITests(APITestCase):
         """Filter through `ZaakObjectType` objects."""
         zaakobjecttype_1 = ZaakObjectTypeFactory(
             ander_objecttype=True,
-            objecttype="object_1_2_3",
+            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc",
             datum_begin_geldigheid=date(2021, 10, 30),
         )
-        ZaakObjectTypeFactory(ander_objecttype=True, objecttype="object_3_2_1")
+        ZaakObjectTypeFactory(
+            ander_objecttype=True,
+            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/bca"
+        )
         zaakobjecttype_2 = ZaakObjectTypeFactory(
             ander_objecttype=True,
-            objecttype="object_1_2_3",
+            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc",
             datum_begin_geldigheid=date(2021, 11, 30),
         )
-        ZaakObjectTypeFactory(ander_objecttype=True, objecttype="object_3_2_1")
+        ZaakObjectTypeFactory(
+            ander_objecttype=True,
+            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/bca"
+        )
 
         response = self.client.get(
             reverse("zaakobjecttype-list"),
             {
                 "anderObjecttype": True,
-                "objecttype": "object_1_2_3",
+                "objecttype": (
+                    "https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc"
+                ),
             },
         )
 
@@ -193,7 +201,9 @@ class ZaakObjectTypeAPITests(APITestCase):
                 "anderObjecttype": False,
                 "beginGeldigheid": date(2021, 10, 30),
                 "eindeGeldigheid": date(2021, 9, 30),
-                "objecttype": "objecttype_1_2_3",
+                "objecttype": (
+                    "https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc"
+                ),
                 "relatieOmschrijving": "Test omschrijving",
                 "zaaktype": f"http://testserver{reverse(zaaktype)}",
                 "catalogus": f"http://testserver{reverse(catalogus)}",
@@ -214,7 +224,7 @@ class ZaakObjectTypeAPITests(APITestCase):
                 "anderObjecttype": False,
                 "beginGeldigheid": date(2021, 10, 30),
                 "eindeGeldigheid": date(2021, 11, 30),
-                "objecttype": "#object_type_123",  # hashtags not allowed
+                "objecttype": "object_type_123",  # URL's are mandatory
                 "relatieOmschrijving": "Test omschrijving",
                 "zaaktype": f"http://testserver{reverse(zaaktype)}",
                 "catalogus": f"http://testserver{reverse(catalogus)}",
