@@ -154,7 +154,7 @@ class ZaakObjectTypeAPITests(APITestCase):
         )
         ZaakObjectTypeFactory(
             ander_objecttype=True,
-            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/bca"
+            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/bca",
         )
         zaakobjecttype_2 = ZaakObjectTypeFactory(
             ander_objecttype=True,
@@ -163,7 +163,7 @@ class ZaakObjectTypeAPITests(APITestCase):
         )
         ZaakObjectTypeFactory(
             ander_objecttype=True,
-            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/bca"
+            objecttype="https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/bca",
         )
 
         response = self.client.get(
