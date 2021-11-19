@@ -36,10 +36,7 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
         model_fields = [field.name for field in self.Meta.model._meta.fields]
 
         instance = self.Meta.model(
-            **{
-                field: value
-                for field, value in data.items() if field in model_fields
-            }
+            **{field: value for field, value in data.items() if field in model_fields}
         )
         instance.clean()
         return data

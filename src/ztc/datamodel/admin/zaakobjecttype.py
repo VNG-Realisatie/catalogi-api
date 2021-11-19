@@ -15,7 +15,7 @@ class ZaakObjectTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
         "datum_begin_geldigheid",
         "datum_einde_geldigheid",
         "zaaktype",
-        "uuid"
+        "uuid",
     )
 
     # Details

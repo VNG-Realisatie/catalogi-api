@@ -45,7 +45,9 @@ class ZaakObjectType(ETagMixin, GeldigheidMixin):
         "datamodel.ZaakType",
         verbose_name=_("Zaaktype"),
         related_name="objecttypen",
-        help_text=_("URL-referentie naar de ZAAKTYPE waartoe dit ZAAKOBJECTTYPE behoort."),
+        help_text=_(
+            "URL-referentie naar de ZAAKTYPE waartoe dit ZAAKOBJECTTYPE behoort."
+        ),
         on_delete=models.CASCADE,
     )
 
@@ -53,7 +55,9 @@ class ZaakObjectType(ETagMixin, GeldigheidMixin):
         "datamodel.Catalogus",
         verbose_name=_("Catalogus"),
         on_delete=models.CASCADE,
-        help_text=_("URL-referentie naar de CATALOGUS waartoe dit ZAAKOBJECTTYPE behoort."),
+        help_text=_(
+            "URL-referentie naar de CATALOGUS waartoe dit ZAAKOBJECTTYPE behoort."
+        ),
     )
 
     class Meta:

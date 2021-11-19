@@ -35,13 +35,11 @@ class ZaakObjectTypeAPITests(APITestCase):
         self.assertEqual(len(data), 2)
 
         self.assertEqual(
-            data[0]["url"],
-            f"http://testserver{reverse(zaakobjecttype_2)}"
+            data[0]["url"], f"http://testserver{reverse(zaakobjecttype_2)}"
         )
 
         self.assertEqual(
-            data[1]["url"],
-            f"http://testserver{reverse(zaakobjecttype_1)}"
+            data[1]["url"], f"http://testserver{reverse(zaakobjecttype_1)}"
         )
 
     def test_detail(self):
@@ -57,19 +55,14 @@ class ZaakObjectTypeAPITests(APITestCase):
         response = self.client.get(reverse(zaakobjecttype))
         data = response.json()
 
+        self.assertEqual(data["url"], f"http://testserver{reverse(zaakobjecttype)}")
+
         self.assertEqual(
-            data["url"],
-            f"http://testserver{reverse(zaakobjecttype)}"
+            data["statustypen"], [f"http://testserver{reverse(statustype)}"]
         )
 
         self.assertEqual(
-            data["statustypen"],
-            [f"http://testserver{reverse(statustype)}"]
-        )
-
-        self.assertEqual(
-            data["resultaattypen"],
-            [f"http://testserver{reverse(resultaattype)}"]
+            data["resultaattypen"], [f"http://testserver{reverse(resultaattype)}"]
         )
 
     def test_create(self):
@@ -88,7 +81,7 @@ class ZaakObjectTypeAPITests(APITestCase):
                 "zaaktype": f"http://testserver{reverse(zaaktype)}",
                 "catalogus": f"http://testserver{reverse(catalogus)}",
             },
-            format="json"
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -99,7 +92,7 @@ class ZaakObjectTypeAPITests(APITestCase):
         zaakobjecttype = ZaakObjectTypeFactory(
             relatie_omschrijving="Omschrijving 123",
             datum_begin_geldigheid=date(2021, 10, 30),
-            datum_einde_geldigheid=date(2021, 11, 30)
+            datum_einde_geldigheid=date(2021, 11, 30),
         )
 
         response = self.client.put(
@@ -113,20 +106,16 @@ class ZaakObjectTypeAPITests(APITestCase):
                 "zaaktype": f"http://testserver{reverse(zaakobjecttype.zaaktype)}",
                 "catalogus": f"http://testserver{reverse(zaakobjecttype.catalogus)}",
             },
-            format="json"
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         zaakobjecttype.refresh_from_db()
 
-        self.assertEqual(
-            zaakobjecttype.datum_einde_geldigheid, date(2021, 12, 30)
-        )
+        self.assertEqual(zaakobjecttype.datum_einde_geldigheid, date(2021, 12, 30))
 
-        self.assertEqual(
-            zaakobjecttype.relatie_omschrijving, "Omschrijving 321"
-        )
+        self.assertEqual(zaakobjecttype.relatie_omschrijving, "Omschrijving 321")
 
     def test_partial_update(self):
         """Partially update a `ZaakObjectType` object."""
@@ -135,8 +124,10 @@ class ZaakObjectTypeAPITests(APITestCase):
 
         response = self.client.patch(
             reverse(zaakobjecttype),
-            {"zaaktype": f"http://testserver{reverse(zaaktype)}",},
-            format="json"
+            {
+                "zaaktype": f"http://testserver{reverse(zaaktype)}",
+            },
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -161,9 +152,7 @@ class ZaakObjectTypeAPITests(APITestCase):
             objecttype="object_1_2_3",
             datum_begin_geldigheid=date(2021, 10, 30),
         )
-        ZaakObjectTypeFactory(
-            ander_objecttype=True, objecttype="object_3_2_1"
-        )
+        ZaakObjectTypeFactory(ander_objecttype=True, objecttype="object_3_2_1")
         zaakobjecttype_2 = ZaakObjectTypeFactory(
             ander_objecttype=True,
             objecttype="object_1_2_3",
@@ -176,8 +165,7 @@ class ZaakObjectTypeAPITests(APITestCase):
             {
                 "anderObjecttype": True,
                 "objecttype": "object_1_2_3",
-            }
-
+            },
         )
 
         data = response.json()["results"]
@@ -185,12 +173,10 @@ class ZaakObjectTypeAPITests(APITestCase):
         self.assertEqual(len(data), 2)
 
         self.assertEqual(
-            data[0]["url"],
-            f"http://testserver{reverse(zaakobjecttype_1)}"
+            data[0]["url"], f"http://testserver{reverse(zaakobjecttype_1)}"
         )
         self.assertEqual(
-            data[1]["url"],
-            f"http://testserver{reverse(zaakobjecttype_2)}"
+            data[1]["url"], f"http://testserver{reverse(zaakobjecttype_2)}"
         )
 
     def test_datum_validation(self):
@@ -212,7 +198,7 @@ class ZaakObjectTypeAPITests(APITestCase):
                 "zaaktype": f"http://testserver{reverse(zaaktype)}",
                 "catalogus": f"http://testserver{reverse(catalogus)}",
             },
-            format="json"
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -228,12 +214,12 @@ class ZaakObjectTypeAPITests(APITestCase):
                 "anderObjecttype": False,
                 "beginGeldigheid": date(2021, 10, 30),
                 "eindeGeldigheid": date(2021, 11, 30),
-                "objecttype": "#object_type_123", # hashtags not allowed
+                "objecttype": "#object_type_123",  # hashtags not allowed
                 "relatieOmschrijving": "Test omschrijving",
                 "zaaktype": f"http://testserver{reverse(zaaktype)}",
                 "catalogus": f"http://testserver{reverse(catalogus)}",
             },
-            format="json"
+            format="json",
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

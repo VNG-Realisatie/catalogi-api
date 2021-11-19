@@ -53,7 +53,7 @@ class ResultaatTypeAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        (_('Relaties'), {'fields': ("zaakobjecttypen",)}),
+        (_("Relaties"), {"fields": ("zaakobjecttypen",)}),
     )
     raw_id_fields = ("zaaktype",)
     filter_horizontal = ("zaakobjecttypen",)
