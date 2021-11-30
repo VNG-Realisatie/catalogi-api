@@ -1,5 +1,6 @@
 from rest_framework.serializers import HyperlinkedModelSerializer
 
+from ztc.api.utils.validators import RelationCatalogValidator
 from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
 
 
@@ -40,3 +41,7 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
         )
         instance.clean()
         return data
+
+    validators = [
+        RelationCatalogValidator("zaaktype"),
+    ]

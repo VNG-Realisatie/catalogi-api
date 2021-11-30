@@ -1,8 +1,9 @@
 from datetime import date
 
-from django.utils.http import urlencode
+from django.utils.translation import gettext as _
 
 from rest_framework import status
+from vng_api_common.tests.schema import get_validation_errors
 from vng_api_common.tests.urls import reverse
 
 from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
@@ -120,7 +121,7 @@ class ZaakObjectTypeAPITests(APITestCase):
     def test_partial_update(self):
         """Partially update a `ZaakObjectType` object."""
         zaakobjecttype = ZaakObjectTypeFactory()
-        zaaktype = ZaakTypeFactory()
+        zaaktype = ZaakTypeFactory(catalogus=zaakobjecttype.catalogus)
 
         response = self.client.patch(
             reverse(zaakobjecttype),
@@ -233,3 +234,36 @@ class ZaakObjectTypeAPITests(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_catalogus_validation(self):
+        """
+        Ensure catalogus validation works as intended. The given catalogus should match
+        with the catalogus from the related zaaktype.
+        """
+        catalogus = CatalogusFactory()
+        zaaktype = ZaakTypeFactory(catalogus=CatalogusFactory())
+
+        response = self.client.post(
+            reverse("zaakobjecttype-list"),
+            {
+                "anderObjecttype": False,
+                "beginGeldigheid": date(2021, 10, 30),
+                "eindeGeldigheid": date(2021, 11, 30),
+                "objecttype": (
+                    "https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc"
+                ),
+                "relatieOmschrijving": "Test omschrijving",
+                "zaaktype": f"http://testserver{reverse(zaaktype)}",
+                "catalogus": f"http://testserver{reverse(catalogus)}",
+            },
+            format="json",
+        )
+
+        error = get_validation_errors(response, "nonFieldErrors")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(error["code"], "relations-incorrect-catalogus")
+        self.assertEqual(
+            error["reason"],
+            _("The {} has catalogus different from created object").format("zaaktype"),
+        )

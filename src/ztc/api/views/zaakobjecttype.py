@@ -19,6 +19,9 @@ class ZaakObjectTypeViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """
     Opvragen en bewerken van ZAAKOBJECTTYPEn.
 
+    Er wordt gevalideerd op:
+    - `zaaktype` behoort tot dezelfde `catalogus`
+
     create:
     Maak een ZAAKOBJECTTYPE aan.
 
