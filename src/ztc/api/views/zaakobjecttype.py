@@ -16,6 +16,40 @@ from ..scopes import (
 # TODO add NotificationViewSetMixin?
 @conditional_retrieve()
 class ZaakObjectTypeViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
+    """
+    Opvragen en bewerken van ZAAKOBJECTTYPEn.
+
+    create:
+    Maak een ZAAKOBJECTTYPE aan.
+
+    Maak een ZAAKOBJECTTYPE aan.
+
+    list:
+    Alle ZAAKOBJECTTYPEn opvragen.
+
+    Deze lijst kan gefilterd wordt met query-string parameters.
+
+    retrieve:
+    Een specifieke ZAAKOBJECTTYPE opvragen.
+
+    Een specifieke ZAAKOBJECTTYPE opvragen.
+
+    update:
+    Werk een ZAAKOBJECTTYPE in zijn geheel bij.
+
+    Werk een ZAAKOBJECTTYPE in zijn geheel bij.
+
+    partial_update:
+    Werk een ZAAKOBJECTTYPE deels bij.
+
+    Werk een ZAAKOBJECTTYPE deels bij.
+
+    destroy:
+    Verwijder een ZAAKOBJECTTYPE.
+
+    Verwijder een ZAAKOBJECTTYPE.
+    """
+
     queryset = ZaakObjectType.objects.select_related(
         "zaaktype",
         "catalogus",

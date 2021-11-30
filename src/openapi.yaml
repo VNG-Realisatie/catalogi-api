@@ -2924,7 +2924,8 @@ paths:
   /zaakobjecttypen:
     get:
       operationId: zaakobjecttype_list
-      description: ''
+      summary: Alle ZAAKOBJECTTYPEn opvragen.
+      description: Deze lijst kan gefilterd wordt met query-string parameters.
       parameters:
       - name: anderObjecttype
         in: query
@@ -3036,7 +3037,8 @@ paths:
         - catalogi.lezen
     post:
       operationId: zaakobjecttype_create
-      description: ''
+      summary: Maak een ZAAKOBJECTTYPE aan.
+      description: Maak een ZAAKOBJECTTYPE aan.
       parameters:
       - name: Content-Type
         in: header
@@ -3093,7 +3095,8 @@ paths:
   /zaakobjecttypen/{uuid}:
     get:
       operationId: zaakobjecttype_read
-      description: ''
+      summary: Een specifieke ZAAKOBJECTTYPE opvragen.
+      description: Een specifieke ZAAKOBJECTTYPE opvragen.
       parameters:
       - name: If-None-Match
         in: header
@@ -3200,7 +3203,8 @@ paths:
         - catalogi.lezen
     put:
       operationId: zaakobjecttype_update
-      description: ''
+      summary: Werk een ZAAKOBJECTTYPE in zijn geheel bij.
+      description: Werk een ZAAKOBJECTTYPE in zijn geheel bij.
       parameters:
       - name: Content-Type
         in: header
@@ -3252,7 +3256,8 @@ paths:
         - catalogi.schrijven
     patch:
       operationId: zaakobjecttype_partial_update
-      description: ''
+      summary: Werk een ZAAKOBJECTTYPE deels bij.
+      description: Werk een ZAAKOBJECTTYPE deels bij.
       parameters:
       - name: Content-Type
         in: header
@@ -3304,7 +3309,8 @@ paths:
         - catalogi.schrijven
     delete:
       operationId: zaakobjecttype_delete
-      description: ''
+      summary: Verwijder een ZAAKOBJECTTYPE.
+      description: Verwijder een ZAAKOBJECTTYPE.
       responses:
         '204':
           description: No content
