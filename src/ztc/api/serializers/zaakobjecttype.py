@@ -1,10 +1,11 @@
+from django.utils.translation import gettext as _
+
 from rest_framework.serializers import HyperlinkedModelSerializer
 
 from ztc.api.utils.validators import RelationCatalogValidator
 from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
 
 
-# TODO doublecheck field help text when creating documentation
 class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = ZaakObjectType
@@ -24,8 +25,16 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "zaaktype": {"lookup_field": "uuid"},
-            "resultaattypen": {"lookup_field": "uuid", "read_only": True},
-            "statustypen": {"lookup_field": "uuid", "read_only": True},
+            "resultaattypen": {
+                "lookup_field": "uuid",
+                "read_only": True,
+                "help_text": _("URL-referenties naar de RESULTAATTYPEN."),
+            },
+            "statustypen": {
+                "lookup_field": "uuid",
+                "read_only": True,
+                "help_text": _("URL-referenties naar de STATUSTYPEN."),
+            },
             "catalogus": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},

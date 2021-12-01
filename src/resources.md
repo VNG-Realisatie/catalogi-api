@@ -169,8 +169,8 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | objecttype | URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
 | relatieOmschrijving | Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE. | string | ja | C​R​U​D |
 | zaaktype | URL-referentie naar de ZAAKTYPE waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
-| resultaattypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| statustypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| resultaattypen | URL-referenties naar de RESULTAATTYPEN. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| statustypen | URL-referenties naar de STATUSTYPEN. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
 
 ## ZaakTypenRelatie

@@ -5442,15 +5442,19 @@ components:
           type: string
           format: uri
         resultaattypen:
+          description: URL-referenties naar de RESULTAATTYPEN.
           type: array
           items:
+            description: URL-referenties naar de RESULTAATTYPEN.
             type: string
             format: uri
           readOnly: true
           uniqueItems: true
         statustypen:
+          description: URL-referenties naar de STATUSTYPEN.
           type: array
           items:
+            description: URL-referenties naar de STATUSTYPEN.
             type: string
             format: uri
           readOnly: true
