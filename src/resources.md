@@ -25,6 +25,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
+| resultaattypen | Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## Catalogus
 

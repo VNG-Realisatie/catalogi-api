@@ -5797,6 +5797,18 @@
                     "description": "Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
                     "type": "boolean",
                     "readOnly": true
+                },
+                "resultaattypen": {
+                    "description": "Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE.",
+                    "type": "array",
+                    "items": {
+                        "title": "Is resultaat van",
+                        "description": "Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE.",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
                 }
             }
         },
