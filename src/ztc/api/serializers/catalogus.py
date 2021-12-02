@@ -52,8 +52,17 @@ class CatalogusSerializer(serializers.HyperlinkedModelSerializer):
             "zaaktypen",
             "besluittypen",
             "informatieobjecttypen",
+            "naam",
+            "versie",
+            "begindatum_versie",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "rsin": {"validators": [validate_rsin]},
+            "begindatum_versie": {
+                "source": "datum_begin_versie",
+                "help_text": _(
+                    "Datum waarop de versie van de zaaktypecatalogus van toepassing is geworden."
+                ),
+            },
         }

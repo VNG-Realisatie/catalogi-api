@@ -48,7 +48,7 @@ class Catalogus(ETagMixin, models.Model):
         ),
     )
     contactpersoon_beheer_naam = models.CharField(
-        _("naam"),
+        _("naam contactpersoon"),
         max_length=40,
         help_text=_(
             "De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS."
@@ -70,6 +70,27 @@ class Catalogus(ETagMixin, models.Model):
         blank=True,
         help_text=_(
             "Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS."
+        ),
+    )
+
+    naam = models.CharField(
+        _("naam"),
+        max_length=200,
+        help_text=_("De benaming die is gegeven aan de zaaktypecatalogus."),
+    )
+
+    versie = models.CharField(
+        _("versie"),
+        max_length=20,
+        help_text=_(
+            "Versie-aanduiding van de van toepassing zijnde zaaktypecatalogus."
+        ),
+    )
+
+    datum_begin_versie = models.DateField(
+        _("begindatum versie"),
+        help_text=_(
+            "Datum waarop de versie van de zaaktypecatalogus van toepassing is geworden."
         ),
     )
 

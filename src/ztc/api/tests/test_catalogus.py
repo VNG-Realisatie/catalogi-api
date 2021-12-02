@@ -34,6 +34,9 @@ class CatalogusAPITests(APITestCase):
             "informatieobjecttypen": [],
             "zaaktypen": [],
             "besluittypen": [],
+            "naam": self.catalogus.naam,
+            "versie": self.catalogus.versie,
+            "begindatumVersie": str(self.catalogus.datum_begin_versie),
         }
         self.assertEqual(response.json(), expected)
 
@@ -44,6 +47,9 @@ class CatalogusAPITests(APITestCase):
             "rsin": "100000009",
             "contactpersoonBeheerNaam": "test",
             "contactpersoonBeheerEmailadres": "test@test.com",
+            "naam": "Category X",
+            "versie": "1",
+            "begindatumVersie": "2019-01-01",
         }
 
         response = self.client.post(self.catalogus_list_url, data)
@@ -61,6 +67,9 @@ class CatalogusAPITests(APITestCase):
             "rsin": "blabla",
             "contactpersoonBeheerNaam": "test",
             "contactpersoonBeheerEmailadres": "test@test.com",
+            "naam": "Category X",
+            "versie": "1",
+            "begindatumVersie": "2021-12-1",
         }
 
         response = self.client.post(self.catalogus_list_url, data)
@@ -77,6 +86,9 @@ class CatalogusAPITests(APITestCase):
             "rsin": "0000",
             "contactpersoonBeheerNaam": "test",
             "contactpersoonBeheerEmailadres": "test@test.com",
+            "naam": "Category X",
+            "versie": "1",
+            "begindatumVersie": "2021-12-1",
         }
 
         response = self.client.post(self.catalogus_list_url, data)
