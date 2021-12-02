@@ -8,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 
+from ztc.datamodel.models.mixins import GeldigheidMixin
+
 from ..choices import FormaatChoices
 from ..validators import (
     validate_kardinaliteit,
@@ -190,10 +192,9 @@ class EigenschapReferentie(models.Model):
 
         Deze validatie gaan we niet implementeren
         """
-        pass
 
 
-class Eigenschap(ETagMixin, models.Model):
+class Eigenschap(ETagMixin, GeldigheidMixin):
     """
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
     kenmerk is van een zaak.

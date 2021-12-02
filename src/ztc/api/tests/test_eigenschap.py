@@ -69,6 +69,8 @@ class EigenschapAPITests(APITestCase):
             },
             "toelichting": "",
             "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "beginGeldigheid": str(eigenschap.datum_begin_geldigheid),
+            "eindeGeldigheid": None,
         }
         self.assertEqual(expected, response.json())
 
@@ -119,6 +121,7 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
+            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.post(eigenschap_list_url, data)
@@ -146,6 +149,7 @@ class EigenschapAPITests(APITestCase):
             "definitie": "test",
             "toelichting": "",
             "zaaktype": zaaktype_url,
+            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.post(reverse(Eigenschap), data)
@@ -171,6 +175,7 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
+            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.post(eigenschap_list_url, data)
@@ -221,6 +226,7 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
+            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.put(eigenschap_url, data)
@@ -258,6 +264,7 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
+            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.put(eigenschap_url, data)
@@ -285,6 +292,7 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
+            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.put(eigenschap_url, data)
@@ -308,7 +316,7 @@ class EigenschapAPITests(APITestCase):
 
     def test_partial_update_eigenschap_specificatie(self):
         zaaktype = ZaakTypeFactory.create()
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         specificatie = EigenschapSpecificatieFactory.create()
         eigenschap = EigenschapFactory.create()
         eigenschap_url = reverse(eigenschap)
