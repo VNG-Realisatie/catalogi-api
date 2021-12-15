@@ -154,6 +154,7 @@ class InformatieObjectType(
 
     zaaktypen = models.ManyToManyField(
         "datamodel.ZaakType",
+        blank=True,
         verbose_name=_("zaaktypen"),
         related_name="informatieobjecttypen",
         through="datamodel.ZaakInformatieobjectType",
