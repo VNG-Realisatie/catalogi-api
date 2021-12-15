@@ -21,8 +21,6 @@ class EigenschapFactory(factory.django.DjangoModelFactory):
     zaaktype = factory.SubFactory(ZaakTypeFactory)
     specificatie_van_eigenschap = factory.SubFactory(EigenschapSpecificatieFactory)
 
-    datum_begin_geldigheid = factory.Faker("date_this_decade")
-
     class Meta:
         model = Eigenschap
 

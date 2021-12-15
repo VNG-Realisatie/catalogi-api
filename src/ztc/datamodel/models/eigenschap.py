@@ -274,6 +274,13 @@ class Eigenschap(ETagMixin, GeldigheidMixin):
         ),
     )
 
+    datum_begin_geldigheid = models.DateField(
+        _("datum begin geldigheid"),
+        blank=True,
+        null=True,
+        help_text=_("De datum waarop het is ontstaan."),
+    )
+
     # shouldn't this be a M2M?
     statustype = models.ForeignKey(
         "datamodel.StatusType",

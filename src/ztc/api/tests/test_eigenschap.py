@@ -1,3 +1,4 @@
+from datetime import date
 from unittest import skip
 
 from rest_framework import status
@@ -47,6 +48,8 @@ class EigenschapAPITests(APITestCase):
             eigenschapnaam="Beoogd product",
             zaaktype=zaaktype,
             specificatie_van_eigenschap=specificatie,
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=date(2021, 2, 1),
         )
         eigenschap_detail_url = reverse(
             "eigenschap-detail", kwargs={"uuid": eigenschap.uuid}
@@ -69,8 +72,8 @@ class EigenschapAPITests(APITestCase):
             },
             "toelichting": "",
             "zaaktype": "http://testserver{}".format(zaaktype_url),
-            "beginGeldigheid": str(eigenschap.datum_begin_geldigheid),
-            "eindeGeldigheid": None,
+            "beginGeldigheid": "2021-01-01",
+            "eindeGeldigheid": "2021-02-01",
         }
         self.assertEqual(expected, response.json())
 
@@ -121,7 +124,6 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
-            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.post(eigenschap_list_url, data)
@@ -149,7 +151,6 @@ class EigenschapAPITests(APITestCase):
             "definitie": "test",
             "toelichting": "",
             "zaaktype": zaaktype_url,
-            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.post(reverse(Eigenschap), data)
@@ -175,7 +176,6 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
-            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.post(eigenschap_list_url, data)
@@ -226,7 +226,6 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
-            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.put(eigenschap_url, data)
@@ -264,7 +263,6 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
-            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.put(eigenschap_url, data)
@@ -292,7 +290,6 @@ class EigenschapAPITests(APITestCase):
                 "kardinaliteit": "1",
                 "waardenverzameling": [],
             },
-            "beginGeldigheid": "2021-01-01",
         }
 
         response = self.client.put(eigenschap_url, data)
