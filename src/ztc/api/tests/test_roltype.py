@@ -1,6 +1,8 @@
+from datetime import date
+
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
-from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.tests import get_validation_errors, reverse
 
 from ztc.api.validators import ZaakTypeConceptValidator
 
@@ -34,9 +36,16 @@ class RolTypeAPITests(APITestCase):
             omschrijving="Vergunningaanvrager",
             omschrijving_generiek=RolOmschrijving.initiator,
             soort_betrokkene=["Aanvrager"],
+            catalogus=self.catalogus,
             zaaktype__catalogus=self.catalogus,
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=date(2021, 2, 1),
         )
         zaaktype = rol_type.zaaktype
+
+        catalogus_url = reverse(
+            "catalogus-detail", kwargs={"uuid": self.catalogus.uuid}
+        )
         rol_type_detail_url = reverse("roltype-detail", kwargs={"uuid": rol_type.uuid})
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
 
@@ -46,11 +55,12 @@ class RolTypeAPITests(APITestCase):
 
         expected = {
             "url": f"http://testserver{rol_type_detail_url}",
-            # 'ingangsdatumObject': '2018-01-01',
-            # 'einddatumObject': None,
             "zaaktype": f"http://testserver{zaaktype_url}",
             "omschrijving": "Vergunningaanvrager",
             "omschrijvingGeneriek": RolOmschrijving.initiator,
+            "catalogus": f"http://testserver{catalogus_url}",
+            "beginGeldigheid": "2021-01-01",
+            "eindeGeldigheid": "2021-02-01",
         }
         self.assertEqual(expected, response.json())
 
@@ -172,7 +182,7 @@ class RolTypeAPITests(APITestCase):
 
     def test_partial_update_roltype(self):
         zaaktype = ZaakTypeFactory.create()
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         roltype = RolTypeFactory.create(zaaktype=zaaktype)
         roltype_url = reverse(roltype)
 
@@ -186,7 +196,7 @@ class RolTypeAPITests(APITestCase):
 
     def test_partial_update_roltype_fail_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         roltype = RolTypeFactory.create(zaaktype=zaaktype)
         roltype_url = reverse(roltype)
 

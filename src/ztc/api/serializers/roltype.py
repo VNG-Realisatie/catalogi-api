@@ -1,6 +1,6 @@
 from drf_writable_nested import NestedCreateMixin
 from rest_framework import serializers
-from vng_api_common.constants import RolOmschrijving, RolTypes
+from vng_api_common.constants import RolOmschrijving
 from vng_api_common.serializers import add_choice_values_help_text
 
 from ...datamodel.models import RolType
@@ -8,17 +8,6 @@ from ..validators import ZaakTypeConceptValidator
 
 
 class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerializer):
-    # magZetten = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='mag_zetten',
-    #     view_name='api:statustype-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_uuid': 'zaaktype__catalogus__uuid',
-    #         'zaaktype_uuid': 'zaaktype__uuid',
-    #     },
-    # )
-
     class Meta:
         model = RolType
         fields = (
@@ -26,14 +15,16 @@ class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerialize
             "zaaktype",
             "omschrijving",
             "omschrijving_generiek",
-            # 'ingangsdatumObject',
-            # 'einddatumObject',
-            # 'soortBetrokkene',
-            # 'magZetten',
+            "catalogus",
+            "begin_geldigheid",
+            "einde_geldigheid",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "zaaktype": {"lookup_field": "uuid"},
+            "catalogus": {"lookup_field": "uuid"},
+            "begin_geldigheid": {"source": "datum_begin_geldigheid"},
+            "einde_geldigheid": {"source": "datum_einde_geldigheid"},
         }
         validators = [ZaakTypeConceptValidator()]
 
