@@ -13,8 +13,10 @@ from vng_api_common.constants import (
 )
 from vng_api_common.descriptors import GegevensGroepType
 
+from ztc.datamodel.models.mixins import GeldigheidMixin
 
-class ResultaatType(ETagMixin, models.Model):
+
+class ResultaatType(ETagMixin, GeldigheidMixin):
     """
     Het betreft de indeling of groepering van resultaten van zaken van hetzelfde
     ZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', et cetera.
@@ -168,8 +170,10 @@ class ResultaatType(ETagMixin, models.Model):
             "De naam van de registratie waarvan het procesobject deel uit maakt."
         ),
     )
+
+    # TODO: remove this field? see description on documentation
     brondatum_archiefprocedure_procestermijn = RelativeDeltaField(
-        _("procestermijn"),
+        _("brondatum procestermijn"),
         null=True,
         blank=True,
         help_text=_(
@@ -187,6 +191,7 @@ class ResultaatType(ETagMixin, models.Model):
             "einddatum_bekend": brondatum_archiefprocedure_einddatum_bekend,
             "objecttype": brondatum_archiefprocedure_objecttype,
             "registratie": brondatum_archiefprocedure_registratie,
+            # TODO: remove this field? see description on documentation
             "procestermijn": brondatum_archiefprocedure_procestermijn,
         },
         optional=(
@@ -194,9 +199,72 @@ class ResultaatType(ETagMixin, models.Model):
             "einddatum_bekend",
             "objecttype",
             "registratie",
+            # TODO: remove this field? see description on documentation
             "procestermijn",
         ),
         none_for_empty=False,
+    )
+
+    datum_begin_geldigheid = models.DateField(
+        _("datum begin geldigheid"),
+        blank=True,
+        null=True,
+        help_text=_("De datum waarop het is ontstaan."),
+    )
+
+    catalogus = models.ForeignKey(
+        "datamodel.Catalogus",
+        verbose_name=_("catalogus"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text=_(
+            "URL-referentie naar de CATALOGUS waartoe dit RESULTAATTYPE behoort."
+        ),
+    )
+
+    procesobjectaard = models.CharField(
+        _("procesobjectaard"),
+        null=True,
+        blank=True,
+        max_length=200,
+        help_text=_(
+            "Omschrijving van het object, subject of gebeurtenis waarop,"
+            " vanuit archiveringsoptiek, het resultaattype bij zaken van dit"
+            " type betrekking heeft."
+        ),
+    )
+
+    indicatie_specifiek = models.BooleanField(
+        _("indicatie specifiek"),
+        null=True,
+        blank=True,
+        help_text=_(
+            "Aanduiding of het, vanuit archiveringsoptiek, een resultaattype"
+            " betreft dat specifiek is voor een bepaalde procesobjectaard."
+        ),
+    )
+
+    procestermijn = RelativeDeltaField(
+        _("procestermijn"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "De periode dat het zaakdossier na afronding van de zaak actief"
+            " gebruikt en/of geraadpleegd wordt ter ondersteuning van de"
+            " taakuitoefening van de organisatie."
+        ),
+    )
+
+    informatieobjecttypen = models.ManyToManyField(
+        "datamodel.InformatieObjectType",
+        verbose_name=_("informatieobjecttypen"),
+        blank=True,
+        help_text=_(
+            "De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het "
+            "zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van "
+            "dit RESULTAATTYPE kan worden gezet."
+        ),
     )
 
     # meta-information - this is mostly informative

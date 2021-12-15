@@ -70,6 +70,14 @@ class ResultaatTypeSerializer(
             "archiefnominatie",
             "archiefactietermijn",
             "brondatum_archiefprocedure",
+            "procesobjectaard",
+            "catalogus",
+            "begin_geldigheid",
+            "einde_geldigheid",
+            "indicatie_specifiek",
+            "procestermijn",
+            "besluittypen",
+            "informatieobjecttypen",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
@@ -93,6 +101,21 @@ class ResultaatTypeSerializer(
                     ResourceValidator("Resultaat", settings.REFERENTIELIJSTEN_API_SPEC)
                 ]
             },
+            "catalogus": {"lookup_field": "uuid"},
+            "begin_geldigheid": {
+                "source": "datum_begin_geldigheid",
+                "help_text": _("De datum waarop de RESULTAATTYPE is ontstaan."),
+            },
+            "einde_geldigheid": {
+                "source": "datum_einde_geldigheid",
+                "help_text": _("De datum waarop de RESULTAATTYPE is opgeheven."),
+            },
+            "besluittypen": {
+                "lookup_field": "uuid",
+                "source": "besluittype_set",
+                "required": False,
+            },
+            "informatieobjecttypen": {"lookup_field": "uuid", "required": False},
         }
         validators = [
             UniqueTogetherValidator(

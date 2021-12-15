@@ -15,6 +15,24 @@ class ResultaatTypeFactory(factory.django.DjangoModelFactory):
     archiefnominatie = factory.fuzzy.FuzzyChoice(["blijvend_bewaren", "vernietigen"])
     archiefactietermijn = relativedelta(years=10)
 
+    @factory.post_generation
+    def besluittypen(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for besluittype in extracted:
+                self.besluittype_set.add(besluittype)
+
+    @factory.post_generation
+    def informatieobjecttypen(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for informatieobjecttype in extracted:
+                self.informatieobjecttypen.add(informatieobjecttype)
+
     class Meta:
         model = ResultaatType
 
