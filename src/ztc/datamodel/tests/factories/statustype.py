@@ -30,3 +30,12 @@ class StatusTypeFactory(factory.django.DjangoModelFactory):
 
         for roltype in extracted:
             self.roltypen.add(roltype)
+
+    @factory.post_generation
+    def eigenschappen(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for eigenschap in extracted:
+                self.eigenschappen.add(eigenschap)

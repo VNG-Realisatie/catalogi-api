@@ -26,27 +26,6 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
         ),
     )
 
-    # heeftVerplichteEigenschap = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_verplichte_eigenschap',
-    #     view_name='api:eigenschap-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_van__catalogus__pk',
-    #         'zaaktype_pk': 'is_van__pk'
-    #     },
-    # )
-    # heeftVerplichteInformatieobjecttype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_verplichte_zit',
-    #     view_name='api:zktiot-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype__catalogus__pk',
-    #         'zaaktype_pk': 'zaaktype__pk',
-    #     },
-    # )
-
     class Meta:
         model = StatusType
         fields = (
@@ -57,14 +36,10 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "zaaktype",
             "volgnummer",
             "is_eindstatus",
-            # 'doorlooptijd',
-            # 'checklistitem',
             "informeren",
-            # 'toelichting',
-            # 'ingangsdatumObject',
-            # 'einddatumObject',
-            # 'heeftVerplichteInformatieobjecttype',
-            # 'heeftVerplichteEigenschap',
+            "eigenschappen",
+            "begin_geldigheid",
+            "einde_geldigheid",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
@@ -72,5 +47,8 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek": {"source": "statustype_omschrijving_generiek"},
             "volgnummer": {"source": "statustypevolgnummer"},
             "zaaktype": {"lookup_field": "uuid"},
+            "eigenschappen": {"lookup_field": "uuid"},
+            "begin_geldigheid": {"source": "datum_begin_geldigheid"},
+            "einde_geldigheid": {"source": "datum_einde_geldigheid"},
         }
         validators = [ZaakTypeConceptValidator()]

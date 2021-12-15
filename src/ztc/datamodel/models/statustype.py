@@ -7,6 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 
+from ztc.datamodel.models.mixins import GeldigheidMixin
+
 
 class CheckListItem(models.Model):
     """
@@ -52,7 +54,7 @@ class CheckListItem(models.Model):
     )
 
 
-class StatusType(ETagMixin, models.Model):
+class StatusType(ETagMixin, GeldigheidMixin):
     """
     Generieke aanduiding van de aard van een STATUS
 
@@ -86,6 +88,17 @@ class StatusType(ETagMixin, models.Model):
         verbose_name=_("Zaakobjecttypen"),
         related_name="statustypen",
         on_delete=models.CASCADE,
+    )
+
+    eigenschappen = models.ManyToManyField(
+        "Eigenschap",
+        blank=True,
+        verbose_name=_("eigenschappen"),
+        related_name="statustypen",
+        help_text=_(
+            "de EIGENSCHAPpen die verplicht een waarde moeten hebben gekregen, "
+            "voordat een STATUS van dit STATUSTYPE kan worden gezet."
+        ),
     )
 
     # attributes
@@ -155,6 +168,13 @@ class StatusType(ETagMixin, models.Model):
         blank=True,
         null=True,
         help_text=_("Een eventuele toelichting op dit STATUSTYPE."),
+    )
+
+    datum_begin_geldigheid = models.DateField(
+        _("datum begin geldigheid"),
+        blank=True,
+        null=True,
+        help_text=_("De datum waarop het is ontstaan."),
     )
 
     # TODO: deze relatie is gedefinieerd op RolType en heeft de volgende regel:
