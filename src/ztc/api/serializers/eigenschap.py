@@ -46,7 +46,6 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
     specificatie = EigenschapSpecificatieSerializer(
         source="specificatie_van_eigenschap"
     )
-    # referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
 
     class Meta:
         model = Eigenschap
@@ -57,6 +56,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             "specificatie",
             "toelichting",
             "zaaktype",
+            "statustype",
             "begin_geldigheid",
             "einde_geldigheid",
         )
@@ -64,6 +64,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             "url": {"lookup_field": "uuid"},
             "naam": {"source": "eigenschapnaam"},
             "zaaktype": {"lookup_field": "uuid"},
+            "statustype": {"lookup_field": "uuid"},
             "begin_geldigheid": {
                 "source": "datum_begin_geldigheid",
                 "help_text": _("De datum waarop de EIGENSCHAP is ontstaan."),
