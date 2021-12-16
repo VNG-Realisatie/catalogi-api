@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from ztc.datamodel.admin.forms import ZaakObjectTypeForm
+
 from ..models import ZaakObjectType
 from .mixins import FilterSearchOrderingAdminMixin
 
@@ -8,6 +10,7 @@ from .mixins import FilterSearchOrderingAdminMixin
 @admin.register(ZaakObjectType)
 class ZaakObjectTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
     model = ZaakObjectType
+    form = ZaakObjectTypeForm
 
     # List
     list_display = (
@@ -16,6 +19,17 @@ class ZaakObjectTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
         "datum_einde_geldigheid",
         "zaaktype",
         "uuid",
+    )
+
+    list_filter = (
+        "ander_objecttype",
+        "catalogus",
+    )
+
+    search_fields = (
+        "uuid",
+        "relatie_omschrijving",
+        "zaaktype__identificatie",
     )
 
     # Details

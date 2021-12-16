@@ -1,6 +1,6 @@
 from django.utils.translation import gettext as _
 
-from rest_framework.serializers import HyperlinkedModelSerializer
+from rest_framework.serializers import HyperlinkedModelSerializer, ValidationError
 
 from ztc.api.utils.validators import RelationCatalogValidator
 from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
@@ -49,6 +49,22 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
             **{field: value for field, value in data.items() if field in model_fields}
         )
         instance.clean()
+
+        if self.instance:
+            zaaktype = data.get("zaaktype") or self.instance.zaaktype
+
+            if not zaaktype.concept:
+                message = _("Objects related to non-concept objects can't be updated")
+                raise ValidationError(message, code="non-concept-relation")
+        else:
+            zaaktype = data.get("zaaktype")
+
+            if not zaaktype.concept:
+                message = _(
+                    "Creating relations between non-concept objects is forbidden"
+                )
+                raise ValidationError(message, code="non-concept-relation")
+
         return data
 
     validators = [

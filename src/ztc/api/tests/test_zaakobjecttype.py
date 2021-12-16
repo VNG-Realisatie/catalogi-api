@@ -267,3 +267,51 @@ class ZaakObjectTypeAPITests(APITestCase):
             error["reason"],
             _("The {} has catalogus different from created object").format("zaaktype"),
         )
+
+    def test_create_zaakobjecttype_non_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory(catalogus=self.catalogus, concept=False)
+
+        response = self.client.post(
+            reverse("zaakobjecttype-list"),
+            {
+                "anderObjecttype": False,
+                "beginGeldigheid": date(2021, 10, 30),
+                "eindeGeldigheid": date(2021, 11, 30),
+                "objecttype": "https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc",
+                "relatieOmschrijving": "Test omschrijving",
+                "zaaktype": f"http://testserver{reverse(zaaktype)}",
+                "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-relation")
+
+    def test_update_zaakobjecttype_non_concept_zaaktype(self):
+        zaakobjecttype = ZaakObjectTypeFactory(
+            catalogus=self.catalogus,
+            zaaktype__catalogus=self.catalogus,
+            zaaktype__concept=False,
+        )
+
+        response = self.client.put(
+            reverse(zaakobjecttype),
+            {
+                "anderObjecttype": zaakobjecttype.ander_objecttype,
+                "beginGeldigheid": zaakobjecttype.datum_begin_geldigheid,
+                "eindeGeldigheid": zaakobjecttype.datum_einde_geldigheid,
+                "objecttype": zaakobjecttype.objecttype,
+                "relatieOmschrijving": "Omschrijving 321",
+                "zaaktype": f"http://testserver{reverse(zaakobjecttype.zaaktype)}",
+                "catalogus": f"http://testserver{reverse(zaakobjecttype.catalogus)}",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "nonFieldErrors")
+        self.assertEqual(error["code"], "non-concept-relation")
