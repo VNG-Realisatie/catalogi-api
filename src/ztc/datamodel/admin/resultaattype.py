@@ -53,14 +53,10 @@ class ResultaatTypeAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        # (_('Relaties'), {
-        #     'fields': (
-        #         'heeft_verplichte_zot',
-        #         'heeft_verplichte_ziot'
-        #     )
-        # }),
+        (_("Relaties"), {"fields": ("zaakobjecttypen",)}),
     )
     raw_id_fields = ("zaaktype",)
+    filter_horizontal = ("zaakobjecttypen",)
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if isinstance(db_field, RelativeDeltaField):

@@ -10,6 +10,8 @@ from vng_api_common.constants import (
 )
 from vng_api_common.validators import ResourceValidator
 
+from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
+
 from ..constants import SelectielijstKlasseProcestermijn as Procestermijn
 from ..models import ResultaatType, ZaakType
 
@@ -48,6 +50,22 @@ class ZaakTypeForm(forms.ModelForm):
         self.fields[
             "verantwoordingsrelatie"
         ].help_text += " Gebruik een komma om waarden van elkaar te onderscheiden."
+
+
+class ZaakObjectTypeForm(forms.ModelForm):
+    class Meta:
+        model = ZaakObjectType
+        fields = "__all__"
+
+    def clean(self):
+        super().clean()
+
+        zaaktype = self.cleaned_data.get("zaaktype")
+
+        if zaaktype and not zaaktype.concept:
+            raise forms.ValidationError(
+                _("Objects related to non-concept objects can't be updated or created.")
+            )
 
 
 class ResultaatTypeForm(forms.ModelForm):

@@ -20,6 +20,7 @@ from ztc.datamodel.models import (
     ZaakInformatieobjectType,
     ZaakType,
 )
+from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
 
 # custom filter to show concept and non-concepts
 STATUS_HELP_TEXT = """filter objects depending on their concept status:
@@ -126,6 +127,20 @@ class ZaakTypeFilter(FilterSet):
     class Meta:
         model = ZaakType
         fields = ("catalogus", "identificatie", "trefwoorden", "status")
+
+
+class ZaakObjectTypeFilter(FilterSet):
+    class Meta:
+        model = ZaakObjectType
+        fields = (
+            "ander_objecttype",
+            "catalogus",
+            "datum_begin_geldigheid",
+            "datum_einde_geldigheid",
+            "objecttype",
+            "relatie_omschrijving",
+            "zaaktype",
+        )
 
 
 class InformatieObjectTypeFilter(FilterSet):

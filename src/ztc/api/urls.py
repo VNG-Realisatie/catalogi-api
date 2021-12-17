@@ -12,6 +12,7 @@ from .views import (
     ResultaatTypeViewSet,
     RolTypeViewSet,
     StatusTypeViewSet,
+    ZaakObjectTypeViewSet,
     ZaakTypeInformatieObjectTypeViewSet,
     ZaakTypeViewSet,
 )
@@ -19,6 +20,7 @@ from .views import (
 router = routers.DefaultRouter()
 router.register(r"catalogussen", CatalogusViewSet)
 router.register(r"zaaktypen", ZaakTypeViewSet)
+router.register(r"zaakobjecttypen", ZaakObjectTypeViewSet)
 router.register(r"statustypen", StatusTypeViewSet)
 router.register(r"eigenschappen", EigenschapViewSet)
 router.register(r"roltypen", RolTypeViewSet)

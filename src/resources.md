@@ -156,6 +156,23 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | isEindstatus | Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 | informeren | Aanduiding die aangeeft of na het zetten van een STATUS van dit STATUSTYPE de Initiator moet worden geïnformeerd over de statusovergang. | boolean | nee | C​R​U​D |
 
+## ZaakObjectType
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/zaakobjecttype)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| anderObjecttype | Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft. | boolean | ja | C​R​U​D |
+| beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
+| eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| objecttype | URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
+| relatieOmschrijving | Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE. | string | ja | C​R​U​D |
+| zaaktype | URL-referentie naar de ZAAKTYPE waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
+| resultaattypen | URL-referenties naar de RESULTAATTYPEN. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| statustypen | URL-referenties naar de STATUSTYPEN. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| catalogus | URL-referentie naar de CATALOGUS waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
+
 ## ZaakTypenRelatie
 
 Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/zaaktypenrelatie)

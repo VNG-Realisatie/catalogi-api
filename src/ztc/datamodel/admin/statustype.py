@@ -34,7 +34,13 @@ class StatusTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
                 )
             },
         ),
-        (_("Relaties"), {"fields": ("zaaktype", "checklistitem", "roltypen")}),
+        (
+            _("Relaties"),
+            {"fields": ("zaaktype", "zaakobjecttype", "checklistitem", "roltypen")},
+        ),
     )
     filter_horizontal = ("roltypen", "checklistitem")
-    raw_id_fields = ("zaaktype",)
+    raw_id_fields = (
+        "zaaktype",
+        "zaakobjecttype",
+    )
