@@ -5,11 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import RSINField
+from vng_api_common.models import APIMixin
 
 from ..validators import validate_uppercase
 
 
-class Catalogus(ETagMixin, models.Model):
+class Catalogus(ETagMixin, APIMixin, models.Model):
     """
     De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor
     een Domein die als één geheel beheerd wordt.

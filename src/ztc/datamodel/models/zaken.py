@@ -7,12 +7,17 @@ from django.utils.translation import ugettext_lazy as _
 from django_better_admin_arrayfield.models.fields import ArrayField
 from vng_api_common.caching import ETagMixin
 from vng_api_common.descriptors import GegevensGroepType
-from vng_api_common.fields import DaysDurationField, VertrouwelijkheidsAanduidingField
+from vng_api_common.fields import (
+    DaysDurationField,
+    RSINField,
+    VertrouwelijkheidsAanduidingField,
+)
 from vng_api_common.models import APIMixin
 from vng_api_common.utils import generate_unique_identification
 from vng_api_common.validators import alphanumeric_excluding_diacritic
 
 from ..choices import InternExtern
+from ..validators import validate_uppercase
 from .mixins import ConceptMixin, GeldigheidMixin
 
 
@@ -55,6 +60,7 @@ class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model)
         max_length=80,
         help_text=_("Omschrijving van de aard van ZAAKen van het ZAAKTYPE."),
     )
+
     # TODO [KING]: waardenverzameling zoals vastgelegt in CATALOGUS, wat is deze waardeverzameling dan?
     zaaktype_omschrijving_generiek = models.CharField(
         _("omschrijving generiek"),
@@ -302,6 +308,71 @@ class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model)
         verbose_name=_("Catalogus"),
         on_delete=models.CASCADE,
         help_text=_("URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort."),
+    )
+
+    broncatalogus_url = models.URLField(
+        _("URL-referentie broncatalogus"),
+        blank=True,
+        null=True,
+    )
+    broncatalogus_domein = models.CharField(
+        _("broncatalogus domein"),
+        max_length=5,
+        validators=[validate_uppercase],
+        blank=True,
+        null=True,
+        help_text=_("Het domein van de CATALOGUS waaraan het ZAAKTYPE is ontleend."),
+    )
+    broncatalogus_rsin = RSINField(
+        _("broncatalogus rsin"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Het RSIN van de INGESCHREVEN NIET-NATUURLIJK PERSOON die beheerder"
+            " is van de CATALOGUS waaraan het ZAAKTYPE is ontleend."
+        ),
+    )
+
+    broncatalogus = GegevensGroepType(
+        {
+            "url": broncatalogus_url,
+            "domein": broncatalogus_domein,
+            "rsin": broncatalogus_rsin,
+        },
+    )
+
+    bronzaaktype_url = models.URLField(
+        _("URL-referentie bronzaaktype"),
+        blank=True,
+        null=True,
+    )
+    bronzaaktype_identificatie = models.CharField(
+        _("bronzaaktype identificatie"),
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text=_(
+            "De Zaaktype-identificatie van het bronzaaktype binnen de CATALOGUS."
+        ),
+        validators=[alphanumeric_excluding_diacritic],
+    )
+    bronzaaktype_omschrijving = models.CharField(
+        _("bronzaaktype omschrijving"),
+        max_length=80,
+        blank=True,
+        null=True,
+        help_text=_(
+            "De Zaaktype-omschrijving van het bronzaaktype, zoals gehanteerd in"
+            " de Broncatalogus."
+        ),
+    )
+
+    bronzaaktype = GegevensGroepType(
+        {
+            "url": bronzaaktype_url,
+            "identificatie": bronzaaktype_identificatie,
+            "omschrijving": bronzaaktype_omschrijving,
+        },
     )
 
     IDENTIFICATIE_PREFIX = "ZAAKTYPE"

@@ -46,6 +46,7 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
     referentieproces_naam = factory.Sequence(lambda n: "ReferentieProces {}".format(n))
     producten_of_diensten = ["https://example.com/product/123"]
 
+    verantwoordelijke = factory.Sequence(lambda n: "Organisatie {n}")
     datum_begin_geldigheid = date(2018, 1, 1)
     versiedatum = date(2018, 1, 1)
 
@@ -75,3 +76,12 @@ class ZaakTypeFactory(factory.django.DjangoModelFactory):
         if extracted:
             for zaaktype in extracted:
                 self.deelzaaktypen.add(zaaktype)
+
+    @factory.post_generation
+    def objecttypen(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for zaakobjecttype in extracted:
+                self.objecttypen.add(zaakobjecttype)
