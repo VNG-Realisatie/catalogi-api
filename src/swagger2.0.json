@@ -5971,7 +5971,7 @@
                     "minLength": 1
                 },
                 "contactpersoonBeheerNaam": {
-                    "title": "Naam",
+                    "title": "Naam contactpersoon",
                     "description": "De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS.",
                     "type": "string",
                     "maxLength": 40,
@@ -6022,6 +6022,27 @@
                     },
                     "readOnly": true,
                     "uniqueItems": true
+                },
+                "naam": {
+                    "title": "Naam",
+                    "description": "De benaming die is gegeven aan de zaaktypecatalogus.",
+                    "type": "string",
+                    "maxLength": 200,
+                    "x-nullable": true
+                },
+                "versie": {
+                    "title": "Versie",
+                    "description": "Versie-aanduiding van de van toepassing zijnde zaaktypecatalogus.",
+                    "type": "string",
+                    "maxLength": 20,
+                    "x-nullable": true
+                },
+                "begindatumVersie": {
+                    "title": "Begindatum versie",
+                    "description": "Datum waarop de versie van de zaaktypecatalogus van toepassing is geworden.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
                 }
             }
         },
@@ -6123,6 +6144,27 @@
                     "description": "URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is.",
                     "type": "string",
                     "format": "uri"
+                },
+                "statustype": {
+                    "title": "Status type",
+                    "description": "Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een STATUS van het STATUSTYPE kan worden gezet.",
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                },
+                "beginGeldigheid": {
+                    "title": "Begin geldigheid",
+                    "description": "De datum waarop de EIGENSCHAP is ontstaan.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeGeldigheid": {
+                    "title": "Einde geldigheid",
+                    "description": "De datum waarop de EIGENSCHAP is opgeheven.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
                 }
             }
         },
@@ -6190,6 +6232,28 @@
                     "description": "Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
                     "type": "boolean",
                     "readOnly": true
+                },
+                "zaaktypen": {
+                    "description": "URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE.",
+                    "type": "array",
+                    "items": {
+                        "description": "URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE.",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                },
+                "besluittypen": {
+                    "description": "URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.",
+                    "type": "array",
+                    "items": {
+                        "description": "URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
                 }
             }
         },
@@ -6273,7 +6337,7 @@
                     "maxLength": 80
                 },
                 "procestermijn": {
-                    "title": "Procestermijn",
+                    "title": "Brondatum procestermijn",
                     "description": "De periode dat het zaakdossier na afronding van de zaak actief gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening van de organisatie. Enkel relevant indien de afleidingswijze 'termijn' is.",
                     "type": "string",
                     "format": "duration",
@@ -6359,6 +6423,67 @@
                 },
                 "brondatumArchiefprocedure": {
                     "$ref": "#/definitions/BrondatumArchiefprocedure"
+                },
+                "procesobjectaard": {
+                    "title": "Procesobjectaard",
+                    "description": "Omschrijving van het object, subject of gebeurtenis waarop, vanuit archiveringsoptiek, het resultaattype bij zaken van dit type betrekking heeft.",
+                    "type": "string",
+                    "maxLength": 200,
+                    "x-nullable": true
+                },
+                "catalogus": {
+                    "title": "Catalogus",
+                    "description": "URL-referentie naar de CATALOGUS waartoe dit RESULTAATTYPE behoort.",
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                },
+                "beginGeldigheid": {
+                    "title": "Begin geldigheid",
+                    "description": "De datum waarop de RESULTAATTYPE is ontstaan.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeGeldigheid": {
+                    "title": "Einde geldigheid",
+                    "description": "De datum waarop de RESULTAATTYPE is opgeheven.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "indicatieSpecifiek": {
+                    "title": "Indicatie specifiek",
+                    "description": "Aanduiding of het, vanuit archiveringsoptiek, een resultaattype betreft dat specifiek is voor een bepaalde procesobjectaard.",
+                    "type": "boolean",
+                    "x-nullable": true
+                },
+                "procestermijn": {
+                    "title": "Procestermijn",
+                    "description": "De periode dat het zaakdossier na afronding van de zaak actief gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening van de organisatie.",
+                    "type": "string",
+                    "format": "duration",
+                    "x-nullable": true
+                },
+                "besluittypen": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uri",
+                        "x-nullable": true
+                    },
+                    "uniqueItems": true
+                },
+                "informatieobjecttypen": {
+                    "description": "De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet.",
+                    "type": "array",
+                    "items": {
+                        "description": "De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet.",
+                        "type": "string",
+                        "format": "uri",
+                        "x-nullable": true
+                    },
+                    "uniqueItems": true
                 }
             }
         },
@@ -6406,6 +6531,62 @@
                         "zaakcoordinator",
                         "mede_initiator"
                     ]
+                },
+                "catalogus": {
+                    "title": "Catalogus",
+                    "description": "URL-referentie naar de CATALOGUS waartoe dit ROLTYPE behoort.",
+                    "type": "string",
+                    "format": "uri",
+                    "x-nullable": true
+                },
+                "beginGeldigheid": {
+                    "title": "Begin geldigheid",
+                    "description": "De datum waarop het is ontstaan.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeGeldigheid": {
+                    "title": "Einde geldigheid",
+                    "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                }
+            }
+        },
+        "CheckListItem": {
+            "required": [
+                "itemnaam",
+                "vraagstelling"
+            ],
+            "type": "object",
+            "properties": {
+                "itemnaam": {
+                    "title": "Itemnaam",
+                    "description": "De betekenisvolle benaming van het checklistitem",
+                    "type": "string",
+                    "maxLength": 30,
+                    "minLength": 1
+                },
+                "toelichting": {
+                    "title": "Toelichting",
+                    "description": "Beschrijving van de overwegingen bij het controleren van het aandachtspunt",
+                    "type": "string",
+                    "maxLength": 1000,
+                    "x-nullable": true
+                },
+                "vraagstelling": {
+                    "title": "Vraagstelling",
+                    "description": "Een betekenisvolle vraag waaruit blijkt waarop het aandachtspunt gecontroleerd moet worden.",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "verplicht": {
+                    "title": "Verplicht",
+                    "description": "Het al dan niet verplicht zijn van controle van het aandachtspunt voorafgaand aan het bereiken van de status van het gerelateerde STATUSTYPE.",
+                    "type": "boolean"
                 }
             }
         },
@@ -6468,6 +6649,51 @@
                     "title": "Informeren",
                     "description": "Aanduiding die aangeeft of na het zetten van een STATUS van dit STATUSTYPE de Initiator moet worden ge\u00efnformeerd over de statusovergang.",
                     "type": "boolean"
+                },
+                "doorlooptijd": {
+                    "title": "doorlooptijd",
+                    "description": "De door de zaakbehandelende organisatie(s) gestelde norm voor de doorlooptijd voor het bereiken van STATUSsen van dit STATUSTYPE bij het desbetreffende ZAAKTYPE.",
+                    "type": "string",
+                    "format": "duration",
+                    "x-nullable": true
+                },
+                "toelichting": {
+                    "title": "Toelichting",
+                    "description": "Een eventuele toelichting op dit STATUSTYPE.",
+                    "type": "string",
+                    "maxLength": 1000,
+                    "x-nullable": true
+                },
+                "checklistitemStatustype": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/CheckListItem"
+                    }
+                },
+                "eigenschappen": {
+                    "description": "de EIGENSCHAPpen die verplicht een waarde moeten hebben gekregen, voordat een STATUS van dit STATUSTYPE kan worden gezet.",
+                    "type": "array",
+                    "items": {
+                        "description": "de EIGENSCHAPpen die verplicht een waarde moeten hebben gekregen, voordat een STATUS van dit STATUSTYPE kan worden gezet.",
+                        "type": "string",
+                        "format": "uri",
+                        "x-nullable": true
+                    },
+                    "uniqueItems": true
+                },
+                "beginGeldigheid": {
+                    "title": "Begin geldigheid",
+                    "description": "De datum waarop het is ontstaan.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeGeldigheid": {
+                    "title": "Einde geldigheid",
+                    "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
                 }
             }
         },
@@ -6640,6 +6866,72 @@
                 }
             }
         },
+        "BronCatalogus": {
+            "title": "Broncatalogus",
+            "description": "De CATALOGUS waaraan het ZAAKTYPE is ontleend.",
+            "required": [
+                "url",
+                "domein",
+                "rsin"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "URL-referentie broncatalogus",
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "domein": {
+                    "title": "Domein",
+                    "description": "Het domein van de CATALOGUS waaraan het ZAAKTYPE is ontleend.",
+                    "type": "string",
+                    "maxLength": 5,
+                    "minLength": 1
+                },
+                "rsin": {
+                    "title": "Rsin",
+                    "description": "Het RSIN van de INGESCHREVEN NIET-NATUURLIJK PERSOON die beheerder is van de CATALOGUS waaraan het ZAAKTYPE is ontleend.",
+                    "type": "string",
+                    "maxLength": 9,
+                    "minLength": 1
+                }
+            }
+        },
+        "BronZaaktype": {
+            "title": "Bronzaaktype",
+            "description": "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.",
+            "required": [
+                "url",
+                "identificatie",
+                "omschrijving"
+            ],
+            "type": "object",
+            "properties": {
+                "url": {
+                    "title": "URL-referentie bronzaaktype",
+                    "type": "string",
+                    "format": "uri",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "identificatie": {
+                    "title": "Identificatie",
+                    "description": "De Zaaktype-identificatie van het bronzaaktype binnen de CATALOGUS.",
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "omschrijving": {
+                    "title": "Omschrijving",
+                    "description": "De Zaaktype-omschrijving van het bronzaaktype, zoals gehanteerd in de Broncatalogus.",
+                    "type": "string",
+                    "maxLength": 80,
+                    "minLength": 1
+                }
+            }
+        },
         "ZaakTypenRelatie": {
             "description": "De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.",
             "required": [
@@ -6690,6 +6982,7 @@
                 "publicatieIndicatie",
                 "productenOfDiensten",
                 "referentieproces",
+                "verantwoordelijke",
                 "catalogus",
                 "besluittypen",
                 "gerelateerdeZaaktypen",
@@ -6868,6 +7161,28 @@
                 },
                 "referentieproces": {
                     "$ref": "#/definitions/ReferentieProces"
+                },
+                "verantwoordelijke": {
+                    "title": "Verantwoordelijke",
+                    "description": "De (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE.",
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 1
+                },
+                "zaakobjecttypen": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                },
+                "broncatalogus": {
+                    "$ref": "#/definitions/BronCatalogus"
+                },
+                "bronzaaktype": {
+                    "$ref": "#/definitions/BronZaaktype"
                 },
                 "catalogus": {
                     "title": "Catalogus",
