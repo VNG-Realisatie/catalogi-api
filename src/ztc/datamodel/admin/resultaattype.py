@@ -3,12 +3,19 @@ from django.utils.translation import ugettext_lazy as _
 
 from relativedeltafield import RelativeDeltaField
 
+from ztc.datamodel.models.besluittype import BesluitType
+
 from ..models import ResultaatType, ZaakInformatieobjectTypeArchiefregime
 from .forms import RelativeDeltaField as RelativeDeltaFormField, ResultaatTypeForm
 
 
 class ZaakInformatieobjectTypeArchiefregimeInline(admin.TabularInline):
     model = ZaakInformatieobjectTypeArchiefregime
+    extra = 1
+
+
+class BesluitTypeInline(admin.TabularInline):
+    model = BesluitType.resultaattypen.through
     extra = 1
 
 
@@ -35,7 +42,21 @@ class ResultaatTypeAdmin(admin.ModelAdmin):
 
     # Details
     fieldsets = (
-        (_("Algemeen"), {"fields": ("zaaktype", "omschrijving", "toelichting")}),
+        (
+            _("Algemeen"),
+            {
+                "fields": (
+                    "zaaktype",
+                    "omschrijving",
+                    "toelichting",
+                    "procesobjectaard",
+                    "indicatie_specifiek",
+                    "procestermijn",
+                    "datum_begin_geldigheid",
+                    "datum_einde_geldigheid",
+                )
+            },
+        ),
         (
             _("Gemeentelijke selectielijst"),
             {"fields": ("resultaattypeomschrijving", "selectielijstklasse")},
@@ -53,10 +74,23 @@ class ResultaatTypeAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        (_("Relaties"), {"fields": ("zaakobjecttypen",)}),
+        (
+            _("Relaties"),
+            {
+                "fields": (
+                    "catalogus",
+                    "zaakobjecttypen",
+                    "informatieobjecttypen",
+                )
+            },
+        ),
     )
     raw_id_fields = ("zaaktype",)
-    filter_horizontal = ("zaakobjecttypen",)
+    filter_horizontal = (
+        "zaakobjecttypen",
+        "informatieobjecttypen",
+    )
+    inlines = (BesluitTypeInline,)
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if isinstance(db_field, RelativeDeltaField):
