@@ -200,7 +200,7 @@ class HaaglandenMixin(object):
         self.statustype_intake_afgerond = StatusTypeFactory.create(
             statustype_omschrijving="Intake afgerond",
             statustypevolgnummer=1,
-            doorlooptijd_status=2,  # werkdagen
+            doorlooptijd_status="P2D",  # werkdagen
             informeren=True,
             toelichting="""Er wordt beoordeeld of de
                 ontvangen aanvraag inderdaad in een reguliere
@@ -237,7 +237,7 @@ class HaaglandenMixin(object):
         self.statustype_getoetst = StatusTypeFactory.create(
             statustype_omschrijving="Getoetst op indieningsvereisten",
             statustypevolgnummer=2,
-            doorlooptijd_status=4,  # werkdagen
+            doorlooptijd_status="P4D",  # werkdagen
             informeren=True,
             toelichting="""De aanvraag wordt beoordeeld
                 op de kwaliteit (aanvaardbaarheid) van de
@@ -268,7 +268,7 @@ class HaaglandenMixin(object):
         self.statustype_inhoudelijk_behandeld = StatusTypeFactory.create(
             statustype_omschrijving="Inhoudelijk behandeld",
             statustypevolgnummer=3,
-            doorlooptijd_status=21,  # 3 weken
+            doorlooptijd_status="P21D",  # 3 weken
             informeren=True,
             toelichting="""De aanvraag wordt allereerst
                 beoordeeld op de relevante wetgeving en
@@ -294,7 +294,7 @@ class HaaglandenMixin(object):
         self.statustype_besluit_genomen = StatusTypeFactory.create(
             statustype_omschrijving="Besluit genomen",
             statustypevolgnummer=4,
-            doorlooptijd_status=2,  # werkdagen
+            doorlooptijd_status="P2D",  # werkdagen
             informeren=False,
             toelichting="""Op basis van de aanvraag en het advies met betrekking tot de
                 vergunning wordt het definitieve besluit op- en vastgesteld.""",
@@ -310,7 +310,7 @@ class HaaglandenMixin(object):
         self.statustype_producten_geleverd = StatusTypeFactory.create(
             statustype_omschrijving="Producten geleverd",
             statustypevolgnummer=6,  # NOTE: also refered to as '5' in de haaglanden doc
-            doorlooptijd_status=3,  # werkdagen
+            doorlooptijd_status="P3D",  # werkdagen
             informeren=False,
             toelichting="""Het besluit wordt verzonden en gepubliceerd en het zaakdossier wordt afgesloten
                 en gearchiveerd (indien de provincie het bevoegd gezag is) dan wel ter archivering

@@ -4,16 +4,18 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from ...datamodel.models import CheckListItem, StatusType
-from ..utils.serializers import SourceMappingSerializerMixin
 from ..validators import ZaakTypeConceptValidator
 
 
-class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
+class CheckListItemSerializer(ModelSerializer):
     class Meta:
         model = CheckListItem
-        ref_name = None  # Inline
-        source_mapping = {"naam": "itemnaam"}
-        fields = ("naam", "vraagstelling", "verplicht", "toelichting")
+        fields = (
+            "itemnaam",
+            "toelichting",
+            "vraagstelling",
+            "verplicht",
+        )
 
 
 class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,6 +26,10 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE "
             "met het hoogste volgnummer."
         ),
+    )
+
+    checklistitem_statustype = CheckListItemSerializer(
+        required=False, many=True, source="checklistitem"
     )
 
     class Meta:
@@ -37,6 +43,9 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "volgnummer",
             "is_eindstatus",
             "informeren",
+            "doorlooptijd",
+            "toelichting",
+            "checklistitem_statustype",
             "eigenschappen",
             "begin_geldigheid",
             "einde_geldigheid",
@@ -50,5 +59,9 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "eigenschappen": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "doorlooptijd": {
+                "source": "doorlooptijd_status",
+                "label": _("doorlooptijd"),
+            },
         }
         validators = [ZaakTypeConceptValidator()]

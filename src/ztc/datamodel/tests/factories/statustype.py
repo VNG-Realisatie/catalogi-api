@@ -39,3 +39,12 @@ class StatusTypeFactory(factory.django.DjangoModelFactory):
         if extracted:
             for eigenschap in extracted:
                 self.eigenschappen.add(eigenschap)
+
+    @factory.post_generation
+    def checklistitems(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for item in extracted:
+                self.checklistitem.add(item)

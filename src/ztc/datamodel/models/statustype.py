@@ -6,6 +6,7 @@ from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
+from vng_api_common.fields import DaysDurationField
 
 from ztc.datamodel.models.mixins import GeldigheidMixin
 
@@ -126,15 +127,14 @@ class StatusType(ETagMixin, GeldigheidMixin):
             "Een volgnummer voor statussen van het STATUSTYPE binnen een zaak."
         ),
     )
-    doorlooptijd_status = models.PositiveSmallIntegerField(
+    doorlooptijd_status = DaysDurationField(
         _("doorlooptijd status"),
         blank=True,
         null=True,
-        validators=[MinValueValidator(1), MaxValueValidator(999)],
         help_text=_(
-            "De door de zaakbehandelende organisatie(s) gestelde norm voor de doorlooptijd voor het bereiken "
-            "van statussen van dit STATUSTYPE bij het desbetreffende ZAAKTYPE, vanaf het bereiken van "
-            "de voorafgaande status"
+            "De door de zaakbehandelende organisatie(s) gestelde norm voor de"
+            " doorlooptijd voor het bereiken van STATUSsen van dit STATUSTYPE"
+            " bij het desbetreffende ZAAKTYPE."
         ),
     )
     checklistitem = models.ManyToManyField(

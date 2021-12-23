@@ -7,6 +7,7 @@ from ztc.api.validators import ZaakTypeConceptValidator
 from ztc.datamodel.models import StatusType
 from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
 from ztc.datamodel.tests.factories.eigenschap import EigenschapFactory
+from ztc.datamodel.tests.factories.statustype import CheckListItemFactory
 
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
@@ -42,6 +43,16 @@ class StatusTypeAPITests(APITestCase):
             datum_einde_geldigheid=date(2021, 2, 1),
             zaaktype=zaaktype,
             eigenschappen=[eigenschap],
+            doorlooptijd_status="P30D",
+            toelichting="Toelichting X",
+            checklistitems=[
+                CheckListItemFactory(
+                    itemnaam="Item 1",
+                    toelichting="Controleren op de itemnaam",
+                    verplicht=True,
+                    vraagstelling="Is item 1, item nummer een?",
+                )
+            ],
         )
 
         statustype_detail_url = reverse(
@@ -63,6 +74,16 @@ class StatusTypeAPITests(APITestCase):
             "volgnummer": statustype.statustypevolgnummer,
             "isEindstatus": True,
             "informeren": False,
+            "doorlooptijd": "P30D",
+            "toelichting": "Toelichting X",
+            "checklistitemStatustype": [
+                {
+                    "itemnaam": "Item 1",
+                    "toelichting": "Controleren op de itemnaam",
+                    "verplicht": True,
+                    "vraagstelling": "Is item 1, item nummer een?",
+                }
+            ],
             "eigenschappen": [f"http://testserver{eigenschap_url}"],
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
