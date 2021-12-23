@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
 
+from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
 from ztc.utils.admin import EditInlineAdminMixin, ListObjectActionsAdminMixin
 
 from ..models import (
@@ -46,6 +47,11 @@ class ResultaatTypeInline(EditInlineAdminMixin, admin.TabularInline):
 class ZaakTypenRelatieInline(admin.TabularInline):
     model = ZaakTypenRelatie
     fk_name = "zaaktype"
+    extra = 1
+
+
+class ZaakObjectTypeInline(admin.TabularInline):
+    model = ZaakObjectType
     extra = 1
 
 
@@ -119,6 +125,30 @@ class ZaakTypeAdmin(
             _("Referentieproces"),
             {"fields": ("referentieproces_naam", "referentieproces_link")},
         ),
+        (
+            # TODO: validate that all fields are filled in if one of these is present
+            # (already done in the API)
+            _("Broncatalogus"),
+            {
+                "fields": (
+                    "broncatalogus_url",
+                    "broncatalogus_domein",
+                    "broncatalogus_rsin",
+                )
+            },
+        ),
+        (
+            # TODO: validate that all fields are filled in if one of these is present
+            # (already done in the API)
+            _("Bronzaaktype"),
+            {
+                "fields": (
+                    "bronzaaktype_url",
+                    "bronzaaktype_identificatie",
+                    "bronzaaktype_omschrijving",
+                )
+            },
+        ),
         (_("Publicatie"), {"fields": ("publicatie_indicatie", "publicatietekst")}),
         (
             _("Relaties"),
@@ -138,6 +168,7 @@ class ZaakTypeAdmin(
         RolTypeInline,
         EigenschapInline,
         ResultaatTypeInline,
+        ZaakObjectTypeInline,
     )
 
     def get_object_actions(self, obj):

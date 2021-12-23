@@ -2,6 +2,8 @@
 Test that it's possible to read out which extra data needs to be attached
 to a ZAAK.
 """
+from datetime import date
+
 from rest_framework import status
 from rest_framework.test import APITestCase
 from vng_api_common.tests import TypeCheckMixin, get_operation_url
@@ -13,21 +15,26 @@ from ztc.datamodel.tests.factories import (
     EigenschapSpecificatieFactory,
     ZaakTypeFactory,
 )
+from ztc.datamodel.tests.factories.statustype import StatusTypeFactory
 
 
 class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
     def test_list_eigenschappen(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
+        statustype = StatusTypeFactory(zaaktype=zaaktype)
 
         eigenschap1 = EigenschapFactory.create(
             eigenschapnaam="objecttype",
             zaaktype=zaaktype,
+            statustype=statustype,
             specificatie_van_eigenschap=EigenschapSpecificatieFactory.create(
                 formaat=FormaatChoices.tekst,
                 lengte=255,
                 kardinaliteit="1",
                 waardenverzameling=["boot", "zwerfvuil"],
             ),
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=date(2022, 1, 1),
         )
 
         EigenschapFactory.create(
@@ -65,7 +72,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
 
         self.assertEqual(len(response_data), 3)
         self.assertResponseTypes(
-            response_data[0],
+            response_data[2],
             {
                 ("url", str),
                 ("naam", str),
@@ -73,6 +80,9 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                 ("specificatie", dict),
                 ("toelichting", str),
                 ("zaaktype", str),
+                ("statustype", str),
+                ("beginGeldigheid", str),
+                ("eindeGeldigheid", str),
             },
         )
 
@@ -83,6 +93,7 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         zaaktype_url = get_operation_url(
             "zaaktype_read", catalogus_uuid=zaaktype.catalogus.uuid, uuid=zaaktype.uuid
         )
+        statustype_url = get_operation_url("statustype_read", uuid=statustype.uuid)
         detail_url = get_operation_url(
             "eigenschap_read",
             catalogus_uuid=zaaktype.catalogus.uuid,
@@ -104,5 +115,8 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                     "lengte": "255",
                     "waardenverzameling": ["boot", "zwerfvuil"],
                 },
+                "statustype": f"http://testserver{statustype_url}",
+                "beginGeldigheid": "2021-01-01",
+                "eindeGeldigheid": "2022-01-01",
             },
         )

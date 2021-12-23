@@ -13,7 +13,6 @@ from ..scopes import (
 )
 
 
-# TODO add NotificationViewSetMixin?
 @conditional_retrieve()
 class ZaakObjectTypeViewSet(CheckQueryParamsMixin, viewsets.ModelViewSet):
     """

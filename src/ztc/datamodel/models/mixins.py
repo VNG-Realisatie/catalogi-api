@@ -44,7 +44,7 @@ class GeldigheidMixin(models.Model):
         """
         super().clean()
 
-        if self.datum_einde_geldigheid:
+        if self.datum_begin_geldigheid and self.datum_einde_geldigheid:
             if self.datum_einde_geldigheid < self.datum_begin_geldigheid:
                 raise ValidationError(
                     _(

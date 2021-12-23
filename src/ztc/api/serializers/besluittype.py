@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
@@ -25,6 +27,14 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
                 "allow_empty": True,
             },
             "zaaktypen": {"lookup_field": "uuid", "allow_empty": True},
+            "resultaattypen": {
+                "lookup_field": "uuid",
+                "read_only": True,
+                "help_text": _(
+                    "Het BESLUITTYPE van besluiten die gepaard gaan met resultaten"
+                    " van het RESULTAATTYPE."
+                ),
+            },
         }
         fields = (
             "url",
@@ -42,6 +52,7 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             "begin_geldigheid",
             "einde_geldigheid",
             "concept",
+            "resultaattypen",
         )
         validators = [
             UniqueTogetherValidator(

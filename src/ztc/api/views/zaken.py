@@ -90,6 +90,7 @@ class ZaakTypeViewSet(
         "eigenschap_set",
         "roltype_set",
         "besluittypen",
+        "objecttypen",
     ).order_by("-pk")
     serializer_class = ZaakTypeSerializer
     lookup_field = "uuid"

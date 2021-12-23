@@ -1,12 +1,12 @@
 from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
-from vng_api_common.utils import underscore_to_camel
 
 from ztc.api.validators import (
     ConceptUpdateValidator,
     M2MConceptCreateValidator,
     M2MConceptUpdateValidator,
 )
+from ztc.datamodel.tests.factories.resultaattype import ResultaatTypeFactory
 
 from ...datamodel.models import BesluitType
 from ...datamodel.tests.factories import (
@@ -42,24 +42,26 @@ class BesluitTypeAPITests(APITestCase):
 
     def test_get_detail(self):
         """Retrieve the details of a single `BesluitType` object."""
-        besluittype = BesluitTypeFactory.create(
-            catalogus=self.catalogus, publicatie_indicatie=True
+        zaaktype = ZaakTypeFactory(catalogus=self.catalogus)
+        resultaattype = ResultaatTypeFactory(zaaktype=zaaktype)
+
+        besluittype = BesluitTypeFactory(
+            catalogus=self.catalogus,
+            zaaktypen=[zaaktype],
+            resultaattypen=[resultaattype],
+            publicatie_indicatie=True,
         )
-        zaaktype = besluittype.zaaktypen.get()
+
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         besluittype_detail_url = reverse(
             "besluittype-detail", kwargs={"uuid": besluittype.uuid}
         )
-
-        # resultaattype_url = reverse('resultaattype-detail', kwargs={
-        #     'catalogus_uuid': self.catalogus.uuid,
-        #     'zaaktype_uuid': self.zaaktype.uuid,
-        #     'uuid': self.resultaattype.uuid,
-        # })
+        resultaattype_url = reverse(
+            "resultaattype-detail", kwargs={"uuid": resultaattype.uuid}
+        )
 
         response = self.client.get(besluittype_detail_url)
 
-        self.assertEqual(response.status_code, 200)
         expected = {
             "url": f"http://testserver{besluittype_detail_url}",
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
@@ -76,8 +78,10 @@ class BesluitTypeAPITests(APITestCase):
             "beginGeldigheid": "2018-01-01",
             "eindeGeldigheid": None,
             "concept": True,
-            # 'resultaattypes': ['http://testserver{resultaattype_url}'],
+            "resultaattypen": [f"http://testserver{resultaattype_url}"],
         }
+
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), expected)
 
     def test_get_detail_related_informatieobjecttypen(self):

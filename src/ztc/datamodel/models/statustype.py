@@ -6,6 +6,9 @@ from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
+from vng_api_common.fields import DaysDurationField
+
+from ztc.datamodel.models.mixins import GeldigheidMixin
 
 
 class CheckListItem(models.Model):
@@ -52,7 +55,7 @@ class CheckListItem(models.Model):
     )
 
 
-class StatusType(ETagMixin, models.Model):
+class StatusType(ETagMixin, GeldigheidMixin):
     """
     Generieke aanduiding van de aard van een STATUS
 
@@ -88,6 +91,17 @@ class StatusType(ETagMixin, models.Model):
         on_delete=models.CASCADE,
     )
 
+    eigenschappen = models.ManyToManyField(
+        "Eigenschap",
+        blank=True,
+        verbose_name=_("eigenschappen"),
+        related_name="statustypen",
+        help_text=_(
+            "de EIGENSCHAPpen die verplicht een waarde moeten hebben gekregen, "
+            "voordat een STATUS van dit STATUSTYPE kan worden gezet."
+        ),
+    )
+
     # attributes
     statustype_omschrijving = models.CharField(
         _("omschrijving"),
@@ -113,15 +127,14 @@ class StatusType(ETagMixin, models.Model):
             "Een volgnummer voor statussen van het STATUSTYPE binnen een zaak."
         ),
     )
-    doorlooptijd_status = models.PositiveSmallIntegerField(
+    doorlooptijd_status = DaysDurationField(
         _("doorlooptijd status"),
         blank=True,
         null=True,
-        validators=[MinValueValidator(1), MaxValueValidator(999)],
         help_text=_(
-            "De door de zaakbehandelende organisatie(s) gestelde norm voor de doorlooptijd voor het bereiken "
-            "van statussen van dit STATUSTYPE bij het desbetreffende ZAAKTYPE, vanaf het bereiken van "
-            "de voorafgaande status"
+            "De door de zaakbehandelende organisatie(s) gestelde norm voor de"
+            " doorlooptijd voor het bereiken van STATUSsen van dit STATUSTYPE"
+            " bij het desbetreffende ZAAKTYPE."
         ),
     )
     checklistitem = models.ManyToManyField(
@@ -155,6 +168,13 @@ class StatusType(ETagMixin, models.Model):
         blank=True,
         null=True,
         help_text=_("Een eventuele toelichting op dit STATUSTYPE."),
+    )
+
+    datum_begin_geldigheid = models.DateField(
+        _("datum begin geldigheid"),
+        blank=True,
+        null=True,
+        help_text=_("De datum waarop het is ontstaan."),
     )
 
     # TODO: deze relatie is gedefinieerd op RolType en heeft de volgende regel:

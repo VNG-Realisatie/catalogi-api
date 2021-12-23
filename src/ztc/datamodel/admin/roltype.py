@@ -10,14 +10,35 @@ class RolTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
     model = RolType
 
     # List
-    list_display = ("omschrijving", "zaaktype", "uuid")
+    list_display = (
+        "omschrijving",
+        "zaaktype",
+        "uuid",
+        "catalogus",
+    )
 
     # Details
     fieldsets = (
         (
             _("Algemeen"),
-            {"fields": ("omschrijving", "omschrijving_generiek", "soort_betrokkene")},
+            {
+                "fields": (
+                    "omschrijving",
+                    "omschrijving_generiek",
+                    "soort_betrokkene",
+                    "datum_begin_geldigheid",
+                    "datum_einde_geldigheid",
+                )
+            },
         ),
-        (_("Relaties"), {"fields": ("zaaktype",)}),
+        (
+            _("Relaties"),
+            {
+                "fields": (
+                    "zaaktype",
+                    "catalogus",
+                )
+            },
+        ),
     )
     raw_id_fields = ("zaaktype",)

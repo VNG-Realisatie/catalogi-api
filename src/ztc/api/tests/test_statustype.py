@@ -1,9 +1,13 @@
+from datetime import date
+
 from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
 from ztc.api.validators import ZaakTypeConceptValidator
 from ztc.datamodel.models import StatusType
 from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
+from ztc.datamodel.tests.factories.eigenschap import EigenschapFactory
+from ztc.datamodel.tests.factories.statustype import CheckListItemFactory
 
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
@@ -31,15 +35,31 @@ class StatusTypeAPITests(APITestCase):
         self.assertEqual(data[0]["url"], f"http://testserver{statustype2_url}")
 
     def test_get_detail(self):
-        statustype = StatusTypeFactory.create(
+        zaaktype = ZaakTypeFactory(catalogus=self.catalogus)
+        eigenschap = EigenschapFactory(zaaktype=zaaktype)
+        statustype = StatusTypeFactory(
             statustype_omschrijving="Besluit genomen",
-            zaaktype__catalogus=self.catalogus,
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=date(2021, 2, 1),
+            zaaktype=zaaktype,
+            eigenschappen=[eigenschap],
+            doorlooptijd_status="P30D",
+            toelichting="Toelichting X",
+            checklistitems=[
+                CheckListItemFactory(
+                    itemnaam="Item 1",
+                    toelichting="Controleren op de itemnaam",
+                    verplicht=True,
+                    vraagstelling="Is item 1, item nummer een?",
+                )
+            ],
         )
+
         statustype_detail_url = reverse(
             "statustype-detail", kwargs={"uuid": statustype.uuid}
         )
-        zaaktype = statustype.zaaktype
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        eigenschap_url = reverse("eigenschap-detail", kwargs={"uuid": eigenschap.uuid})
 
         response = self.api_client.get(statustype_detail_url)
 
@@ -54,6 +74,19 @@ class StatusTypeAPITests(APITestCase):
             "volgnummer": statustype.statustypevolgnummer,
             "isEindstatus": True,
             "informeren": False,
+            "doorlooptijd": "P30D",
+            "toelichting": "Toelichting X",
+            "checklistitemStatustype": [
+                {
+                    "itemnaam": "Item 1",
+                    "toelichting": "Controleren op de itemnaam",
+                    "verplicht": True,
+                    "vraagstelling": "Is item 1, item nummer een?",
+                }
+            ],
+            "eigenschappen": [f"http://testserver{eigenschap_url}"],
+            "beginGeldigheid": "2021-01-01",
+            "eindeGeldigheid": "2021-02-01",
         }
 
         self.assertEqual(expected, response.json())
@@ -182,7 +215,7 @@ class StatusTypeAPITests(APITestCase):
 
     def test_partial_update_statustype(self):
         zaaktype = ZaakTypeFactory.create()
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         statustype = StatusTypeFactory.create(zaaktype=zaaktype)
         statustype_url = reverse(statustype)
 
@@ -196,7 +229,7 @@ class StatusTypeAPITests(APITestCase):
 
     def test_partial_update_statustype_fail_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         statustype = StatusTypeFactory.create(zaaktype=zaaktype)
         statustype_url = reverse(statustype)
 

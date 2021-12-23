@@ -33,11 +33,14 @@ class CatalogusAdmin(
     model = Catalogus
 
     # List
-    list_display = ("domein", "rsin", "uuid")
+    list_display = ("naam", "versie", "domein", "rsin", "uuid")
 
     # Details
     fieldsets = (
-        (_("Algemeen"), {"fields": ("domein", "rsin")}),
+        (
+            _("Algemeen"),
+            {"fields": ("naam", "versie", "datum_begin_versie", "domein", "rsin")},
+        ),
         (
             _("Contactpersoon beheer"),
             {

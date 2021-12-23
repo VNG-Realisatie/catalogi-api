@@ -8,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 
+from ztc.datamodel.models.mixins import GeldigheidMixin
+
 from ..choices import FormaatChoices
 from ..validators import (
     validate_kardinaliteit,
@@ -190,10 +192,9 @@ class EigenschapReferentie(models.Model):
 
         Deze validatie gaan we niet implementeren
         """
-        pass
 
 
-class Eigenschap(ETagMixin, models.Model):
+class Eigenschap(ETagMixin, GeldigheidMixin):
     """
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
     kenmerk is van een zaak.
@@ -271,6 +272,13 @@ class Eigenschap(ETagMixin, models.Model):
         help_text=_(
             "Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE."
         ),
+    )
+
+    datum_begin_geldigheid = models.DateField(
+        _("datum begin geldigheid"),
+        blank=True,
+        null=True,
+        help_text=_("De datum waarop het is ontstaan."),
     )
 
     # shouldn't this be a M2M?

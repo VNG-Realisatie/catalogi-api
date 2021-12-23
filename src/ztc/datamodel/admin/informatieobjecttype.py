@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from ztc.datamodel.models.besluittype import BesluitType
+
 from ..models import (
     InformatieObjectType,
     InformatieObjectTypeOmschrijvingGeneriek,
@@ -13,6 +15,11 @@ class ZaakInformatieobjectTypeInline(admin.TabularInline):
     model = ZaakInformatieobjectType
     extra = 1
     raw_id_fields = ("zaaktype", "statustype")
+
+
+class BesluitTypenInline(admin.TabularInline):
+    model = BesluitType.informatieobjecttypen.through
+    extra = 1
 
 
 @admin.register(InformatieObjectTypeOmschrijvingGeneriek)
@@ -83,7 +90,19 @@ class InformatieObjectTypeAdmin(
                 )
             },
         ),
-        (_("Relaties"), {"fields": ("catalogus", "omschrijving_generiek")}),
+        (
+            _("Relaties"),
+            {
+                "fields": (
+                    "catalogus",
+                    "omschrijving_generiek",
+                )
+            },
+        ),
     )
+    filter_horizontal = ("besluittypen",)
     readonly_fields = ("uuid",)
-    inlines = (ZaakInformatieobjectTypeInline,)  # zaaktypes
+    inlines = (
+        BesluitTypenInline,
+        ZaakInformatieobjectTypeInline,
+    )  # zaaktypes

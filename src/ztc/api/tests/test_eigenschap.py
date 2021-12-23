@@ -1,3 +1,4 @@
+from datetime import date
 from unittest import skip
 
 from rest_framework import status
@@ -11,6 +12,7 @@ from ztc.datamodel.tests.factories import (
     EigenschapSpecificatieFactory,
     ZaakTypeFactory,
 )
+from ztc.datamodel.tests.factories.statustype import StatusTypeFactory
 
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
@@ -39,14 +41,21 @@ class EigenschapAPITests(APITestCase):
 
     def test_get_detail(self):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
+        statustype = StatusTypeFactory(zaaktype=zaaktype)
+
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        statustype_url = reverse("statustype-detail", kwargs={"uuid": statustype.uuid})
+
         specificatie = EigenschapSpecificatieFactory.create(
             kardinaliteit="1", lengte="1", groep="groep"
         )
         eigenschap = EigenschapFactory.create(
             eigenschapnaam="Beoogd product",
             zaaktype=zaaktype,
+            statustype=statustype,
             specificatie_van_eigenschap=specificatie,
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=date(2021, 2, 1),
         )
         eigenschap_detail_url = reverse(
             "eigenschap-detail", kwargs={"uuid": eigenschap.uuid}
@@ -69,6 +78,9 @@ class EigenschapAPITests(APITestCase):
             },
             "toelichting": "",
             "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "statustype": "http://testserver{}".format(statustype_url),
+            "beginGeldigheid": "2021-01-01",
+            "eindeGeldigheid": "2021-02-01",
         }
         self.assertEqual(expected, response.json())
 
@@ -308,7 +320,7 @@ class EigenschapAPITests(APITestCase):
 
     def test_partial_update_eigenschap_specificatie(self):
         zaaktype = ZaakTypeFactory.create()
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         specificatie = EigenschapSpecificatieFactory.create()
         eigenschap = EigenschapFactory.create()
         eigenschap_url = reverse(eigenschap)

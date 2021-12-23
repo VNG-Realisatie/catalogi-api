@@ -7,8 +7,10 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import RolOmschrijving
 
+from ztc.datamodel.models.mixins import GeldigheidMixin
 
-class RolType(ETagMixin, models.Model):
+
+class RolType(ETagMixin, GeldigheidMixin):
     """
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
     uitoefenen in ZAAKen van een ZAAKTYPE.
@@ -59,6 +61,22 @@ class RolType(ETagMixin, models.Model):
         help_text=_(
             "URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn."
         ),
+    )
+
+    catalogus = models.ForeignKey(
+        "datamodel.Catalogus",
+        verbose_name=_("catalogus"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text=_("URL-referentie naar de CATALOGUS waartoe dit ROLTYPE behoort."),
+    )
+
+    datum_begin_geldigheid = models.DateField(
+        _("datum begin geldigheid"),
+        blank=True,
+        null=True,
+        help_text=_("De datum waarop het is ontstaan."),
     )
 
     class Meta:

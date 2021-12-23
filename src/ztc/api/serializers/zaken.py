@@ -2,11 +2,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer,
-    HyperlinkedRelatedField,
-    ModelSerializer,
-)
+from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import (
     GegevensGroepSerializer,
@@ -16,7 +12,7 @@ from vng_api_common.serializers import (
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
-from ...datamodel.models import BesluitType, ZaakType, ZaakTypenRelatie
+from ...datamodel.models import ZaakType, ZaakTypenRelatie
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
@@ -31,6 +27,18 @@ class ReferentieProcesSerializer(GegevensGroepSerializer):
     class Meta:
         model = ZaakType
         gegevensgroep = "referentieproces"
+
+
+class BronCatalogusSerializer(GegevensGroepSerializer):
+    class Meta:
+        model = ZaakType
+        gegevensgroep = "broncatalogus"
+
+
+class BronZaaktypeSerializer(GegevensGroepSerializer):
+    class Meta:
+        model = ZaakType
+        gegevensgroep = "bronzaaktype"
 
 
 class ZaakTypenRelatieSerializer(ModelSerializer):
@@ -62,6 +70,17 @@ class ZaakTypeSerializer(
         help_text="De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.",
     )
 
+    broncatalogus = BronCatalogusSerializer(
+        required=False, help_text=_("De CATALOGUS waaraan het ZAAKTYPE is ontleend.")
+    )
+
+    bronzaaktype = BronZaaktypeSerializer(
+        required=False,
+        help_text=_(
+            "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
+        ),
+    )
+
     class Meta:
         model = ZaakType
         fields = (
@@ -89,6 +108,10 @@ class ZaakTypeSerializer(
             "producten_of_diensten",
             "selectielijst_procestype",
             "referentieproces",
+            "verantwoordelijke",
+            "zaakobjecttypen",
+            "broncatalogus",
+            "bronzaaktype",
             # relaties
             "catalogus",
             "statustypen",
@@ -164,6 +187,11 @@ class ZaakTypeSerializer(
                 ),
             },
             "deelzaaktypen": {"lookup_field": "uuid"},
+            "zaakobjecttypen": {
+                "lookup_field": "uuid",
+                "source": "objecttypen",
+                "read_only": True,
+            },
         }
 
         validators = [

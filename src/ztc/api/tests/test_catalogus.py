@@ -1,3 +1,5 @@
+from datetime import date
+
 from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
@@ -34,6 +36,9 @@ class CatalogusAPITests(APITestCase):
             "informatieobjecttypen": [],
             "zaaktypen": [],
             "besluittypen": [],
+            "naam": self.catalogus.naam,
+            "versie": self.catalogus.versie,
+            "begindatumVersie": str(self.catalogus.datum_begin_versie),
         }
         self.assertEqual(response.json(), expected)
 
@@ -53,6 +58,28 @@ class CatalogusAPITests(APITestCase):
         catalog = Catalogus.objects.get(domein="TEST")
 
         self.assertEqual(catalog.rsin, "100000009")
+
+    def test_create_catalogus_new_fields(self):
+        data = {
+            "domein": "TEST",
+            "contactpersoonBeheerTelefoonnummer": "0612345679",
+            "rsin": "100000009",
+            "contactpersoonBeheerNaam": "test",
+            "contactpersoonBeheerEmailadres": "test@test.com",
+            "naam": "Category X",
+            "versie": "1",
+            "begindatumVersie": "2019-01-01",
+        }
+
+        response = self.client.post(self.catalogus_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        catalog = Catalogus.objects.get(domein="TEST")
+
+        self.assertEqual(catalog.naam, "Category X")
+        self.assertEqual(catalog.versie, "1")
+        self.assertEqual(catalog.datum_begin_versie, date(2019, 1, 1))
 
     def test_create_catalogus_rsin_only_digits(self):
         data = {

@@ -31,15 +31,29 @@ class StatusTypeAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
                     "informeren",
                     "statustekst",
                     "toelichting",
+                    "datum_begin_geldigheid",
+                    "datum_einde_geldigheid",
                 )
             },
         ),
         (
             _("Relaties"),
-            {"fields": ("zaaktype", "zaakobjecttype", "checklistitem", "roltypen")},
+            {
+                "fields": (
+                    "zaaktype",
+                    "zaakobjecttype",
+                    "checklistitem",
+                    "roltypen",
+                    "eigenschappen",
+                )
+            },
         ),
     )
-    filter_horizontal = ("roltypen", "checklistitem")
+    filter_horizontal = (
+        "roltypen",
+        "checklistitem",
+        "eigenschappen",
+    )
     raw_id_fields = (
         "zaaktype",
         "zaakobjecttype",

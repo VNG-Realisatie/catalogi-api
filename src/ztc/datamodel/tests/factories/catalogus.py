@@ -18,6 +18,10 @@ class CatalogusFactory(factory.django.DjangoModelFactory):
         lambda n: "contact_{}@example.com".format(n)
     )
 
+    naam = factory.Sequence(lambda n: f"Category {n}")
+    versie = "1"
+    datum_begin_versie = factory.Faker("date_this_decade")
+
     class Meta:
         model = Catalogus
 

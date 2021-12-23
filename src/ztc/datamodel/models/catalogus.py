@@ -5,11 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import RSINField
+from vng_api_common.models import APIMixin
 
 from ..validators import validate_uppercase
 
 
-class Catalogus(ETagMixin, models.Model):
+class Catalogus(ETagMixin, APIMixin, models.Model):
     """
     De verzameling van ZAAKTYPEn - incl. daarvoor relevante objecttypen - voor
     een Domein die als één geheel beheerd wordt.
@@ -48,7 +49,7 @@ class Catalogus(ETagMixin, models.Model):
         ),
     )
     contactpersoon_beheer_naam = models.CharField(
-        _("naam"),
+        _("naam contactpersoon"),
         max_length=40,
         help_text=_(
             "De naam van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS."
@@ -70,6 +71,33 @@ class Catalogus(ETagMixin, models.Model):
         blank=True,
         help_text=_(
             "Het emailadres van de contactpersoon die verantwoordelijk is voor het beheer van de CATALOGUS."
+        ),
+    )
+
+    naam = models.CharField(
+        _("naam"),
+        blank=True,
+        null=True,
+        max_length=200,
+        help_text=_("De benaming die is gegeven aan de zaaktypecatalogus."),
+    )
+
+    versie = models.CharField(
+        _("versie"),
+        blank=True,
+        null=True,
+        max_length=20,
+        help_text=_(
+            "Versie-aanduiding van de van toepassing zijnde zaaktypecatalogus."
+        ),
+    )
+
+    datum_begin_versie = models.DateField(
+        _("begindatum versie"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Datum waarop de versie van de zaaktypecatalogus van toepassing is geworden."
         ),
     )
 

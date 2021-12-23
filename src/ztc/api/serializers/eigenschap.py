@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from rest_framework import serializers
 from vng_api_common.serializers import add_choice_values_help_text
 
@@ -44,15 +46,33 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
     specificatie = EigenschapSpecificatieSerializer(
         source="specificatie_van_eigenschap"
     )
-    # referentie = EigenschapReferentieSerializer(read_only=True, source='referentie_naar_eigenschap')
 
     class Meta:
         model = Eigenschap
-        fields = ("url", "naam", "definitie", "specificatie", "toelichting", "zaaktype")
+        fields = (
+            "url",
+            "naam",
+            "definitie",
+            "specificatie",
+            "toelichting",
+            "zaaktype",
+            "statustype",
+            "begin_geldigheid",
+            "einde_geldigheid",
+        )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "naam": {"source": "eigenschapnaam"},
             "zaaktype": {"lookup_field": "uuid"},
+            "statustype": {"lookup_field": "uuid"},
+            "begin_geldigheid": {
+                "source": "datum_begin_geldigheid",
+                "help_text": _("De datum waarop de EIGENSCHAP is ontstaan."),
+            },
+            "einde_geldigheid": {
+                "source": "datum_einde_geldigheid",
+                "help_text": _("De datum waarop de EIGENSCHAP is opgeheven."),
+            },
         }
         validators = [ZaakTypeConceptValidator()]
 

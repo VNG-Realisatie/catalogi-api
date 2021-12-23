@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
@@ -24,6 +26,22 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
             "concept": {"read_only": True},
+            "zaaktypen": {
+                "lookup_field": "uuid",
+                "read_only": True,
+                "help_text": _(
+                    "URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant"
+                    " kunnen zijn voor ZAAKen van dit ZAAKTYPE."
+                ),
+            },
+            "besluittypen": {
+                "lookup_field": "uuid",
+                "read_only": True,
+                "help_text": _(
+                    "URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten"
+                    " waarin besluiten van dit BESLUITTYPE worden vastgelegd."
+                ),
+            },
         }
         fields = (
             "url",
@@ -33,6 +51,8 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "begin_geldigheid",
             "einde_geldigheid",
             "concept",
+            "zaaktypen",
+            "besluittypen",
         )
         validators = [
             ConceptUpdateValidator(),

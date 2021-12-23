@@ -1,9 +1,12 @@
 from copy import deepcopy
+from datetime import date, timedelta
 from unittest.mock import patch
 
 from django.test import override_settings
+from django.utils import timezone
 
 import requests_mock
+from dateutil.relativedelta import relativedelta
 from rest_framework import status
 from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
@@ -21,6 +24,10 @@ from ztc.api.utils.validators import BrondatumArchiefprocedureValidator
 from ztc.datamodel.constants import SelectielijstKlasseProcestermijn as Procestermijn
 from ztc.datamodel.models import ResultaatType
 from ztc.datamodel.tests.factories import ResultaatTypeFactory, ZaakTypeFactory
+from ztc.datamodel.tests.factories.besluittype import BesluitTypeFactory
+from ztc.datamodel.tests.factories.informatie_objecten import (
+    InformatieObjectTypeFactory,
+)
 
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
@@ -44,7 +51,16 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
     list_url = reverse_lazy(ResultaatType)
 
     def test_get_list(self):
-        ResultaatTypeFactory.create_batch(3, zaaktype__concept=False)
+        ResultaatTypeFactory.create_batch(
+            3,
+            zaaktype__concept=False,
+            procesobjectaard="proces aard",
+            catalogus=self.catalogus,
+            datum_begin_geldigheid=timezone.now(),
+            datum_einde_geldigheid=timezone.now() + timedelta(days=1),
+            indicatie_specifiek=False,
+            procestermijn=relativedelta(hours=25, day=1),
+        )
 
         response = self.api_client.get(self.list_url)
 
@@ -64,6 +80,14 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 ("archiefnominatie", str),
                 ("archiefactietermijn", str),
                 ("brondatumArchiefprocedure", dict),
+                ("procesobjectaard", str),
+                ("catalogus", str),
+                ("beginGeldigheid", str),
+                ("eindeGeldigheid", str),
+                ("indicatieSpecifiek", bool),
+                ("procestermijn", str),
+                ("besluittypen", list),
+                ("informatieobjecttypen", list),
             ),
         )
 
@@ -84,10 +108,31 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         self.assertEqual(data[0]["url"], f"http://testserver{resultaattype2_url}")
 
     def test_get_detail(self):
-        resultaattype = ResultaatTypeFactory.create()
+        besluittype = BesluitTypeFactory(catalogus=self.catalogus)
+        informatieobjecttype = InformatieObjectTypeFactory(catalogus=self.catalogus)
+        resultaattype = ResultaatTypeFactory(
+            procesobjectaard="proces aard",
+            catalogus=self.catalogus,
+            datum_begin_geldigheid=date(2021, 10, 30),
+            datum_einde_geldigheid=date(2021, 10, 31),
+            indicatie_specifiek=False,
+            procestermijn=relativedelta(days=2, hours=5),
+            besluittypen=[besluittype],
+            informatieobjecttypen=[informatieobjecttype],
+        )
+
         url = reverse(resultaattype)
         zaaktype_url = reverse(
             "zaaktype-detail", kwargs={"uuid": resultaattype.zaaktype.uuid}
+        )
+        catalogus_url = reverse(
+            "catalogus-detail", kwargs={"uuid": self.catalogus.uuid}
+        )
+        besluittype_url = reverse(
+            "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+        )
+        informatieobjecttype_url = reverse(
+            "informatieobjecttype-detail", kwargs={"uuid": informatieobjecttype.uuid}
         )
 
         response = self.client.get(url)
@@ -115,6 +160,16 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                     "registratie": "",
                     "procestermijn": None,
                 },
+                "procesobjectaard": "proces aard",
+                "catalogus": f"http://testserver{catalogus_url}",
+                "beginGeldigheid": "2021-10-30",
+                "eindeGeldigheid": "2021-10-31",
+                "indicatieSpecifiek": False,
+                "procestermijn": "P2DT5H",
+                "besluittypen": [f"http://testserver{besluittype_url}"],
+                "informatieobjecttypen": [
+                    f"http://testserver{informatieobjecttype_url}"
+                ],
             },
         )
 
@@ -420,7 +475,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
     def test_partial_update_resultaattype(self):
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         resultaattype = ResultaatTypeFactory.create(zaaktype=zaaktype)
         resultaattype_url = reverse(resultaattype)
 
@@ -433,7 +488,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         zaaktype = ZaakTypeFactory.create(
             selectielijst_procestype=PROCESTYPE_URL, concept=False
         )
-        zaaktype_url = reverse(zaaktype)
+        reverse(zaaktype)
         resultaattype = ResultaatTypeFactory.create(zaaktype=zaaktype)
         resultaattype_url = reverse(resultaattype)
 

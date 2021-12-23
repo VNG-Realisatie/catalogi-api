@@ -15,11 +15,7 @@ from ...datamodel.tests.factories import (
     ZaakTypeFactory,
 )
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
-from ..validators import (
-    ConceptUpdateValidator,
-    M2MConceptCreateValidator,
-    M2MConceptUpdateValidator,
-)
+from ..validators import ConceptUpdateValidator, M2MConceptUpdateValidator
 from .base import APITestCase
 
 
@@ -49,13 +45,22 @@ class InformatieObjectTypeAPITests(APITestCase):
     def test_get_detail(self):
         """Retrieve the details of a single `InformatieObjectType` object."""
 
-        informatieobjecttype = InformatieObjectTypeFactory.create(
+        besluittype = BesluitTypeFactory(catalogus=self.catalogus)
+        informatieobjecttype = InformatieObjectTypeFactory(
             catalogus=self.catalogus,
             zaaktypen=None,
             model=["http://www.example.com"],
             trefwoord=["abc", "def"],
             datum_begin_geldigheid="2019-01-01",
+            besluittypen=[besluittype],
         )
+
+        zaaktype = ZaakTypeFactory(catalogus=self.catalogus)
+
+        ZaakInformatieobjectTypeFactory(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+
         informatieobjecttype_detail_url = get_operation_url(
             "informatieobjecttype_read", uuid=informatieobjecttype.uuid
         )
@@ -65,22 +70,15 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         expected = {
-            # 'categorie': 'informatieobjectcategorie',
-            # 'einddatumObject': None,
-            # 'ingangsdatumObject': '2018-01-01',
-            # 'isVastleggingVoor': [],
             "catalogus": "http://testserver{}".format(self.catalogus_detail_url),
-            # 'model': ['http://www.example.com'],
             "omschrijving": informatieobjecttype.omschrijving,
-            # 'omschrijvingGeneriek': '',
-            # 'toelichting': None,
-            # 'trefwoord': ['abc', 'def'],
             "url": "http://testserver{}".format(informatieobjecttype_detail_url),
             "vertrouwelijkheidaanduiding": "",
-            # 'isRelevantVoor': [],
             "beginGeldigheid": "2019-01-01",
             "eindeGeldigheid": None,
             "concept": True,
+            "zaaktypen": [f"http://testserver{reverse(zaaktype)}"],
+            "besluittypen": [f"http://testserver{reverse(besluittype)}"],
         }
         self.assertEqual(expected, response.json())
 

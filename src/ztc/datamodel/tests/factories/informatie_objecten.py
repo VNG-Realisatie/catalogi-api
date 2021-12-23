@@ -38,3 +38,12 @@ class InformatieObjectTypeFactory(factory.django.DjangoModelFactory):
         with_etag = factory.Trait(
             _etag=factory.PostGenerationMethodCall("calculate_etag_value")
         )
+
+    @factory.post_generation
+    def besluittypen(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for besluittype in extracted:
+                self.besluittypen.add(besluittype)

@@ -4,16 +4,18 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from ...datamodel.models import CheckListItem, StatusType
-from ..utils.serializers import SourceMappingSerializerMixin
 from ..validators import ZaakTypeConceptValidator
 
 
-class CheckListItemSerializer(SourceMappingSerializerMixin, ModelSerializer):
+class CheckListItemSerializer(ModelSerializer):
     class Meta:
         model = CheckListItem
-        ref_name = None  # Inline
-        source_mapping = {"naam": "itemnaam"}
-        fields = ("naam", "vraagstelling", "verplicht", "toelichting")
+        fields = (
+            "itemnaam",
+            "toelichting",
+            "vraagstelling",
+            "verplicht",
+        )
 
 
 class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -26,26 +28,9 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
         ),
     )
 
-    # heeftVerplichteEigenschap = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_verplichte_eigenschap',
-    #     view_name='api:eigenschap-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'is_van__catalogus__pk',
-    #         'zaaktype_pk': 'is_van__pk'
-    #     },
-    # )
-    # heeftVerplichteInformatieobjecttype = NestedHyperlinkedRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     source='heeft_verplichte_zit',
-    #     view_name='api:zktiot-detail',
-    #     parent_lookup_kwargs={
-    #         'catalogus_pk': 'zaaktype__catalogus__pk',
-    #         'zaaktype_pk': 'zaaktype__pk',
-    #     },
-    # )
+    checklistitem_statustype = CheckListItemSerializer(
+        required=False, many=True, source="checklistitem"
+    )
 
     class Meta:
         model = StatusType
@@ -57,14 +42,13 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "zaaktype",
             "volgnummer",
             "is_eindstatus",
-            # 'doorlooptijd',
-            # 'checklistitem',
             "informeren",
-            # 'toelichting',
-            # 'ingangsdatumObject',
-            # 'einddatumObject',
-            # 'heeftVerplichteInformatieobjecttype',
-            # 'heeftVerplichteEigenschap',
+            "doorlooptijd",
+            "toelichting",
+            "checklistitem_statustype",
+            "eigenschappen",
+            "begin_geldigheid",
+            "einde_geldigheid",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
@@ -72,5 +56,12 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek": {"source": "statustype_omschrijving_generiek"},
             "volgnummer": {"source": "statustypevolgnummer"},
             "zaaktype": {"lookup_field": "uuid"},
+            "eigenschappen": {"lookup_field": "uuid"},
+            "begin_geldigheid": {"source": "datum_begin_geldigheid"},
+            "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "doorlooptijd": {
+                "source": "doorlooptijd_status",
+                "label": _("doorlooptijd"),
+            },
         }
         validators = [ZaakTypeConceptValidator()]
