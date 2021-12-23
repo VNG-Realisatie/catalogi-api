@@ -10,16 +10,28 @@ class EigenschapAdmin(FilterSearchOrderingAdminMixin, admin.ModelAdmin):
     model = Eigenschap
 
     # List
-    list_display = ("eigenschapnaam", "zaaktype")
+    list_display = ("eigenschapnaam", "zaaktype", "statustype")
 
     # Details
     fieldsets = (
-        (_("Algemeen"), {"fields": ("eigenschapnaam", "definitie", "toelichting")}),
+        (
+            _("Algemeen"),
+            {
+                "fields": (
+                    "eigenschapnaam",
+                    "definitie",
+                    "toelichting",
+                    "datum_begin_geldigheid",
+                    "datum_einde_geldigheid",
+                )
+            },
+        ),
         (
             _("Relaties"),
             {
                 "fields": (
                     "zaaktype",
+                    "statustype",
                     "specificatie_van_eigenschap",
                     "referentie_naar_eigenschap",
                 )
