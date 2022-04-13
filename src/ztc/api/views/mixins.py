@@ -1,18 +1,41 @@
+from functools import wraps
 from typing import Union
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from drf_yasg.utils import no_body, swagger_auto_schema
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
+from vng_api_common.inspectors.view import COMMON_ERRORS
+from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
 from ..scopes import SCOPE_CATALOGI_FORCED_DELETE
 
 
+def swagger_publish_schema(viewset_cls):
+
+    real_publish = viewset_cls.publish
+
+    @swagger_auto_schema(
+        request_body=no_body,
+        responses={
+            status.HTTP_200_OK: viewset_cls.serializer_class,
+            status.HTTP_400_BAD_REQUEST: ValidatieFoutSerializer,
+            status.HTTP_404_NOT_FOUND: FoutSerializer,
+            **{exc.status_code: FoutSerializer for exc in COMMON_ERRORS},
+        },
+    )
+    @wraps(real_publish)
+    def _publish(*args, **kwargs):
+        return real_publish(*args, **kwargs)
+
+    return _publish
+
+
 class ConceptPublishMixin:
-    @swagger_auto_schema(request_body=no_body)
     @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()

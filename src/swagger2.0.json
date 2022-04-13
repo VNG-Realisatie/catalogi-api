@@ -22,9 +22,9 @@
     ],
     "securityDefinitions": {
         "JWT-Claims": {
-            "type": "http",
+            "bearerFormat": "JWT",
             "scheme": "bearer",
-            "bearerFormat": "JWT"
+            "type": "http"
         }
     },
     "security": [
@@ -255,13 +255,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -336,13 +336,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -607,8 +607,8 @@
         "/besluittypen/{uuid}/publish": {
             "post": {
                 "operationId": "besluittype_publish",
-                "summary": "Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten\nAPI.",
-                "description": "Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het\nzaakgericht werken van de behandelende organisatie(s).",
+                "summary": "Publiceer het concept BESLUITTYPE.",
+                "description": "Publiceren van het besluittype zorgt ervoor dat dit in een Besluiten API kan gebruikt\nworden. Na het publiceren van een besluittype zijn geen inhoudelijke wijzigingen\nmeer mogelijk. Indien er na het publiceren nog wat gewijzigd moet worden, dan moet\nje een nieuwe versie aanmaken.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -622,8 +622,8 @@
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/BesluitType"
                         },
@@ -633,13 +633,146 @@
                                     "type": "string"
                                 },
                                 "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
+                        },
+                        "headers": {
+                            "API-version": {
                                 "schema": {
-                                    "type": "string",
-                                    "format": "uri"
+                                    "type": "string"
                                 },
-                                "description": "URL waar de resource leeft."
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "410": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
                             }
                         }
                     }
@@ -887,13 +1020,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -968,13 +1101,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -1226,13 +1359,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -1307,13 +1440,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -1783,13 +1916,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -1864,13 +1997,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -2135,8 +2268,8 @@
         "/informatieobjecttypen/{uuid}/publish": {
             "post": {
                 "operationId": "informatieobjecttype_publish",
-                "summary": "Opvragen en bewerken van INFORMATIEOBJECTTYPEn nodig voor\nINFORMATIEOBJECTen in de Documenten API.",
-                "description": "Een INFORMATIEOBJECTTYPE beschijft de karakteristieken van een document of\nander object dat informatie bevat.",
+                "summary": "Publiceer het concept INFORMATIEOBJECTTYPE.",
+                "description": "Publiceren van het informatieobjecttype zorgt ervoor dat dit in een Documenten API\nkan gebruikt worden. Na het publiceren van een informatieobjecttype zijn geen\ninhoudelijke wijzigingen meer mogelijk. Indien er na het publiceren nog wat\ngewijzigd moet worden, dan moet je een nieuwe versie aanmaken.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -2150,8 +2283,8 @@
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/InformatieObjectType"
                         },
@@ -2161,13 +2294,146 @@
                                     "type": "string"
                                 },
                                 "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
+                        },
+                        "headers": {
+                            "API-version": {
                                 "schema": {
-                                    "type": "string",
-                                    "format": "uri"
+                                    "type": "string"
                                 },
-                                "description": "URL waar de resource leeft."
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "410": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
                             }
                         }
                     }
@@ -2402,13 +2668,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -2483,13 +2749,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -2976,13 +3242,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -3057,13 +3323,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -3532,13 +3798,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -3613,13 +3879,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -4109,13 +4375,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -4190,13 +4456,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -4680,13 +4946,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -4761,13 +5027,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "oneValue": {
-                                "summary": "E\u00e9n ETag-waarde",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
-                            },
                             "multipleValues": {
                                 "summary": "Meerdere ETag-waardes",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
+                            },
+                            "oneValue": {
+                                "summary": "E\u00e9n ETag-waarde",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\""
                             }
                         }
                     }
@@ -5032,8 +5298,8 @@
         "/zaaktypen/{uuid}/publish": {
             "post": {
                 "operationId": "zaaktype_publish",
-                "summary": "Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.",
-                "description": "Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen van\nzaken van eenzelfde soort.",
+                "summary": "Publiceer het concept ZAAKTYPE.",
+                "description": "Publiceren van het zaaktype zorgt ervoor dat dit in een Zaken API kan gebruikt\nworden. Na het publiceren van een zaaktype zijn geen inhoudelijke wijzigingen\nmeer mogelijk - ook niet de statustypen, eigenschappen... etc. Indien er na het\npubliceren nog wat gewijzigd moet worden, dan moet je een nieuwe versie\naanmaken.",
                 "parameters": [
                     {
                         "name": "Content-Type",
@@ -5047,8 +5313,8 @@
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/ZaakType"
                         },
@@ -5058,13 +5324,146 @@
                                     "type": "string"
                                 },
                                 "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
-                            },
-                            "Location": {
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/ValidatieFout"
+                        },
+                        "headers": {
+                            "API-version": {
                                 "schema": {
-                                    "type": "string",
-                                    "format": "uri"
+                                    "type": "string"
                                 },
-                                "description": "URL waar de resource leeft."
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "406": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "410": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Fout"
+                        },
+                        "headers": {
+                            "API-version": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Geeft een specifieke API-versie aan in de context van een specifieke aanroep. Voorbeeld: 1.2.1."
                             }
                         }
                     }
