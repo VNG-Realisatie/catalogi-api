@@ -11,7 +11,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import BesluitTypeSerializer
-from .mixins import ConceptMixin, M2MConceptDestroyMixin
+from .mixins import ConceptMixin, M2MConceptDestroyMixin, swagger_publish_schema
 
 
 class BesluitTypeViewSet(
@@ -58,6 +58,14 @@ class BesluitTypeViewSet(
     Verwijder een BESLUITTYPE.
 
     Verwijder een BESLUITTYPE. Dit kan alleen als het een concept betreft.
+
+    publish:
+    Publiceer het concept BESLUITTYPE.
+
+    Publiceren van het besluittype zorgt ervoor dat dit in een Besluiten API kan gebruikt
+    worden. Na het publiceren van een besluittype zijn geen inhoudelijke wijzigingen
+    meer mogelijk. Indien er na het publiceren nog wat gewijzigd moet worden, dan moet
+    je een nieuwe versie aanmaken.
     """
 
     queryset = BesluitType.objects.all().order_by("-pk")
@@ -75,3 +83,6 @@ class BesluitTypeViewSet(
     }
     concept_related_fields = ["informatieobjecttypen", "zaaktypen"]
     notifications_kanaal = KANAAL_BESLUITTYPEN
+
+
+BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)

@@ -11,7 +11,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import InformatieObjectTypeSerializer
-from .mixins import ConceptMixin, M2MConceptDestroyMixin
+from .mixins import ConceptMixin, M2MConceptDestroyMixin, swagger_publish_schema
 
 
 class InformatieObjectTypeViewSet(
@@ -60,6 +60,14 @@ class InformatieObjectTypeViewSet(
 
     Verwijder een INFORMATIEOBJECTTYPE. Dit kan alleen als het een concept
     betreft.
+
+    publish:
+    Publiceer het concept INFORMATIEOBJECTTYPE.
+
+    Publiceren van het informatieobjecttype zorgt ervoor dat dit in een Documenten API
+    kan gebruikt worden. Na het publiceren van een informatieobjecttype zijn geen
+    inhoudelijke wijzigingen meer mogelijk. Indien er na het publiceren nog wat
+    gewijzigd moet worden, dan moet je een nieuwe versie aanmaken.
     """
 
     queryset = InformatieObjectType.objects.all().order_by("-pk")
@@ -77,3 +85,8 @@ class InformatieObjectTypeViewSet(
     }
     concept_related_fields = ["besluittypen", "zaaktypen"]
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN
+
+
+InformatieObjectTypeViewSet.publish = swagger_publish_schema(
+    InformatieObjectTypeViewSet
+)
