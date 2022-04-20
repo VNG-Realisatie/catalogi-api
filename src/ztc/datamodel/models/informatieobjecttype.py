@@ -12,9 +12,7 @@ from vng_api_common.models import APIMixin
 from .mixins import ConceptMixin, GeldigheidMixin
 
 
-class InformatieObjectTypeOmschrijvingGeneriek(
-    ETagMixin, GeldigheidMixin, models.Model
-):
+class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
     """
     Algemeen binnen de overheid gehanteerde omschrijvingen van de typen informatieobjecten
 
