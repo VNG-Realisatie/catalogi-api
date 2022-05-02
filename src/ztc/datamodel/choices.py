@@ -2,6 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from djchoices import ChoiceItem, DjangoChoices
 
+
 # Waardenverzameling nemen we letterlijk over. Dit betekend dat we onder
 # andere de volgende waarden verwachten (en kleine afwijking hiervan zal dus
 # niet valideren):
@@ -10,6 +11,15 @@ from djchoices import ChoiceItem, DjangoChoices
 # ZaakType.vertrouwelijkheidsaanduiding: 'ZEER GEHEIM' (dus geheel in hoofdletters met spatie)
 # ResultaatType.archiefnominatie: 'Blijvend bewaren' (alleen eerste is hoofdletter en een spatie)
 # ResultaatType.brondatum_archiefprocedure: 'afgehandeld' dus geheel met kleine letters
+
+
+class PeriodeEenheidChoices(DjangoChoices):
+
+    werkdagen = ChoiceItem("werkdagen", _("Werkdagen"))
+    kalenderdagen = ChoiceItem("kalenderdagen", _("Kalenderdagen"))
+    weken = ChoiceItem("weken", _("Weken"))
+    maanden = ChoiceItem("maanden", _("Maanden"))
+    jaren = ChoiceItem("jaren", _("Jaren"))
 
 
 class FormaatChoices(DjangoChoices):

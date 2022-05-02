@@ -6,9 +6,12 @@ from django.db.models import Max
 from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
+from vng_api_common.descriptors import GegevensGroepType
 from vng_api_common.fields import DaysDurationField
 
 from ztc.datamodel.models.mixins import GeldigheidMixin
+
+from ztc.datamodel.choices import PeriodeEenheidChoices
 
 
 class CheckListItem(models.Model):
@@ -127,8 +130,17 @@ class StatusType(ETagMixin, GeldigheidMixin):
             "Een volgnummer voor statussen van het STATUSTYPE binnen een zaak."
         ),
     )
-    doorlooptijd_status = DaysDurationField(
-        _("doorlooptijd status"),
+
+    periode_eenheid = models.CharField(
+        _("doorlooptijd periode eenheid"),
+        help_text=_("De tijdseenheid waarin een periode wordt uitgedrukt"),
+        max_length=10,
+        choices=PeriodeEenheidChoices.choices,
+        default="werkdagen",
+    )
+
+    doorlooptijd_periode = models.IntegerField(
+        _("doorlooptijd periode"),
         blank=True,
         null=True,
         help_text=_(
@@ -136,7 +148,15 @@ class StatusType(ETagMixin, GeldigheidMixin):
             " doorlooptijd voor het bereiken van STATUSsen van dit STATUSTYPE"
             " bij het desbetreffende ZAAKTYPE."
         ),
+        validators=[MinValueValidator(1), MaxValueValidator(999)],
     )
+    doorlooptijd_status = GegevensGroepType(
+        {
+            "Periodeduur": doorlooptijd_periode,
+            "Periode-eenheid": periode_eenheid,
+        },
+    )
+
     checklistitem = models.ManyToManyField(
         "datamodel.CheckListItem",
         verbose_name=_("checklistitem"),

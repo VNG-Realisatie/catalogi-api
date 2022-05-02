@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
@@ -43,7 +43,8 @@ class StatusTypeAPITests(APITestCase):
             datum_einde_geldigheid=date(2021, 2, 1),
             zaaktype=zaaktype,
             eigenschappen=[eigenschap],
-            doorlooptijd_status="P30D",
+            doorlooptijd_periode=1,
+            periode_eenheid="werkdagen",
             toelichting="Toelichting X",
             checklistitems=[
                 CheckListItemFactory(
@@ -62,9 +63,7 @@ class StatusTypeAPITests(APITestCase):
         eigenschap_url = reverse("eigenschap-detail", kwargs={"uuid": eigenschap.uuid})
 
         response = self.api_client.get(statustype_detail_url)
-
         self.assertEqual(response.status_code, 200)
-
         expected = {
             "url": "http://testserver{}".format(statustype_detail_url),
             "omschrijving": "Besluit genomen",
@@ -74,7 +73,10 @@ class StatusTypeAPITests(APITestCase):
             "volgnummer": statustype.statustypevolgnummer,
             "isEindstatus": True,
             "informeren": False,
-            "doorlooptijd": "P30D",
+            "doorlooptijd": {
+                "Periodeduur": 1,
+                "Periode-eenheid": statustype.periode_eenheid,
+            },
             "toelichting": "Toelichting X",
             "checklistitemStatustype": [
                 {
