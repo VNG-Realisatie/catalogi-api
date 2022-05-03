@@ -1,5 +1,4 @@
 from django.utils.translation import ugettext_lazy as _
-
 from djchoices import ChoiceItem, DjangoChoices
 
 
@@ -14,7 +13,6 @@ from djchoices import ChoiceItem, DjangoChoices
 
 
 class PeriodeEenheidChoices(DjangoChoices):
-
     werkdagen = ChoiceItem("werkdagen", _("Werkdagen"))
     kalenderdagen = ChoiceItem("kalenderdagen", _("Kalenderdagen"))
     weken = ChoiceItem("weken", _("Weken"))
