@@ -43,7 +43,7 @@ class StatusTypeAPITests(APITestCase):
             datum_einde_geldigheid=date(2021, 2, 1),
             zaaktype=zaaktype,
             eigenschappen=[eigenschap],
-            doorlooptijd_periode=1,
+            doorlooptijd_periode=900,
             periode_eenheid="werkdagen",
             toelichting="Toelichting X",
             checklistitems=[
@@ -73,8 +73,10 @@ class StatusTypeAPITests(APITestCase):
             "volgnummer": statustype.statustypevolgnummer,
             "isEindstatus": True,
             "informeren": False,
+            "doorlooptijdPeriode": 900,
+            "periodeEenheid": "werkdagen",
             "doorlooptijd": {
-                "Periodeduur": 1,
+                "Periodeduur": 900,
                 "Periode-eenheid": statustype.periode_eenheid,
             },
             "toelichting": "Toelichting X",
@@ -112,6 +114,54 @@ class StatusTypeAPITests(APITestCase):
 
         self.assertEqual(statustype.statustype_omschrijving, "Besluit genomen")
         self.assertEqual(statustype.zaaktype, zaaktype)
+
+    def test_create_statustype_invalid_doorlooptijd_minimum(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        statustype_list_url = reverse("statustype-list")
+        data = {
+            "omschrijving": "Besluit genomen",
+            "omschrijvingGeneriek": "",
+            "statustekst": "",
+            "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "volgnummer": 2,
+            "doorlooptijd_periode": 0,
+            "periode_eenheid": "kalenderdagen",
+        }
+        response = self.client.post(statustype_list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_statustype_invalid_doorlooptijd_maximum(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        statustype_list_url = reverse("statustype-list")
+        data = {
+            "omschrijving": "Besluit genomen",
+            "omschrijvingGeneriek": "",
+            "statustekst": "",
+            "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "volgnummer": 2,
+            "doorlooptijd_periode": 1000,
+            "periode_eenheid": "kalenderdagen",
+        }
+        response = self.client.post(statustype_list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_statustype_invalid_doorlooptijd_eenheid_choice(self):
+        zaaktype = ZaakTypeFactory.create()
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        statustype_list_url = reverse("statustype-list")
+        data = {
+            "omschrijving": "Besluit genomen",
+            "omschrijvingGeneriek": "",
+            "statustekst": "",
+            "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "volgnummer": 2,
+            "doorlooptijd_periode": 50,
+            "periode_eenheid": "w3ken",
+        }
+        response = self.client.post(statustype_list_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_statustype_fail_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)

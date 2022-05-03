@@ -44,6 +44,8 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "is_eindstatus",
             "informeren",
             "doorlooptijd",
+            "doorlooptijd_periode",
+            "periode_eenheid",
             "toelichting",
             "checklistitem_statustype",
             "eigenschappen",

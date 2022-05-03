@@ -134,21 +134,21 @@ class StatusType(ETagMixin, GeldigheidMixin):
     periode_eenheid = models.CharField(
         _("doorlooptijd periode eenheid"),
         help_text=_("De tijdseenheid waarin een periode wordt uitgedrukt"),
-        max_length=10,
+        max_length=20,
         choices=PeriodeEenheidChoices.choices,
         default="werkdagen",
+        null=True,
     )
 
     doorlooptijd_periode = models.IntegerField(
         _("doorlooptijd periode"),
-        blank=True,
-        null=True,
         help_text=_(
             "De door de zaakbehandelende organisatie(s) gestelde norm voor de"
             " doorlooptijd voor het bereiken van STATUSsen van dit STATUSTYPE"
             " bij het desbetreffende ZAAKTYPE."
         ),
         validators=[MinValueValidator(1), MaxValueValidator(999)],
+        null=True,
     )
     doorlooptijd_status = GegevensGroepType(
         {
@@ -156,7 +156,6 @@ class StatusType(ETagMixin, GeldigheidMixin):
             "Periode-eenheid": periode_eenheid,
         },
     )
-
     checklistitem = models.ManyToManyField(
         "datamodel.CheckListItem",
         verbose_name=_("checklistitem"),
