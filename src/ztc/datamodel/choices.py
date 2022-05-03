@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
-from djchoices import ChoiceItem, DjangoChoices
 
+from djchoices import ChoiceItem, DjangoChoices
 
 # Waardenverzameling nemen we letterlijk over. Dit betekend dat we onder
 # andere de volgende waarden verwachten (en kleine afwijking hiervan zal dus
