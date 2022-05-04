@@ -11,8 +11,6 @@ from vng_api_common.descriptors import GegevensGroepType
 from ztc.datamodel.choices import PeriodeEenheidChoices
 from ztc.datamodel.models.mixins import GeldigheidMixin
 
-from rest_framework.serializers import ValidationError
-
 
 class CheckListItem(models.Model):
     """
