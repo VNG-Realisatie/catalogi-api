@@ -11,6 +11,8 @@ from vng_api_common.descriptors import GegevensGroepType
 from ztc.datamodel.choices import PeriodeEenheidChoices
 from ztc.datamodel.models.mixins import GeldigheidMixin
 
+from rest_framework.serializers import ValidationError
+
 
 class CheckListItem(models.Model):
     """
@@ -131,7 +133,7 @@ class StatusType(ETagMixin, GeldigheidMixin):
 
     periode_eenheid = models.CharField(
         _("doorlooptijd periode eenheid"),
-        help_text=_("De tijdseenheid waarin een periode wordt uitgedrukt"),
+        help_text=_("De tijdseenheid waarin een doorlooptijd periode wordt uitgedrukt"),
         max_length=20,
         choices=PeriodeEenheidChoices.choices,
         default="werkdagen",
@@ -150,8 +152,8 @@ class StatusType(ETagMixin, GeldigheidMixin):
     )
     doorlooptijd_status = GegevensGroepType(
         {
-            "Periodeduur": doorlooptijd_periode,
-            "Periode-eenheid": periode_eenheid,
+            "periode_duur": doorlooptijd_periode,
+            "periode_eenheid": periode_eenheid,
         },
     )
     checklistitem = models.ManyToManyField(

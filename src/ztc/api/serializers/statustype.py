@@ -43,7 +43,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "volgnummer",
             "is_eindstatus",
             "informeren",
-            "doorlooptijd",
+            "doorlooptijd_status",
             "doorlooptijd_periode",
             "periode_eenheid",
             "toelichting",
@@ -61,9 +61,5 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "eigenschappen": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
-            "doorlooptijd": {
-                "source": "doorlooptijd_status",
-                "label": _("doorlooptijd"),
-            },
         }
         validators = [ZaakTypeConceptValidator()]

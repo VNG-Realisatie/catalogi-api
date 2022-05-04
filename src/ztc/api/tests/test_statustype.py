@@ -73,11 +73,11 @@ class StatusTypeAPITests(APITestCase):
             "volgnummer": statustype.statustypevolgnummer,
             "isEindstatus": True,
             "informeren": False,
-            "doorlooptijdPeriode": 900,
             "periodeEenheid": "werkdagen",
-            "doorlooptijd": {
-                "Periodeduur": 900,
-                "Periode-eenheid": statustype.periode_eenheid,
+            "doorlooptijdPeriode": 900,
+            "doorlooptijdStatus": {
+                "periodeDuur": 900,
+                "periodeEenheid": statustype.periode_eenheid,
             },
             "toelichting": "Toelichting X",
             "checklistitemStatustype": [
@@ -105,9 +105,10 @@ class StatusTypeAPITests(APITestCase):
             "statustekst": "",
             "zaaktype": "http://testserver{}".format(zaaktype_url),
             "volgnummer": 2,
+            "doorlooptijd_periode": 900,
+            "periode_eenheid": "werkdagen",
         }
         response = self.client.post(statustype_list_url, data)
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         statustype = StatusType.objects.get()
