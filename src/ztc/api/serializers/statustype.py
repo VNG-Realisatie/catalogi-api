@@ -49,6 +49,8 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "eigenschappen",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
@@ -59,6 +61,8 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "eigenschappen": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
             "doorlooptijd": {
                 "source": "doorlooptijd_status",
                 "label": _("doorlooptijd"),

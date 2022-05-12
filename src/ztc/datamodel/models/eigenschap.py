@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 
-from ztc.datamodel.models.mixins import GeldigheidMixin
+from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
 
 from ..choices import FormaatChoices
 from ..validators import (
@@ -194,7 +194,7 @@ class EigenschapReferentie(models.Model):
         """
 
 
-class Eigenschap(ETagMixin, GeldigheidMixin):
+class Eigenschap(ETagMixin, GeldigheidMixin, DatumObjectMixin):
     """
     Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard
     kenmerk is van een zaak.

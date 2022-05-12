@@ -81,6 +81,8 @@ class EigenschapAPITests(APITestCase):
             "statustype": "http://testserver{}".format(statustype_url),
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
+            "beginObject": None,
+            "eindeObject": None,
         }
         self.assertEqual(expected, response.json())
 

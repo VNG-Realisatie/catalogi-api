@@ -164,6 +164,8 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 "catalogus": f"http://testserver{catalogus_url}",
                 "beginGeldigheid": "2021-10-30",
                 "eindeGeldigheid": "2021-10-31",
+                "beginObject": None,
+                "eindeObject": None,
                 "indicatieSpecifiek": False,
                 "procestermijn": "P2DT5H",
                 "besluittypen": [f"http://testserver{besluittype_url}"],

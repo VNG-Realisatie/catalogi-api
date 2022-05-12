@@ -59,12 +59,16 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             "statustype",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "naam": {"source": "eigenschapnaam"},
             "zaaktype": {"lookup_field": "uuid"},
             "statustype": {"lookup_field": "uuid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
             "begin_geldigheid": {
                 "source": "datum_begin_geldigheid",
                 "help_text": _("De datum waarop de EIGENSCHAP is ontstaan."),

@@ -25,6 +25,8 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "catalogus": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
             "concept": {"read_only": True},
             "zaaktypen": {
                 "lookup_field": "uuid",
@@ -50,6 +52,8 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "vertrouwelijkheidaanduiding",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
             "concept",
             "zaaktypen",
             "besluittypen",

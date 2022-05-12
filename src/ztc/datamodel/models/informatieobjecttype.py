@@ -9,10 +9,12 @@ from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import VertrouwelijkheidsAanduidingField
 from vng_api_common.models import APIMixin
 
-from .mixins import ConceptMixin, GeldigheidMixin
+from .mixins import ConceptMixin, DatumObjectMixin, GeldigheidMixin
 
 
-class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
+class InformatieObjectTypeOmschrijvingGeneriek(
+    ETagMixin, GeldigheidMixin, DatumObjectMixin, models.Model
+):
     """
     Algemeen binnen de overheid gehanteerde omschrijvingen van de typen informatieobjecten
 
@@ -75,7 +77,7 @@ class InformatieObjectTypeOmschrijvingGeneriek(GeldigheidMixin, models.Model):
 
 
 class InformatieObjectType(
-    APIMixin, ETagMixin, GeldigheidMixin, ConceptMixin, models.Model
+    APIMixin, ETagMixin, GeldigheidMixin, DatumObjectMixin, ConceptMixin, models.Model
 ):
     """
     Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd door de zaakbehandelende organisatie.

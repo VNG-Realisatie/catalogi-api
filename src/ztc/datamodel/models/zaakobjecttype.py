@@ -5,10 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 
-from ztc.datamodel.models.mixins import GeldigheidMixin
+from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
 
 
-class ZaakObjectType(ETagMixin, GeldigheidMixin):
+class ZaakObjectType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
     uuid = models.UUIDField(
         unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
     )

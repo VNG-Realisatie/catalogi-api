@@ -5,6 +5,35 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
+class DatumObjectMixin(models.Model):
+    datum_begin_object = models.DateField(
+        _("datum begin object"),
+        blank=True,
+        null=True,
+        help_text=_("De datum waarop de eerst versie van het object ontstaan is."),
+    )
+    datum_einde_object = models.DateField(
+        _("datum einde object"),
+        blank=True,
+        null=True,
+        help_text=_("De datum van de aller laatste versie van het object."),
+    )
+
+    class Meta:
+        abstract = True
+
+    def clean(self):
+        super().clean()
+        if self.datum_begin_object and self.datum_einde_object:
+            if self.datum_einde_object < self.datum_begin_object:
+                raise ValidationError(
+                    _(
+                        "Datum einde object is gelijk aan of gelegen na de datum zoals opgenomen "
+                        "onder Datum begin object."
+                    )
+                )
+
+
 class GeldigheidMixin(models.Model):
     datum_begin_geldigheid = models.DateField(
         _("datum begin geldigheid"), help_text=_("De datum waarop het is ontstaan.")

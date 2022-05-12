@@ -13,10 +13,10 @@ from vng_api_common.constants import (
 )
 from vng_api_common.descriptors import GegevensGroepType
 
-from ztc.datamodel.models.mixins import GeldigheidMixin
+from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
 
 
-class ResultaatType(ETagMixin, GeldigheidMixin):
+class ResultaatType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
     """
     Het betreft de indeling of groepering van resultaten van zaken van hetzelfde
     ZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', et cetera.

@@ -79,6 +79,8 @@ class InformatieObjectTypeAPITests(APITestCase):
             "concept": True,
             "zaaktypen": [f"http://testserver{reverse(zaaktype)}"],
             "besluittypen": [f"http://testserver{reverse(besluittype)}"],
+            "beginObject": None,
+            "eindeObject": None,
         }
         self.assertEqual(expected, response.json())
 

@@ -79,6 +79,8 @@ class BesluitTypeAPITests(APITestCase):
             "eindeGeldigheid": None,
             "concept": True,
             "resultaattypen": [f"http://testserver{resultaattype_url}"],
+            "beginObject": None,
+            "eindeObject": None,
         }
 
         self.assertEqual(response.status_code, 200)
