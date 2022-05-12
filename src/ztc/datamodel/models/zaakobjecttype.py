@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 
-from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
+from ztc.datamodel.models.mixins import GeldigheidMixin, DatumObjectMixin
 
 
 class ZaakObjectType(ETagMixin, GeldigheidMixin, DatumObjectMixin):

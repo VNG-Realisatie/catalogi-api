@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import RolOmschrijving
 
-from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
+from ztc.datamodel.models.mixins import GeldigheidMixin, DatumObjectMixin
 
 
 class RolType(ETagMixin, GeldigheidMixin, DatumObjectMixin):

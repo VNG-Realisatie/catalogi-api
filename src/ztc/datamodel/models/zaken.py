@@ -18,7 +18,7 @@ from vng_api_common.validators import alphanumeric_excluding_diacritic
 
 from ..choices import InternExtern
 from ..validators import validate_uppercase
-from .mixins import ConceptMixin, DatumObjectMixin, GeldigheidMixin
+from .mixins import ConceptMixin, GeldigheidMixin, DatumObjectMixin
 
 
 class ZaakType(

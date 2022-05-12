@@ -13,7 +13,7 @@ from vng_api_common.constants import (
 )
 from vng_api_common.descriptors import GegevensGroepType
 
-from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
+from ztc.datamodel.models.mixins import GeldigheidMixin, DatumObjectMixin
 
 
 class ResultaatType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
