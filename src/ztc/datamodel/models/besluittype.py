@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import DaysDurationField
 
-from .mixins import ConceptMixin, GeldigheidMixin, DatumObjectMixin
+from .mixins import ConceptMixin, DatumObjectMixin, GeldigheidMixin
 
 
 class BesluitType(

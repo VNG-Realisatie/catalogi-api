@@ -9,7 +9,7 @@ from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import VertrouwelijkheidsAanduidingField
 from vng_api_common.models import APIMixin
 
-from .mixins import ConceptMixin, GeldigheidMixin, DatumObjectMixin
+from .mixins import ConceptMixin, DatumObjectMixin, GeldigheidMixin
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(
