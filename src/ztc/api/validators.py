@@ -6,6 +6,8 @@ from rest_framework.serializers import ValidationError
 from ztc.datamodel.models import ZaakType
 from ztc.datamodel.utils import get_overlapping_zaaktypes
 
+from .utils.serializers import get_from_serializer_data_or_instance
+
 
 class ZaaktypeGeldigheidValidator:
     """
@@ -25,22 +27,19 @@ class ZaaktypeGeldigheidValidator:
         This hook is called by the serializer instance,
         prior to the validation call being made.
         """
-        # Determine the existing instance, if this is an update operation.
-        self.instance = getattr(serializer, "instance", None)
+        self.serializer = serializer
 
     def __call__(self, attrs):
-        catalogus = attrs.get("catalogus") or self.instance.catalogus
+        instance = self.serializer.instance
+        catalogus = attrs.get("catalogus") or instance.catalogus
         zaaktype_omschrijving = (
-            attrs.get("zaaktype_omschrijving") or self.instance.zaaktype_omschrijving
+            attrs.get("zaaktype_omschrijving") or instance.zaaktype_omschrijving
         )
         datum_begin_geldigheid = (
-            attrs.get("datum_begin_geldigheid") or self.instance.datum_begin_geldigheid
+            attrs.get("datum_begin_geldigheid") or instance.datum_begin_geldigheid
         )
-        current_einde_geldigheid = (
-            self.instance.datum_einde_geldigheid if self.instance is not None else None
-        )
-        datum_einde_geldigheid = (
-            attrs.get("datum_einde_geldigheid") or current_einde_geldigheid
+        datum_einde_geldigheid = get_from_serializer_data_or_instance(
+            "einde_geldigheid", attrs, self.serializer
         )
 
         query = get_overlapping_zaaktypes(
@@ -48,12 +47,21 @@ class ZaaktypeGeldigheidValidator:
             zaaktype_omschrijving,
             datum_begin_geldigheid,
             datum_einde_geldigheid,
-            self.instance,
+            instance,
         )
 
         # regel voor zaaktype omschrijving
         if query.exists():
-            raise ValidationError({"begin_geldigheid": self.message}, code=self.code)
+            # are we patching eindeGeldigheid?
+            changing_published_geldigheid = self.serializer.partial and list(attrs) == [
+                "datum_einde_geldigheid"
+            ]
+            error_field = (
+                "einde_geldigheid"
+                if changing_published_geldigheid
+                else "begin_geldigheid"
+            )
+            raise ValidationError({error_field: self.message}, code=self.code)
 
 
 class ConceptUpdateValidator:
@@ -65,19 +73,19 @@ class ConceptUpdateValidator:
         This hook is called by the serializer instance,
         prior to the validation call being made.
         """
-        # Determine the existing instance, if this is an update operation.
-        self.instance = getattr(serializer, "instance", None)
-        self.request = serializer.context["request"]
+        self.serializer = serializer
 
     def __call__(self, attrs):
-        if not self.instance:
+        # Determine the existing instance, if this is an update operation.
+        instance = self.serializer.instance
+        if not instance:
             return
 
-        einde_geldigheid = attrs.get("datum_einde_geldigheid")
-        if einde_geldigheid and len(self.request.data) == 1:
+        # updating eindeGeldigheid is allowed through patch requests
+        if self.serializer.partial and list(attrs.keys()) == ["datum_einde_geldigheid"]:
             return
 
-        if not self.instance.concept:
+        if not instance.concept:
             raise ValidationError(self.message, code=self.code)
 
 
