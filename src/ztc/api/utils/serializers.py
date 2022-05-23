@@ -1,3 +1,6 @@
+from rest_framework import fields as drf_fields
+
+
 class SourceMappingSerializerMixin(object):
     """
     Read the `Meta.source_mapping` attribute and fill the `extra_kwargs` with
@@ -20,3 +23,17 @@ class SourceMappingSerializerMixin(object):
                 extra_kwargs[field_name] = kwargs
 
         return extra_kwargs
+
+
+def get_from_serializer_data_or_instance(field, data, serializer):
+    serializer_field = serializer.fields[field]
+    # TODO: this won't work with source="*" or nested references
+    data_value = data.get(serializer_field.source, drf_fields.empty)
+    if data_value is not drf_fields.empty:
+        return data_value
+
+    instance = serializer.instance
+    if not instance:
+        return None
+
+    return serializer_field.get_attribute(instance)
