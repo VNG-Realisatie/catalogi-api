@@ -1,3 +1,5 @@
+import collections
+
 from django.utils.translation import ugettext_lazy as _
 
 from drf_yasg.utils import no_body, swagger_auto_schema
@@ -12,7 +14,8 @@ from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import ZaakType
+from ...datamodel.models import RolType, ZaakType
+from ...datamodel.utils import set_geldigheid, set_geldigheid_nestled_resources
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -20,7 +23,7 @@ from ..scopes import (
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
 )
-from ..serializers import ZaakTypeSerializer
+from ..serializers import RolTypeSerializer, ZaakTypeSerializer
 from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 
@@ -131,7 +134,6 @@ class ZaakTypeViewSet(
         aanmaken.
         """
         instance = self.get_object()
-
         # check related objects
         if (
             instance.besluittypen.filter(concept=True).exists()
@@ -143,6 +145,8 @@ class ZaakTypeViewSet(
                 {api_settings.NON_FIELD_ERRORS_KEY: msg}, code="concept-relation"
             )
 
+        set_geldigheid_nestled_resources(instance)
+        instance = set_geldigheid(instance)
         instance.concept = False
         instance.save()
 

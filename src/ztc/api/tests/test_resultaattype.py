@@ -167,9 +167,12 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 "indicatieSpecifiek": False,
                 "procestermijn": "P2DT5H",
                 "besluittypen": [f"http://testserver{besluittype_url}"],
+                "besluittypeOmschrijving": [besluittype.omschrijving],
+                "informatieobjecttypeOmschrijving": [informatieobjecttype.omschrijving],
                 "informatieobjecttypen": [
                     f"http://testserver{informatieobjecttype_url}"
                 ],
+                "zaaktypeIdentificatie": resultaattype.zaaktype.identificatie,
             },
         )
 
@@ -228,6 +231,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 "objecttype": "",
                 "registratie": "",
             },
+            "besluittype_omschrijving": ["foobar", "foobar2"],
         }
 
         responses = {
@@ -248,7 +252,6 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         resultaattype = ResultaatType.objects.get()
-
         self.assertEqual(resultaattype.omschrijving_generiek, "test")
         self.assertEqual(resultaattype.zaaktype, zaaktype)
         self.assertEqual(
@@ -603,6 +606,96 @@ class ResultaatTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{resultaattype2_url}")
+
+    def test_filter_zaaktype_identificatie(self):
+        resultaattype1 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+        )
+        resultaattype2 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+        )
+
+        list_url = reverse("resultaattype-list")
+        response = self.client.get(
+            list_url, {"zaaktypeIdentificatie": resultaattype1.zaaktype.identificatie}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(resultaattype1)}")
+
+    def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
+        resultaattype1 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype__identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        resultaattype2 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype__identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        resultaattype3 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype__identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("resultaattype-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-03-05",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["beginGeldigheid"], resultaattype3.datum_begin_geldigheid
+        )
+
+    def test_filter_zaaktype_datum_geldigheid_get_older_version(self):
+        resultaattype1 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype__identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        resultaattype2 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype__identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        resultaattype3 = ResultaatTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype__identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("resultaattype-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-02-15",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["beginGeldigheid"], resultaattype2.datum_begin_geldigheid
+        )
 
 
 class FilterValidationTests(APITestCase):

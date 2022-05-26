@@ -12,6 +12,7 @@ from rest_framework.serializers import ValidationError
 from vng_api_common.inspectors.view import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
+from ...datamodel.utils import set_geldigheid
 from ..scopes import SCOPE_CATALOGI_FORCED_DELETE
 
 
@@ -39,6 +40,7 @@ class ConceptPublishMixin:
     @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()
+        set_geldigheid(instance)
         instance.concept = False
         instance.save()
 
@@ -89,7 +91,7 @@ class ConceptFilterMixin:
 
 
 class ConceptMixin(ConceptPublishMixin, ConceptDestroyMixin, ConceptFilterMixin):
-    """ mixin for resources which have 'concept' field"""
+    """mixin for resources which have 'concept' field"""
 
     pass
 

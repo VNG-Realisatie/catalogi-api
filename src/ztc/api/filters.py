@@ -30,6 +30,16 @@ STATUS_HELP_TEXT = """filter objects depending on their concept status:
 """
 
 
+def get_objects_between_geldigheid_dates(queryset, name, value):
+    qs_old_version = queryset.filter(
+        datum_begin_geldigheid__lte=value, datum_einde_geldigheid__gte=value
+    )
+    if not qs_old_version:
+        qs_most_recent_version = queryset.filter(datum_einde_geldigheid=None)
+        return qs_most_recent_version
+    return qs_old_version
+
+
 def status_filter(queryset, name, value):
     if value == "concept":
         return queryset.filter(**{name: True})
@@ -57,10 +67,19 @@ class RolTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
     class Meta:
         model = RolType
-        fields = ("zaaktype", "omschrijving_generiek", "status")
+        fields = (
+            "zaaktype",
+            "zaaktype_identificatie",
+            "omschrijving_generiek",
+            "status",
+            "datum_geldigheid",
+        )
 
 
 class ZaakInformatieobjectTypeFilter(FilterSet):
@@ -93,29 +112,39 @@ class ResultaatTypeFilter(FilterSet):
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
 
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
+
     class Meta:
         model = ResultaatType
-        fields = ("zaaktype", "status")
+        fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
 
 
 class StatusTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
     class Meta:
         model = StatusType
-        fields = ("zaaktype", "status")
+        fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
 
 
 class EigenschapFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
     class Meta:
         model = Eigenschap
-        fields = ("zaaktype", "status")
+        fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
 
 
 class ZaakTypeFilter(FilterSet):
@@ -124,12 +153,23 @@ class ZaakTypeFilter(FilterSet):
     )
     trefwoorden = CharArrayFilter(field_name="trefwoorden", lookup_expr="contains")
 
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+
     class Meta:
         model = ZaakType
-        fields = ("catalogus", "identificatie", "trefwoorden", "status")
+        fields = (
+            "catalogus",
+            "identificatie",
+            "trefwoorden",
+            "status",
+            "datum_geldigheid",
+        )
 
 
 class ZaakObjectTypeFilter(FilterSet):
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
+
     class Meta:
         model = ZaakObjectType
         fields = (
@@ -137,9 +177,11 @@ class ZaakObjectTypeFilter(FilterSet):
             "catalogus",
             "datum_begin_geldigheid",
             "datum_einde_geldigheid",
+            "datum_geldigheid",
             "objecttype",
             "relatie_omschrijving",
             "zaaktype",
+            "zaaktype_identificatie",
         )
 
 
@@ -147,13 +189,16 @@ class InformatieObjectTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
 
     class Meta:
         model = InformatieObjectType
-        fields = ("catalogus", "status")
+        fields = ("catalogus", "status", "datum_geldigheid", "omschrijving")
 
 
 class BesluitTypeFilter(FilterSet):
+    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+
     zaaktypen = filters.CharFilter(
         field_name="zaaktypen",
         method=m2m_filter,
@@ -177,7 +222,14 @@ class BesluitTypeFilter(FilterSet):
 
     class Meta:
         model = BesluitType
-        fields = ("catalogus", "zaaktypen", "informatieobjecttypen", "status")
+        fields = (
+            "catalogus",
+            "zaaktypen",
+            "informatieobjecttypen",
+            "status",
+            "omschrijving",
+            "datum_geldigheid",
+        )
 
 
 class CatalogusFilter(FilterSet):

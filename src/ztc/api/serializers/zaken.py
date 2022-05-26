@@ -1,8 +1,13 @@
 from django.conf import settings
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
-from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
+from rest_framework.serializers import (
+    HyperlinkedModelSerializer,
+    ModelSerializer,
+    SerializerMethodField,
+)
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import (
     GegevensGroepSerializer,
@@ -12,7 +17,15 @@ from vng_api_common.serializers import (
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
-from ...datamodel.models import ZaakType, ZaakTypenRelatie
+from ...datamodel.models import (
+    Eigenschap,
+    ResultaatType,
+    RolType,
+    StatusType,
+    ZaakObjectType,
+    ZaakType,
+    ZaakTypenRelatie,
+)
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
@@ -21,6 +34,13 @@ from ..validators import (
     M2MConceptUpdateValidator,
     ZaaktypeGeldigheidValidator,
 )
+from . import (
+    EigenschapSerializer,
+    ResultaatTypeSerializer,
+    RolTypeSerializer,
+    StatusTypeSerializer,
+)
+from .zaakobjecttype import ZaakObjectTypeSerializer
 
 
 class ReferentieProcesSerializer(GegevensGroepSerializer):
@@ -54,6 +74,16 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         self.fields["aard_relatie"].help_text += f"\n\n{value_display_mapping}"
 
 
+class CreateCustomUrlMethodField(SerializerMethodField):
+    def __init__(self, method_name=None, **kwargs):
+        super().__init__(method_name)
+        self.func_kwargs = kwargs
+
+    def to_representation(self, value):
+        method = getattr(self.parent, self.method_name)
+        return method(value, **self.func_kwargs)
+
+
 class ZaakTypeSerializer(
     NestedGegevensGroepMixin,
     NestedCreateMixin,
@@ -80,6 +110,57 @@ class ZaakTypeSerializer(
             "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
         ),
     )
+    roltypen = CreateCustomUrlMethodField(
+        "create_custom_urls", resource=RolType, resource_serializer=RolTypeSerializer
+    )
+    statustypen = CreateCustomUrlMethodField(
+        "create_custom_urls",
+        resource=StatusType,
+        resource_serializer=StatusTypeSerializer,
+    )
+    resultaattypen = CreateCustomUrlMethodField(
+        "create_custom_urls",
+        resource=ResultaatType,
+        resource_serializer=ResultaatTypeSerializer,
+    )
+    eigenschappen = CreateCustomUrlMethodField(
+        "create_custom_urls",
+        resource=Eigenschap,
+        resource_serializer=EigenschapSerializer,
+    )
+    zaakobjecttypen = CreateCustomUrlMethodField(
+        "create_custom_urls",
+        resource=ZaakObjectType,
+        resource_serializer=ZaakObjectTypeSerializer,
+    )
+
+    def create_custom_urls(self, zaaktype, resource, resource_serializer):
+        if not zaaktype.datum_einde_geldigheid:
+            valid_resources = resource.objects.filter(
+                Q(datum_einde_geldigheid=zaaktype.datum_einde_geldigheid)
+                & Q(zaaktype__identificatie=zaaktype.identificatie)
+            )
+
+        else:
+            valid_resources = resource.objects.filter(
+                Q(datum_begin_geldigheid__lte=zaaktype.datum_begin_geldigheid)
+                & Q(zaaktype__identificatie=zaaktype.identificatie)
+                & Q(datum_einde_geldigheid__gte=zaaktype.datum_einde_geldigheid)
+                | Q(datum_einde_geldigheid=None)
+                & Q(zaaktype__identificatie=zaaktype.identificatie)
+                & Q(datum_begin_geldigheid__lte=zaaktype.datum_begin_geldigheid)
+            )
+
+        serializer = resource_serializer(
+            valid_resources,
+            many=True,
+            context={"request": self.context["request"]},
+        ).data
+
+        valid_resources_urls = []
+        for ordered_dict in serializer:
+            valid_resources_urls.append(ordered_dict["url"])
+        return valid_resources_urls
 
     class Meta:
         model = ZaakType
@@ -150,36 +231,6 @@ class ZaakTypeSerializer(
                     "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
                 ),
             },
-            "statustypen": {
-                "read_only": True,
-                "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-                ),
-            },
-            "resultaattypen": {
-                "read_only": True,
-                "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-                ),
-            },
-            "eigenschappen": {
-                "read_only": True,
-                "source": "eigenschap_set",
-                "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE."
-                ),
-            },
-            "roltypen": {
-                "read_only": True,
-                "source": "roltype_set",
-                "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-                ),
-            },
             "besluittypen": {
                 "label": _("heeft relevante besluittypen"),
                 "lookup_field": "uuid",
@@ -188,11 +239,6 @@ class ZaakTypeSerializer(
                 ),
             },
             "deelzaaktypen": {"lookup_field": "uuid"},
-            "zaakobjecttypen": {
-                "lookup_field": "uuid",
-                "source": "objecttypen",
-                "read_only": True,
-            },
         }
 
         validators = [
@@ -206,7 +252,6 @@ class ZaakTypeSerializer(
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         value_display_mapping = add_choice_values_help_text(
             VertrouwelijkheidsAanduiding
         )
