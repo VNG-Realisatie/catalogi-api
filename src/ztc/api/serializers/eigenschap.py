@@ -46,6 +46,9 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
     specificatie = EigenschapSpecificatieSerializer(
         source="specificatie_van_eigenschap"
     )
+    zaaktype = serializers.SlugRelatedField(
+        many=False, read_only=True, slug_field="identificatie"
+    )
 
     class Meta:
         model = Eigenschap
@@ -63,7 +66,6 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "naam": {"source": "eigenschapnaam"},
-            "zaaktype": {"lookup_field": "uuid"},
             "statustype": {"lookup_field": "uuid"},
             "begin_geldigheid": {
                 "source": "datum_begin_geldigheid",
