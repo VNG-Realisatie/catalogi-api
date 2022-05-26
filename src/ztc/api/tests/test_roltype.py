@@ -76,14 +76,13 @@ class RolTypeAPITests(APITestCase):
             "omschrijving": "Vergunningaanvrager",
             "omschrijvingGeneriek": RolOmschrijving.initiator,
         }
-
         response = self.client.post(rol_type_list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         roltype = RolType.objects.get()
         self.assertEqual(roltype.omschrijving, "Vergunningaanvrager")
-        self.assertEqual(roltype.zaaktype, zaaktype)
+        self.assertEqual(roltype.zaaktype, zaaktype.identificatie)
 
     def test_create_roltype_fail_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)

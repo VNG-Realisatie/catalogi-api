@@ -1417,6 +1417,50 @@ class ZaakTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{zaaktype1_url}")
 
+    def test_filter_geldigheid_get_most_recent(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie=123,
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie=456,
+            datum_begin_geldigheid="2020-03-01",
+        )
+        zaaktype_list_url = get_operation_url("zaaktype_list")
+
+        response = self.client.get(zaaktype_list_url, {"datumGeldigheid": "2020-03-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], zaaktype2.datum_begin_geldigheid)
+
+    def test_filter_geldigheid_get_older_version(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie=123,
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie=456,
+            datum_begin_geldigheid="2020-03-01",
+        )
+        zaaktype_list_url = get_operation_url("zaaktype_list")
+
+        response = self.client.get(zaaktype_list_url, {"datumGeldigheid": "2020-01-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], zaaktype1.datum_begin_geldigheid)
+
     def test_filter_trefwoorden(self):
         zaaktype1 = ZaakTypeFactory.create(
             concept=False, trefwoorden=["some", "key", "words"]

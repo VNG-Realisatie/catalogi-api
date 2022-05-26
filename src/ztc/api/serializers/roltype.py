@@ -7,7 +7,15 @@ from ...datamodel.models import RolType
 from ..validators import ZaakTypeConceptValidator
 
 
-class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerializer):
+class RolTypeSerializer(
+    NestedCreateMixin,
+    serializers.HyperlinkedModelSerializer,
+    serializers.ModelSerializer,
+):
+    zaaktype = serializers.SlugRelatedField(
+        many=False, read_only=True, slug_field="identificatie"
+    )
+
     class Meta:
         model = RolType
         fields = (
@@ -19,9 +27,9 @@ class RolTypeSerializer(NestedCreateMixin, serializers.HyperlinkedModelSerialize
             "begin_geldigheid",
             "einde_geldigheid",
         )
+
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
-            "zaaktype": {"lookup_field": "uuid"},
             "catalogus": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},

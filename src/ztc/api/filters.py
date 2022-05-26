@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-
+from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import URLValidator
 from django.db import models
@@ -124,9 +124,26 @@ class ZaakTypeFilter(FilterSet):
     )
     trefwoorden = CharArrayFilter(field_name="trefwoorden", lookup_expr="contains")
 
+    datum_geldigheid = filters.DateFilter(method="get_object_between_geldigheid_dates")
+
+    def get_object_between_geldigheid_dates(self, queryset, name, value):
+        qs = queryset.filter(
+            datum_begin_geldigheid__lte=value, datum_einde_geldigheid__gte=value
+        )
+        if not qs:
+            qs2 = queryset.filter(datum_einde_geldigheid=None)
+            return qs2
+        return qs
+
     class Meta:
         model = ZaakType
-        fields = ("catalogus", "identificatie", "trefwoorden", "status")
+        fields = (
+            "catalogus",
+            "identificatie",
+            "trefwoorden",
+            "status",
+            "datum_geldigheid",
+        )
 
 
 class ZaakObjectTypeFilter(FilterSet):

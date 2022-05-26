@@ -56,6 +56,9 @@ class ResultaatTypeSerializer(
             "start van de Archiefactietermijn (=brondatum) van het zaakdossier."
         ),
     )
+    zaaktype = serializers.SlugRelatedField(
+        many=False, read_only=True, slug_field="identificatie"
+    )
 
     class Meta:
         model = ResultaatType
@@ -95,7 +98,6 @@ class ResultaatTypeSerializer(
                     "Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)"
                 ),
             },
-            "zaaktype": {"lookup_field": "uuid", "label": _("is van")},
             "selectielijstklasse": {
                 "validators": [
                     ResourceValidator("Resultaat", settings.REFERENTIELIJSTEN_API_SPEC)
