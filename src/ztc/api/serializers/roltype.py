@@ -5,6 +5,7 @@ from vng_api_common.serializers import add_choice_values_help_text
 
 from ...datamodel.models import RolType
 from ..validators import ZaakTypeConceptValidator
+from .zaken import ZaakTypeSerializer
 
 
 class RolTypeSerializer(
@@ -12,9 +13,11 @@ class RolTypeSerializer(
     serializers.HyperlinkedModelSerializer,
     serializers.ModelSerializer,
 ):
-    zaaktype = serializers.SlugRelatedField(
-        many=False, read_only=True, slug_field="identificatie"
-    )
+    # zaaktype = serializers.RelatedField(
+    #     many=False, read_only=True, slug_field="identificatie"
+    # )
+    # zaaktype = serializers.StringRelatedField(many=True)
+    zaaktype = ZaakTypeSerializer(many=True, read_only=True)
 
     class Meta:
         model = RolType

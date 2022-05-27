@@ -72,7 +72,7 @@ class RolTypeAPITests(APITestCase):
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         rol_type_list_url = reverse("roltype-list")
         data = {
-            "zaaktype": f"http://testserver{zaaktype_url}",
+            "zaaktype": zaaktype,
             "omschrijving": "Vergunningaanvrager",
             "omschrijvingGeneriek": RolOmschrijving.initiator,
         }
