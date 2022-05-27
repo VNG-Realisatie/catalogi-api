@@ -10,6 +10,7 @@ from vng_api_common.serializers import (
     add_choice_values_help_text,
 )
 from vng_api_common.validators import ResourceValidator
+from rest_framework import serializers
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
 from ...datamodel.models import ZaakType, ZaakTypenRelatie
