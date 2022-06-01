@@ -769,6 +769,65 @@ class BesluitTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{besluittype1_url}")
 
+    def test_filter_omschrijving(self):
+        besluittype1 = BesluitTypeFactory.create(concept=False, omschrijving="foobar1")
+        besluittype2 = BesluitTypeFactory.create(concept=False, omschrijving="foobar2")
+        list_url = get_operation_url("besluittype_list")
+        besluittype1_url = get_operation_url("besluittype_read", uuid=besluittype1.uuid)
+
+        response = self.client.get(
+            list_url, {"omschrijving": besluittype1.omschrijving}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["url"], f"http://testserver{besluittype1_url}")
+
+    def test_filter_geldigheid_get_most_recent(self):
+        besluittype1 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        besluittype2 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-03-01",
+        )
+        list_url = get_operation_url("besluittype_list")
+
+        response = self.client.get(list_url, {"datumGeldigheid": "2020-03-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(besluittype2)}")
+
+    def test_filter_geldigheid_get_older_version(self):
+        besluittype1 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        besluittype2 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-03-01",
+        )
+        list_url = get_operation_url("besluittype_list")
+
+        response = self.client.get(list_url, {"datumGeldigheid": "2020-01-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(besluittype1)}")
+
 
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):

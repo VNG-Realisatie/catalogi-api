@@ -1486,7 +1486,7 @@ class ZaakTypeFilterAPITests(APITestCase):
         zaaktype1_url = get_operation_url("zaaktype_read", uuid=zaaktype1.uuid)
 
         response = self.client.get(
-            zaaktype_list_url, {"identificatie": zaaktype1.zaaktype_identificatie}
+            zaaktype_list_url, {"identificatie": zaaktype1.identificatie}
         )
         self.assertEqual(response.status_code, 200)
 
@@ -1504,7 +1504,7 @@ class ZaakTypeFilterAPITests(APITestCase):
         )
         zaaktype2 = ZaakTypeFactory.create(
             concept=False,
-            identificatie=456,
+            identificatie=123,
             datum_begin_geldigheid="2020-03-01",
         )
         zaaktype_list_url = get_operation_url("zaaktype_list")
@@ -1526,7 +1526,7 @@ class ZaakTypeFilterAPITests(APITestCase):
         )
         zaaktype2 = ZaakTypeFactory.create(
             concept=False,
-            identificatie=456,
+            identificatie=123,
             datum_begin_geldigheid="2020-03-01",
         )
         zaaktype_list_url = get_operation_url("zaaktype_list")

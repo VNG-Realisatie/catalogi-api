@@ -180,13 +180,16 @@ class InformatieObjectTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
     class Meta:
         model = InformatieObjectType
-        fields = ("catalogus", "status")
+        fields = ("catalogus", "status", "datum_geldigheid", "omschrijving")
 
 
 class BesluitTypeFilter(FilterSet):
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
+
     zaaktypen = filters.CharFilter(
         field_name="zaaktypen",
         method=m2m_filter,
@@ -210,7 +213,14 @@ class BesluitTypeFilter(FilterSet):
 
     class Meta:
         model = BesluitType
-        fields = ("catalogus", "zaaktypen", "informatieobjecttypen", "status")
+        fields = (
+            "catalogus",
+            "zaaktypen",
+            "informatieobjecttypen",
+            "status",
+            "omschrijving",
+            "datum_geldigheid",
+        )
 
 
 class CatalogusFilter(FilterSet):
