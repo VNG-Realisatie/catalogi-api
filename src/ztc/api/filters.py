@@ -30,6 +30,16 @@ STATUS_HELP_TEXT = """filter objects depending on their concept status:
 """
 
 
+def get_object_between_geldigheid_dates(queryset, name, value):
+    qs_old_version = queryset.filter(
+        datum_begin_geldigheid__lte=value, datum_einde_geldigheid__gte=value
+    )
+    if not qs_old_version:
+        qs_most_recent_version = queryset.filter(datum_einde_geldigheid=None)
+        return qs_most_recent_version
+    return qs_old_version
+
+
 def status_filter(queryset, name, value):
     if value == "concept":
         return queryset.filter(**{name: True})
@@ -57,10 +67,17 @@ class RolTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
     class Meta:
         model = RolType
-        fields = ("zaaktype", "omschrijving_generiek", "status")
+        fields = (
+            "zaaktype",
+            "zaaktype_identificatie",
+            "omschrijving_generiek",
+            "status",
+            "datum_geldigheid",
+        )
 
 
 class ZaakInformatieobjectTypeFilter(FilterSet):
@@ -124,16 +141,7 @@ class ZaakTypeFilter(FilterSet):
     )
     trefwoorden = CharArrayFilter(field_name="trefwoorden", lookup_expr="contains")
 
-    datum_geldigheid = filters.DateFilter(method="get_object_between_geldigheid_dates")
-
-    def get_object_between_geldigheid_dates(self, queryset, name, value):
-        qs = queryset.filter(
-            datum_begin_geldigheid__lte=value, datum_einde_geldigheid__gte=value
-        )
-        if not qs:
-            qs2 = queryset.filter(datum_einde_geldigheid=None)
-            return qs2
-        return qs
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
     class Meta:
         model = ZaakType

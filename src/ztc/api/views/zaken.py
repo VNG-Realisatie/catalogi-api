@@ -1,3 +1,5 @@
+import datetime
+
 from django.utils.translation import ugettext_lazy as _
 
 from drf_yasg.utils import no_body, swagger_auto_schema
@@ -12,7 +14,14 @@ from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import ZaakType
+from ...datamodel.models import (
+    Eigenschap,
+    StatusType,
+    ResultaatType,
+    RolType,
+    ZaakObjectType,
+    ZaakType,
+)
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -131,7 +140,6 @@ class ZaakTypeViewSet(
         aanmaken.
         """
         instance = self.get_object()
-
         # check related objects
         if (
             instance.besluittypen.filter(concept=True).exists()
@@ -142,10 +150,57 @@ class ZaakTypeViewSet(
             raise ValidationError(
                 {api_settings.NON_FIELD_ERRORS_KEY: msg}, code="concept-relation"
             )
-
+        self.set_geldigheid_nestled_resources(instance)
+        instance = self.set_geldigheid_zaaktype(instance)
         instance.concept = False
         instance.save()
 
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
+
+    def set_geldigheid_zaaktype(self, instance):
+        previous_version = ZaakType.objects.filter(
+            datum_einde_geldigheid=None, identificatie=instance.identificatie
+        )
+        if previous_version:
+            previous_version[
+                0
+            ].datum_einde_geldigheid = datetime.datetime.now().date() - datetime.timedelta(
+                days=1
+            )
+            previous_version[0].save()
+
+        instance.datum_begin_geldigheid = datetime.datetime.now().date()
+        return instance
+
+    def set_geldigheid_nestled_resources(self, instance):
+        for resource in [
+            RolType,
+            StatusType,
+            Eigenschap,
+            ZaakObjectType,
+            ResultaatType,
+        ]:
+            current_version = resource.objects.filter(
+                datum_einde_geldigheid=None,
+                zaaktype_identificatie=instance.identificatie,
+                zaaktype=instance,
+            )
+            if current_version:
+                current_version[
+                    0
+                ].datum_begin_geldigheid = datetime.datetime.now().date()
+                current_version[0].save()
+
+                previous_version = resource.objects.filter(
+                    datum_einde_geldigheid=None,
+                    zaaktype_identificatie=instance.identificatie,
+                ).exclude(zaaktype=instance)
+                if previous_version:
+                    previous_version[
+                        0
+                    ].datum_einde_geldigheid = datetime.datetime.now().date() - datetime.timedelta(
+                        days=1
+                    )
+                    previous_version[0].save()

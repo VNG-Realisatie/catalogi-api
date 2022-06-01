@@ -1,8 +1,9 @@
+import datetime
 from datetime import date
 
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
-from vng_api_common.tests import get_validation_errors, reverse
+from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
 from ztc.api.validators import ZaakTypeConceptValidator
 
@@ -61,6 +62,7 @@ class RolTypeAPITests(APITestCase):
             "catalogus": f"http://testserver{catalogus_url}",
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
+            "zaaktypeIdentificatie": "",
         }
         self.assertEqual(expected, response.json())
 
@@ -72,17 +74,18 @@ class RolTypeAPITests(APITestCase):
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         rol_type_list_url = reverse("roltype-list")
         data = {
-            "zaaktype": zaaktype,
+            "zaaktype": f"http://testserver{zaaktype_url}",
             "omschrijving": "Vergunningaanvrager",
             "omschrijvingGeneriek": RolOmschrijving.initiator,
         }
+
         response = self.client.post(rol_type_list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         roltype = RolType.objects.get()
         self.assertEqual(roltype.omschrijving, "Vergunningaanvrager")
-        self.assertEqual(roltype.zaaktype, zaaktype.identificatie)
+        self.assertEqual(roltype.zaaktype, zaaktype)
 
     def test_create_roltype_fail_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
@@ -298,6 +301,89 @@ class RolTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver.com{roltype1_url}")
+
+    def test_filter_zaaktype_identificatie(self):
+        roltype1 = RolTypeFactory.create(
+            zaaktype__concept=False, zaaktype_identificatie="123"
+        )
+        roltype2 = RolTypeFactory.create(
+            zaaktype__concept=False, zaaktype_identificatie="456"
+        )
+        list_url = reverse("roltype-list")
+        response = self.client.get(list_url, {"zaaktypeIdentificatie": "123"})
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["zaaktypeIdentificatie"], "123")
+
+    def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
+        roltype1 = RolTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        roltype2 = RolTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        roltype3 = RolTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("roltype-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-03-05",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], roltype3.datum_begin_geldigheid)
+
+    def test_filter_zaaktype_datum_geldigheid_get_older_version(self):
+        roltype1 = RolTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        roltype2 = RolTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        roltype3 = RolTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("roltype-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-02-15",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], roltype2.datum_begin_geldigheid)
 
 
 class RolTypePaginationTestCase(APITestCase):

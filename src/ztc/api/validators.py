@@ -115,7 +115,6 @@ class ZaakTypeConceptValidator:
                 raise ValidationError(self.message, code=self.code)
 
         zaaktype_in_attrs = attrs.get("zaaktype")
-
         if zaaktype_in_attrs:
             if not zaaktype_in_attrs.concept:
                 msg = _("Creating a relation to non-concept zaaktype is forbidden")

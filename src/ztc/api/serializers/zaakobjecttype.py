@@ -70,3 +70,9 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
     validators = [
         RelationCatalogValidator("zaaktype"),
     ]
+
+    def create(self, validated_data):
+        identificatie = validated_data.pop["zaaktype"].identificatie
+        validated_data["zaaktype_identificatie"] = identificatie
+        zaakobjecttype = super().create(validated_data)
+        return zaakobjecttype

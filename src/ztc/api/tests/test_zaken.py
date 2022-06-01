@@ -1,11 +1,11 @@
 import uuid
-from datetime import date
+from datetime import date, datetime, timedelta
 
 from django.test import override_settings
 from django.urls import reverse as django_reverse
 
 from rest_framework import status
-from vng_api_common.constants import VertrouwelijkheidsAanduiding
+from vng_api_common.constants import VertrouwelijkheidsAanduiding, RolOmschrijving
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 from zds_client.tests.mocks import mock_client
 
@@ -16,6 +16,7 @@ from ztc.api.validators import (
 )
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
+from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 from ztc.datamodel.tests.factories import (
     BesluitTypeFactory,
     CatalogusFactory,
@@ -23,11 +24,13 @@ from ztc.datamodel.tests.factories import (
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
     ZaakTypenRelatieFactory,
+    StatusTypeFactory,
+    EigenschapFactory,
 )
-from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
+from ...datamodel.tests.factories import RolTypeFactory, CheckListItemFactory
 
 
 class ZaakTypeAPITests(APITestCase):
@@ -361,6 +364,41 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.refresh_from_db()
 
         self.assertEqual(zaaktype.concept, False)
+
+    def test_publish_zaaktype_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+
+        besluittype1 = BesluitTypeFactory.create(concept=False, zaaktypen=[zaaktype1])
+        besluittype2 = BesluitTypeFactory.create(concept=False, zaaktypen=[zaaktype2])
+
+        zaaktype1.besluittypen.add(besluittype1)
+        zaaktype2.besluittypen.add(besluittype2)
+
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype1, informatieobjecttype__concept=False
+        )
+        ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype2, informatieobjecttype__concept=False
+        )
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        zaaktype1.refresh_from_db()
+        zaaktype2.refresh_from_db()
+
+        self.assertEqual(
+            zaaktype1.datum_einde_geldigheid, datetime.now().date() - timedelta(days=1)
+        )
+        self.assertEqual(zaaktype2.datum_begin_geldigheid, datetime.now().date())
+        self.assertEqual(zaaktype2.datum_einde_geldigheid, None)
 
     def test_publish_zaaktype_fail_not_concept_besluittype(self):
         zaaktype = ZaakTypeFactory.create()
@@ -1653,3 +1691,147 @@ class ZaaktypeValidationTests(APITestCase):
         error = get_validation_errors(response, "deelzaaktypen")
 
         self.assertEqual(error["code"], "relations-incorrect-catalogus")
+
+
+class ZaakTypeGeldigheidTests(APITestCase):
+    maxDiff = None
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_WRITE, SCOPE_CATALOGI_READ]
+
+    def test_publish_roltype_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+
+        rol_type1 = RolTypeFactory.create(
+            zaaktype=zaaktype1,
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+        )
+
+        rol_type2 = RolTypeFactory.create(
+            zaaktype=zaaktype2,
+            datum_begin_geldigheid=date(2021, 3, 1),
+            datum_einde_geldigheid=None,
+        )
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        rol_type1.refresh_from_db()
+        rol_type2.refresh_from_db()
+
+        self.assertEqual(
+            rol_type1.datum_einde_geldigheid, datetime.now().date() - timedelta(days=1)
+        )
+        self.assertEqual(rol_type2.datum_begin_geldigheid, datetime.now().date())
+        self.assertEqual(rol_type2.datum_einde_geldigheid, None)
+
+    def test_publish_statustype_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+
+        statustype1 = StatusTypeFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype1,
+        )
+
+        statustype2 = StatusTypeFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype2,
+        )
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        statustype1.refresh_from_db()
+        statustype2.refresh_from_db()
+
+        self.assertEqual(
+            statustype1.datum_einde_geldigheid,
+            datetime.now().date() - timedelta(days=1),
+        )
+        self.assertEqual(statustype2.datum_begin_geldigheid, datetime.now().date())
+        self.assertEqual(statustype2.datum_einde_geldigheid, None)
+
+    def test_publish_eigenschap_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+
+        eigenschap1 = EigenschapFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype1,
+        )
+
+        eigenschap2 = EigenschapFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype2,
+        )
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        eigenschap1.refresh_from_db()
+        eigenschap2.refresh_from_db()
+
+        self.assertEqual(
+            eigenschap1.datum_einde_geldigheid,
+            datetime.now().date() - timedelta(days=1),
+        )
+        self.assertEqual(eigenschap2.datum_begin_geldigheid, datetime.now().date())
+        self.assertEqual(eigenschap2.datum_einde_geldigheid, None)
+
+    def test_publish_zaakobjecttype_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+
+        zaakobjecttype1 = ZaakObjectTypeFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype1,
+        )
+
+        zaakobjecttype2 = ZaakObjectTypeFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype2,
+        )
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        zaakobjecttype1.refresh_from_db()
+        zaakobjecttype2.refresh_from_db()
+
+        self.assertEqual(
+            zaakobjecttype1.datum_einde_geldigheid,
+            datetime.now().date() - timedelta(days=1),
+        )
+        self.assertEqual(zaakobjecttype2.datum_begin_geldigheid, datetime.now().date())
+        self.assertEqual(zaakobjecttype2.datum_einde_geldigheid, None)
