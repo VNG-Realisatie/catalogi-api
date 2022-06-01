@@ -301,6 +301,94 @@ class StatusTypeFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{statustype2_url}")
 
+    def test_filter_zaaktype_identificatie(self):
+        statustype1 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+        )
+        statustype2 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+        )
+
+        list_url = reverse("statustype-list")
+        response = self.client.get(
+            list_url, {"zaaktypeIdentificatie": statustype1.zaaktype_identificatie}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["zaaktypeIdentificatie"], statustype1.zaaktype_identificatie
+        )
+
+    def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
+        statustype1 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        statustype2 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        statustype3 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("statustype-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-03-05",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], statustype3.datum_begin_geldigheid)
+
+    def test_filter_zaaktype_datum_geldigheid_get_older_version(self):
+        statustype1 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        statustype2 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        statustype3 = StatusTypeFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("statustype-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-02-15",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], statustype2.datum_begin_geldigheid)
+
 
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):

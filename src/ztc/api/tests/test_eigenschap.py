@@ -416,6 +416,94 @@ class EigenschapFilterAPITests(APITestCase):
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{eigenschap2_url}")
 
+    def test_filter_zaaktype_identificatie(self):
+        eigenschap1 = EigenschapFactory.create(
+            zaaktype__concept=False,
+        )
+        eigenschap2 = EigenschapFactory.create(
+            zaaktype__concept=False,
+        )
+
+        list_url = reverse("eigenschap-list")
+        response = self.client.get(
+            list_url, {"zaaktypeIdentificatie": eigenschap1.zaaktype_identificatie}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["zaaktypeIdentificatie"], eigenschap1.zaaktype_identificatie
+        )
+
+    def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
+        eigenschap1 = EigenschapFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        eigenschap2 = EigenschapFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        eigenschap3 = EigenschapFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("eigenschap-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-03-05",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], eigenschap3.datum_begin_geldigheid)
+
+    def test_filter_zaaktype_datum_geldigheid_get_older_version(self):
+        eigenschap1 = EigenschapFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        eigenschap2 = EigenschapFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-02-02",
+            datum_einde_geldigheid="2020-03-01",
+        )
+        eigenschap3 = EigenschapFactory.create(
+            zaaktype__concept=False,
+            zaaktype_identificatie="123",
+            datum_begin_geldigheid="2020-03-02",
+        )
+        list_url = reverse("eigenschap-list")
+        response = self.client.get(
+            list_url,
+            {
+                "datumGeldigheid": "2020-02-15",
+                "zaaktypeIdentificatie": "123",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["beginGeldigheid"], eigenschap2.datum_begin_geldigheid)
+
 
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):

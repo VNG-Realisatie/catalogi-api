@@ -56,6 +56,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             "specificatie",
             "toelichting",
             "zaaktype",
+            "zaaktype_identificatie",
             "statustype",
             "begin_geldigheid",
             "einde_geldigheid",

@@ -62,6 +62,7 @@ class ResultaatTypeSerializer(
         fields = (
             "url",
             "zaaktype",
+            "zaaktype_identificatie",
             "omschrijving",
             "resultaattypeomschrijving",
             "omschrijving_generiek",

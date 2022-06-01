@@ -303,21 +303,21 @@ class RolTypeFilterAPITests(APITestCase):
         self.assertEqual(data[0]["url"], f"http://testserver.com{roltype1_url}")
 
     def test_filter_zaaktype_identificatie(self):
-        roltype1 = RolTypeFactory.create(
-            zaaktype__concept=False, zaaktype_identificatie="123"
-        )
-        roltype2 = RolTypeFactory.create(
-            zaaktype__concept=False, zaaktype_identificatie="456"
-        )
+        roltype1 = RolTypeFactory.create(zaaktype__concept=False)
+        roltype2 = RolTypeFactory.create(zaaktype__concept=False)
         list_url = reverse("roltype-list")
-        response = self.client.get(list_url, {"zaaktypeIdentificatie": "123"})
+        response = self.client.get(
+            list_url, {"zaaktypeIdentificatie": roltype1.zaaktype_identificatie}
+        )
 
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["zaaktypeIdentificatie"], "123")
+        self.assertEqual(
+            data[0]["zaaktypeIdentificatie"], roltype1.zaaktype_identificatie
+        )
 
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         roltype1 = RolTypeFactory.create(
