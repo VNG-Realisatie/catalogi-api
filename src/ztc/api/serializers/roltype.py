@@ -17,7 +17,6 @@ class RolTypeSerializer(
         fields = (
             "url",
             "zaaktype",
-            "zaaktype_identificatie",
             "omschrijving",
             "omschrijving_generiek",
             "catalogus",
@@ -41,7 +40,7 @@ class RolTypeSerializer(
         self.fields["omschrijving_generiek"].help_text += f"\n\n{value_display_mapping}"
 
     def create(self, validated_data):
-        identificatie = validated_data.pop["zaaktype"].identificatie
+        identificatie = validated_data["zaaktype"].identificatie
         validated_data["zaaktype_identificatie"] = identificatie
         roltype = super().create(validated_data)
         return roltype

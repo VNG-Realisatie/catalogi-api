@@ -103,7 +103,6 @@ class StatusTypeAPITests(APITestCase):
             "volgnummer": 2,
         }
         response = self.client.post(statustype_list_url, data)
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         statustype = StatusType.objects.get()
@@ -319,9 +318,7 @@ class StatusTypeFilterAPITests(APITestCase):
         data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(
-            data[0]["zaaktypeIdentificatie"], statustype1.zaaktype_identificatie
-        )
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(statustype1)}")
 
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         statustype1 = StatusTypeFactory.create(

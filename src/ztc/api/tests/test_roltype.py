@@ -62,7 +62,6 @@ class RolTypeAPITests(APITestCase):
             "catalogus": f"http://testserver{catalogus_url}",
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
-            "zaaktypeIdentificatie": "",
         }
         self.assertEqual(expected, response.json())
 
@@ -315,9 +314,7 @@ class RolTypeFilterAPITests(APITestCase):
         data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(
-            data[0]["zaaktypeIdentificatie"], roltype1.zaaktype_identificatie
-        )
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(roltype1)}")
 
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         roltype1 = RolTypeFactory.create(

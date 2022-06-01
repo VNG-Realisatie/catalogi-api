@@ -40,7 +40,6 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek",
             "statustekst",
             "zaaktype",
-            "zaaktype_identificatie",
             "volgnummer",
             "is_eindstatus",
             "informeren",
@@ -68,7 +67,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
         validators = [ZaakTypeConceptValidator()]
 
     def create(self, validated_data):
-        identificatie = validated_data.pop["zaaktype"].identificatie
+        identificatie = validated_data["zaaktype"].identificatie
         validated_data["zaaktype_identificatie"] = identificatie
         statustype = super().create(validated_data)
         return statustype

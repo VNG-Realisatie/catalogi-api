@@ -434,9 +434,7 @@ class EigenschapFilterAPITests(APITestCase):
         data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(
-            data[0]["zaaktypeIdentificatie"], eigenschap1.zaaktype_identificatie
-        )
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(eigenschap1)}")
 
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         eigenschap1 = EigenschapFactory.create(
