@@ -609,6 +609,73 @@ class InformatieObjectTypeFilterAPITests(APITestCase):
             data[0]["url"], f"http://testserver{informatieobjecttype2_url}"
         )
 
+    def test_filter_omschrijving(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(concept=False)
+        list_url = get_operation_url("informatieobjecttype_list")
+        informatieobjecttype1_url = get_operation_url(
+            "informatieobjecttype_read", uuid=informatieobjecttype1.uuid
+        )
+
+        response = self.client.get(
+            list_url, {"omschrijving": informatieobjecttype1.omschrijving}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["url"], f"http://testserver{informatieobjecttype1_url}"
+        )
+
+    def test_filter_geldigheid_get_most_recent(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-03-01",
+        )
+        list_url = get_operation_url("informatieobjecttype_list")
+
+        response = self.client.get(list_url, {"datumGeldigheid": "2020-03-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["beginGeldigheid"], informatieobjecttype2.datum_begin_geldigheid
+        )
+
+    def test_filter_geldigheid_get_older_version(self):
+        informatieobjecttype1 = InformatieObjectTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-03-01",
+        )
+        list_url = get_operation_url("informatieobjecttype_list")
+
+        response = self.client.get(list_url, {"datumGeldigheid": "2020-01-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(
+            data[0]["beginGeldigheid"], informatieobjecttype1.datum_begin_geldigheid
+        )
+
 
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
