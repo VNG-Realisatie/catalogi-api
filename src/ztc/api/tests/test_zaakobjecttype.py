@@ -338,9 +338,7 @@ class ZaakObjectTypeFilterAPITests(APITestCase):
         data = response.json()["results"]
 
         self.assertEqual(len(data), 1)
-        self.assertEqual(
-            data[0]["zaaktypeIdentificatie"], zaakobjecttype1.zaaktype_identificatie
-        )
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(zaakobjecttype1)}")
 
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         zaakobjecttype1 = ZaakObjectTypeFactory.create(

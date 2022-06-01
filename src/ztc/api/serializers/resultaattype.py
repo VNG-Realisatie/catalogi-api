@@ -62,7 +62,6 @@ class ResultaatTypeSerializer(
         fields = (
             "url",
             "zaaktype",
-            "zaaktype_identificatie",
             "omschrijving",
             "resultaattypeomschrijving",
             "omschrijving_generiek",
@@ -138,7 +137,7 @@ class ResultaatTypeSerializer(
         )
 
     def create(self, validated_data):
-        identificatie = validated_data.pop["zaaktype"].identificatie
+        identificatie = validated_data["zaaktype"].identificatie
         validated_data["zaaktype_identificatie"] = identificatie
         resultaattype = super().create(validated_data)
         return resultaattype

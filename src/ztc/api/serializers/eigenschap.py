@@ -56,7 +56,6 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             "specificatie",
             "toelichting",
             "zaaktype",
-            "zaaktype_identificatie",
             "statustype",
             "begin_geldigheid",
             "einde_geldigheid",
@@ -80,8 +79,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         specificatie = validated_data.pop("specificatie_van_eigenschap")
         specificatie = EigenschapSpecificatieSerializer().create(specificatie)
-
-        identificatie = validated_data.pop["zaaktype"].identificatie
+        identificatie = validated_data["zaaktype"].identificatie
         validated_data["zaaktype_identificatie"] = identificatie
 
         validated_data["specificatie_van_eigenschap"] = specificatie

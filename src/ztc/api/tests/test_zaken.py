@@ -1873,3 +1873,20 @@ class ZaakTypeGeldigheidTests(APITestCase):
         )
         self.assertEqual(resultaattype2.datum_begin_geldigheid, datetime.now().date())
         self.assertEqual(resultaattype2.datum_einde_geldigheid, None)
+
+    def test_publish_validate_overlapping_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie="ZAAKTYPE-2018-0000000001",
+            datum_begin_geldigheid=datetime.now().date(),
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        data = response.json()
+        self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertEqual(data["code"], "overlapping")

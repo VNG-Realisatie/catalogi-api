@@ -17,7 +17,6 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
             "objecttype",
             "relatie_omschrijving",
             "zaaktype",
-            "zaaktype_identificatie",
             "resultaattypen",
             "statustypen",
             "catalogus",
@@ -73,7 +72,7 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
     ]
 
     def create(self, validated_data):
-        identificatie = validated_data.pop["zaaktype"].identificatie
+        identificatie = validated_data["zaaktype"].identificatie
         validated_data["zaaktype_identificatie"] = identificatie
         zaakobjecttype = super().create(validated_data)
         return zaakobjecttype
