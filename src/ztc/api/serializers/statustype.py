@@ -40,6 +40,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek",
             "statustekst",
             "zaaktype",
+            "zaaktype_identificatie",
             "volgnummer",
             "is_eindstatus",
             "informeren",

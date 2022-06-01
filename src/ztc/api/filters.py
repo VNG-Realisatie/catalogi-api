@@ -110,29 +110,33 @@ class ResultaatTypeFilter(FilterSet):
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
 
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
+
     class Meta:
         model = ResultaatType
-        fields = ("zaaktype", "status")
+        fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
 
 
 class StatusTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
     class Meta:
         model = StatusType
-        fields = ("zaaktype", "status")
+        fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
 
 
 class EigenschapFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
     class Meta:
         model = Eigenschap
-        fields = ("zaaktype", "status")
+        fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
 
 
 class ZaakTypeFilter(FilterSet):
@@ -155,6 +159,8 @@ class ZaakTypeFilter(FilterSet):
 
 
 class ZaakObjectTypeFilter(FilterSet):
+    datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
+
     class Meta:
         model = ZaakObjectType
         fields = (
@@ -162,9 +168,11 @@ class ZaakObjectTypeFilter(FilterSet):
             "catalogus",
             "datum_begin_geldigheid",
             "datum_einde_geldigheid",
+            "datum_geldigheid",
             "objecttype",
             "relatie_omschrijving",
             "zaaktype",
+            "zaaktype_identificatie",
         )
 
 

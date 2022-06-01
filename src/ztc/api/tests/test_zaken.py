@@ -26,6 +26,7 @@ from ztc.datamodel.tests.factories import (
     ZaakTypenRelatieFactory,
     StatusTypeFactory,
     EigenschapFactory,
+    ResultaatTypeFactory,
 )
 
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
@@ -1442,12 +1443,14 @@ class ZaakTypeFilterAPITests(APITestCase):
         self.assertEqual(data[0]["url"], f"http://testserver{zaaktype2_url}")
 
     def test_filter_identificatie(self):
-        zaaktype1 = ZaakTypeFactory.create(concept=False, identificatie=123)
-        zaaktype2 = ZaakTypeFactory.create(concept=False, identificatie=456)
+        zaaktype1 = ZaakTypeFactory.create(concept=False)
+        zaaktype2 = ZaakTypeFactory.create(concept=False)
         zaaktype_list_url = get_operation_url("zaaktype_list")
         zaaktype1_url = get_operation_url("zaaktype_read", uuid=zaaktype1.uuid)
 
-        response = self.client.get(zaaktype_list_url, {"identificatie": 123})
+        response = self.client.get(
+            zaaktype_list_url, {"identificatie": zaaktype1.zaaktype_identificatie}
+        )
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -1798,3 +1801,38 @@ class ZaakTypeGeldigheidTests(APITestCase):
         )
         self.assertEqual(zaakobjecttype2.datum_begin_geldigheid, datetime.now().date())
         self.assertEqual(zaakobjecttype2.datum_einde_geldigheid, None)
+
+    def test_publish_resultaattype_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True, identificatie="ZAAKTYPE-2018-0000000001"
+        )
+
+        resultaattype1 = ResultaatTypeFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype1,
+        )
+
+        resultaattype2 = ResultaatTypeFactory(
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype=zaaktype2,
+        )
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        resultaattype1.refresh_from_db()
+        resultaattype2.refresh_from_db()
+
+        self.assertEqual(
+            resultaattype1.datum_einde_geldigheid,
+            datetime.now().date() - timedelta(days=1),
+        )
+        self.assertEqual(resultaattype2.datum_begin_geldigheid, datetime.now().date())
+        self.assertEqual(resultaattype2.datum_einde_geldigheid, None)

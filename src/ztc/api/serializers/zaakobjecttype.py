@@ -17,6 +17,7 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
             "objecttype",
             "relatie_omschrijving",
             "zaaktype",
+            "zaaktype_identificatie",
             "resultaattypen",
             "statustypen",
             "catalogus",
