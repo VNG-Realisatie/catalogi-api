@@ -12,6 +12,7 @@ from vng_api_common.constants import (
     ZaakobjectTypes,
 )
 from vng_api_common.descriptors import GegevensGroepType
+from vng_api_common.validators import alphanumeric_excluding_diacritic
 
 from ztc.datamodel.models.mixins import GeldigheidMixin
 
@@ -55,6 +56,16 @@ class ResultaatType(ETagMixin, GeldigheidMixin):
         help_text=_(
             "URL-referentie naar het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden."
         ),
+    )
+    zaaktype_identificatie = models.CharField(
+        _("zaaktypeidentificatie"),
+        max_length=50,
+        blank=True,
+        help_text=_(
+            "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
+        ),
+        validators=[alphanumeric_excluding_diacritic],
+        db_index=True,
     )
 
     # core data - used by ZRC to calculate archival-related dates

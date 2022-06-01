@@ -32,10 +32,6 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
         required=False, many=True, source="checklistitem"
     )
 
-    zaaktype = serializers.SlugRelatedField(
-        many=False, read_only=True, slug_field="identificatie"
-    )
-
     class Meta:
         model = StatusType
         fields = (
@@ -59,6 +55,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving": {"source": "statustype_omschrijving"},
             "omschrijving_generiek": {"source": "statustype_omschrijving_generiek"},
             "volgnummer": {"source": "statustypevolgnummer"},
+            "zaaktype": {"lookup_field": "uuid"},
             "eigenschappen": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
@@ -68,3 +65,9 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
         validators = [ZaakTypeConceptValidator()]
+
+    def create(self, validated_data):
+        identificatie = validated_data.pop["zaaktype"].identificatie
+        validated_data["zaaktype_identificatie"] = identificatie
+        statustype = super().create(validated_data)
+        return statustype

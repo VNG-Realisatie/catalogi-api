@@ -8,6 +8,7 @@ from .zaken import ZaakTypeFactory
 
 class RolTypeFactory(factory.django.DjangoModelFactory):
     zaaktype = factory.SubFactory(ZaakTypeFactory)
+    zaaktype_identificatie = factory.LazyAttribute(lambda o: o.zaaktype.identificatie)
 
     omschrijving = factory.Faker("text", max_nb_chars=20)
     omschrijving_generiek = factory.fuzzy.FuzzyChoice(choices=RolOmschrijving.values)
