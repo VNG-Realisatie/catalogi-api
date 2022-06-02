@@ -11,7 +11,7 @@ from vng_api_common.notifications.viewsets import NotificationViewSetMixin
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import ZaakType
-from ...datamodel.utils import set_geldigheid_zaaktype, set_geldigheid_nestled_resources
+from ...datamodel.utils import set_geldigheid, set_geldigheid_nestled_resources
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -125,7 +125,7 @@ class ZaakTypeViewSet(
             )
 
         set_geldigheid_nestled_resources(instance)
-        instance = set_geldigheid_zaaktype(instance)
+        instance = set_geldigheid(instance)
         instance.concept = False
         instance.save()
 

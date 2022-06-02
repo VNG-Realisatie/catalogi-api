@@ -2,6 +2,7 @@ from typing import Union
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from ...datamodel.utils import set_geldigheid
 
 from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework.decorators import action
@@ -16,6 +17,7 @@ class ConceptPublishMixin:
     @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()
+        set_geldigheid(instance)
         instance.concept = False
         instance.save()
 
@@ -66,7 +68,7 @@ class ConceptFilterMixin:
 
 
 class ConceptMixin(ConceptPublishMixin, ConceptDestroyMixin, ConceptFilterMixin):
-    """ mixin for resources which have 'concept' field"""
+    """mixin for resources which have 'concept' field"""
 
     pass
 

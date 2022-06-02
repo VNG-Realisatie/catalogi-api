@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
@@ -309,6 +310,30 @@ class BesluitTypeAPITests(APITestCase):
         besluittype.refresh_from_db()
 
         self.assertEqual(besluittype.concept, False)
+
+    def test_publish_besluittype_geldigheid(self):
+        besluittype1 = BesluitTypeFactory.create(concept=False, omschrijving="foobar")
+        besluittype2 = BesluitTypeFactory.create(concept=True, omschrijving="foobar")
+
+        besluittype_url = reverse(
+            "besluittype-publish", kwargs={"uuid": besluittype2.uuid}
+        )
+
+        response = self.client.post(besluittype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        besluittype1.refresh_from_db()
+        besluittype2.refresh_from_db()
+
+        self.assertEqual(besluittype2.concept, False)
+        self.assertEqual(
+            besluittype1.datum_einde_geldigheid,
+            datetime.now().date() - timedelta(days=1),
+        )
+
+        self.assertEqual(besluittype2.datum_begin_geldigheid, datetime.now().date())
+        self.assertEqual(besluittype2.datum_einde_geldigheid, None)
 
     def test_delete_besluittype(self):
         besluittype = BesluitTypeFactory.create()
