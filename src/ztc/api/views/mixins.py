@@ -3,7 +3,6 @@ from typing import Union
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from ...datamodel.utils import set_geldigheid
 
 from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework import status
@@ -13,6 +12,7 @@ from rest_framework.serializers import ValidationError
 from vng_api_common.inspectors.view import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
+from ...datamodel.utils import set_geldigheid
 from ..scopes import SCOPE_CATALOGI_FORCED_DELETE
 
 

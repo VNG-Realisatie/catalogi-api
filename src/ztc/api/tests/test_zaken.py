@@ -5,7 +5,7 @@ from django.test import override_settings
 from django.urls import reverse as django_reverse
 
 from rest_framework import status
-from vng_api_common.constants import VertrouwelijkheidsAanduiding, RolOmschrijving
+from vng_api_common.constants import RolOmschrijving, VertrouwelijkheidsAanduiding
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 from zds_client.tests.mocks import mock_client
 
@@ -16,23 +16,22 @@ from ztc.api.validators import (
 )
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
-from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 from ztc.datamodel.tests.factories import (
     BesluitTypeFactory,
     CatalogusFactory,
+    EigenschapFactory,
     InformatieObjectTypeFactory,
+    ResultaatTypeFactory,
+    StatusTypeFactory,
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
     ZaakTypenRelatieFactory,
-    StatusTypeFactory,
-    EigenschapFactory,
-    ResultaatTypeFactory,
-    ZaakInformatieobjectTypeFactory,
 )
+from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 
+from ...datamodel.tests.factories import CheckListItemFactory, RolTypeFactory
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
-from ...datamodel.tests.factories import RolTypeFactory, CheckListItemFactory
 
 
 class ZaakTypeAPITests(APITestCase):

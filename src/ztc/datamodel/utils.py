@@ -1,23 +1,22 @@
 from datetime import date, datetime, timedelta
-from typing import Optional
-
-from rest_framework.exceptions import APIException
+from typing import Optional, Union
 
 from django.apps import apps
 from django.db.models import Q, QuerySet
 from django.utils.translation import ugettext_lazy as _
-from typing import Union
+
+from rest_framework.exceptions import APIException
 
 from ztc.datamodel.models import (
+    BesluitType,
+    Catalogus,
     Eigenschap,
-    StatusType,
+    InformatieObjectType,
     ResultaatType,
     RolType,
+    StatusType,
     ZaakObjectType,
     ZaakType,
-    Catalogus,
-    BesluitType,
-    InformatieObjectType,
 )
 
 

@@ -1,4 +1,3 @@
-import datetime
 from drf_writable_nested import NestedCreateMixin
 from rest_framework import serializers
 from vng_api_common.constants import RolOmschrijving
