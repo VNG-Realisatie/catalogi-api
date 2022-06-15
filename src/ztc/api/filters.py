@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-from datetime import datetime
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import URLValidator
 from django.db import models

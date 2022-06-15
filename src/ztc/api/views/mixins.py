@@ -2,13 +2,13 @@ from typing import Union
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from ...datamodel.utils import set_geldigheid
 
 from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 
+from ...datamodel.utils import set_geldigheid
 from ..scopes import SCOPE_CATALOGI_FORCED_DELETE
 
 

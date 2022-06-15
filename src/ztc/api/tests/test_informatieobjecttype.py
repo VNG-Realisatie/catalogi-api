@@ -1,7 +1,7 @@
+from datetime import datetime, timedelta
 from unittest import skip
 
 from django.urls import reverse
-from datetime import datetime, timedelta
 
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
