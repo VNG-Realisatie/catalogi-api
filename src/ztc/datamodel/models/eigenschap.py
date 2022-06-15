@@ -7,7 +7,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
-from vng_api_common.validators import alphanumeric_excluding_diacritic
 
 from ztc.datamodel.models.mixins import GeldigheidMixin
 
@@ -241,16 +240,6 @@ class Eigenschap(ETagMixin, GeldigheidMixin):
 
     uuid = models.UUIDField(
         unique=True, default=uuid.uuid4, help_text="Unieke resource identifier (UUID4)"
-    )
-    zaaktype_identificatie = models.CharField(
-        _("zaaktypeidentificatie"),
-        max_length=50,
-        blank=True,
-        help_text=_(
-            "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
-        ),
-        validators=[alphanumeric_excluding_diacritic],
-        db_index=True,
     )
     eigenschapnaam = models.CharField(
         _("eigenschapnaam"), max_length=20, help_text=_("De naam van de EIGENSCHAP")

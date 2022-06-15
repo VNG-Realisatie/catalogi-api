@@ -330,7 +330,7 @@ class ZaakObjectTypeFilterAPITests(APITestCase):
 
         list_url = reverse("zaakobjecttype-list")
         response = self.client.get(
-            list_url, {"zaaktypeIdentificatie": zaakobjecttype1.zaaktype_identificatie}
+            list_url, {"zaaktypeIdentificatie": zaakobjecttype1.zaaktype.identificatie}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -343,19 +343,19 @@ class ZaakObjectTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         zaakobjecttype1 = ZaakObjectTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-01-01",
             datum_einde_geldigheid="2020-02-01",
         )
         zaakobjecttype2 = ZaakObjectTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-02-02",
             datum_einde_geldigheid="2020-03-01",
         )
         zaakobjecttype3 = ZaakObjectTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-03-02",
         )
         list_url = reverse("zaakobjecttype-list")
@@ -378,19 +378,19 @@ class ZaakObjectTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype_datum_geldigheid_get_older_version(self):
         zaakobjecttype1 = ZaakObjectTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-01-01",
             datum_einde_geldigheid="2020-02-01",
         )
         zaakobjecttype2 = ZaakObjectTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-02-02",
             datum_einde_geldigheid="2020-03-01",
         )
         zaakobjecttype3 = ZaakObjectTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-03-02",
         )
         list_url = reverse("zaakobjecttype-list")

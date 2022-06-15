@@ -6,7 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import RolOmschrijving
-from vng_api_common.validators import alphanumeric_excluding_diacritic
 
 from ztc.datamodel.models.mixins import GeldigheidMixin
 
@@ -62,16 +61,6 @@ class RolType(ETagMixin, GeldigheidMixin):
         help_text=_(
             "URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn."
         ),
-    )
-    zaaktype_identificatie = models.CharField(
-        _("zaaktypeidentificatie"),
-        max_length=50,
-        blank=True,
-        help_text=_(
-            "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
-        ),
-        validators=[alphanumeric_excluding_diacritic],
-        db_index=True,
     )
 
     catalogus = models.ForeignKey(

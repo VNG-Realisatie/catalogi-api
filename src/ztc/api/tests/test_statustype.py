@@ -87,6 +87,7 @@ class StatusTypeAPITests(APITestCase):
             "eigenschappen": [f"http://testserver{eigenschap_url}"],
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
+            "zaaktypeIdentificatie": zaaktype.identificatie,
         }
 
         self.assertEqual(expected, response.json())
@@ -310,7 +311,7 @@ class StatusTypeFilterAPITests(APITestCase):
 
         list_url = reverse("statustype-list")
         response = self.client.get(
-            list_url, {"zaaktypeIdentificatie": statustype1.zaaktype_identificatie}
+            list_url, {"zaaktypeIdentificatie": statustype1.zaaktype.identificatie}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -323,19 +324,19 @@ class StatusTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         statustype1 = StatusTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-01-01",
             datum_einde_geldigheid="2020-02-01",
         )
         statustype2 = StatusTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-02-02",
             datum_einde_geldigheid="2020-03-01",
         )
         statustype3 = StatusTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-03-02",
         )
         list_url = reverse("statustype-list")
@@ -356,19 +357,19 @@ class StatusTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype_datum_geldigheid_get_older_version(self):
         statustype1 = StatusTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-01-01",
             datum_einde_geldigheid="2020-02-01",
         )
         statustype2 = StatusTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-02-02",
             datum_einde_geldigheid="2020-03-01",
         )
         statustype3 = StatusTypeFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-03-02",
         )
         list_url = reverse("statustype-list")

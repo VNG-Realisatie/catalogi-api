@@ -12,7 +12,6 @@ class ZaakObjectTypeFactory(factory.django.DjangoModelFactory):
     objecttype = factory.Faker("url")
     catalogus = factory.SelfAttribute("zaaktype.catalogus")
     zaaktype = factory.SubFactory(ZaakTypeFactory)
-    zaaktype_identificatie = factory.LazyAttribute(lambda o: o.zaaktype.identificatie)
 
     ander_objecttype = False
 

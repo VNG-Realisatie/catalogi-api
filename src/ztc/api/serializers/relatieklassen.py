@@ -16,12 +16,22 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
     Relatie met informatieobjecttype dat relevant is voor zaaktype.
     """
 
+    zaaktype_identificatie = serializers.SlugRelatedField(
+        source="zaaktype", read_only=True, slug_field="identificatie"
+    )
+
+    informatieobjecttype_omschrijving = serializers.SlugRelatedField(
+        source="informatieobjecttype", read_only=True, slug_field="omschrijving"
+    )
+
     class Meta:
         model = ZaakInformatieobjectType
         fields = (
             "url",
             "zaaktype",
+            "zaaktype_identificatie",
             "informatieobjecttype",
+            "informatieobjecttype_omschrijving",
             "volgnummer",
             "richting",
             "statustype",

@@ -46,7 +46,6 @@ class BrondatumArchiefprocedureSerializer(GegevensGroepSerializer):
 class ResultaatTypeSerializer(
     NestedGegevensGroepMixin, serializers.HyperlinkedModelSerializer
 ):
-
     brondatum_archiefprocedure = BrondatumArchiefprocedureSerializer(
         label=_("Brondatum archiefprocedure"),
         required=False,
@@ -57,11 +56,26 @@ class ResultaatTypeSerializer(
         ),
     )
 
+    zaaktype_identificatie = serializers.SlugRelatedField(
+        source="zaaktype", read_only=True, slug_field="identificatie"
+    )
+    besluittype_omschrijving = serializers.SlugRelatedField(
+        many=True, source="besluittype_set", read_only=True, slug_field="omschrijving"
+    )
+
+    informatieobjecttype_omschrijving = serializers.SlugRelatedField(
+        many=True,
+        source="informatieobjecttypen",
+        read_only=True,
+        slug_field="omschrijving",
+    )
+
     class Meta:
         model = ResultaatType
         fields = (
             "url",
             "zaaktype",
+            "zaaktype_identificatie",
             "omschrijving",
             "resultaattypeomschrijving",
             "omschrijving_generiek",
@@ -77,7 +91,9 @@ class ResultaatTypeSerializer(
             "indicatie_specifiek",
             "procestermijn",
             "besluittypen",
+            "besluittype_omschrijving",
             "informatieobjecttypen",
+            "informatieobjecttype_omschrijving",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
@@ -135,9 +151,3 @@ class ResultaatTypeSerializer(
         self.fields["archiefnominatie"].help_text += "\n\n{}".format(
             value_display_mapping
         )
-
-    def create(self, validated_data):
-        identificatie = validated_data["zaaktype"].identificatie
-        validated_data["zaaktype_identificatie"] = identificatie
-        resultaattype = super().create(validated_data)
-        return resultaattype

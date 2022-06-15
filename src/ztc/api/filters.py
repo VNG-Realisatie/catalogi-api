@@ -69,6 +69,8 @@ class RolTypeFilter(FilterSet):
     )
     datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
+
     class Meta:
         model = RolType
         fields = (
@@ -112,6 +114,8 @@ class ResultaatTypeFilter(FilterSet):
 
     datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
+
     class Meta:
         model = ResultaatType
         fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
@@ -123,6 +127,8 @@ class StatusTypeFilter(FilterSet):
     )
     datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
 
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
+
     class Meta:
         model = StatusType
         fields = ("zaaktype", "zaaktype_identificatie", "status", "datum_geldigheid")
@@ -133,6 +139,8 @@ class EigenschapFilter(FilterSet):
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
     datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
+
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
     class Meta:
         model = Eigenschap
@@ -160,6 +168,7 @@ class ZaakTypeFilter(FilterSet):
 
 class ZaakObjectTypeFilter(FilterSet):
     datum_geldigheid = filters.DateFilter(method=get_object_between_geldigheid_dates)
+    zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
     class Meta:
         model = ZaakObjectType

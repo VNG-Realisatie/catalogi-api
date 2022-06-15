@@ -8,7 +8,6 @@ from .zaken import ZaakTypeFactory
 
 class ResultaatTypeFactory(factory.django.DjangoModelFactory):
     zaaktype = factory.SubFactory(ZaakTypeFactory)
-    zaaktype_identificatie = factory.LazyAttribute(lambda o: o.zaaktype.identificatie)
     omschrijving = factory.Faker("word", locale="nl")
     resultaattypeomschrijving = factory.Faker("url")
     omschrijving_generiek = factory.Faker("word")
