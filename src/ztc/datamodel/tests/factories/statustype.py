@@ -13,7 +13,6 @@ class CheckListItemFactory(factory.django.DjangoModelFactory):
 class StatusTypeFactory(factory.django.DjangoModelFactory):
     statustypevolgnummer = factory.sequence(lambda n: n + 1)
     zaaktype = factory.SubFactory(ZaakTypeFactory)
-    zaaktype_identificatie = factory.LazyAttribute(lambda o: o.zaaktype.identificatie)
 
     class Meta:
         model = StatusType

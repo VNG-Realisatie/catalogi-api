@@ -1,5 +1,6 @@
 from django.utils.translation import gettext as _
 
+from rest_framework import serializers
 from rest_framework.serializers import HyperlinkedModelSerializer, ValidationError
 
 from ztc.api.utils.validators import RelationCatalogValidator
@@ -7,6 +8,10 @@ from ztc.datamodel.models.zaakobjecttype import ZaakObjectType
 
 
 class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
+    zaaktype_identificatie = serializers.SlugRelatedField(
+        source="zaaktype", read_only=True, slug_field="identificatie"
+    )
+
     class Meta:
         model = ZaakObjectType
         fields = (
@@ -17,6 +22,7 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
             "objecttype",
             "relatie_omschrijving",
             "zaaktype",
+            "zaaktype_identificatie",
             "resultaattypen",
             "statustypen",
             "catalogus",
@@ -70,9 +76,3 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
     validators = [
         RelationCatalogValidator("zaaktype"),
     ]
-
-    def create(self, validated_data):
-        identificatie = validated_data["zaaktype"].identificatie
-        validated_data["zaaktype_identificatie"] = identificatie
-        zaakobjecttype = super().create(validated_data)
-        return zaakobjecttype

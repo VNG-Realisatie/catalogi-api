@@ -12,11 +12,16 @@ class RolTypeSerializer(
     NestedCreateMixin,
     serializers.HyperlinkedModelSerializer,
 ):
+    zaaktype_identificatie = serializers.SlugRelatedField(
+        source="zaaktype", read_only=True, slug_field="identificatie"
+    )
+
     class Meta:
         model = RolType
         fields = (
             "url",
             "zaaktype",
+            "zaaktype_identificatie",
             "omschrijving",
             "omschrijving_generiek",
             "catalogus",
@@ -38,9 +43,3 @@ class RolTypeSerializer(
 
         value_display_mapping = add_choice_values_help_text(RolOmschrijving)
         self.fields["omschrijving_generiek"].help_text += f"\n\n{value_display_mapping}"
-
-    def create(self, validated_data):
-        identificatie = validated_data["zaaktype"].identificatie
-        validated_data["zaaktype_identificatie"] = identificatie
-        roltype = super().create(validated_data)
-        return roltype

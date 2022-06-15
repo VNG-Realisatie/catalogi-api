@@ -44,6 +44,7 @@ class BesluitTypeAPITests(APITestCase):
     def test_get_detail(self):
         """Retrieve the details of a single `BesluitType` object."""
         zaaktype = ZaakTypeFactory(catalogus=self.catalogus)
+
         resultaattype = ResultaatTypeFactory(zaaktype=zaaktype)
 
         besluittype = BesluitTypeFactory(
@@ -76,10 +77,12 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietermijn": None,
             "toelichting": "",
             "informatieobjecttypen": [],
+            "vastgelegdIn": [],
             "beginGeldigheid": "2018-01-01",
             "eindeGeldigheid": None,
             "concept": True,
             "resultaattypen": [f"http://testserver{resultaattype_url}"],
+            "resultaattypenOmschrijving": [resultaattype.omschrijving],
         }
 
         self.assertEqual(response.status_code, 200)
@@ -162,6 +165,9 @@ class BesluitTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         besluittype = BesluitType.objects.get()
+        from pprint import pprint
+
+        pprint(response.__dict__)
 
         self.assertEqual(besluittype.omschrijving, "test")
         self.assertEqual(besluittype.catalogus, self.catalogus)

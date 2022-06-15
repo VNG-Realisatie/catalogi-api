@@ -81,6 +81,7 @@ class EigenschapAPITests(APITestCase):
             "statustype": "http://testserver{}".format(statustype_url),
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
+            "zaaktypeIdentificatie": zaaktype.identificatie,
         }
         self.assertEqual(expected, response.json())
 
@@ -426,7 +427,7 @@ class EigenschapFilterAPITests(APITestCase):
 
         list_url = reverse("eigenschap-list")
         response = self.client.get(
-            list_url, {"zaaktypeIdentificatie": eigenschap1.zaaktype_identificatie}
+            list_url, {"zaaktypeIdentificatie": eigenschap1.zaaktype.identificatie}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -439,19 +440,19 @@ class EigenschapFilterAPITests(APITestCase):
     def test_filter_zaaktype_datum_geldigheid_get_latest_version(self):
         eigenschap1 = EigenschapFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-01-01",
             datum_einde_geldigheid="2020-02-01",
         )
         eigenschap2 = EigenschapFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-02-02",
             datum_einde_geldigheid="2020-03-01",
         )
         eigenschap3 = EigenschapFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-03-02",
         )
         list_url = reverse("eigenschap-list")
@@ -472,19 +473,19 @@ class EigenschapFilterAPITests(APITestCase):
     def test_filter_zaaktype_datum_geldigheid_get_older_version(self):
         eigenschap1 = EigenschapFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-01-01",
             datum_einde_geldigheid="2020-02-01",
         )
         eigenschap2 = EigenschapFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-02-02",
             datum_einde_geldigheid="2020-03-01",
         )
         eigenschap3 = EigenschapFactory.create(
             zaaktype__concept=False,
-            zaaktype_identificatie="123",
+            zaaktype__identificatie="123",
             datum_begin_geldigheid="2020-03-02",
         )
         list_url = reverse("eigenschap-list")
