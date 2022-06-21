@@ -1,4 +1,5 @@
 pip-tools
+dataclasses
 psycopg2
 python-dotenv
 python-dateutil
