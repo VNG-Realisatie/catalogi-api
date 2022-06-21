@@ -772,9 +772,8 @@ class ZaakTypeCacheTransactionTests(JWTAuthMixin, APITransactionTestCase):
         returned
         """
         zaaktype = ZaakTypeFactory.create(toelichting="bla")
-        zaaktype._etag = calculate_etag(zaaktype)
-        zaaktype.save(update_fields=["_etag"])
         etag = zaaktype._etag
+        assert etag
 
         response = self.client.get(reverse(zaaktype), HTTP_IF_NONE_MATCH=f'"{etag}"')
         self.assertEqual(response.status_code, status.HTTP_304_NOT_MODIFIED)
