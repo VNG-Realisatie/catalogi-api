@@ -1054,6 +1054,43 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["einde_geldigheid"], "2020-01-01")
 
+    def test_partial_update_non_concept_zaaktype_reset_einde_geldigheid(self):
+        """
+        Assert that ``null`` can be set as value for eindeGeldigheid.
+        Regression test for https://github.com/open-zaak/open-zaak/issues/981
+        """
+        zaaktype = ZaakTypeFactory.create(
+            concept=False,
+            zaaktype_omschrijving="OZ-981",
+            datum_begin_geldigheid=date(2021, 1, 1),
+            datum_einde_geldigheid=date(2022, 1, 1),
+        )
+        endpoint = reverse(zaaktype)
+
+        with self.subTest("no overlap"):
+            response = self.client.patch(endpoint, {"eindeGeldigheid": None})
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            zaaktype.refresh_from_db()
+            self.assertIsNone(zaaktype.datum_einde_geldigheid)
+
+        with self.subTest("would introduce overlap"):
+            zaaktype_old = ZaakTypeFactory.create(
+                concept=False,
+                catalogus=zaaktype.catalogus,
+                zaaktype_omschrijving="OZ-981",
+                datum_begin_geldigheid=date(2020, 1, 1),
+                datum_einde_geldigheid=date(2020, 12, 31),
+            )
+
+            response = self.client.patch(
+                reverse(zaaktype_old), {"eindeGeldigheid": None}
+            )
+
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            error = get_validation_errors(response, "eindeGeldigheid")
+            self.assertEqual(error["code"], "overlap")
+
     def test_partial_update_zaaktype_einde_geldigheid_related_to_non_concept_besluittype(
         self,
     ):
