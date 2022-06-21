@@ -1,13 +1,15 @@
 from django.utils.translation import ugettext_lazy as _
 
 from drf_yasg.utils import no_body, swagger_auto_schema
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.settings import api_settings
 from vng_api_common.caching import conditional_retrieve
+from vng_api_common.inspectors.view import COMMON_ERRORS
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
+from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import ZaakType
@@ -108,9 +110,26 @@ class ZaakTypeViewSet(
     notifications_kanaal = KANAAL_ZAAKTYPEN
     relation_fields = ["zaaktypenrelaties"]
 
-    @swagger_auto_schema(request_body=no_body)
+    @swagger_auto_schema(
+        request_body=no_body,
+        responses={
+            status.HTTP_200_OK: serializer_class,
+            status.HTTP_400_BAD_REQUEST: ValidatieFoutSerializer,
+            status.HTTP_404_NOT_FOUND: FoutSerializer,
+            **{exc.status_code: FoutSerializer for exc in COMMON_ERRORS},
+        },
+    )
     @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
+        """
+        Publiceer het concept ZAAKTYPE.
+
+        Publiceren van het zaaktype zorgt ervoor dat dit in een Zaken API kan gebruikt
+        worden. Na het publiceren van een zaaktype zijn geen inhoudelijke wijzigingen
+        meer mogelijk - ook niet de statustypen, eigenschappen... etc. Indien er na het
+        publiceren nog wat gewijzigd moet worden, dan moet je een nieuwe versie
+        aanmaken.
+        """
         instance = self.get_object()
 
         # check related objects
