@@ -9,6 +9,7 @@ chardet==3.0.4            # via requests
 click==7.1.2              # via pip-tools
 coreapi==2.3.3            # via drf-yasg
 coreschema==0.0.4         # via coreapi, drf-yasg
+dataclasses==0.8          # via -r requirements/base.in
 django-admin-index==1.0.0  # via -r requirements/base.in
 django-appconf==1.0.2     # via django-axes
 django-axes==4.0.1        # via -r requirements/base.in
