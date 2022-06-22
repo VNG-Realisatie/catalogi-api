@@ -2,6 +2,18 @@
 Wijzigingen
 ===========
 
+1.0.1 (2022-06-22)
+==================
+
+Bugfix release
+
+* Fix being able to set eindeGeldigheid=null
+* [VNG-Realisatie/gemma-zaken#1976] Fixed the API schema documentation for publish actions
+* Add spectral config file to fix CI build
+
+There were other reference implementation fixes between 1.0.0 and 1.0.1 that didn't
+affect the API schema. For those changes, check the commit history.
+
 1.1.0 (2021-01-08)
 ==================
 
