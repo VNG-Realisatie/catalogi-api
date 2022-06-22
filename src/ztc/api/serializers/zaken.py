@@ -2,7 +2,13 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
-from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
+from rest_framework.relations import HyperlinkedRelatedField
+from rest_framework.serializers import (
+    HyperlinkedModelSerializer,
+    ModelSerializer,
+    SerializerMethodField,
+    URLField,
+)
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import (
     GegevensGroepSerializer,
@@ -11,8 +17,9 @@ from vng_api_common.serializers import (
 )
 from vng_api_common.validators import ResourceValidator
 
+from . import RolTypeSerializer
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
-from ...datamodel.models import ZaakType, ZaakTypenRelatie
+from ...datamodel.models import ZaakType, ZaakTypenRelatie, RolType
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
@@ -54,6 +61,15 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         self.fields["aard_relatie"].help_text += f"\n\n{value_display_mapping}"
 
 
+# class RolTypeSerializer2(HyperlinkedModelSerializer):
+#     class Meta:
+#         model = RolType
+#         fields = ('url', "uuid")
+#
+#     extra_kwargs = {
+#         "url": {"lookup_field": "uuid"}}
+
+
 class ZaakTypeSerializer(
     NestedGegevensGroepMixin,
     NestedCreateMixin,
@@ -80,10 +96,26 @@ class ZaakTypeSerializer(
             "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
         ),
     )
+    my_field = SerializerMethodField("find_roltypes")
+
+    def find_roltypes(self, zaaktype):
+        roltype = RolTypeSerializer(
+            RolType.objects.filter(
+                datum_einde_geldigheid=None,
+                zaaktype__identificatie=zaaktype.identificatie,
+            ),
+            many=True,
+            context={"request": self.context["request"]},
+        ).data
+        roltype_urls = []
+        for dicti in roltype:
+            roltype_urls.append(dicti["url"])
+        return roltype_urls
 
     class Meta:
         model = ZaakType
         fields = (
+            "my_field",
             "url",
             "identificatie",
             "omschrijving",
@@ -205,7 +237,6 @@ class ZaakTypeSerializer(
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         value_display_mapping = add_choice_values_help_text(
             VertrouwelijkheidsAanduiding
         )
@@ -217,3 +248,6 @@ class ZaakTypeSerializer(
         self.fields[
             "indicatie_intern_of_extern"
         ].help_text += f"\n\n{value_display_mapping}"
+
+    def validate(self, data):
+        print("hi", data)
