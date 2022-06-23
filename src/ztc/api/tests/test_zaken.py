@@ -5,7 +5,7 @@ from django.test import override_settings
 from django.urls import reverse as django_reverse
 
 from rest_framework import status
-from vng_api_common.constants import RolOmschrijving, VertrouwelijkheidsAanduiding
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 from zds_client.tests.mocks import mock_client
 
@@ -29,7 +29,7 @@ from ztc.datamodel.tests.factories import (
 )
 from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 
-from ...datamodel.tests.factories import CheckListItemFactory, RolTypeFactory
+from ...datamodel.tests.factories import RolTypeFactory
 from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
 from .base import APITestCase
 
@@ -2013,5 +2013,297 @@ class ZaakTypeNestedResourcesURLTest(APITestCase):
             [
                 f"http://testserver{reverse(roltype1)}",
                 f"http://testserver{reverse(roltype2)}",
+            ],
+        )
+
+    def test_statustypen_urls_in_zaaktype(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+            identificatie="foobar",
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid="2020-01-04",
+            identificatie="foobar",
+        )
+        zaaktype3 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-05",
+            datum_einde_geldigheid=None,
+            identificatie="foobar",
+        )
+
+        statustype1 = StatusTypeFactory.create(
+            zaaktype=zaaktype1,
+            statustype_omschrijving="1",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+        )
+
+        statustype2 = StatusTypeFactory.create(
+            zaaktype=zaaktype2,
+            statustype_omschrijving="1",
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid="2020-01-04",
+        )
+
+        statustype3 = StatusTypeFactory.create(
+            zaaktype=zaaktype3,
+            statustype_omschrijving="1",
+            datum_begin_geldigheid="2020-01-05",
+            datum_einde_geldigheid=None,
+        )
+        statustype4 = StatusTypeFactory.create(
+            zaaktype=zaaktype1,
+            statustype_omschrijving="2",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+        )
+
+        statustype5 = StatusTypeFactory.create(
+            zaaktype=zaaktype2,
+            statustype_omschrijving="2",
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid=None,
+        )
+
+        response = self.client.get(reverse("zaaktype-list"))
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 3)
+        data_zaaktype3 = data[0]
+        data_zaaktype2 = data[1]
+        data_zaaktype1 = data[2]
+
+        self.assertEqual(
+            data_zaaktype3["statustypen"],
+            [
+                f"http://testserver{reverse(statustype5)}",
+                f"http://testserver{reverse(statustype3)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype2["statustypen"],
+            [
+                f"http://testserver{reverse(statustype2)}",
+                f"http://testserver{reverse(statustype5)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype1["statustypen"],
+            [
+                f"http://testserver{reverse(statustype1)}",
+                f"http://testserver{reverse(statustype4)}",
+            ],
+        )
+
+    def test_resultaattypen_urls_in_zaaktype(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+            identificatie="foobar",
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid="2020-01-04",
+            identificatie="foobar",
+        )
+        zaaktype3 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-05",
+            datum_einde_geldigheid=None,
+            identificatie="foobar",
+        )
+        resultaattype1 = ResultaatTypeFactory.create(
+            zaaktype=zaaktype1,
+            omschrijving="1",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid=None,
+        )
+        resultaattype2 = ResultaatTypeFactory.create(
+            zaaktype=zaaktype1,
+            omschrijving="2",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid=None,
+        )
+
+        response = self.client.get(reverse("zaaktype-list"))
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 3)
+        data_zaaktype3 = data[0]
+        data_zaaktype2 = data[1]
+        data_zaaktype1 = data[2]
+
+        self.assertEqual(
+            data_zaaktype3["resultaattypen"],
+            [
+                f"http://testserver{reverse(resultaattype1)}",
+                f"http://testserver{reverse(resultaattype2)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype2["resultaattypen"],
+            [
+                f"http://testserver{reverse(resultaattype1)}",
+                f"http://testserver{reverse(resultaattype2)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype1["resultaattypen"],
+            [
+                f"http://testserver{reverse(resultaattype1)}",
+                f"http://testserver{reverse(resultaattype2)}",
+            ],
+        )
+
+    def test_eigenschappen_urls_in_zaaktype(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+            identificatie="foobar",
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid="2020-01-04",
+            identificatie="foobar",
+        )
+        zaaktype3 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-05",
+            datum_einde_geldigheid=None,
+            identificatie="foobar",
+        )
+        eigenschap1 = EigenschapFactory.create(
+            zaaktype=zaaktype1,
+            eigenschapnaam="1",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid=None,
+        )
+        eigenschap2 = EigenschapFactory.create(
+            zaaktype=zaaktype1,
+            eigenschapnaam="2",
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid=None,
+        )
+        eigenschap3 = EigenschapFactory.create(
+            zaaktype=zaaktype1,
+            eigenschapnaam="3",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid=None,
+        )
+
+        response = self.client.get(reverse("zaaktype-list"))
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 3)
+        data_zaaktype3 = data[0]
+        data_zaaktype2 = data[1]
+        data_zaaktype1 = data[2]
+
+        self.assertEqual(
+            data_zaaktype3["eigenschappen"],
+            [
+                f"http://testserver{reverse(eigenschap1)}",
+                f"http://testserver{reverse(eigenschap2)}",
+                f"http://testserver{reverse(eigenschap3)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype2["eigenschappen"],
+            [
+                f"http://testserver{reverse(eigenschap1)}",
+                f"http://testserver{reverse(eigenschap2)}",
+                f"http://testserver{reverse(eigenschap3)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype1["eigenschappen"],
+            [
+                f"http://testserver{reverse(eigenschap1)}",
+                f"http://testserver{reverse(eigenschap3)}",
+            ],
+        )
+
+    def test_eigenschappen_urls_in_zaaktype(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+            identificatie="foobar",
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid="2020-01-04",
+            identificatie="foobar",
+        )
+        zaaktype3 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-05",
+            datum_einde_geldigheid=None,
+            identificatie="foobar",
+        )
+
+        zaakobjecttype1 = ZaakObjectTypeFactory.create(
+            zaaktype=zaaktype1,
+            objecttype="1",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+        )
+        zaakobjecttype2 = ZaakObjectTypeFactory.create(
+            zaaktype=zaaktype2,
+            objecttype="2",
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid=None,
+        )
+
+        response = self.client.get(reverse("zaaktype-list"))
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 3)
+        data_zaaktype3 = data[0]
+        data_zaaktype2 = data[1]
+        data_zaaktype1 = data[2]
+
+        self.assertEqual(
+            data_zaaktype3["zaakobjecttypen"],
+            [
+                f"http://testserver{reverse(zaakobjecttype2)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype2["zaakobjecttypen"],
+            [
+                f"http://testserver{reverse(zaakobjecttype2)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype1["zaakobjecttypen"],
+            [
+                f"http://testserver{reverse(zaakobjecttype1)}",
             ],
         )
