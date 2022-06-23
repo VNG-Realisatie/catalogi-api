@@ -1898,3 +1898,83 @@ class ZaakTypeGeldigheidTests(APITestCase):
         data = response.json()
         self.assertEqual(response.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
         self.assertEqual(data["code"], "overlapping")
+
+
+class ZaakTypeNestedResourcesURLTest(APITestCase):
+    maxDiff = None
+    heeft_alle_autorisaties = False
+
+    def test_roltype_urls_in_zaaktype(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+            identificatie="foobar",
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid="2020-01-04",
+            identificatie="foobar",
+        )
+        zaaktype3 = ZaakTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2020-01-05",
+            datum_einde_geldigheid=None,
+            identificatie="foobar",
+        )
+
+        roltype1 = RolTypeFactory.create(
+            zaaktype=zaaktype1,
+            omschrijving="1",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-01-02",
+        )
+
+        roltype2 = RolTypeFactory.create(
+            zaaktype=zaaktype1,
+            omschrijving="2",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid=None,
+        )
+
+        roltype3 = RolTypeFactory.create(
+            zaaktype=zaaktype2,
+            omschrijving="1",
+            datum_begin_geldigheid="2020-01-03",
+            datum_einde_geldigheid=None,
+        )
+
+        response = self.client.get(reverse("zaaktype-list"))
+
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 3)
+        data_zaaktype3 = data[0]
+        data_zaaktype2 = data[1]
+        data_zaaktype1 = data[2]
+
+        self.assertEqual(
+            data_zaaktype3["roltypen"],
+            [
+                f"http://testserver{reverse(roltype2)}",
+                f"http://testserver{reverse(roltype3)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype2["roltypen"],
+            [
+                f"http://testserver{reverse(roltype2)}",
+                f"http://testserver{reverse(roltype3)}",
+            ],
+        )
+
+        self.assertEqual(
+            data_zaaktype1["roltypen"],
+            [
+                f"http://testserver{reverse(roltype1)}",
+                f"http://testserver{reverse(roltype2)}",
+            ],
+        )

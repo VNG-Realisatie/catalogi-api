@@ -303,23 +303,10 @@ class RolTypeFilterAPITests(APITestCase):
         self.assertEqual(data[0]["url"], f"http://testserver.com{roltype1_url}")
 
     def test_filter_zaaktype_identificatie(self):
-        # roltype1 = RolTypeFactory.create(zaaktype__concept=False)
-        # roltype2 = RolTypeFactory.create(zaaktype__concept=False)
-        # list_url = reverse("roltype-list")
-
-        "===test"
-        zaaktype1 = ZaakTypeFactory.create(concept=False)
-        zaaktype2 = ZaakTypeFactory.create(concept=False)
-        roltype1 = RolTypeFactory.create(zaaktype=zaaktype1, omschrijving="1")
-        roltype2 = RolTypeFactory.create(zaaktype=zaaktype2, omschrijving="2")
-        roltype3 = RolTypeFactory.create(zaaktype=zaaktype2, omschrijving="3")
-
+        roltype1 = RolTypeFactory.create(zaaktype__concept=False)
+        roltype2 = RolTypeFactory.create(zaaktype__concept=False)
         list_url = reverse("roltype-list")
-        responsetest = self.client.get(reverse("zaaktype-list"))
-        from pprint import pprint
 
-        pprint(responsetest.json())
-        "==="
         response = self.client.get(
             list_url, {"zaaktypeIdentificatie": roltype1.zaaktype.identificatie}
         )
