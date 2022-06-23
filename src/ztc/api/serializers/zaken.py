@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
@@ -61,13 +62,14 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         self.fields["aard_relatie"].help_text += f"\n\n{value_display_mapping}"
 
 
-# class RolTypeSerializer2(HyperlinkedModelSerializer):
-#     class Meta:
-#         model = RolType
-#         fields = ('url', "uuid")
-#
-#     extra_kwargs = {
-#         "url": {"lookup_field": "uuid"}}
+class CreateCustomUrlFieldMethodField(SerializerMethodField):
+    def __init__(self, method_name=None, **kwargs):
+        super().__init__(method_name)
+        self.func_kwargs = kwargs
+
+    def to_representation(self, value):
+        method = getattr(self.parent, self.method_name)
+        return method(value, **self.func_kwargs)
 
 
 class ZaakTypeSerializer(
@@ -96,26 +98,49 @@ class ZaakTypeSerializer(
             "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
         ),
     )
-    my_field = SerializerMethodField("find_roltypes")
+    roltypen = CreateCustomUrlFieldMethodField(
+        "create_custom_urls", resource=RolType, resource_serializer=RolTypeSerializer
+    )
 
-    def find_roltypes(self, zaaktype):
-        roltype = RolTypeSerializer(
-            RolType.objects.filter(
-                datum_einde_geldigheid=None,
-                zaaktype__identificatie=zaaktype.identificatie,
-            ),
+    def create_custom_urls(self, zaaktype, resource=None, resource_serializer=None):
+        if not zaaktype.datum_einde_geldigheid:
+            roltype = resource.objects.filter(
+                Q(datum_einde_geldigheid=zaaktype.datum_einde_geldigheid)
+                & Q(zaaktype__identificatie=zaaktype.identificatie)
+            )
+
+        else:
+            roltype = resource.objects.filter(
+                Q(datum_begin_geldigheid__lte=zaaktype.datum_begin_geldigheid)
+                & Q(zaaktype__identificatie=zaaktype.identificatie)
+                & Q(datum_einde_geldigheid__gte=zaaktype.datum_einde_geldigheid)
+                | Q(datum_einde_geldigheid=None)
+                & Q(zaaktype__identificatie=zaaktype.identificatie)
+                & Q(datum_begin_geldigheid__lte=zaaktype.datum_begin_geldigheid)
+            )
+
+            # latest_roltypes = RolType.objects.filter(
+            #     Q(datum_einde_geldigheid=None) &
+            #     Q(zaaktype__identificatie=zaaktype.identificatie))
+            # if latest_roltypes.exists():
+            #     latest_roltypes = latest_roltypes.filter(
+            #         Q(datum_begin_geldigheid__lte=zaaktype.datum_begin_geldigheid))
+            #     roltype = roltype.union(latest_roltypes)
+
+        serializer = resource_serializer(
+            roltype,
             many=True,
             context={"request": self.context["request"]},
         ).data
+
         roltype_urls = []
-        for dicti in roltype:
-            roltype_urls.append(dicti["url"])
+        for ordered_dict in serializer:
+            roltype_urls.append(ordered_dict["url"])
         return roltype_urls
 
     class Meta:
         model = ZaakType
         fields = (
-            "my_field",
             "url",
             "identificatie",
             "omschrijving",
@@ -204,14 +229,14 @@ class ZaakTypeSerializer(
                     "URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE."
                 ),
             },
-            "roltypen": {
-                "read_only": True,
-                "source": "roltype_set",
-                "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-                ),
-            },
+            # "roltypen": {
+            #     "read_only": True,
+            #     "source": "roltype_set",
+            #     "lookup_field": "uuid",
+            #     "help_text": _(
+            #         "URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+            #     ),
+            # },
             "besluittypen": {
                 "label": _("heeft relevante besluittypen"),
                 "lookup_field": "uuid",
@@ -249,6 +274,3 @@ class ZaakTypeSerializer(
         self.fields[
             "indicatie_intern_of_extern"
         ].help_text += f"\n\n{value_display_mapping}"
-
-    def validate(self, data):
-        print("hi", data)
