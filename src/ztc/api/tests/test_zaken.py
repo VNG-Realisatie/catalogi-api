@@ -2152,27 +2152,33 @@ class ZaakTypeNestedResourcesURLTest(APITestCase):
         data_zaaktype1 = data[2]
 
         self.assertEqual(
-            data_zaaktype3["statustypen"],
-            [
-                f"http://testserver{reverse(statustype5)}",
-                f"http://testserver{reverse(statustype3)}",
-            ],
+            sorted(data_zaaktype3["statustypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(statustype5)}",
+                    f"http://testserver{reverse(statustype3)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype2["statustypen"],
-            [
-                f"http://testserver{reverse(statustype2)}",
-                f"http://testserver{reverse(statustype5)}",
-            ],
+            sorted(data_zaaktype2["statustypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(statustype2)}",
+                    f"http://testserver{reverse(statustype5)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype1["statustypen"],
-            [
-                f"http://testserver{reverse(statustype1)}",
-                f"http://testserver{reverse(statustype4)}",
-            ],
+            sorted(data_zaaktype1["statustypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(statustype1)}",
+                    f"http://testserver{reverse(statustype4)}",
+                ]
+            ),
         )
 
     def test_resultaattypen_urls_in_zaaktype(self):
@@ -2218,27 +2224,33 @@ class ZaakTypeNestedResourcesURLTest(APITestCase):
         data_zaaktype1 = data[2]
 
         self.assertEqual(
-            data_zaaktype3["resultaattypen"],
-            [
-                f"http://testserver{reverse(resultaattype1)}",
-                f"http://testserver{reverse(resultaattype2)}",
-            ],
+            sorted(data_zaaktype3["resultaattypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(resultaattype1)}",
+                    f"http://testserver{reverse(resultaattype2)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype2["resultaattypen"],
-            [
-                f"http://testserver{reverse(resultaattype1)}",
-                f"http://testserver{reverse(resultaattype2)}",
-            ],
+            sorted(data_zaaktype2["resultaattypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(resultaattype1)}",
+                    f"http://testserver{reverse(resultaattype2)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype1["resultaattypen"],
-            [
-                f"http://testserver{reverse(resultaattype1)}",
-                f"http://testserver{reverse(resultaattype2)}",
-            ],
+            sorted(data_zaaktype1["resultaattypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(resultaattype1)}",
+                    f"http://testserver{reverse(resultaattype2)}",
+                ]
+            ),
         )
 
     def test_eigenschappen_urls_in_zaaktype(self):
@@ -2290,29 +2302,35 @@ class ZaakTypeNestedResourcesURLTest(APITestCase):
         data_zaaktype1 = data[2]
 
         self.assertEqual(
-            data_zaaktype3["eigenschappen"],
-            [
-                f"http://testserver{reverse(eigenschap1)}",
-                f"http://testserver{reverse(eigenschap2)}",
-                f"http://testserver{reverse(eigenschap3)}",
-            ],
+            sorted(data_zaaktype3["eigenschappen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(eigenschap1)}",
+                    f"http://testserver{reverse(eigenschap2)}",
+                    f"http://testserver{reverse(eigenschap3)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype2["eigenschappen"],
-            [
-                f"http://testserver{reverse(eigenschap1)}",
-                f"http://testserver{reverse(eigenschap2)}",
-                f"http://testserver{reverse(eigenschap3)}",
-            ],
+            sorted(data_zaaktype2["eigenschappen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(eigenschap1)}",
+                    f"http://testserver{reverse(eigenschap2)}",
+                    f"http://testserver{reverse(eigenschap3)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype1["eigenschappen"],
-            [
-                f"http://testserver{reverse(eigenschap1)}",
-                f"http://testserver{reverse(eigenschap3)}",
-            ],
+            sorted(data_zaaktype1["eigenschappen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(eigenschap1)}",
+                    f"http://testserver{reverse(eigenschap3)}",
+                ]
+            ),
         )
 
     def test_zaakobjecttype_urls_in_zaaktype(self):
