@@ -87,6 +87,8 @@ class StatusTypeAPITests(APITestCase):
             "eigenschappen": [f"http://testserver{eigenschap_url}"],
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
+            "beginObject": None,
+            "eindeObject": None,
             "zaaktypeIdentificatie": zaaktype.identificatie,
         }
 

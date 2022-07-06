@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import DaysDurationField
 
-from ztc.datamodel.models.mixins import GeldigheidMixin
+from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
 
 
 class CheckListItem(models.Model):
@@ -55,7 +55,7 @@ class CheckListItem(models.Model):
     )
 
 
-class StatusType(ETagMixin, GeldigheidMixin):
+class StatusType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
     """
     Generieke aanduiding van de aard van een STATUS
 

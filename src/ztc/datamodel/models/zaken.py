@@ -18,10 +18,12 @@ from vng_api_common.validators import alphanumeric_excluding_diacritic
 
 from ..choices import InternExtern
 from ..validators import validate_uppercase
-from .mixins import ConceptMixin, GeldigheidMixin
+from .mixins import ConceptMixin, DatumObjectMixin, GeldigheidMixin
 
 
-class ZaakType(ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, models.Model):
+class ZaakType(
+    ETagMixin, APIMixin, ConceptMixin, GeldigheidMixin, DatumObjectMixin, models.Model
+):
     """
     Het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort
 

@@ -110,6 +110,8 @@ class ZaakTypeAPITests(APITestCase):
             "besluittypen": [],
             "beginGeldigheid": "2018-01-01",
             "eindeGeldigheid": None,
+            "beginObject": None,
+            "eindeObject": None,
             "versiedatum": "2018-01-01",
             "concept": True,
             "verantwoordelijke": "Organisatie eenheid X",
@@ -124,6 +126,8 @@ class ZaakTypeAPITests(APITestCase):
                 "identificatie": "1",
                 "omschrijving": "omschrijving",
             },
+            "beginObject": None,
+            "eindeObject": None,
         }
         self.assertEqual(expected, response.json())
 

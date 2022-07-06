@@ -33,6 +33,8 @@ class ZaaktypeValidationTests(TestCase):
                 "catalogus": zaakobjecttype.catalogus.pk,
                 "datum_begin_geldigheid": date(2021, 2, 1),
                 "datum_einde_geldigheid": date(2021, 1, 1),
+                "beginObject": None,
+                "eindeObject": None,
             }
         )
 
@@ -65,6 +67,8 @@ class ZaaktypeValidationTests(TestCase):
                 "catalogus": zaakobjecttype.catalogus.pk,
                 "datum_begin_geldigheid": date(2021, 2, 1),
                 "datum_einde_geldigheid": date(2021, 1, 1),
+                "beginObject": None,
+                "eindeObject": None,
             },
             instance=zaakobjecttype,
         )
@@ -77,6 +81,41 @@ class ZaaktypeValidationTests(TestCase):
             _(
                 "Datum einde geldigheid is gelijk aan of gelegen na de datum zoals opgenomen "
                 "onder Datum begin geldigheid."
+            ),
+        )
+
+    def test_update_datum_begin_object(self):
+        catalogus = CatalogusFactory()
+        zaakobjecttype = ZaakObjectTypeFactory(
+            uuid=uuid4(),
+            catalogus=catalogus,
+            zaaktype=ZaakTypeFactory(catalogus=catalogus),
+        )
+
+        form = ZaakObjectTypeForm(
+            data={
+                "uuid": str(zaakobjecttype.uuid),
+                "ander_objecttype": zaakobjecttype.ander_objecttype,
+                "objecttype": zaakobjecttype.objecttype,
+                "relatie_omschrijving": zaakobjecttype.relatie_omschrijving,
+                "zaaktype": zaakobjecttype.zaaktype.pk,
+                "catalogus": zaakobjecttype.catalogus.pk,
+                "datum_begin_geldigheid": date(2021, 2, 1),
+                "datum_einde_geldigheid": date(2021, 3, 1),
+                "datum_begin_object": date(2021, 2, 1),
+                "datum_einde_object": date(2021, 1, 1),
+            },
+            instance=zaakobjecttype,
+        )
+
+        self.assertFalse(form.is_valid())
+
+        error = form.errors.as_data()["__all__"][0]
+        self.assertEqual(
+            error.message,
+            _(
+                "Datum einde object is gelijk aan of gelegen na de datum zoals opgenomen "
+                "onder Datum begin object."
             ),
         )
 

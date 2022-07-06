@@ -88,6 +88,8 @@ class ResultaatTypeSerializer(
             "catalogus",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
             "indicatie_specifiek",
             "procestermijn",
             "besluittypen",
@@ -118,6 +120,8 @@ class ResultaatTypeSerializer(
                 ]
             },
             "catalogus": {"lookup_field": "uuid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
             "begin_geldigheid": {
                 "source": "datum_begin_geldigheid",
                 "help_text": _("De datum waarop de RESULTAATTYPE is ontstaan."),

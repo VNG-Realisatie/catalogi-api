@@ -6,10 +6,12 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.caching import ETagMixin
 from vng_api_common.fields import DaysDurationField
 
-from .mixins import ConceptMixin, GeldigheidMixin
+from .mixins import ConceptMixin, DatumObjectMixin, GeldigheidMixin
 
 
-class BesluitType(ETagMixin, GeldigheidMixin, ConceptMixin, models.Model):
+class BesluitType(
+    ETagMixin, GeldigheidMixin, DatumObjectMixin, ConceptMixin, models.Model
+):
     """
     Generieke aanduiding van de aard van een besluit.
 

@@ -30,6 +30,8 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             "catalogus": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
             "concept": {"read_only": True},
             "informatieobjecttypen": {
                 "lookup_field": "uuid",
@@ -61,6 +63,8 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             "informatieobjecttypen",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
             "concept",
             "resultaattypen",
             "resultaattypen_omschrijving",

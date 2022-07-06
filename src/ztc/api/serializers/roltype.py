@@ -26,6 +26,8 @@ class RolTypeSerializer(
             "catalogus",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
         )
 
         extra_kwargs = {
@@ -34,6 +36,8 @@ class RolTypeSerializer(
             "catalogus": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
         }
         validators = [ZaakTypeConceptValidator()]
 

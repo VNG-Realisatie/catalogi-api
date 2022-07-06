@@ -7,10 +7,10 @@ from django.utils.translation import ugettext_lazy as _
 from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import RolOmschrijving
 
-from ztc.datamodel.models.mixins import GeldigheidMixin
+from ztc.datamodel.models.mixins import DatumObjectMixin, GeldigheidMixin
 
 
-class RolType(ETagMixin, GeldigheidMixin):
+class RolType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
     """
     Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
     uitoefenen in ZAAKen van een ZAAKTYPE.

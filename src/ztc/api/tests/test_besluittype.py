@@ -83,6 +83,8 @@ class BesluitTypeAPITests(APITestCase):
             "eindeGeldigheid": None,
             "concept": True,
             "resultaattypen": [f"http://testserver{resultaattype_url}"],
+            "beginObject": None,
+            "eindeObject": None,
             "resultaattypenOmschrijving": [resultaattype.omschrijving],
         }
 

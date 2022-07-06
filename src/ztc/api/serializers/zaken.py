@@ -207,6 +207,8 @@ class ZaakTypeSerializer(
             "gerelateerde_zaaktypen",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
             "versiedatum",
             "concept",
         )
@@ -220,6 +222,8 @@ class ZaakTypeSerializer(
             "servicenorm": {"source": "servicenorm_behandeling"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
             "concept": {"read_only": True},
             "producten_of_diensten": {"allow_empty": True},
             "selectielijst_procestype": {

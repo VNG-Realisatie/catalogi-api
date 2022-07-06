@@ -19,6 +19,8 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
             "ander_objecttype",
             "begin_geldigheid",
             "einde_geldigheid",
+            "begin_object",
+            "einde_object",
             "objecttype",
             "relatie_omschrijving",
             "zaaktype",
@@ -44,6 +46,8 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
             "catalogus": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},
+            "begin_object": {"source": "datum_begin_object"},
+            "einde_object": {"source": "datum_einde_object"},
         }
 
     def validate(self, data):
