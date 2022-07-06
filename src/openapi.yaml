@@ -43,7 +43,7 @@ info:
   license:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
-  version: 1.2.0-alpha2
+  version: 1.2.0-rc1
 security:
 - JWT-Claims: []
 paths:
@@ -84,6 +84,18 @@ paths:
           * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
 
           '
+        required: false
+        schema:
+          type: string
+      - name: omschrijving
+        in: query
+        description: Omschrijving van de aard van BESLUITen van het BESLUITTYPE.
+        required: false
+        schema:
+          type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
         required: false
         schema:
           type: string
@@ -220,12 +232,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -285,12 +297,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -804,12 +816,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -869,12 +881,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -919,6 +931,12 @@ paths:
         schema:
           type: string
           format: uri
+      - name: zaaktypeIdentificatie
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
       - name: status
         in: query
         description: 'filter objects depending on their concept status:
@@ -930,6 +948,12 @@ paths:
           * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
 
           '
+        required: false
+        schema:
+          type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
         required: false
         schema:
           type: string
@@ -1069,12 +1093,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1134,12 +1158,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1347,6 +1371,18 @@ paths:
         required: false
         schema:
           type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
+      - name: omschrijving
+        in: query
+        description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
+        required: false
+        schema:
+          type: string
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -1480,12 +1516,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1545,12 +1581,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -1913,6 +1949,12 @@ paths:
         schema:
           type: string
           format: uri
+      - name: zaaktypeIdentificatie
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
       - name: status
         in: query
         description: 'filter objects depending on their concept status:
@@ -1924,6 +1966,12 @@ paths:
           * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
 
           '
+        required: false
+        schema:
+          type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
         required: false
         schema:
           type: string
@@ -2063,12 +2111,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -2128,12 +2176,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -2328,6 +2376,12 @@ paths:
         schema:
           type: string
           format: uri
+      - name: zaaktypeIdentificatie
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
       - name: omschrijvingGeneriek
         in: query
         description: Algemeen gehanteerde omschrijving van de aard van de ROL.
@@ -2354,6 +2408,12 @@ paths:
           * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
 
           '
+        required: false
+        schema:
+          type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
         required: false
         schema:
           type: string
@@ -2493,12 +2553,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -2558,12 +2618,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -2756,6 +2816,12 @@ paths:
         schema:
           type: string
           format: uri
+      - name: zaaktypeIdentificatie
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
       - name: status
         in: query
         description: 'filter objects depending on their concept status:
@@ -2767,6 +2833,12 @@ paths:
           * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
 
           '
+        required: false
+        schema:
+          type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
         required: false
         schema:
           type: string
@@ -2906,12 +2978,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -2971,12 +3043,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -3188,6 +3260,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
       - name: objecttype
         in: query
         description: URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE
@@ -3210,6 +3288,12 @@ paths:
         schema:
           type: string
           format: uri
+      - name: zaaktypeIdentificatie
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -3343,12 +3427,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -3408,12 +3492,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -3772,12 +3856,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -3837,12 +3921,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -4079,6 +4163,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: datumGeldigheid
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
       - name: page
         in: query
         description: Een pagina binnen de gepagineerde set resultaten.
@@ -4217,12 +4307,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -4282,12 +4372,12 @@ paths:
           \ voor meer informatie."
         required: false
         examples:
-          multipleValues:
-            summary: Meerdere ETag-waardes
-            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
           oneValue:
             summary: "E\xE9n ETag-waarde"
             value: '"79054025255fb1a26e4bc422aef54eb4"'
+          multipleValues:
+            summary: Meerdere ETag-waardes
+            value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
         schema:
           type: string
       responses:
@@ -4878,9 +4968,9 @@ components:
       required: true
   securitySchemes:
     JWT-Claims:
-      bearerFormat: JWT
-      scheme: bearer
       type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     BesluitType:
       required:
@@ -4980,6 +5070,18 @@ components:
           type: string
           format: date
           nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
+          type: string
+          format: date
+          nullable: true
         concept:
           title: Concept
           description: Geeft aan of het object een concept betreft. Concepten zijn
@@ -4997,6 +5099,18 @@ components:
               van het RESULTAATTYPE.
             type: string
             format: uri
+          readOnly: true
+          uniqueItems: true
+        resultaattypenOmschrijving:
+          type: array
+          items:
+            type: string
+          readOnly: true
+          uniqueItems: true
+        vastgelegdIn:
+          type: array
+          items:
+            type: string
           readOnly: true
           uniqueItems: true
     Fout:
@@ -5205,6 +5319,7 @@ components:
           format: date
           nullable: true
     EigenschapSpecificatie:
+      title: Specificatie
       required:
       - formaat
       - lengte
@@ -5304,6 +5419,10 @@ components:
             EIGENSCHAP van belang is.
           type: string
           format: uri
+        zaaktypeIdentificatie:
+          title: Zaaktype identificatie
+          type: string
+          readOnly: true
         statustype:
           title: Status type
           description: Status type moet (onder andere) deze EIGENSCHAP hebben, voordat
@@ -5320,6 +5439,18 @@ components:
         eindeGeldigheid:
           title: Einde geldigheid
           description: De datum waarop de EIGENSCHAP is opgeheven.
+          type: string
+          format: date
+          nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
           type: string
           format: date
           nullable: true
@@ -5397,6 +5528,18 @@ components:
           type: string
           format: date
           nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
+          type: string
+          format: date
+          nullable: true
         concept:
           title: Concept
           description: Geeft aan of het object een concept betreft. Concepten zijn
@@ -5427,6 +5570,7 @@ components:
           readOnly: true
           uniqueItems: true
     BrondatumArchiefprocedure:
+      title: Brondatum archiefprocedure
       description: Specificatie voor het bepalen van de brondatum voor de start van
         de Archiefactietermijn (=brondatum) van het zaakdossier.
       required:
@@ -5629,6 +5773,10 @@ components:
             van dit RESULTAATTYPE bereikt kunnen worden.
           type: string
           format: uri
+        zaaktypeIdentificatie:
+          title: Zaaktype identificatie
+          type: string
+          readOnly: true
         omschrijving:
           title: Omschrijving
           description: Omschrijving van de aard van resultaten van het RESULTAATTYPE.
@@ -5726,6 +5874,18 @@ components:
           type: string
           format: date
           nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
+          type: string
+          format: date
+          nullable: true
         indicatieSpecifiek:
           title: Indicatie specifiek
           description: Aanduiding of het, vanuit archiveringsoptiek, een resultaattype
@@ -5747,6 +5907,12 @@ components:
             format: uri
             nullable: true
           uniqueItems: true
+        besluittypeOmschrijving:
+          type: array
+          items:
+            type: string
+          readOnly: true
+          uniqueItems: true
         informatieobjecttypen:
           description: De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn
             in het zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van
@@ -5759,6 +5925,12 @@ components:
             type: string
             format: uri
             nullable: true
+          uniqueItems: true
+        informatieobjecttypeOmschrijving:
+          type: array
+          items:
+            type: string
+          readOnly: true
           uniqueItems: true
     RolType:
       required:
@@ -5782,6 +5954,10 @@ components:
             kunnen zijn.
           type: string
           format: uri
+        zaaktypeIdentificatie:
+          title: Zaaktype identificatie
+          type: string
+          readOnly: true
         omschrijving:
           title: Omschrijving
           description: Omschrijving van de aard van de ROL.
@@ -5828,6 +6004,18 @@ components:
         eindeGeldigheid:
           title: Einde geldigheid
           description: De datum waarop het is opgeheven.
+          type: string
+          format: date
+          nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
           type: string
           format: date
           nullable: true
@@ -5904,6 +6092,10 @@ components:
             van dit STATUSTYPE bereikt kunnen worden.
           type: string
           format: uri
+        zaaktypeIdentificatie:
+          title: Zaaktype identificatie
+          type: string
+          readOnly: true
         volgnummer:
           title: Volgnummer
           description: Een volgnummer voor statussen van het STATUSTYPE binnen een
@@ -5963,6 +6155,18 @@ components:
           type: string
           format: date
           nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
+          type: string
+          format: date
+          nullable: true
     ZaakObjectType:
       required:
       - anderObjecttype
@@ -5998,6 +6202,18 @@ components:
           type: string
           format: date
           nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
+          type: string
+          format: date
+          nullable: true
         objecttype:
           title: Objecttype
           description: URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE
@@ -6019,6 +6235,10 @@ components:
             behoort.
           type: string
           format: uri
+        zaaktypeIdentificatie:
+          title: Zaaktype identificatie
+          type: string
+          readOnly: true
         resultaattypen:
           description: URL-referenties naar de RESULTAATTYPEN.
           type: array
@@ -6065,11 +6285,19 @@ components:
           description: URL-referentie naar het ZAAKTYPE.
           type: string
           format: uri
+        zaaktypeIdentificatie:
+          title: Zaaktype identificatie
+          type: string
+          readOnly: true
         informatieobjecttype:
           title: Informatie object type
           description: URL-referentie naar het INFORMATIEOBJECTTYPE.
           type: string
           format: uri
+        informatieobjecttypeOmschrijving:
+          title: Informatieobjecttype omschrijving
+          type: string
+          readOnly: true
         volgnummer:
           title: Volgnummer
           description: Uniek volgnummer van het ZAAK-INFORMATIEOBJECTTYPE binnen het
@@ -6104,6 +6332,7 @@ components:
           format: uri
           nullable: true
     ReferentieProces:
+      title: Referentieproces
       description: Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.
       required:
       - naam
@@ -6122,6 +6351,7 @@ components:
           format: uri
           maxLength: 200
     BronCatalogus:
+      title: Broncatalogus
       description: De CATALOGUS waaraan het ZAAKTYPE is ontleend.
       required:
       - url
@@ -6149,6 +6379,7 @@ components:
           maxLength: 9
           minLength: 1
     BronZaaktype:
+      title: Bronzaaktype
       description: Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.
       required:
       - url
@@ -6216,6 +6447,7 @@ components:
           maxLength: 255
     ZaakType:
       required:
+      - identificatie
       - omschrijving
       - vertrouwelijkheidaanduiding
       - doel
@@ -6441,12 +6673,9 @@ components:
           maxLength: 50
           minLength: 1
         zaakobjecttypen:
-          type: array
-          items:
-            type: string
-            format: uri
+          title: Zaakobjecttypen
+          type: string
           readOnly: true
-          uniqueItems: true
         broncatalogus:
           $ref: '#/components/schemas/BronCatalogus'
         bronzaaktype:
@@ -6457,38 +6686,17 @@ components:
           type: string
           format: uri
         statustypen:
-          description: URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen
-            dit ZAAKTYPE.
-          type: array
-          items:
-            description: URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen
-              dit ZAAKTYPE.
-            type: string
-            format: uri
+          title: Statustypen
+          type: string
           readOnly: true
-          uniqueItems: true
         resultaattypen:
-          description: URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen
-            dit ZAAKTYPE.
-          type: array
-          items:
-            description: URL-referenties naar de RESULTAATTYPEN die mogelijk zijn
-              binnen dit ZAAKTYPE.
-            type: string
-            format: uri
+          title: Resultaattypen
+          type: string
           readOnly: true
-          uniqueItems: true
         eigenschappen:
-          description: URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn
-            in ZAKEN van dit ZAAKTYPE.
-          type: array
-          items:
-            description: URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten
-              zijn in ZAKEN van dit ZAAKTYPE.
-            type: string
-            format: uri
+          title: Eigenschappen
+          type: string
           readOnly: true
-          uniqueItems: true
         informatieobjecttypen:
           description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
             zijn binnen dit ZAAKTYPE.
@@ -6501,16 +6709,9 @@ components:
           readOnly: true
           uniqueItems: true
         roltypen:
-          description: URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit
-            ZAAKTYPE.
-          type: array
-          items:
-            description: URL-referenties naar de ROLTYPEN die mogelijk zijn binnen
-              dit ZAAKTYPE.
-            type: string
-            format: uri
+          title: Roltypen
+          type: string
           readOnly: true
-          uniqueItems: true
         besluittypen:
           description: URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen
             dit ZAAKTYPE.
@@ -6547,6 +6748,18 @@ components:
         eindeGeldigheid:
           title: Einde geldigheid
           description: De datum waarop het is opgeheven.
+          type: string
+          format: date
+          nullable: true
+        beginObject:
+          title: Begin object
+          description: De datum waarop de eerst versie van het object ontstaan is.
+          type: string
+          format: date
+          nullable: true
+        eindeObject:
+          title: Einde object
+          description: De datum van de aller laatste versie van het object.
           type: string
           format: date
           nullable: true

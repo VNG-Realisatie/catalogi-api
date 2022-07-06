@@ -24,8 +24,12 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | informatieobjecttypen | URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd. | array | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 | resultaattypen | Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| resultaattypenOmschrijving |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| vastgelegdIn |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## Catalogus
 
@@ -76,9 +80,12 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | definitie | De beschrijving van de betekenis van deze EIGENSCHAP | string | ja | C​R​U​D |
 | toelichting | Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE. | string | nee | C​R​U​D |
 | zaaktype | URL-referentie naar het ZAAKTYPE van de ZAAKen waarvoor deze EIGENSCHAP van belang is. | string | ja | C​R​U​D |
+| zaaktypeIdentificatie |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | statustype | Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een STATUS van het STATUSTYPE kan worden gezet. | string | nee | C​R​U​D |
 | beginGeldigheid | De datum waarop de EIGENSCHAP is ontstaan. | string | nee | C​R​U​D |
 | eindeGeldigheid | De datum waarop de EIGENSCHAP is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 
 ## InformatieObjectType
 
@@ -103,6 +110,8 @@ Uitleg bij mogelijke waarden:
 * `zeer_geheim` - Zeer geheim | string | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktypen | URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
@@ -115,6 +124,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | --- | --- | --- | --- | --- |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktype | URL-referentie naar het ZAAKTYPE van ZAAKen waarin resultaten van dit RESULTAATTYPE bereikt kunnen worden. | string | ja | C​R​U​D |
+| zaaktypeIdentificatie |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | omschrijving | Omschrijving van de aard van resultaten van het RESULTAATTYPE. | string | ja | C​R​U​D |
 | resultaattypeomschrijving | Algemeen gehanteerde omschrijving van de aard van resultaten van het RESULTAATTYPE. Dit moet een URL-referentie zijn naar de referenlijst van generieke resultaattypeomschrijvingen. Im ImZTC heet dit &#39;omschrijving generiek&#39; | string | ja | C​R​U​D |
 | omschrijvingGeneriek | Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`) | string | nee | ~~C~~​R​~~U~~​~~D~~ |
@@ -131,10 +141,14 @@ Uitleg bij mogelijke waarden:
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit RESULTAATTYPE behoort. | string | nee | C​R​U​D |
 | beginGeldigheid | De datum waarop de RESULTAATTYPE is ontstaan. | string | nee | C​R​U​D |
 | eindeGeldigheid | De datum waarop de RESULTAATTYPE is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 | indicatieSpecifiek | Aanduiding of het, vanuit archiveringsoptiek, een resultaattype betreft dat specifiek is voor een bepaalde procesobjectaard. | boolean | nee | C​R​U​D |
 | procestermijn | De periode dat het zaakdossier na afronding van de zaak actief gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening van de organisatie. | string | nee | C​R​U​D |
 | besluittypen |  | array | nee | C​R​U​D |
+| besluittypeOmschrijving |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | informatieobjecttypen | De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet. | array | nee | C​R​U​D |
+| informatieobjecttypeOmschrijving |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 
 ## RolType
 
@@ -144,6 +158,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | --- | --- | --- | --- | --- |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktype | URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn. | string | ja | C​R​U​D |
+| zaaktypeIdentificatie |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | omschrijving | Omschrijving van de aard van de ROL. | string | ja | C​R​U​D |
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van de ROL.
 
@@ -160,6 +175,8 @@ Uitleg bij mogelijke waarden:
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit ROLTYPE behoort. | string | nee | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | nee | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 
 ## CheckListItem
 
@@ -183,6 +200,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van STATUSsen van het STATUSTYPE | string | nee | C​R​U​D |
 | statustekst | De tekst die wordt gebruikt om de Initiator te informeren over het bereiken van een STATUS van dit STATUSTYPE bij het desbetreffende ZAAKTYPE. | string | nee | C​R​U​D |
 | zaaktype | URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden. | string | ja | C​R​U​D |
+| zaaktypeIdentificatie |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | volgnummer | Een volgnummer voor statussen van het STATUSTYPE binnen een zaak. | integer | ja | C​R​U​D |
 | isEindstatus | Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 | informeren | Aanduiding die aangeeft of na het zetten van een STATUS van dit STATUSTYPE de Initiator moet worden geïnformeerd over de statusovergang. | boolean | nee | C​R​U​D |
@@ -192,6 +210,8 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | eigenschappen | de EIGENSCHAPpen die verplicht een waarde moeten hebben gekregen, voordat een STATUS van dit STATUSTYPE kan worden gezet. | array | nee | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | nee | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 
 ## ZaakObjectType
 
@@ -203,9 +223,12 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | anderObjecttype | Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft. | boolean | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 | objecttype | URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
 | relatieOmschrijving | Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE. | string | ja | C​R​U​D |
 | zaaktype | URL-referentie naar de ZAAKTYPE waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
+| zaaktypeIdentificatie |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | resultaattypen | URL-referenties naar de RESULTAATTYPEN. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | statustypen | URL-referenties naar de STATUSTYPEN. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
@@ -233,7 +256,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | Attribuut | Omschrijving | Type | Verplicht | CRUD* |
 | --- | --- | --- | --- | --- |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | nee | ~~C~~​R​~~U~~​~~D~~ |
-| identificatie | Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt. | string | nee | C​R​U​D |
+| identificatie | Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt. | string | ja | C​R​U​D |
 | omschrijving | Omschrijving van de aard van ZAAKen van het ZAAKTYPE. | string | ja | C​R​U​D |
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van ZAAKen van het ZAAKTYPE | string | nee | C​R​U​D |
 | vertrouwelijkheidaanduiding | Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.
@@ -273,18 +296,20 @@ Uitleg bij mogelijke waarden:
 | productenOfDiensten | Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt voortgebracht. | array | ja | C​R​U​D |
 | selectielijstProcestype | URL-referentie naar een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken (PROCESTYPE in de Selectielijst API). | string | nee | C​R​U​D |
 | verantwoordelijke | De (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE. | string | ja | C​R​U​D |
-| zaakobjecttypen |  | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| zaakobjecttypen |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
-| statustypen | URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| resultaattypen | URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| eigenschappen | URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| statustypen |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| resultaattypen |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
+| eigenschappen |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | informatieobjecttypen | URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
-| roltypen | URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | nee | ~~C~~​R​~~U~~​~~D~~ |
+| roltypen |  | string | nee | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | C​R​U​D |
 | deelzaaktypen | De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij ZAAKen van dit ZAAKTYPE. | array | nee | C​R​U​D |
 | gerelateerdeZaaktypen | De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE. | array | ja | C​R​U​D |
 | beginGeldigheid | De datum waarop het is ontstaan. | string | ja | C​R​U​D |
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
+| beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
+| eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 | versiedatum | De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE geldig zijn geworden | string | ja | C​R​U​D |
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | nee | ~~C~~​R​~~U~~​~~D~~ |
 

@@ -11,7 +11,7 @@
             "name": "EUPL 1.2",
             "url": "https://opensource.org/licenses/EUPL-1.2"
         },
-        "version": "1.2.0-alpha2"
+        "version": "1.2.0-rc1"
     },
     "basePath": "/api/v1",
     "consumes": [
@@ -22,9 +22,9 @@
     ],
     "securityDefinitions": {
         "JWT-Claims": {
-            "bearerFormat": "JWT",
+            "type": "http",
             "scheme": "bearer",
-            "type": "http"
+            "bearerFormat": "JWT"
         }
     },
     "security": [
@@ -65,6 +65,20 @@
                         "name": "status",
                         "in": "query",
                         "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "omschrijving",
+                        "in": "query",
+                        "description": "Omschrijving van de aard van BESLUITen van het BESLUITTYPE.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
                         "required": false,
                         "type": "string"
                     },
@@ -255,13 +269,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -336,13 +350,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -1020,13 +1034,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -1101,13 +1115,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -1166,9 +1180,23 @@
                         "format": "uri"
                     },
                     {
+                        "name": "zaaktypeIdentificatie",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "status",
                         "in": "query",
                         "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
                         "required": false,
                         "type": "string"
                     },
@@ -1359,13 +1387,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -1440,13 +1468,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -1730,6 +1758,20 @@
                         "type": "string"
                     },
                     {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "omschrijving",
+                        "in": "query",
+                        "description": "Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -1916,13 +1958,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -1997,13 +2039,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -2475,9 +2517,23 @@
                         "format": "uri"
                     },
                     {
+                        "name": "zaaktypeIdentificatie",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "status",
                         "in": "query",
                         "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
                         "required": false,
                         "type": "string"
                     },
@@ -2668,13 +2724,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -2749,13 +2805,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -3032,6 +3088,13 @@
                         "format": "uri"
                     },
                     {
+                        "name": "zaaktypeIdentificatie",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "omschrijvingGeneriek",
                         "in": "query",
                         "description": "Algemeen gehanteerde omschrijving van de aard van de ROL.",
@@ -3052,6 +3115,13 @@
                         "name": "status",
                         "in": "query",
                         "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
                         "required": false,
                         "type": "string"
                     },
@@ -3242,13 +3312,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -3323,13 +3393,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -3605,9 +3675,23 @@
                         "format": "uri"
                     },
                     {
+                        "name": "zaaktypeIdentificatie",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "status",
                         "in": "query",
                         "description": "filter objects depending on their concept status:\n* `alles`: Toon objecten waarvan het attribuut `concept` true of false is.\n* `concept`: Toon objecten waarvan het attribuut `concept` true is.\n* `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).\n",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
                         "required": false,
                         "type": "string"
                     },
@@ -3798,13 +3882,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -3879,13 +3963,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -4183,6 +4267,13 @@
                         "type": "string"
                     },
                     {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "objecttype",
                         "in": "query",
                         "description": "URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE behoort.",
@@ -4204,6 +4295,13 @@
                         "required": false,
                         "type": "string",
                         "format": "uri"
+                    },
+                    {
+                        "name": "zaaktypeIdentificatie",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
                     },
                     {
                         "name": "page",
@@ -4392,13 +4490,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -4473,13 +4571,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -4969,13 +5067,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -5050,13 +5148,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -5354,6 +5452,13 @@
                         "type": "string"
                     },
                     {
+                        "name": "datumGeldigheid",
+                        "in": "query",
+                        "description": "",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Een pagina binnen de gepagineerde set resultaten.",
@@ -5540,13 +5645,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -5621,13 +5726,13 @@
                         "required": false,
                         "type": "string",
                         "examples": {
-                            "multipleValues": {
-                                "summary": "Meerdere ETag-waardes",
-                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
-                            },
                             "oneValue": {
                                 "summary": "E\u00e9n ETag-waarde",
                                 "value": "\"79054025255fb1a26e4bc422aef54eb4\""
+                            },
+                            "multipleValues": {
+                                "summary": "Meerdere ETag-waardes",
+                                "value": "\"79054025255fb1a26e4bc422aef54eb4\", \"e4d909c290d0fb1ca068ffaddf22cbd0\""
                             }
                         }
                     }
@@ -6191,6 +6296,20 @@
                     "format": "date",
                     "x-nullable": true
                 },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
                 "concept": {
                     "title": "Concept",
                     "description": "Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
@@ -6205,6 +6324,22 @@
                         "description": "Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE.",
                         "type": "string",
                         "format": "uri"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                },
+                "resultaattypenOmschrijving": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                },
+                "vastgelegdIn": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
                     },
                     "readOnly": true,
                     "uniqueItems": true
@@ -6446,6 +6581,7 @@
             }
         },
         "EigenschapSpecificatie": {
+            "title": "Specificatie",
             "required": [
                 "formaat",
                 "lengte",
@@ -6543,6 +6679,11 @@
                     "type": "string",
                     "format": "uri"
                 },
+                "zaaktypeIdentificatie": {
+                    "title": "Zaaktype identificatie",
+                    "type": "string",
+                    "readOnly": true
+                },
                 "statustype": {
                     "title": "Status type",
                     "description": "Status type moet (onder andere) deze EIGENSCHAP hebben, voordat een STATUS van het STATUSTYPE kan worden gezet.",
@@ -6560,6 +6701,20 @@
                 "eindeGeldigheid": {
                     "title": "Einde geldigheid",
                     "description": "De datum waarop de EIGENSCHAP is opgeheven.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
                     "type": "string",
                     "format": "date",
                     "x-nullable": true
@@ -6625,6 +6780,20 @@
                     "format": "date",
                     "x-nullable": true
                 },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
                 "concept": {
                     "title": "Concept",
                     "description": "Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API.",
@@ -6656,6 +6825,7 @@
             }
         },
         "BrondatumArchiefprocedure": {
+            "title": "Brondatum archiefprocedure",
             "description": "Specificatie voor het bepalen van de brondatum voor de start van de Archiefactietermijn (=brondatum) van het zaakdossier.",
             "required": [
                 "afleidingswijze"
@@ -6767,6 +6937,11 @@
                     "type": "string",
                     "format": "uri"
                 },
+                "zaaktypeIdentificatie": {
+                    "title": "Zaaktype identificatie",
+                    "type": "string",
+                    "readOnly": true
+                },
                 "omschrijving": {
                     "title": "Omschrijving",
                     "description": "Omschrijving van de aard van resultaten van het RESULTAATTYPE.",
@@ -6849,6 +7024,20 @@
                     "format": "date",
                     "x-nullable": true
                 },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
                 "indicatieSpecifiek": {
                     "title": "Indicatie specifiek",
                     "description": "Aanduiding of het, vanuit archiveringsoptiek, een resultaattype betreft dat specifiek is voor een bepaalde procesobjectaard.",
@@ -6871,6 +7060,14 @@
                     },
                     "uniqueItems": true
                 },
+                "besluittypeOmschrijving": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "readOnly": true,
+                    "uniqueItems": true
+                },
                 "informatieobjecttypen": {
                     "description": "De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet.",
                     "type": "array",
@@ -6880,6 +7077,14 @@
                         "format": "uri",
                         "x-nullable": true
                     },
+                    "uniqueItems": true
+                },
+                "informatieobjecttypeOmschrijving": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "readOnly": true,
                     "uniqueItems": true
                 }
             }
@@ -6906,6 +7111,11 @@
                     "description": "URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken kunnen zijn.",
                     "type": "string",
                     "format": "uri"
+                },
+                "zaaktypeIdentificatie": {
+                    "title": "Zaaktype identificatie",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "omschrijving": {
                     "title": "Omschrijving",
@@ -6946,6 +7156,20 @@
                 "eindeGeldigheid": {
                     "title": "Einde geldigheid",
                     "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
                     "type": "string",
                     "format": "date",
                     "x-nullable": true
@@ -7029,6 +7253,11 @@
                     "type": "string",
                     "format": "uri"
                 },
+                "zaaktypeIdentificatie": {
+                    "title": "Zaaktype identificatie",
+                    "type": "string",
+                    "readOnly": true
+                },
                 "volgnummer": {
                     "title": "Volgnummer",
                     "description": "Een volgnummer voor statussen van het STATUSTYPE binnen een zaak.",
@@ -7091,6 +7320,20 @@
                     "type": "string",
                     "format": "date",
                     "x-nullable": true
+                },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
                 }
             }
         },
@@ -7132,6 +7375,20 @@
                     "format": "date",
                     "x-nullable": true
                 },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
                 "objecttype": {
                     "title": "Objecttype",
                     "description": "URL-referentie naar de OBJECTTYPE waartoe dit ZAAKOBJECTTYPE behoort.",
@@ -7152,6 +7409,11 @@
                     "description": "URL-referentie naar de ZAAKTYPE waartoe dit ZAAKOBJECTTYPE behoort.",
                     "type": "string",
                     "format": "uri"
+                },
+                "zaaktypeIdentificatie": {
+                    "title": "Zaaktype identificatie",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "resultaattypen": {
                     "description": "URL-referenties naar de RESULTAATTYPEN.",
@@ -7207,11 +7469,21 @@
                     "type": "string",
                     "format": "uri"
                 },
+                "zaaktypeIdentificatie": {
+                    "title": "Zaaktype identificatie",
+                    "type": "string",
+                    "readOnly": true
+                },
                 "informatieobjecttype": {
                     "title": "Informatie object type",
                     "description": "URL-referentie naar het INFORMATIEOBJECTTYPE.",
                     "type": "string",
                     "format": "uri"
+                },
+                "informatieobjecttypeOmschrijving": {
+                    "title": "Informatieobjecttype omschrijving",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "volgnummer": {
                     "title": "Volgnummer",
@@ -7240,6 +7512,7 @@
             }
         },
         "ReferentieProces": {
+            "title": "Referentieproces",
             "description": "Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.",
             "required": [
                 "naam"
@@ -7263,6 +7536,7 @@
             }
         },
         "BronCatalogus": {
+            "title": "Broncatalogus",
             "description": "De CATALOGUS waaraan het ZAAKTYPE is ontleend.",
             "required": [
                 "url",
@@ -7295,6 +7569,7 @@
             }
         },
         "BronZaaktype": {
+            "title": "Bronzaaktype",
             "description": "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.",
             "required": [
                 "url",
@@ -7362,6 +7637,7 @@
         },
         "ZaakType": {
             "required": [
+                "identificatie",
                 "omschrijving",
                 "vertrouwelijkheidaanduiding",
                 "doel",
@@ -7564,13 +7840,9 @@
                     "minLength": 1
                 },
                 "zaakobjecttypen": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "readOnly": true,
-                    "uniqueItems": true
+                    "title": "Zaakobjecttypen",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "broncatalogus": {
                     "$ref": "#/definitions/BronCatalogus"
@@ -7585,37 +7857,19 @@
                     "format": "uri"
                 },
                 "statustypen": {
-                    "description": "URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
-                    "type": "array",
-                    "items": {
-                        "description": "URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "readOnly": true,
-                    "uniqueItems": true
+                    "title": "Statustypen",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "resultaattypen": {
-                    "description": "URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
-                    "type": "array",
-                    "items": {
-                        "description": "URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "readOnly": true,
-                    "uniqueItems": true
+                    "title": "Resultaattypen",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "eigenschappen": {
-                    "description": "URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE.",
-                    "type": "array",
-                    "items": {
-                        "description": "URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE.",
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "readOnly": true,
-                    "uniqueItems": true
+                    "title": "Eigenschappen",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "informatieobjecttypen": {
                     "description": "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
@@ -7629,15 +7883,9 @@
                     "uniqueItems": true
                 },
                 "roltypen": {
-                    "description": "URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
-                    "type": "array",
-                    "items": {
-                        "description": "URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
-                        "type": "string",
-                        "format": "uri"
-                    },
-                    "readOnly": true,
-                    "uniqueItems": true
+                    "title": "Roltypen",
+                    "type": "string",
+                    "readOnly": true
                 },
                 "besluittypen": {
                     "description": "URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
@@ -7677,6 +7925,20 @@
                 "eindeGeldigheid": {
                     "title": "Einde geldigheid",
                     "description": "De datum waarop het is opgeheven.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "beginObject": {
+                    "title": "Begin object",
+                    "description": "De datum waarop de eerst versie van het object ontstaan is.",
+                    "type": "string",
+                    "format": "date",
+                    "x-nullable": true
+                },
+                "eindeObject": {
+                    "title": "Einde object",
+                    "description": "De datum van de aller laatste versie van het object.",
                     "type": "string",
                     "format": "date",
                     "x-nullable": true
