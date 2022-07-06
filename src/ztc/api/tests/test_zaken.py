@@ -2098,27 +2098,33 @@ class ZaakTypeNestedResourcesURLTest(APITestCase):
         data_zaaktype1 = data[2]
 
         self.assertEqual(
-            data_zaaktype3["roltypen"],
-            [
-                f"http://testserver{reverse(roltype2)}",
-                f"http://testserver{reverse(roltype3)}",
-            ],
+            sorted(data_zaaktype3["roltypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(roltype2)}",
+                    f"http://testserver{reverse(roltype3)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype2["roltypen"],
-            [
-                f"http://testserver{reverse(roltype2)}",
-                f"http://testserver{reverse(roltype3)}",
-            ],
+            sorted(data_zaaktype2["roltypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(roltype2)}",
+                    f"http://testserver{reverse(roltype3)}",
+                ]
+            ),
         )
 
         self.assertEqual(
-            data_zaaktype1["roltypen"],
-            [
-                f"http://testserver{reverse(roltype1)}",
-                f"http://testserver{reverse(roltype2)}",
-            ],
+            sorted(data_zaaktype1["roltypen"]),
+            sorted(
+                [
+                    f"http://testserver{reverse(roltype1)}",
+                    f"http://testserver{reverse(roltype2)}",
+                ]
+            ),
         )
 
     def test_statustypen_urls_in_zaaktype(self):
