@@ -31,6 +31,9 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
     checklistitem_statustype = CheckListItemSerializer(
         required=False, many=True, source="checklistitem"
     )
+    zaaktype_identificatie = serializers.SlugRelatedField(
+        source="zaaktype", read_only=True, slug_field="identificatie"
+    )
 
     class Meta:
         model = StatusType
@@ -40,6 +43,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek",
             "statustekst",
             "zaaktype",
+            "zaaktype_identificatie",
             "volgnummer",
             "is_eindstatus",
             "informeren",

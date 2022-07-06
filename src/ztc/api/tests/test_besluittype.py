@@ -1,3 +1,5 @@
+from datetime import date, datetime, timedelta
+
 from rest_framework import status
 from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
 
@@ -43,6 +45,7 @@ class BesluitTypeAPITests(APITestCase):
     def test_get_detail(self):
         """Retrieve the details of a single `BesluitType` object."""
         zaaktype = ZaakTypeFactory(catalogus=self.catalogus)
+
         resultaattype = ResultaatTypeFactory(zaaktype=zaaktype)
 
         besluittype = BesluitTypeFactory(
@@ -75,12 +78,14 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietermijn": None,
             "toelichting": "",
             "informatieobjecttypen": [],
+            "vastgelegdIn": [],
             "beginGeldigheid": "2018-01-01",
             "eindeGeldigheid": None,
             "concept": True,
             "resultaattypen": [f"http://testserver{resultaattype_url}"],
             "beginObject": None,
             "eindeObject": None,
+            "resultaattypenOmschrijving": [resultaattype.omschrijving],
         }
 
         self.assertEqual(response.status_code, 200)
@@ -311,6 +316,51 @@ class BesluitTypeAPITests(APITestCase):
         besluittype.refresh_from_db()
 
         self.assertEqual(besluittype.concept, False)
+
+    def test_publish_besluittype_geldigheid(self):
+
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie="ZAAKTYPE-2018-0000000001",
+            datum_begin_geldigheid=date(2018, 1, 1),
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=True,
+            identificatie="ZAAKTYPE-2018-0000000001",
+            datum_begin_geldigheid=date(2019, 1, 1),
+        )
+        besluittype1 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            zaaktypen=[zaaktype1],
+        )
+        besluittype2 = BesluitTypeFactory.create(
+            concept=True,
+            omschrijving="foobar",
+            zaaktypen=[zaaktype2],
+        )
+
+        besluittype_url = reverse(
+            "besluittype-publish", kwargs={"uuid": besluittype2.uuid}
+        )
+
+        response = self.client.post(besluittype_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        besluittype1.refresh_from_db()
+        besluittype2.refresh_from_db()
+
+        self.assertEqual(besluittype2.concept, False)
+        self.assertEqual(
+            besluittype1.datum_einde_geldigheid,
+            besluittype2.datum_begin_geldigheid - timedelta(days=1),
+        )
+        self.assertEqual(
+            besluittype1.datum_einde_geldigheid,
+            besluittype2.datum_begin_geldigheid - timedelta(days=1),
+        )
+        self.assertEqual(besluittype2.datum_einde_geldigheid, None)
 
     def test_delete_besluittype(self):
         besluittype = BesluitTypeFactory.create()
@@ -688,7 +738,7 @@ class BesluitTypeFilterAPITests(APITestCase):
     maxDiff = None
 
     def test_filter_besluittype_status_alles(self):
-        BesluitTypeFactory.create(concept=True)
+        BesluitTypeFactory.create(concept=True, datum_begin_geldigheid=date(2019, 1, 1))
         BesluitTypeFactory.create(concept=False)
         besluittype_list_url = reverse("besluittype-list")
 
@@ -770,6 +820,65 @@ class BesluitTypeFilterAPITests(APITestCase):
 
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["url"], f"http://testserver{besluittype1_url}")
+
+    def test_filter_omschrijving(self):
+        besluittype1 = BesluitTypeFactory.create(concept=False, omschrijving="foobar1")
+        besluittype2 = BesluitTypeFactory.create(concept=False, omschrijving="foobar2")
+        list_url = get_operation_url("besluittype_list")
+        besluittype1_url = get_operation_url("besluittype_read", uuid=besluittype1.uuid)
+
+        response = self.client.get(
+            list_url, {"omschrijving": besluittype1.omschrijving}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["url"], f"http://testserver{besluittype1_url}")
+
+    def test_filter_geldigheid_get_most_recent(self):
+        besluittype1 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        besluittype2 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-03-01",
+        )
+        list_url = get_operation_url("besluittype_list")
+
+        response = self.client.get(list_url, {"datumGeldigheid": "2020-03-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(besluittype2)}")
+
+    def test_filter_geldigheid_get_older_version(self):
+        besluittype1 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-01-01",
+            datum_einde_geldigheid="2020-02-01",
+        )
+        besluittype2 = BesluitTypeFactory.create(
+            concept=False,
+            omschrijving="foobar",
+            datum_begin_geldigheid="2020-03-01",
+        )
+        list_url = get_operation_url("besluittype_list")
+
+        response = self.client.get(list_url, {"datumGeldigheid": "2020-01-05"})
+        self.assertEqual(response.status_code, 200)
+
+        data = response.json()["results"]
+
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["url"], f"http://testserver{reverse(besluittype1)}")
 
 
 class FilterValidationTests(APITestCase):

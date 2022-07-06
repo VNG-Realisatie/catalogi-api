@@ -1,6 +1,9 @@
 from collections import OrderedDict
 
+from django.utils.translation import ugettext_lazy as _
+
 from rest_framework import exceptions
+from rest_framework.exceptions import APIException
 from rest_framework.views import exception_handler as drf_exception_handler
 
 
@@ -34,3 +37,19 @@ def exception_handler(exc, context):
             ]
 
     return response
+
+
+class OverlappingException(APIException):
+    status_code = 400
+    default_detail = _(
+        f"De object komt al voor binnen de catalogus en opgegeven geldigheidsperiode."
+    )
+    default_code = "overlapping-geldigheiden"
+
+
+class TooManyObjectsReturned(APIException):
+    status_code = 400
+    default_detail = _(
+        f"Het is niet mogelijk om te publiseren als hier meerdere objecten worden terug gegeven"
+    )
+    default_code = "multiple-objects"

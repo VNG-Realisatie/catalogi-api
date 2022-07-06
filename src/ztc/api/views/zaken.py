@@ -21,6 +21,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import ZaakTypeSerializer
+from ..utils.viewsets import set_geldigheid, set_geldigheid_nestled_resources
 from .mixins import ConceptMixin, M2MConceptDestroyMixin
 
 
@@ -131,7 +132,6 @@ class ZaakTypeViewSet(
         aanmaken.
         """
         instance = self.get_object()
-
         # check related objects
         if (
             instance.besluittypen.filter(concept=True).exists()
@@ -143,6 +143,8 @@ class ZaakTypeViewSet(
                 {api_settings.NON_FIELD_ERRORS_KEY: msg}, code="concept-relation"
             )
 
+        set_geldigheid_nestled_resources(instance)
+        instance = set_geldigheid(instance)
         instance.concept = False
         instance.save()
 

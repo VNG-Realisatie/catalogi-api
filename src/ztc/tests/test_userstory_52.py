@@ -120,5 +120,6 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                 "eindeGeldigheid": "2022-01-01",
                 "beginObject": None,
                 "eindeObject": None,
+                "zaaktypeIdentificatie": zaaktype.identificatie,
             },
         )

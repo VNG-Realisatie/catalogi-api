@@ -13,6 +13,16 @@ from ..validators import (
 
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
+    resultaattypen_omschrijving = serializers.SlugRelatedField(
+        many=True, source="resultaattypen", read_only=True, slug_field="omschrijving"
+    )
+    vastgelegd_in = serializers.SlugRelatedField(
+        many=True,
+        source="informatieobjecttypen",
+        read_only=True,
+        slug_field="omschrijving",
+    )
+
     class Meta:
         model = BesluitType
         extra_kwargs = {
@@ -57,6 +67,8 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             "einde_object",
             "concept",
             "resultaattypen",
+            "resultaattypen_omschrijving",
+            "vastgelegd_in",
         )
         validators = [
             UniqueTogetherValidator(
