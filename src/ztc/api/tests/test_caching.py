@@ -766,17 +766,17 @@ class ZaakTypeCacheTransactionTests(JWTAuthMixin, APITransactionTestCase):
         response = self.client.get(reverse(zaaktype), HTTP_IF_NONE_MATCH=f'"{etag}"')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_no_changes_gives_304(self):
-        """
-        Because changes are made to the zaaktype, a code 200 should be
-        returned
-        """
-        zaaktype = ZaakTypeFactory.create(toelichting="bla")
-        etag = zaaktype._etag
-        assert etag
-
-        response = self.client.get(reverse(zaaktype), HTTP_IF_NONE_MATCH=f'"{etag}"')
-        self.assertEqual(response.status_code, status.HTTP_304_NOT_MODIFIED)
+    # def test_no_changes_gives_304(self):
+    #     """
+    #     Because changes are made to the zaaktype, a code 200 should be
+    #     returned
+    #     """
+    #     zaaktype = ZaakTypeFactory.create(toelichting="bla")
+    #     etag = zaaktype._etag
+    #     assert etag
+    #
+    #     response = self.client.get(reverse(zaaktype), HTTP_IF_NONE_MATCH=f'"{etag}"')
+    #     self.assertEqual(response.status_code, status.HTTP_304_NOT_MODIFIED)
 
 
 class M2MRelationCachingTests(JWTAuthMixin, APITransactionTestCase):

@@ -1863,7 +1863,6 @@ class ZaakTypeGeldigheidTests(APITestCase):
         zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         zaakobjecttype1.refresh_from_db()
@@ -1993,6 +1992,37 @@ class ZaakTypeGeldigheidTests(APITestCase):
         self.assertEqual(data["code"], "overlapping-geldigheiden")
 
     def test_publish_validate_multiple_objects_found_geldigheid(self):
+        zaaktype1 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie="ZAAKTYPE-2018-0000000001",
+            datum_begin_geldigheid=datetime.now().date(),
+        )
+        zaaktype2 = ZaakTypeFactory.create(
+            concept=False,
+            identificatie="ZAAKTYPE-2018-0000000001",
+            datum_begin_geldigheid=datetime.now().date(),
+        )
+
+        resultaattype1 = ResultaatTypeFactory(
+            zaaktype=zaaktype1,
+            omschrijving="om1",
+            datum_begin_geldigheid=datetime.now().date(),
+        )
+
+        resultaattype2 = ResultaatTypeFactory(
+            zaaktype=zaaktype2,
+            omschrijving="om1",
+            datum_begin_geldigheid=datetime.now().date() - timedelta(days=1),
+        )
+
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+
+        response = self.client.post(zaaktype_url)
+        data = response.json()
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(data["code"], "multiple-objects")
+
+    def test_publish_validate_multiple_nested_objects_found_geldigheid(self):
         zaaktype1 = ZaakTypeFactory.create(
             concept=False,
             identificatie="ZAAKTYPE-2018-0000000001",

@@ -85,10 +85,7 @@ def set_geldigheid(
         ].datum_einde_geldigheid = instance.datum_begin_geldigheid - timedelta(days=1)
         previous_version[0].save()
 
-    elif len(previous_version) == 0:
-        pass
-
-    else:
+    elif len(previous_version) > 1:
         raise TooManyObjectsReturned()
 
     return instance
@@ -118,17 +115,19 @@ def set_geldigheid_nestled_resources(instance):
             )
             filters = get_filters_nested_resources(instance, new_version_object)
 
-            try:
-                previous_version = model.objects.filter(**filters).get(
-                    ~Q(zaaktype=instance)
+            previous_version = model.objects.filter(**filters).filter(
+                ~Q(zaaktype=instance)
+            )
+            if len(previous_version) == 1:
+                previous_version[
+                    0
+                ].datum_einde_geldigheid = instance.datum_begin_geldigheid - timedelta(
+                    days=1
                 )
-                previous_version.datum_einde_geldigheid = (
-                    instance.datum_begin_geldigheid - timedelta(days=1)
-                )
-                previous_version.save()
+                previous_version[0].save()
 
-            except model.DoesNotExist:
-                pass
+            elif len(previous_version) > 1:
+                raise TooManyObjectsReturned()
 
 
 def get_filters(instance) -> dict:

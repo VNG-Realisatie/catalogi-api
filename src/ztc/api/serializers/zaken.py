@@ -74,14 +74,14 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         self.fields["aard_relatie"].help_text += f"\n\n{value_display_mapping}"
 
 
-class CreateCustomUrlMethodField(SerializerMethodField):
-    def __init__(self, method_name=None, **kwargs):
+class HistoryURLField(SerializerMethodField):
+    def __init__(self, resource, resource_serializer, method_name=None, **kwargs):
         super().__init__(method_name)
-        self.func_kwargs = kwargs
+        self.func_args = (resource, resource_serializer)
 
     def to_representation(self, value):
         method = getattr(self.parent, self.method_name)
-        return method(value, **self.func_kwargs)
+        return method(value, *self.func_args)
 
 
 class ZaakTypeSerializer(
@@ -110,26 +110,28 @@ class ZaakTypeSerializer(
             "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
         ),
     )
-    roltypen = CreateCustomUrlMethodField(
-        "create_custom_urls", resource=RolType, resource_serializer=RolTypeSerializer
+    roltypen = HistoryURLField(
+        method_name="create_custom_urls",
+        resource=RolType,
+        resource_serializer=RolTypeSerializer,
     )
-    statustypen = CreateCustomUrlMethodField(
-        "create_custom_urls",
+    statustypen = HistoryURLField(
+        method_name="create_custom_urls",
         resource=StatusType,
         resource_serializer=StatusTypeSerializer,
     )
-    resultaattypen = CreateCustomUrlMethodField(
-        "create_custom_urls",
+    resultaattypen = HistoryURLField(
+        method_name="create_custom_urls",
         resource=ResultaatType,
         resource_serializer=ResultaatTypeSerializer,
     )
-    eigenschappen = CreateCustomUrlMethodField(
-        "create_custom_urls",
+    eigenschappen = HistoryURLField(
+        method_name="create_custom_urls",
         resource=Eigenschap,
         resource_serializer=EigenschapSerializer,
     )
-    zaakobjecttypen = CreateCustomUrlMethodField(
-        "create_custom_urls",
+    zaakobjecttypen = HistoryURLField(
+        method_name="create_custom_urls",
         resource=ZaakObjectType,
         resource_serializer=ZaakObjectTypeSerializer,
     )
