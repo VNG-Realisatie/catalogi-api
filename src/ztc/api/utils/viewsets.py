@@ -68,8 +68,8 @@ class FilterSearchOrderingViewSetMixin(object):
 
 
 def set_geldigheid(
-    instance: Optional[Union[ZaakType, BesluitType, InformatieObjectType]]
-) -> Optional[Union[ZaakType, BesluitType, InformatieObjectType]]:
+    instance: Union[ZaakType, BesluitType, InformatieObjectType]
+) -> Union[ZaakType, BesluitType, InformatieObjectType]:
     filters = get_filters(instance)
 
     previous_version = type(instance).objects.filter(**filters)
