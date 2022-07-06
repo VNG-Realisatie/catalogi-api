@@ -13,7 +13,7 @@ from .mixins import ConceptMixin, DatumObjectMixin, GeldigheidMixin
 
 
 class InformatieObjectTypeOmschrijvingGeneriek(
-    ETagMixin, GeldigheidMixin, DatumObjectMixin, models.Model
+    GeldigheidMixin, DatumObjectMixin, models.Model
 ):
     """
     Algemeen binnen de overheid gehanteerde omschrijvingen van de typen informatieobjecten
