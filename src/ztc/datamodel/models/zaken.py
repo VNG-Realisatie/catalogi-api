@@ -425,7 +425,7 @@ class ZaakType(
         if self.catalogus_id:
             query = get_overlapping_zaaktypes(
                 self.catalogus,
-                self.zaaktype_omschrijving,
+                self.identificatie,
                 self.datum_begin_geldigheid,
                 self.datum_einde_geldigheid,
                 self,
@@ -434,7 +434,7 @@ class ZaakType(
             # regel voor zaaktype omschrijving
             if query.exists():
                 raise ValidationError(
-                    "Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS."
+                    "Zaaktype-identificatie moet uniek zijn binnen de CATALOGUS."
                 )
 
         self._clean_geldigheid(self)
