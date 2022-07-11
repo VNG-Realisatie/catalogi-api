@@ -2,6 +2,18 @@
 Wijzigingen
 ===========
 
+1.2.0 (2022-07-07)
+==================
+
+* History model for version control added
+* Version control Zaaktypen, Informatieobjecttypen en Besluittypen made independent
+* Check if Zaaktype based on catalogus + identificatie (instead of catalogus + omschrijving)
+* Resultaattype.omschrijving changed to 30 characters instead of 20.
+* Zaakobjecttype resource added
+* Documentation updated: Clarification of publish operation, beginGeldigheid/eindGeldigheid and beginObject/eindObject.
+* Business rules [ZTC-010](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#ztc-010) and [ZTC-011](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#ztc-011) updated to allow better version management
+* Missing attributes for resources were added from ImZTC 2.2 to support TMLO
+
 1.1.1 (2022-06-22)
 ==================
 
