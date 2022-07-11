@@ -55,6 +55,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             "url",
             "naam",
+            "catalogus",
             "definitie",
             "specificatie",
             "toelichting",
@@ -68,6 +69,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
+            "catalogus": {"lookup_field": "uuid"},
             "naam": {"source": "eigenschapnaam"},
             "zaaktype": {"lookup_field": "uuid"},
             "statustype": {"lookup_field": "uuid"},

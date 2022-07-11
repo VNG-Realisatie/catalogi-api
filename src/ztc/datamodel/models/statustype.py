@@ -81,6 +81,14 @@ class StatusType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
             "URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden."
         ),
     )
+    catalogus = models.ForeignKey(
+        "datamodel.Catalogus",
+        verbose_name=_("catalogus"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        help_text=_("URL-referentie naar de CATALOGUS waartoe dit STATUSTYPE behoort."),
+    )
 
     zaakobjecttype = models.ForeignKey(
         "ZaakObjectType",

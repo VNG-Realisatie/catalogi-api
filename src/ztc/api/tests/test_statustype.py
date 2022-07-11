@@ -42,6 +42,7 @@ class StatusTypeAPITests(APITestCase):
             datum_begin_geldigheid=date(2021, 1, 1),
             datum_einde_geldigheid=date(2021, 2, 1),
             zaaktype=zaaktype,
+            catalogus=self.catalogus,
             eigenschappen=[eigenschap],
             doorlooptijd_status="P30D",
             toelichting="Toelichting X",
@@ -90,6 +91,7 @@ class StatusTypeAPITests(APITestCase):
             "beginObject": None,
             "eindeObject": None,
             "zaaktypeIdentificatie": zaaktype.identificatie,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
         }
 
         self.assertEqual(expected, response.json())

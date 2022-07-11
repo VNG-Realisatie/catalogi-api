@@ -30,6 +30,7 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
             "url",
             "zaaktype",
             "zaaktype_identificatie",
+            "catalogus",
             "informatieobjecttype",
             "informatieobjecttype_omschrijving",
             "volgnummer",
@@ -41,6 +42,7 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
             "zaaktype": {"lookup_field": "uuid"},
             "informatieobjecttype": {"lookup_field": "uuid"},
             "statustype": {"lookup_field": "uuid"},
+            "catalogus": {"lookup_field": "uuid"},
         }
         validators = [
             ZaakInformatieObjectTypeCatalogusValidator(),

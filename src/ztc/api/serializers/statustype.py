@@ -43,6 +43,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek",
             "statustekst",
             "zaaktype",
+            "catalogus",
             "zaaktype_identificatie",
             "volgnummer",
             "is_eindstatus",
@@ -71,5 +72,6 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
                 "source": "doorlooptijd_status",
                 "label": _("doorlooptijd"),
             },
+            "catalogus": {"lookup_field": "uuid"},
         }
         validators = [ZaakTypeConceptValidator()]
