@@ -7,6 +7,7 @@ from django.utils import timezone
 
 import requests_mock
 from dateutil.relativedelta import relativedelta
+from relativedeltafield.utils import format_relativedelta
 from rest_framework import status
 from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
@@ -209,7 +210,10 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         self.assertEqual(brondatumArchiefprocedure["afleidingswijze"], afleidingswijze)
 
         # Verify that the procestermijn was serialized correctly
-        self.assertEqual(brondatumArchiefprocedure["procestermijn"], procestermijn)
+        self.assertEqual(
+            brondatumArchiefprocedure["procestermijn"],
+            format_relativedelta(procestermijn),
+        )
 
     @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
     @patch("vng_api_common.oas.fetcher.fetch", return_value={})
