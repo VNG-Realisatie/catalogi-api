@@ -50,7 +50,6 @@ class ZaakType(
     identificatie = models.CharField(
         _("identificatie"),
         max_length=50,
-        blank=True,
         help_text=_(
             "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
         ),
