@@ -32,9 +32,7 @@ class ZaaktypeGeldigheidValidator:
     def __call__(self, attrs):
         instance = self.serializer.instance
         catalogus = attrs.get("catalogus") or instance.catalogus
-        zaaktype_omschrijving = (
-            attrs.get("zaaktype_omschrijving") or instance.zaaktype_omschrijving
-        )
+        identificatie = attrs.get("identificatie") or instance.identificatie
         datum_begin_geldigheid = (
             attrs.get("datum_begin_geldigheid") or instance.datum_begin_geldigheid
         )
@@ -44,7 +42,7 @@ class ZaaktypeGeldigheidValidator:
 
         query = get_overlapping_zaaktypes(
             catalogus,
-            zaaktype_omschrijving,
+            identificatie,
             datum_begin_geldigheid,
             datum_einde_geldigheid,
             instance,
