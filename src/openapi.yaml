@@ -5319,7 +5319,6 @@ components:
           format: date
           nullable: true
     EigenschapSpecificatie:
-      title: Specificatie
       required:
       - formaat
       - lengte
@@ -5570,7 +5569,6 @@ components:
           readOnly: true
           uniqueItems: true
     BrondatumArchiefprocedure:
-      title: Brondatum archiefprocedure
       description: Specificatie voor het bepalen van de brondatum voor de start van
         de Archiefactietermijn (=brondatum) van het zaakdossier.
       required:
@@ -6332,7 +6330,6 @@ components:
           format: uri
           nullable: true
     ReferentieProces:
-      title: Referentieproces
       description: Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.
       required:
       - naam
@@ -6351,7 +6348,6 @@ components:
           format: uri
           maxLength: 200
     BronCatalogus:
-      title: Broncatalogus
       description: De CATALOGUS waaraan het ZAAKTYPE is ontleend.
       required:
       - url
@@ -6379,7 +6375,6 @@ components:
           maxLength: 9
           minLength: 1
     BronZaaktype:
-      title: Bronzaaktype
       description: Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.
       required:
       - url
