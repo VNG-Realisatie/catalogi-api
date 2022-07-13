@@ -19,7 +19,8 @@
   "license": "EUPL-1.2",
   "homepage": "https://catalogi-api.vng.cloud",
   "dependencies": {
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "microscope-sass": "latest"
   },
   "devDependencies": {
     "@babel/core": "latest",

@@ -18,6 +18,7 @@ module.exports = {
     // Entry points locations.
     entry: {
         [`${paths.package.name}-css`]: `${__dirname}/${paths.scssEntry}`,
+        'admin_overrides': `${__dirname}/${paths.scssSrcDir}/admin/admin_overrides.scss`,
     },
 
     // (Output) bundle locations.
@@ -51,6 +52,9 @@ module.exports = {
                     // Loads CSS files.
                     {
                         loader: 'css-loader',
+                        options: {
+                            url: false
+                        },
                     },
 
                     // Runs postcss configuration (postcss.config.js).
