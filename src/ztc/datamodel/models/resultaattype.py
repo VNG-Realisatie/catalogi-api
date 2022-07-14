@@ -61,7 +61,7 @@ class ResultaatType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
     # core data - used by ZRC to calculate archival-related dates
     omschrijving = models.CharField(
         _("omschrijving"),
-        max_length=20,
+        max_length=30,
         help_text=_("Omschrijving van de aard van resultaten van het RESULTAATTYPE."),
     )
     resultaattypeomschrijving = models.URLField(
