@@ -4,7 +4,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 import requests
-from relativedeltafield import RelativeDeltaField, parse_relativedelta
+from relativedeltafield import RelativeDeltaField
+from relativedeltafield.utils import parse_relativedelta
 from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import (
     Archiefnominatie,
