@@ -50,7 +50,6 @@ class ZaakType(
     identificatie = models.CharField(
         _("identificatie"),
         max_length=50,
-        blank=True,
         help_text=_(
             "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
         ),
@@ -425,7 +424,7 @@ class ZaakType(
         if self.catalogus_id:
             query = get_overlapping_zaaktypes(
                 self.catalogus,
-                self.zaaktype_omschrijving,
+                self.identificatie,
                 self.datum_begin_geldigheid,
                 self.datum_einde_geldigheid,
                 self,
@@ -434,7 +433,7 @@ class ZaakType(
             # regel voor zaaktype omschrijving
             if query.exists():
                 raise ValidationError(
-                    "Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS."
+                    "Zaaktype-identificatie moet uniek zijn binnen de CATALOGUS."
                 )
 
         self._clean_geldigheid(self)
