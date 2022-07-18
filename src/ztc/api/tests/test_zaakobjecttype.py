@@ -3,6 +3,7 @@ from datetime import date
 from django.utils.translation import gettext as _
 
 from rest_framework import status
+from vng_api_common.tests import JWTAuthMixin
 from vng_api_common.tests.schema import get_validation_errors
 from vng_api_common.tests.urls import reverse
 
@@ -13,6 +14,7 @@ from ztc.datamodel.tests.factories.statustype import StatusTypeFactory
 from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 from ztc.datamodel.tests.factories.zaken import ZaakTypeFactory
 
+from ..scopes import SCOPE_CATALOGI_FORCED_WRITE
 from .base import APITestCase
 
 
@@ -409,3 +411,80 @@ class ZaakObjectTypeFilterAPITests(APITestCase):
         self.assertEqual(
             data[0]["beginGeldigheid"], zaakobjecttype2.datum_begin_geldigheid
         )
+
+
+class ZaakObjectTypeScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_FORCED_WRITE]
+
+    def test_create_non_concept_zaaktype(self):
+        """Create a `ZaakObjectType` object."""
+        catalogus = CatalogusFactory()
+        zaaktype = ZaakTypeFactory(catalogus=catalogus, concept=False)
+
+        response = self.client.post(
+            reverse("zaakobjecttype-list"),
+            {
+                "anderObjecttype": False,
+                "beginGeldigheid": date(2021, 10, 30),
+                "eindeGeldigheid": date(2021, 11, 30),
+                "objecttype": "https://bag2.basisregistraties.overheid.nl/bag/id/identificatie/abc",
+                "relatieOmschrijving": "Test omschrijving",
+                "zaaktype": f"http://testserver{reverse(zaaktype)}",
+                "catalogus": f"http://testserver{reverse(catalogus)}",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ZaakObjectType.objects.count(), 1)
+
+    def test_update(self):
+        """Update a `ZaakObjectType` object."""
+        zaakobjecttype = ZaakObjectTypeFactory(
+            relatie_omschrijving="Omschrijving 123",
+            datum_begin_geldigheid=date(2021, 10, 30),
+            datum_einde_geldigheid=date(2021, 11, 30),
+            zaaktype__concept=False,
+        )
+
+        response = self.client.put(
+            reverse(zaakobjecttype),
+            {
+                "anderObjecttype": zaakobjecttype.ander_objecttype,
+                "beginGeldigheid": zaakobjecttype.datum_begin_geldigheid,
+                "eindeGeldigheid": date(2021, 12, 30),
+                "objecttype": zaakobjecttype.objecttype,
+                "relatieOmschrijving": "Omschrijving 321",
+                "zaaktype": f"http://testserver{reverse(zaakobjecttype.zaaktype)}",
+                "catalogus": f"http://testserver{reverse(zaakobjecttype.catalogus)}",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        zaakobjecttype.refresh_from_db()
+
+        self.assertEqual(zaakobjecttype.datum_einde_geldigheid, date(2021, 12, 30))
+
+        self.assertEqual(zaakobjecttype.relatie_omschrijving, "Omschrijving 321")
+
+    def test_partial_update(self):
+        """Partially update a `ZaakObjectType` object."""
+        zaakobjecttype = ZaakObjectTypeFactory()
+        zaaktype = ZaakTypeFactory(catalogus=zaakobjecttype.catalogus, concept=False)
+
+        response = self.client.patch(
+            reverse(zaakobjecttype),
+            {
+                "zaaktype": f"http://testserver{reverse(zaaktype)}",
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        zaakobjecttype.refresh_from_db()
+
+        self.assertEqual(zaakobjecttype.zaaktype, zaaktype)

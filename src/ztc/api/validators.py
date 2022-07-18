@@ -60,7 +60,9 @@ class ZaaktypeGeldigheidValidator:
 
 
 class ConceptUpdateValidator:
-    message = _("Het is niet toegestaan om een non-concept object bij te werken")
+    message = _(
+        "Het is niet toegestaan om een non-concept object bij te werken zonder de geforceerd-bijwerken scope"
+    )
     code = "non-concept-object"
 
     def set_context(self, serializer):
@@ -80,7 +82,10 @@ class ConceptUpdateValidator:
         if self.serializer.partial and list(attrs.keys()) == ["datum_einde_geldigheid"]:
             return
 
-        if not instance.concept:
+        allow_action_with_force = self.serializer.context.get(
+            "allow_action_with_force", False
+        )
+        if not instance.concept and not allow_action_with_force:
             raise ValidationError(self.message, code=self.code)
 
 
@@ -91,7 +96,7 @@ class ZaakTypeConceptValidator:
     """
 
     message = _(
-        "Updating an object that has a relation to a non-concept zaaktype is forbidden"
+        "Updating an object that has a relation to a non-concept zaaktype is forbidden unless forced scope is used"
     )
     code = "non-concept-zaaktype"
 
@@ -102,17 +107,24 @@ class ZaakTypeConceptValidator:
         """
         # Determine the existing instance, if this is an update operation.
         self.instance = getattr(serializer, "instance", None)
+        self.serializer = serializer
 
     def __call__(self, attrs):
+        allow_action_with_force = self.serializer.context.get(
+            "allow_action_with_force", False
+        )
+
         if self.instance:
             zaaktype = self.instance.zaaktype
-            if not zaaktype.concept:
+            if not zaaktype.concept and not allow_action_with_force:
                 raise ValidationError(self.message, code=self.code)
 
         zaaktype_in_attrs = attrs.get("zaaktype")
         if zaaktype_in_attrs:
-            if not zaaktype_in_attrs.concept:
-                msg = _("Creating a relation to non-concept zaaktype is forbidden")
+            if not zaaktype_in_attrs.concept and not allow_action_with_force:
+                msg = _(
+                    "Creating a relation to non-concept zaaktype is forbidden unless forced scope is applied"
+                )
                 raise ValidationError(msg, code=self.code)
 
 

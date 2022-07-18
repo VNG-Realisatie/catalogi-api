@@ -7,16 +7,20 @@ from ztc.datamodel.models import Eigenschap
 from ..filters import EigenschapFilter
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
+    SCOPE_CATALOGI_FORCED_WRITE,
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import EigenschapSerializer
-from .mixins import ZaakTypeConceptMixin
+from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 
 
 @conditional_retrieve()
 class EigenschapViewSet(
-    CheckQueryParamsMixin, ZaakTypeConceptMixin, viewsets.ModelViewSet
+    CheckQueryParamsMixin,
+    ZaakTypeConceptMixin,
+    ForcedCreateUpdateMixin,
+    viewsets.ModelViewSet,
 ):
     """
     Opvragen en bewerken van EIGENSCHAPpen van een ZAAKTYPE.
@@ -66,8 +70,8 @@ class EigenschapViewSet(
     required_scopes = {
         "list": SCOPE_CATALOGI_READ,
         "retrieve": SCOPE_CATALOGI_READ,
-        "create": SCOPE_CATALOGI_WRITE,
-        "update": SCOPE_CATALOGI_WRITE,
-        "partial_update": SCOPE_CATALOGI_WRITE,
+        "create": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
+        "update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
+        "partial_update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
     }

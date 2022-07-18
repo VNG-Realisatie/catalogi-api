@@ -19,9 +19,15 @@ SCOPE_CATALOGI_WRITE = Scope(
     "catalogi.schrijven",
     description="""
 **Laat toe om**:
-
 * schrijfoperaties uit te voeren in de API. Alle resources zijn beschikbaar.
 """,
+)
+
+SCOPE_CATALOGI_FORCED_WRITE = Scope(
+    "catalogi.geforceerd-schrijven",
+    description="""
+**Laat toe om**:
+* Gepubliceerde types geforceerd te schrijven. Alle resources zijn beschikbaar.""",
 )
 
 SCOPE_CATALOGI_FORCED_DELETE = Scope(

@@ -58,6 +58,7 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
 
     def validate(self, attrs):
         super().validate(attrs)
+        allow_action_with_force = self.context.get("allow_action_with_force", False)
 
         if self.instance:
             zaaktype = attrs.get("zaaktype") or self.instance.zaaktype
@@ -65,14 +66,20 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
                 attrs.get("informatieobjecttype") or self.instance.informatieobjecttype
             )
 
-            if not (zaaktype.concept or informatieobjecttype.concept):
+            if (
+                not (zaaktype.concept or informatieobjecttype.concept)
+                and not allow_action_with_force
+            ):
                 message = _("Objects related to non-concept objects can't be updated")
                 raise serializers.ValidationError(message, code="non-concept-relation")
         else:
             zaaktype = attrs.get("zaaktype")
             informatieobjecttype = attrs.get("informatieobjecttype")
 
-            if not (zaaktype.concept or informatieobjecttype.concept):
+            if (
+                not (zaaktype.concept or informatieobjecttype.concept)
+                and not allow_action_with_force
+            ):
                 message = _(
                     "Creating relations between non-concept objects is forbidden"
                 )

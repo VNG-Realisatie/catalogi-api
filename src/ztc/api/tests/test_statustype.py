@@ -1,7 +1,12 @@
 from datetime import date
 
 from rest_framework import status
-from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.tests import (
+    JWTAuthMixin,
+    get_operation_url,
+    get_validation_errors,
+    reverse,
+)
 
 from ztc.api.validators import ZaakTypeConceptValidator
 from ztc.datamodel.models import StatusType
@@ -9,7 +14,11 @@ from ztc.datamodel.tests.factories import StatusTypeFactory, ZaakTypeFactory
 from ztc.datamodel.tests.factories.eigenschap import EigenschapFactory
 from ztc.datamodel.tests.factories.statustype import CheckListItemFactory
 
-from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
+from ..scopes import (
+    SCOPE_CATALOGI_FORCED_WRITE,
+    SCOPE_CATALOGI_READ,
+    SCOPE_CATALOGI_WRITE,
+)
 from .base import APITestCase
 
 
@@ -431,3 +440,41 @@ class StatusTypePaginationTestCase(APITestCase):
         self.assertEqual(response_data["count"], 2)
         self.assertIsNone(response_data["previous"])
         self.assertIsNone(response_data["next"])
+
+
+class StatusTypeScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_FORCED_WRITE]
+
+    def test_partial_update_statustype_add_relation_to_non_concept_zaaktype_with_forced_scope(
+        self,
+    ):
+
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        statustype = StatusTypeFactory.create()
+        statustype_url = reverse(statustype)
+
+        response = self.client.patch(statustype_url, {"zaaktype": zaaktype_url})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_statustype_fail_not_concept_zaaktype(self):
+
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        statustype_list_url = reverse("statustype-list")
+        data = {
+            "omschrijving": "Besluit genomen",
+            "omschrijvingGeneriek": "",
+            "statustekst": "",
+            "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "volgnummer": 2,
+        }
+        response = self.client.post(statustype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        statustype = StatusType.objects.get()
+
+        self.assertEqual(statustype.statustype_omschrijving, "Besluit genomen")
+        self.assertEqual(statustype.zaaktype, zaaktype)

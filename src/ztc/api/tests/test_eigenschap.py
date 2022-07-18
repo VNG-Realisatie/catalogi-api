@@ -2,7 +2,12 @@ from datetime import date
 from unittest import skip
 
 from rest_framework import status
-from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.tests import (
+    JWTAuthMixin,
+    get_operation_url,
+    get_validation_errors,
+    reverse,
+)
 
 from ztc.api.validators import ZaakTypeConceptValidator
 from ztc.datamodel.models import Eigenschap, EigenschapSpecificatie
@@ -14,7 +19,11 @@ from ztc.datamodel.tests.factories import (
 )
 from ztc.datamodel.tests.factories.statustype import StatusTypeFactory
 
-from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
+from ..scopes import (
+    SCOPE_CATALOGI_FORCED_WRITE,
+    SCOPE_CATALOGI_READ,
+    SCOPE_CATALOGI_WRITE,
+)
 from .base import APITestCase
 
 
@@ -547,3 +556,92 @@ class EigenschapPaginationTestCase(APITestCase):
         self.assertEqual(response_data["count"], 2)
         self.assertIsNone(response_data["previous"])
         self.assertIsNone(response_data["next"])
+
+
+class EigenschapScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_FORCED_WRITE]
+
+    def test_create_eigenschap_non_concept_zaaktype_forced_scope(self):
+        zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        eigenschap_list_url = reverse("eigenschap-list")
+        data = {
+            "naam": "Beoogd product",
+            "definitie": "test",
+            "toelichting": "",
+            "zaaktype": "http://testserver{}".format(zaaktype_url),
+            "specificatie": {
+                "groep": "test",
+                "formaat": "tekst",
+                "lengte": "5",
+                "kardinaliteit": "1",
+                "waardenverzameling": [],
+            },
+        }
+
+        response = self.client.post(eigenschap_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        eigenschap = Eigenschap.objects.get()
+
+        self.assertEqual(eigenschap.eigenschapnaam, "Beoogd product")
+        self.assertEqual(eigenschap.zaaktype, zaaktype)
+
+        specificatie = eigenschap.specificatie_van_eigenschap
+        self.assertEqual(specificatie.groep, "test")
+        self.assertEqual(specificatie.formaat, "tekst")
+        self.assertEqual(specificatie.lengte, "5")
+        self.assertEqual(specificatie.kardinaliteit, "1")
+        self.assertEqual(specificatie.waardenverzameling, [])
+
+    def test_update_eigenschap_non_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        specificatie = EigenschapSpecificatieFactory.create()
+        eigenschap = EigenschapFactory.create(specificatie_van_eigenschap=specificatie)
+        eigenschap_url = reverse(eigenschap)
+
+        data = {
+            "naam": "aangepast",
+            "definitie": "test",
+            "toelichting": "",
+            "zaaktype": zaaktype_url,
+            "specificatie": {
+                "groep": "test",
+                "formaat": "tekst",
+                "lengte": "5",
+                "kardinaliteit": "1",
+                "waardenverzameling": [],
+            },
+        }
+
+        response = self.client.put(eigenschap_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["naam"], "aangepast")
+
+        eigenschap.refresh_from_db()
+        self.assertEqual(eigenschap.eigenschapnaam, "aangepast")
+
+        specificatie = EigenschapSpecificatie.objects.get()
+        self.assertEqual(specificatie, eigenschap.specificatie_van_eigenschap)
+
+        self.assertEqual(specificatie.groep, "test")
+        self.assertEqual(specificatie.formaat, "tekst")
+        self.assertEqual(specificatie.lengte, "5")
+        self.assertEqual(specificatie.kardinaliteit, "1")
+        self.assertEqual(specificatie.waardenverzameling, [])
+
+    def test_partial_update_eigenschap(self):
+        eigenschap = EigenschapFactory.create(zaaktype__concept=False)
+        eigenschap_url = reverse(eigenschap)
+
+        response = self.client.patch(eigenschap_url, {"naam": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["naam"], "aangepast")
+
+        eigenschap.refresh_from_db()
+        self.assertEqual(eigenschap.eigenschapnaam, "aangepast")

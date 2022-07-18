@@ -1,7 +1,12 @@
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 
 from rest_framework import status
-from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.tests import (
+    JWTAuthMixin,
+    get_operation_url,
+    get_validation_errors,
+    reverse,
+)
 
 from ztc.api.validators import (
     ConceptUpdateValidator,
@@ -17,7 +22,11 @@ from ...datamodel.tests.factories import (
     InformatieObjectTypeFactory,
     ZaakTypeFactory,
 )
-from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
+from ..scopes import (
+    SCOPE_CATALOGI_FORCED_WRITE,
+    SCOPE_CATALOGI_READ,
+    SCOPE_CATALOGI_WRITE,
+)
 from .base import APITestCase
 
 
@@ -951,3 +960,38 @@ class BesluitTypeValidationTests(APITestCase):
 
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "unique")
+
+
+class BesluitTypeScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_FORCED_WRITE]
+
+    def test_update_besluittype_not_concept_with_forced_scope(self):
+
+        besluittype = BesluitTypeFactory.create(concept=False)
+        besluittype_url = reverse(
+            "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+        )
+
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "zaaktypen": [],
+            "omschrijving": "test",
+            "omschrijvingGeneriek": "",
+            "besluitcategorie": "",
+            "reactietermijn": "P14D",
+            "publicatieIndicatie": True,
+            "publicatietekst": "",
+            "publicatietermijn": None,
+            "toelichting": "aangepast",
+            "informatieobjecttypen": [],
+            "beginGeldigheid": "2019-01-01",
+        }
+
+        response = self.client.put(besluittype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.data)
+        self.assertEqual(response.data["toelichting"], "aangepast")
+
+        besluittype.refresh_from_db()
+        self.assertEqual(besluittype.toelichting, "aangepast")

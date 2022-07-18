@@ -17,12 +17,13 @@ from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
+    SCOPE_CATALOGI_FORCED_WRITE,
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import ZaakTypeSerializer
 from ..utils.viewsets import set_geldigheid, set_geldigheid_nestled_resources
-from .mixins import ConceptMixin, M2MConceptDestroyMixin
+from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
 
 
 @conditional_retrieve()
@@ -31,6 +32,7 @@ class ZaakTypeViewSet(
     ConceptMixin,
     M2MConceptDestroyMixin,
     NotificationViewSetMixin,
+    ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
     """
@@ -102,14 +104,27 @@ class ZaakTypeViewSet(
         "list": SCOPE_CATALOGI_READ,
         "retrieve": SCOPE_CATALOGI_READ,
         "create": SCOPE_CATALOGI_WRITE,
-        "update": SCOPE_CATALOGI_WRITE,
-        "partial_update": SCOPE_CATALOGI_WRITE,
+        "update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
+        "partial_update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
         "publish": SCOPE_CATALOGI_WRITE,
     }
     concept_related_fields = ["besluittypen", "informatieobjecttypen"]
     notifications_kanaal = KANAAL_ZAAKTYPEN
     relation_fields = ["zaaktypenrelaties"]
+
+    # def get_serializer_context(self):
+    #     context = super().get_serializer_context()
+    #     if self.action in ["update", "partial_update"]:
+    #         allow_update = False
+    #         instance = self.get_object()
+    #         if self.request.jwt_auth.has_auth(
+    #             scopes=SCOPE_CATALOGI_FORCED_WRITE,
+    #         ) or instance.concept == True:
+    #             allow_update = True
+    #         context.update({"allow_update": allow_update})
+    #
+    #     return context
 
     @swagger_auto_schema(
         request_body=no_body,
