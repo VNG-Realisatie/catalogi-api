@@ -53,7 +53,6 @@ class EigenschapAPITests(APITestCase):
             eigenschapnaam="Beoogd product",
             zaaktype=zaaktype,
             statustype=statustype,
-            catalogus=self.catalogus,
             specificatie_van_eigenschap=specificatie,
             datum_begin_geldigheid=date(2021, 1, 1),
             datum_einde_geldigheid=date(2021, 2, 1),

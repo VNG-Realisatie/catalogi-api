@@ -53,16 +53,6 @@ class ZaakInformatieobjectType(ETagMixin, models.Model):
             "bij zaken van het gerelateerde ZAAKTYPE."
         ),
     )
-    catalogus = models.ForeignKey(
-        "datamodel.Catalogus",
-        verbose_name=_("catalogus"),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        help_text=_(
-            "URL-referentie naar de CATALOGUS waartoe dit ZAAKINFORMATIEOBJECTTYPE behoort."
-        ),
-    )
 
     # this is the relation that is described on StatusType in the specification
     # TODO: validate that statustype is in fact a status type of self.zaaktype

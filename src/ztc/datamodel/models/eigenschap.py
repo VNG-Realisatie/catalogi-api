@@ -281,15 +281,6 @@ class Eigenschap(ETagMixin, GeldigheidMixin, DatumObjectMixin):
         help_text=_("De datum waarop het is ontstaan."),
     )
 
-    catalogus = models.ForeignKey(
-        "datamodel.Catalogus",
-        verbose_name=_("catalogus"),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        help_text=_("URL-referentie naar de CATALOGUS waartoe dit EIGENSCHAP behoort."),
-    )
-
     # shouldn't this be a M2M?
     statustype = models.ForeignKey(
         "datamodel.StatusType",

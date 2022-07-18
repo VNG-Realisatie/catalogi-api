@@ -52,7 +52,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(data[0]["url"], f"http://testserver{ziot4_url}")
 
     def test_get_detail(self):
-        ztiot = ZaakInformatieobjectTypeFactory.create(catalogus=self.catalogus)
+        ztiot = ZaakInformatieobjectTypeFactory.create()
         url = reverse(ztiot)
         zaaktype_url = reverse(ztiot.zaaktype)
         informatieobjecttype_url = reverse(ztiot.informatieobjecttype)
@@ -69,7 +69,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
             "volgnummer": ztiot.volgnummer,
             "richting": ztiot.richting,
             "statustype": None,
-            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "catalogus": f"http://testserver{reverse(ztiot.zaaktype.catalogus)}",
         }
         self.assertEqual(response.json(), expected)
 

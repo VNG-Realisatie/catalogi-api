@@ -93,6 +93,10 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         zaaktype_url = get_operation_url(
             "zaaktype_read", catalogus_uuid=zaaktype.catalogus.uuid, uuid=zaaktype.uuid
         )
+        catalogus_url = get_operation_url(
+            "catalogus_read",
+            uuid=zaaktype.catalogus.uuid,
+        )
         statustype_url = get_operation_url("statustype_read", uuid=statustype.uuid)
         detail_url = get_operation_url(
             "eigenschap_read",
@@ -122,5 +126,6 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                 "beginObject": None,
                 "eindeObject": None,
                 "zaaktypeIdentificatie": zaaktype.identificatie,
+                "catalogus": f"http://testserver{catalogus_url}",
             },
         )
