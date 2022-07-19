@@ -122,7 +122,6 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
                 "statustype": f"http://testserver{statustype_url}",
                 "beginGeldigheid": "2021-01-01",
                 "eindeGeldigheid": "2022-01-01",
-                "catalogus": None,
                 "beginObject": None,
                 "eindeObject": None,
                 "zaaktypeIdentificatie": zaaktype.identificatie,

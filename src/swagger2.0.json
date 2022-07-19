@@ -6656,6 +6656,12 @@
                     "maxLength": 20,
                     "minLength": 1
                 },
+                "catalogus": {
+                    "title": "Catalogus",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
                 "definitie": {
                     "title": "Definitie",
                     "description": "De beschrijving van de betekenis van deze EIGENSCHAP",
@@ -6944,7 +6950,7 @@
                     "title": "Omschrijving",
                     "description": "Omschrijving van de aard van resultaten van het RESULTAATTYPE.",
                     "type": "string",
-                    "maxLength": 20,
+                    "maxLength": 30,
                     "minLength": 1
                 },
                 "resultaattypeomschrijving": {
@@ -7251,6 +7257,12 @@
                     "type": "string",
                     "format": "uri"
                 },
+                "catalogus": {
+                    "title": "Catalogus",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
                 "zaaktypeIdentificatie": {
                     "title": "Zaaktype identificatie",
                     "type": "string",
@@ -7472,6 +7484,12 @@
                     "type": "string",
                     "readOnly": true
                 },
+                "catalogus": {
+                    "title": "Catalogus",
+                    "type": "string",
+                    "format": "uri",
+                    "readOnly": true
+                },
                 "informatieobjecttype": {
                     "title": "Informatie object type",
                     "description": "URL-referentie naar het INFORMATIEOBJECTTYPE.",
@@ -7669,7 +7687,8 @@
                     "title": "Identificatie",
                     "description": "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt.",
                     "type": "string",
-                    "maxLength": 50
+                    "maxLength": 50,
+                    "minLength": 1
                 },
                 "omschrijving": {
                     "title": "Omschrijving",

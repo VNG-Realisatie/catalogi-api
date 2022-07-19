@@ -25,7 +25,10 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
     )
 
     catalogus = serializers.HyperlinkedRelatedField(
-        source="zaaktype.catalogus", read_only=True, view_name="catalogus-detail"
+        source="zaaktype.catalogus",
+        read_only=True,
+        view_name="catalogus-detail",
+        lookup_field="uuid",
     )
 
     class Meta:
@@ -43,7 +46,6 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
-            "catalogus": {"lookup_field": "uuid"},
             "zaaktype": {"lookup_field": "uuid"},
             "informatieobjecttype": {"lookup_field": "uuid"},
             "statustype": {"lookup_field": "uuid"},
