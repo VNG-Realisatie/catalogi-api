@@ -1,9 +1,7 @@
-from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.serializers import ValidationError
 
-from ztc.datamodel.models import ZaakType
 from ztc.datamodel.utils import get_overlapping_zaaktypes
 
 from .utils.serializers import get_from_serializer_data_or_instance
@@ -32,9 +30,7 @@ class ZaaktypeGeldigheidValidator:
     def __call__(self, attrs):
         instance = self.serializer.instance
         catalogus = attrs.get("catalogus") or instance.catalogus
-        zaaktype_omschrijving = (
-            attrs.get("zaaktype_omschrijving") or instance.zaaktype_omschrijving
-        )
+        identificatie = attrs.get("identificatie") or instance.identificatie
         datum_begin_geldigheid = (
             attrs.get("datum_begin_geldigheid") or instance.datum_begin_geldigheid
         )
@@ -44,13 +40,12 @@ class ZaaktypeGeldigheidValidator:
 
         query = get_overlapping_zaaktypes(
             catalogus,
-            zaaktype_omschrijving,
+            identificatie,
             datum_begin_geldigheid,
             datum_einde_geldigheid,
             instance,
         )
 
-        # regel voor zaaktype omschrijving
         if query.exists():
             # are we patching eindeGeldigheid?
             changing_published_geldigheid = self.serializer.partial and list(attrs) == [

@@ -53,8 +53,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Optional applications.
     "django.contrib.admin",
-    # 'django.contrib.admindocs',
-    # 'django.contrib.humanize',
     # External applications.
     "axes",
     "django_filters",
@@ -62,11 +60,9 @@ INSTALLED_APPS = [
     "vng_api_common",  # before drf_yasg to override the management command
     "vng_api_common.authorizations",
     "vng_api_common.notifications",
-    # 'vng_api_common.audittrails',
     "solo",
     "drf_yasg",
     "rest_framework",
-    # 'rest_framework_filters',
     "django_markup",
     "django_better_admin_arrayfield.apps.DjangoBetterAdminArrayfieldConfig",
     # Project applications.
@@ -79,7 +75,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    # 'django.middleware.locale.LocaleMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -96,7 +91,6 @@ ROOT_URLCONF = "ztc.urls"
 RAW_TEMPLATE_LOADERS = (
     "django.template.loaders.filesystem.Loader",
     "django.template.loaders.app_directories.Loader",
-    # 'admin_tools.template_loaders.Loader',
 )
 
 TEMPLATES = [
@@ -168,7 +162,6 @@ STATICFILES_DIRS = (os.path.join(DJANGO_PROJECT_DIR, "static"),)
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -257,10 +250,12 @@ AUTHENTICATION_BACKENDS = [
 
 SESSION_COOKIE_NAME = "ztc_sessionid"
 
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
 #
 # Silenced checks
 #
-SILENCED_SYSTEM_CHECKS = ["rest_framework.W001"]
+SILENCED_SYSTEM_CHECKS = ["rest_framework.W001", "axes.W002", "axes.W003"]
 
 #
 # Custom settings

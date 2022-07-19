@@ -1113,6 +1113,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(
             concept=False,
             zaaktype_omschrijving="OZ-981",
+            identificatie="paspoort",
             datum_begin_geldigheid=date(2021, 1, 1),
             datum_einde_geldigheid=date(2022, 1, 1),
         )
@@ -1130,6 +1131,7 @@ class ZaakTypeAPITests(APITestCase):
                 concept=False,
                 catalogus=zaaktype.catalogus,
                 zaaktype_omschrijving="OZ-981",
+                identificatie="paspoort",
                 datum_begin_geldigheid=date(2020, 1, 1),
                 datum_einde_geldigheid=date(2020, 12, 31),
             )
@@ -1330,6 +1332,43 @@ class ZaakTypeCreateDuplicateTests(APITestCase):
         error = get_validation_errors(response, "beginGeldigheid")
         self.assertEqual(error["code"], "overlap")
 
+    def test_overlap_specified_dates_other_identificatie(self):
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=date(2020, 1, 1),
+            zaaktype_omschrijving="zaaktype",
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 2,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2019-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {"naam": "ref"},
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+            "verantwoordelijke": "Organisatie eenheid X",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
     def test_overlap_open_end_date(self):
         ZaakTypeFactory.create(
             catalogus=self.catalogus,
@@ -1369,6 +1408,43 @@ class ZaakTypeCreateDuplicateTests(APITestCase):
 
         error = get_validation_errors(response, "beginGeldigheid")
         self.assertEqual(error["code"], "overlap")
+
+    def test_overlap_open_end_date_other_identificatie(self):
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=None,
+            zaaktype_omschrijving="zaaktype",
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 2,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2019-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {"naam": "ref"},
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+            "verantwoordelijke": "Organisatie eenheid X",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_no_overlap(self):
         ZaakTypeFactory.create(

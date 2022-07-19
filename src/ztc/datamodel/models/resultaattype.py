@@ -4,7 +4,8 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 import requests
-from relativedeltafield import RelativeDeltaField, parse_relativedelta
+from relativedeltafield import RelativeDeltaField
+from relativedeltafield.utils import parse_relativedelta
 from vng_api_common.caching import ETagMixin
 from vng_api_common.constants import (
     Archiefnominatie,
@@ -60,7 +61,7 @@ class ResultaatType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
     # core data - used by ZRC to calculate archival-related dates
     omschrijving = models.CharField(
         _("omschrijving"),
-        max_length=20,
+        max_length=30,
         help_text=_("Omschrijving van de aard van resultaten van het RESULTAATTYPE."),
     )
     resultaattypeomschrijving = models.URLField(

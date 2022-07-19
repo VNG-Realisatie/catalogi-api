@@ -40,13 +40,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.6'
+          python-version: '3.9'
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
-
-      # - name: Install system packages
-      #   run: sudo apt-get install libgdal-dev gdal-bin
 
       - name: Install dependencies
         run: pip install -r requirements/jenkins.txt codecov

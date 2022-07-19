@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import requests
 from dateutil.relativedelta import relativedelta
-from relativedeltafield import format_relativedelta
+from relativedeltafield.utils import format_relativedelta
 from rest_framework.exceptions import ValidationError
 from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,

@@ -1,5 +1,5 @@
 # Stage 1 - Compile needed python dependencies
-FROM python:3.6-alpine AS build
+FROM python:3.9-alpine AS build
 RUN apk --no-cache add \
     gcc \
     musl-dev \
@@ -29,10 +29,10 @@ FROM mhart/alpine-node:10 AS frontend-build
 
 WORKDIR /app
 
-COPY ./*.json /app/
+COPY ./*.json  /app/
 RUN npm install
 
-COPY ./Gulpfile.js /app/
+COPY ./*.js ./.babelrc /app/
 COPY ./build /app/build/
 
 COPY src/ztc/sass/ /app/src/ztc/sass/
@@ -45,7 +45,7 @@ FROM build AS jenkins
 RUN apk --no-cache add \
     postgresql-client
 
-COPY --from=build /usr/local/lib/python3.6 /usr/local/lib/python3.6
+COPY --from=build /usr/local/lib/python3.9 /usr/local/lib/python3.9
 COPY --from=build /app/requirements /app/requirements
 
 RUN pip install -r requirements/jenkins.txt --exists-action=s
@@ -55,8 +55,7 @@ COPY ./setup.cfg /app/setup.cfg
 COPY ./bin/runtests.sh /runtests.sh
 
 # Stage 3.3 - Copy source code
-COPY --from=frontend-build /app/src/ztc/static/fonts /app/src/ztc/static/fonts
-COPY --from=frontend-build /app/src/ztc/static/css /app/src/ztc/static/css
+COPY --from=frontend-build /app/src/ztc/static/bundles /app/src/ztc/static/bundles
 COPY ./src /app/src
 ARG COMMIT_HASH
 ENV GIT_SHA=${COMMIT_HASH}
@@ -66,7 +65,7 @@ CMD ["/runtests.sh"]
 
 
 # Stage 4 - Build docker image suitable for execution and deployment
-FROM python:3.6-alpine AS production
+FROM python:3.9-alpine AS production
 RUN apk --no-cache add \
     ca-certificates \
     mailcap \
@@ -80,7 +79,7 @@ RUN apk --no-cache add \
     openjpeg \
     zlib
 
-COPY --from=build /usr/local/lib/python3.6 /usr/local/lib/python3.6
+COPY --from=build /usr/local/lib/python3.9 /usr/local/lib/python3.9
 COPY --from=build /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 
 # Stage 4.2 - Copy source code
@@ -88,8 +87,7 @@ WORKDIR /app
 COPY ./bin/docker_start.sh /start.sh
 RUN mkdir /app/log
 
-COPY --from=frontend-build /app/src/ztc/static/fonts /app/src/ztc/static/fonts
-COPY --from=frontend-build /app/src/ztc/static/css /app/src/ztc/static/css
+COPY --from=frontend-build /app/src/ztc/static/bundles /app/src/ztc/static/bundles
 COPY ./src /app/src
 ARG COMMIT_HASH
 ENV GIT_SHA=${COMMIT_HASH}

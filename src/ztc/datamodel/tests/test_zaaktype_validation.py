@@ -90,7 +90,7 @@ class ZaaktypeValidationTests(TestCase):
 
         error = form.errors.as_data()["__all__"][0]
         self.assertEqual(
-            error.message, "Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS."
+            error.message, "Zaaktype-identificatie moet uniek zijn binnen de CATALOGUS."
         )
 
     def test_same_id_no_end_date(self):
@@ -131,5 +131,5 @@ class ZaaktypeValidationTests(TestCase):
 
         error = form.errors.as_data()["__all__"][0]
         self.assertEqual(
-            error.message, "Zaaktype-omschrijving moet uniek zijn binnen de CATALOGUS."
+            error.message, "Zaaktype-identificatie moet uniek zijn binnen de CATALOGUS."
         )
