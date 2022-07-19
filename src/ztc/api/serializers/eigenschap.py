@@ -6,7 +6,6 @@ from vng_api_common.serializers import add_choice_values_help_text
 from ...datamodel.choices import FormaatChoices
 from ...datamodel.models import Eigenschap, EigenschapSpecificatie
 from ..validators import ZaakTypeConceptValidator
-from . import CatalogusSerializer
 
 # class EigenschapReferentieSerializer(SourceMappingSerializerMixin, ModelSerializer):
 #     class Meta:
@@ -51,7 +50,9 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
         source="zaaktype", read_only=True, slug_field="identificatie"
     )
 
-    catalogus = serializers.SerializerMethodField()
+    catalogus = serializers.HyperlinkedRelatedField(
+        source="zaaktype.catalogus", read_only=True
+    )
 
     class Meta:
         model = Eigenschap
@@ -102,11 +103,3 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
             specificatie = instance.specificatie_van_eigenschap
             EigenschapSpecificatieSerializer().update(specificatie, specificatie_data)
         return super().update(instance, validated_data)
-
-    def get_catalogus(self, obj):
-        serializer = CatalogusSerializer(
-            obj.zaaktype.catalogus,
-            many=False,
-            context={"request": self.context["request"]},
-        ).data
-        return serializer["url"]

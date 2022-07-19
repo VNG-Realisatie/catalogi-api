@@ -1,12 +1,10 @@
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
-from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
 from ...datamodel.models import CheckListItem, StatusType
 from ..validators import ZaakTypeConceptValidator
-from . import CatalogusSerializer
 
 
 class CheckListItemSerializer(ModelSerializer):
@@ -20,18 +18,10 @@ class CheckListItemSerializer(ModelSerializer):
         )
 
 
-#
-# class HistoryURLField(SerializerMethodField):
-#     def __init__(self, method_name=None, **kwargs):
-#         super().__init__(method_name)
-#
-#     def to_representation(self, value):
-#         method = getattr(self.parent, self.method_name)
-#         return method(value)
-
-
 class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
-    catalogus = serializers.SerializerMethodField()
+    catalogus = serializers.HyperlinkedRelatedField(
+        source="zaaktype.catalogus", read_only=True
+    )
 
     is_eindstatus = serializers.BooleanField(
         read_only=True,
@@ -88,11 +78,3 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             },
         }
         validators = [ZaakTypeConceptValidator()]
-
-    def get_catalogus(self, obj):
-        serializer = CatalogusSerializer(
-            obj.zaaktype.catalogus,
-            many=False,
-            context={"request": self.context["request"]},
-        ).data
-        return serializer["url"]

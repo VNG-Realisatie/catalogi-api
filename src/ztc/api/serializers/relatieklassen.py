@@ -7,7 +7,6 @@ from vng_api_common.serializers import add_choice_values_help_text
 from ...datamodel.choices import RichtingChoices
 from ...datamodel.models import ZaakInformatieobjectType
 from ..validators import ZaakInformatieObjectTypeCatalogusValidator
-from . import CatalogusSerializer
 
 
 class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,7 +24,9 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         source="informatieobjecttype", read_only=True, slug_field="omschrijving"
     )
 
-    catalogus = serializers.SerializerMethodField()
+    catalogus = serializers.HyperlinkedRelatedField(
+        source="zaaktype.catalogus", read_only=True
+    )
 
     class Meta:
         model = ZaakInformatieobjectType
@@ -83,14 +84,6 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
                 raise serializers.ValidationError(message, code="non-concept-relation")
 
         return attrs
-
-    def get_catalogus(self, obj):
-        serializer = CatalogusSerializer(
-            obj.zaaktype.catalogus,
-            many=False,
-            context={"request": self.context["request"]},
-        ).data
-        return serializer["url"]
 
 
 # class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
