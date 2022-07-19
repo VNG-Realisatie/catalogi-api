@@ -2,6 +2,39 @@
 Wijzigingen
 ===========
 
+1.2.0-rc2 (2022-06-22)
+==================
+
+* Update python requirements (e.g django upgraded to 3.2)
+* Replace Gulp with Webpack
+* Change ``ResultaatType.omschrijving`` max length from 20 to 30
+* Change unique constraint of ``ZaakType.omschrijving`` & ``ZaakType.catalogus``
+  to ``ZaakType.identificatie`` & ``ZaakType.catalogus``
+* Added ``Eigenschap.catalogus``
+* Added ``ZaakTypeInformatieObjectType.catalogus``
+* Added ``StatusType.catalogus``
+
+1.2.0-rc1 (2022-07-06)
+==================
+
+* Implemented history model, see the `documentation`_ for more information
+* Added ``resulttaattypenOmschrijving`` and ``vastgelegdIn`` fields to ``BesluitType``
+* Added ``BesluitType.resultaattypen``
+* Added ``Catalogus.naam``
+* Added ``Eigenschap.zaaktype``, ``Eigenschap.statustype`` and ``Eigenschap.statustype``
+* Added ``InformatieObjectType.zaaktype`` and ``InformatieObjectType.besluittypen``
+* Added the following fields to ``ResultaatType``:
+    * ``catalogus``
+    * ``besluittypen``
+    * ``informatieobjecttypen``
+* Added ``RolType.catalogus``
+* Added ``StatusType.doorlooptijd`` and ``StatusType.eigenschappen``
+* Added the following fields to ``ZaakType``:
+    * ``verantwoordelijke``
+    * ``zaakobjecttypen``
+    * ``broncatalogus``
+    * ``bronzaaktype``
+
 1.1.1 (2022-06-22)
 ==================
 
@@ -517,3 +550,5 @@ Aantal design decisions & reorganisatie doorgevoerd
 * Jenkins containers 100% stateless gemaakt
 * Gebruik van UUID in API urls in plaats van database primary keys
 * Update tooling
+
+.. _documentation: https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#historiemodel-catalogi-api
