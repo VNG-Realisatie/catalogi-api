@@ -20,7 +20,7 @@ class CheckListItemSerializer(ModelSerializer):
 
 class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
     catalogus = serializers.HyperlinkedRelatedField(
-        source="zaaktype.catalogus", read_only=True
+        source="zaaktype.catalogus", read_only=True, view_name="catalogus-detail"
     )
 
     is_eindstatus = serializers.BooleanField(
@@ -63,6 +63,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
+            "catalogus": {"lookup_field": "uuid"},
             "omschrijving": {"source": "statustype_omschrijving"},
             "omschrijving_generiek": {"source": "statustype_omschrijving_generiek"},
             "volgnummer": {"source": "statustypevolgnummer"},

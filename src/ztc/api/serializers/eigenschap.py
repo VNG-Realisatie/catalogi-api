@@ -51,7 +51,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     catalogus = serializers.HyperlinkedRelatedField(
-        source="zaaktype.catalogus", read_only=True
+        source="zaaktype.catalogus", read_only=True, view_name="catalogus-detail"
     )
 
     class Meta:
@@ -73,6 +73,7 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
+            "catalogus": {"lookup_field": "uuid"},
             "naam": {"source": "eigenschapnaam"},
             "zaaktype": {"lookup_field": "uuid"},
             "statustype": {"lookup_field": "uuid"},
