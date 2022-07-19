@@ -79,6 +79,7 @@ class EigenschapAPITests(APITestCase):
             "toelichting": "",
             "zaaktype": "http://testserver{}".format(zaaktype_url),
             "statustype": "http://testserver{}".format(statustype_url),
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
             "beginGeldigheid": "2021-01-01",
             "eindeGeldigheid": "2021-02-01",
             "beginObject": None,

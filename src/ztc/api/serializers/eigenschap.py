@@ -42,7 +42,6 @@ class EigenschapSpecificatieSerializer(serializers.ModelSerializer):
 
 
 class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
-
     specificatie = EigenschapSpecificatieSerializer(
         source="specificatie_van_eigenschap"
     )
@@ -50,11 +49,19 @@ class EigenschapSerializer(serializers.HyperlinkedModelSerializer):
         source="zaaktype", read_only=True, slug_field="identificatie"
     )
 
+    catalogus = serializers.HyperlinkedRelatedField(
+        source="zaaktype.catalogus",
+        read_only=True,
+        view_name="catalogus-detail",
+        lookup_field="uuid",
+    )
+
     class Meta:
         model = Eigenschap
         fields = (
             "url",
             "naam",
+            "catalogus",
             "definitie",
             "specificatie",
             "toelichting",

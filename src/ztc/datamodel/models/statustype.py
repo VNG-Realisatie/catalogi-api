@@ -81,7 +81,6 @@ class StatusType(ETagMixin, GeldigheidMixin, DatumObjectMixin):
             "URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden."
         ),
     )
-
     zaakobjecttype = models.ForeignKey(
         "ZaakObjectType",
         blank=True,

@@ -19,6 +19,13 @@ class CheckListItemSerializer(ModelSerializer):
 
 
 class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
+    catalogus = serializers.HyperlinkedRelatedField(
+        source="zaaktype.catalogus",
+        read_only=True,
+        view_name="catalogus-detail",
+        lookup_field="uuid",
+    )
+
     is_eindstatus = serializers.BooleanField(
         read_only=True,
         help_text=_(
@@ -43,6 +50,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek",
             "statustekst",
             "zaaktype",
+            "catalogus",
             "zaaktype_identificatie",
             "volgnummer",
             "is_eindstatus",
