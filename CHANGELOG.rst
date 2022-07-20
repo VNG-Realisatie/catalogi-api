@@ -35,7 +35,7 @@ Wijzigingen
     * ``broncatalogus``
     * ``bronzaaktype``
 * Documentation updated: Clarification of publish operation, beginGeldigheid/eindGeldigheid and beginObject/eindObject.
-* Business rules [ZTC-010](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#ztc-010) and [ZTC-011](https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#ztc-011) updated to allow better version management
+* Business rules `ZTC-010`_ and `ZTC-011`_ updated to allow better version management
 
 1.1.1 (2022-06-22)
 ==================
@@ -554,3 +554,6 @@ Aantal design decisions & reorganisatie doorgevoerd
 * Update tooling
 
 .. _documentation: https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#historiemodel-catalogi-api
+.. _ZTC-010: https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#ztc-010
+.. _ZTC-011: https://vng-realisatie.github.io/gemma-zaken/standaard/catalogi/#ztc-011
+
