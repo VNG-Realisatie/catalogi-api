@@ -6,7 +6,12 @@ from django.urls import reverse as django_reverse
 
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
-from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.tests import (
+    JWTAuthMixin,
+    get_operation_url,
+    get_validation_errors,
+    reverse,
+)
 from zds_client.tests.mocks import mock_client
 
 from ztc.api.validators import (
@@ -30,7 +35,11 @@ from ztc.datamodel.tests.factories import (
 from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 
 from ...datamodel.tests.factories import RolTypeFactory
-from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
+from ..scopes import (
+    SCOPE_CATALOGI_FORCED_WRITE,
+    SCOPE_CATALOGI_READ,
+    SCOPE_CATALOGI_WRITE,
+)
 from .base import APITestCase
 
 
@@ -1794,6 +1803,71 @@ class ZaaktypeValidationTests(APITestCase):
         error = get_validation_errors(response, "deelzaaktypen")
 
         self.assertEqual(error["code"], "relations-incorrect-catalogus")
+
+
+class ZaakTypeScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_FORCED_WRITE]
+
+    def test_update_zaaktype_not_concept_with_forced_scope(self):
+
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+
+        data = {
+            "identificatie": 0,
+            "doel": "some test",
+            "aanleiding": "aangepast",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+            "verantwoordelijke": "Organisatie eenheid X",
+        }
+
+        response = self.client.put(zaaktype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        self.assertEqual(data["identificatie"], "0")
+        self.assertEqual(data["verantwoordelijke"], "Organisatie eenheid X")
+
+        zaaktype.refresh_from_db()
+        self.assertEqual(zaaktype.identificatie, "0")
+
+    def test_partial_update_non_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+
+        response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["aanleiding"], "aangepast")
+
+        zaaktype.refresh_from_db()
+        self.assertEqual(zaaktype.aanleiding, "aangepast")
 
 
 class ZaakTypeGeldigheidTests(APITestCase):

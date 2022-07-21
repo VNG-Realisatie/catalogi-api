@@ -5,14 +5,14 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from drf_yasg.utils import no_body, swagger_auto_schema
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from vng_api_common.inspectors.view import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
-from ..scopes import SCOPE_CATALOGI_FORCED_DELETE
+from ..scopes import SCOPE_CATALOGI_FORCED_DELETE, SCOPE_CATALOGI_FORCED_WRITE
 from ..utils.viewsets import set_geldigheid
 
 
@@ -93,6 +93,20 @@ class ConceptMixin(ConceptPublishMixin, ConceptDestroyMixin, ConceptFilterMixin)
     """mixin for resources which have 'concept' field"""
 
     pass
+
+
+class ForcedCreateUpdateMixin(viewsets.GenericViewSet):
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        allow_action_with_force = False
+        if self.action in ["update", "partial_update", "create"]:
+            if self.request.jwt_auth.has_auth(
+                scopes=SCOPE_CATALOGI_FORCED_WRITE,
+            ):
+                allow_action_with_force = True
+
+        context.update({"allow_action_with_force": allow_action_with_force})
+        return context
 
 
 class ZaakTypeConceptDestroyMixin(ConceptDestroyMixin):

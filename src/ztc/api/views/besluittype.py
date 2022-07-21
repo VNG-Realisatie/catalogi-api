@@ -8,11 +8,17 @@ from ..filters import BesluitTypeFilter
 from ..kanalen import KANAAL_BESLUITTYPEN
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
+    SCOPE_CATALOGI_FORCED_WRITE,
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import BesluitTypeSerializer
-from .mixins import ConceptMixin, M2MConceptDestroyMixin, swagger_publish_schema
+from .mixins import (
+    ConceptMixin,
+    ForcedCreateUpdateMixin,
+    M2MConceptDestroyMixin,
+    swagger_publish_schema,
+)
 
 
 @conditional_retrieve()
@@ -21,6 +27,7 @@ class BesluitTypeViewSet(
     ConceptMixin,
     M2MConceptDestroyMixin,
     NotificationViewSetMixin,
+    ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
     """
@@ -78,8 +85,8 @@ class BesluitTypeViewSet(
         "list": SCOPE_CATALOGI_READ,
         "retrieve": SCOPE_CATALOGI_READ,
         "create": SCOPE_CATALOGI_WRITE,
-        "update": SCOPE_CATALOGI_WRITE,
-        "partial_update": SCOPE_CATALOGI_WRITE,
+        "update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
+        "partial_update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
         "publish": SCOPE_CATALOGI_WRITE,
     }

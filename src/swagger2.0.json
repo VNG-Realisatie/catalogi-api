@@ -183,22 +183,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/BesluitType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/BesluitType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -403,22 +392,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/BesluitType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/BesluitType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -465,7 +443,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -484,22 +462,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/BesluitType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/BesluitType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -546,7 +513,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -1301,22 +1268,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Eigenschap"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/Eigenschap"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -1367,7 +1323,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -1521,22 +1477,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Eigenschap"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Eigenschap"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -1583,7 +1528,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -1602,22 +1547,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Eigenschap"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Eigenschap"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -1664,7 +1598,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -1872,22 +1806,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/InformatieObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/InformatieObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -2092,22 +2015,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/InformatieObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/InformatieObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -2154,7 +2066,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -2173,22 +2085,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/InformatieObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/InformatieObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -2235,7 +2136,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -2638,22 +2539,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ResultaatType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/ResultaatType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -2704,7 +2594,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -2858,22 +2748,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ResultaatType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ResultaatType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -2920,7 +2799,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -2939,22 +2818,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ResultaatType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ResultaatType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -3001,7 +2869,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -3226,22 +3094,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/RolType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/RolType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -3292,7 +3149,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -3446,22 +3303,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/RolType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/RolType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -3508,7 +3354,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -3527,22 +3373,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/RolType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/RolType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -3589,7 +3424,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -3796,22 +3631,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/StatusType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/StatusType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -3862,7 +3686,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -4016,22 +3840,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/StatusType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/StatusType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -4078,7 +3891,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -4097,22 +3910,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/StatusType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/StatusType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -4159,7 +3961,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -4404,22 +4206,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -4470,7 +4261,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -4624,22 +4415,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -4686,7 +4466,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -4705,22 +4485,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -4767,7 +4536,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -4981,22 +4750,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakTypeInformatieObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakTypeInformatieObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -5047,7 +4805,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -5201,22 +4959,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakTypeInformatieObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakTypeInformatieObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -5263,7 +5010,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -5282,22 +5029,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakTypeInformatieObjectType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakTypeInformatieObjectType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -5344,7 +5080,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -5559,22 +5295,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakType"
-                        }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -5779,22 +5504,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -5841,7 +5555,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]
@@ -5860,22 +5574,11 @@
                         "enum": [
                             "application/json"
                         ]
-                    },
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ZaakType"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ZaakType"
-                        },
                         "headers": {
                             "API-version": {
                                 "schema": {
@@ -5922,7 +5625,7 @@
                 "security": [
                     {
                         "JWT-Claims": [
-                            "catalogi.schrijven"
+                            "(catalogi.schrijven | catalogi.geforceerd-schrijven)"
                         ]
                     }
                 ]

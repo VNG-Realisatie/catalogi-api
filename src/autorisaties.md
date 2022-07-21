@@ -6,6 +6,15 @@ Scopes worden typisch per component gedefinieerd en geven aan welke rechten er z
 Zie de repository van de [Autorisaties API](https://github.com/VNG-Realisatie/autorisaties-api)
 
 
+### catalogi.geforceerd-schrijven
+
+**Scope**
+`catalogi.geforceerd-schrijven`
+
+
+**Laat toe om**:
+* Gepubliceerde types geforceerd te schrijven. Alle resources zijn beschikbaar.
+
 ### catalogi.geforceerd-verwijderen
 
 **Scope**
@@ -35,7 +44,6 @@ Zie de repository van de [Autorisaties API](https://github.com/VNG-Realisatie/au
 
 
 **Laat toe om**:
-
 * schrijfoperaties uit te voeren in de API. Alle resources zijn beschikbaar.
 
 

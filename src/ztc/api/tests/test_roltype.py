@@ -3,13 +3,22 @@ from datetime import date
 
 from rest_framework import status
 from vng_api_common.constants import RolOmschrijving
-from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.tests import (
+    JWTAuthMixin,
+    get_operation_url,
+    get_validation_errors,
+    reverse,
+)
 
 from ztc.api.validators import ZaakTypeConceptValidator
 
 from ...datamodel.models import RolType
 from ...datamodel.tests.factories import RolTypeFactory, ZaakTypeFactory
-from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
+from ..scopes import (
+    SCOPE_CATALOGI_FORCED_WRITE,
+    SCOPE_CATALOGI_READ,
+    SCOPE_CATALOGI_WRITE,
+)
 from .base import APITestCase
 
 
@@ -415,3 +424,59 @@ class RolTypePaginationTestCase(APITestCase):
         self.assertEqual(response_data["count"], 2)
         self.assertIsNone(response_data["previous"])
         self.assertIsNone(response_data["next"])
+
+
+class RolTypeScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_FORCED_WRITE]
+
+    def test_create_roltype_non_concept_force_scope(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
+        rol_type_list_url = reverse("roltype-list")
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "Vergunningaanvrager",
+            "omschrijvingGeneriek": RolOmschrijving.initiator,
+        }
+
+        response = self.client.post(rol_type_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        roltype = RolType.objects.get()
+        self.assertEqual(roltype.omschrijving, "Vergunningaanvrager")
+        self.assertEqual(roltype.zaaktype, zaaktype)
+
+    def test_update_roltype_non_concept_force_scope(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype_url = reverse(zaaktype)
+        roltype = RolTypeFactory.create(zaaktype=zaaktype)
+        roltype_url = reverse(roltype)
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "omschrijving": "aangepast",
+            "omschrijvingGeneriek": RolOmschrijving.initiator,
+        }
+
+        response = self.client.put(roltype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+        roltype.refresh_from_db()
+        self.assertEqual(roltype.omschrijving, "aangepast")
+
+    def test_partial_update_roltype_non_concept_zaaktype(self):
+        zaaktype = ZaakTypeFactory.create(concept=False)
+        roltype = RolTypeFactory.create(zaaktype=zaaktype)
+        roltype_url = reverse(roltype)
+
+        response = self.client.patch(roltype_url, {"omschrijving": "aangepast"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "aangepast")
+
+        roltype.refresh_from_db()
+        self.assertEqual(roltype.omschrijving, "aangepast")

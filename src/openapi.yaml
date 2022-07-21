@@ -172,8 +172,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/BesluitType'
       responses:
         '201':
           description: Created
@@ -188,10 +186,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BesluitType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -341,8 +335,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/BesluitType'
       responses:
         '200':
           description: OK
@@ -352,10 +344,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BesluitType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -380,7 +368,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: besluittype_partial_update
       summary: Werk een BESLUITTYPE deels bij.
@@ -395,8 +383,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/BesluitType'
       responses:
         '200':
           description: OK
@@ -406,10 +392,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BesluitType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -434,7 +416,7 @@ paths:
       - besluittypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: besluittype_delete
       summary: Verwijder een BESLUITTYPE.
@@ -1033,8 +1015,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Eigenschap'
       responses:
         '201':
           description: Created
@@ -1049,10 +1029,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Eigenschap'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1075,7 +1051,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     parameters: []
   /eigenschappen/{uuid}:
     get:
@@ -1201,8 +1177,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Eigenschap'
       responses:
         '200':
           description: OK
@@ -1212,10 +1186,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Eigenschap'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1240,7 +1210,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: eigenschap_partial_update
       summary: Werk een EIGENSCHAP deels bij.
@@ -1256,8 +1226,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/Eigenschap'
       responses:
         '200':
           description: OK
@@ -1267,10 +1235,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Eigenschap'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1295,7 +1259,7 @@ paths:
       - eigenschappen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: eigenschap_delete
       summary: Verwijder een EIGENSCHAP.
@@ -1456,8 +1420,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/InformatieObjectType'
       responses:
         '201':
           description: Created
@@ -1472,10 +1434,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InformatieObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1625,8 +1583,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/InformatieObjectType'
       responses:
         '200':
           description: OK
@@ -1636,10 +1592,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InformatieObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1664,7 +1616,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: informatieobjecttype_partial_update
       summary: Werk een INFORMATIEOBJECTTYPE deels bij.
@@ -1681,8 +1633,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/InformatieObjectType'
       responses:
         '200':
           description: OK
@@ -1692,10 +1642,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InformatieObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -1720,7 +1666,7 @@ paths:
       - informatieobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: informatieobjecttype_delete
       summary: Verwijder een INFORMATIEOBJECTTYPE.
@@ -2051,8 +1997,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ResultaatType'
       responses:
         '201':
           description: Created
@@ -2067,10 +2011,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResultaatType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2093,7 +2033,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     parameters: []
   /resultaattypen/{uuid}:
     get:
@@ -2220,8 +2160,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ResultaatType'
       responses:
         '200':
           description: OK
@@ -2231,10 +2169,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResultaatType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2259,7 +2193,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: resultaattype_partial_update
       summary: Werk een RESULTAATTYPE deels bij.
@@ -2275,8 +2209,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ResultaatType'
       responses:
         '200':
           description: OK
@@ -2286,10 +2218,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResultaatType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2314,7 +2242,7 @@ paths:
       - resultaattypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: resultaattype_delete
       summary: Verwijder een RESULTAATTYPE.
@@ -2493,8 +2421,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/RolType'
       responses:
         '201':
           description: Created
@@ -2509,10 +2435,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RolType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2535,7 +2457,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     parameters: []
   /roltypen/{uuid}:
     get:
@@ -2661,8 +2583,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/RolType'
       responses:
         '200':
           description: OK
@@ -2672,10 +2592,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RolType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2700,7 +2616,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: roltype_partial_update
       summary: Werk een ROLTYPE deels bij.
@@ -2716,8 +2632,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/RolType'
       responses:
         '200':
           description: OK
@@ -2727,10 +2641,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RolType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2755,7 +2665,7 @@ paths:
       - roltypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: roltype_delete
       summary: Verwijder een ROLTYPE.
@@ -2918,8 +2828,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/StatusType'
       responses:
         '201':
           description: Created
@@ -2934,10 +2842,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -2960,7 +2864,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     parameters: []
   /statustypen/{uuid}:
     get:
@@ -3086,8 +2990,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/StatusType'
       responses:
         '200':
           description: OK
@@ -3097,10 +2999,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3125,7 +3023,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: statustype_partial_update
       summary: Werk een STATUSTYPE deels bij.
@@ -3141,8 +3039,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/StatusType'
       responses:
         '200':
           description: OK
@@ -3152,10 +3048,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3180,7 +3072,7 @@ paths:
       - statustypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: statustype_delete
       summary: Verwijder een STATUSTYPE.
@@ -3367,8 +3259,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakObjectType'
       responses:
         '201':
           description: Created
@@ -3383,10 +3273,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3409,7 +3295,7 @@ paths:
       - zaakobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     parameters: []
   /zaakobjecttypen/{uuid}:
     get:
@@ -3533,8 +3419,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakObjectType'
       responses:
         '200':
           description: OK
@@ -3544,10 +3428,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3572,7 +3452,7 @@ paths:
       - zaakobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: zaakobjecttype_partial_update
       summary: Werk een ZAAKOBJECTTYPE deels bij.
@@ -3586,8 +3466,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakObjectType'
       responses:
         '200':
           description: OK
@@ -3597,10 +3475,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3625,7 +3499,7 @@ paths:
       - zaakobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: zaakobjecttype_delete
       summary: Verwijder een ZAAKOBJECTTYPE.
@@ -3796,8 +3670,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakTypeInformatieObjectType'
       responses:
         '201':
           description: Created
@@ -3812,10 +3684,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -3838,7 +3706,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     parameters: []
   /zaaktype-informatieobjecttypen/{uuid}:
     get:
@@ -3970,8 +3838,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakTypeInformatieObjectType'
       responses:
         '200':
           description: OK
@@ -3981,10 +3847,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -4009,7 +3871,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: zaakinformatieobjecttype_partial_update
       summary: Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij.
@@ -4031,8 +3893,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakTypeInformatieObjectType'
       responses:
         '200':
           description: OK
@@ -4042,10 +3902,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -4070,7 +3926,7 @@ paths:
       - zaaktype-informatieobjecttypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: zaakinformatieobjecttype_delete
       summary: Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie.
@@ -4247,8 +4103,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakType'
       responses:
         '201':
           description: Created
@@ -4263,10 +4117,6 @@ paths:
                 type: string
                 format: uri
               description: URL waar de resource leeft.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -4421,8 +4271,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakType'
       responses:
         '200':
           description: OK
@@ -4432,10 +4280,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -4460,7 +4304,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     patch:
       operationId: zaaktype_partial_update
       summary: Werk een ZAAKTYPE deels bij.
@@ -4480,8 +4324,6 @@ paths:
           type: string
           enum:
           - application/json
-      requestBody:
-        $ref: '#/components/requestBodies/ZaakType'
       responses:
         '200':
           description: OK
@@ -4491,10 +4333,6 @@ paths:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ZaakType'
         '400':
           $ref: '#/components/responses/400'
         '401':
@@ -4519,7 +4357,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - catalogi.schrijven
+        - (catalogi.schrijven | catalogi.geforceerd-schrijven)
     delete:
       operationId: zaaktype_delete
       summary: Verwijder een ZAAKTYPE.
@@ -4911,61 +4749,6 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/Fout'
-  requestBodies:
-    Eigenschap:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Eigenschap'
-      required: true
-    ZaakType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ZaakType'
-      required: true
-    RolType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RolType'
-      required: true
-    StatusType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/StatusType'
-      required: true
-    BesluitType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BesluitType'
-      required: true
-    InformatieObjectType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/InformatieObjectType'
-      required: true
-    ResultaatType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ResultaatType'
-      required: true
-    ZaakObjectType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ZaakObjectType'
-      required: true
-    ZaakTypeInformatieObjectType:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
-      required: true
   securitySchemes:
     JWT-Claims:
       type: http

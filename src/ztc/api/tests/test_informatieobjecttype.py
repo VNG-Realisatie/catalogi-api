@@ -5,7 +5,12 @@ from django.urls import reverse
 
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
-from vng_api_common.tests import get_operation_url, get_validation_errors, reverse
+from vng_api_common.tests import (
+    JWTAuthMixin,
+    get_operation_url,
+    get_validation_errors,
+    reverse,
+)
 
 from ...datamodel.models import InformatieObjectType
 from ...datamodel.tests.factories import (
@@ -15,7 +20,11 @@ from ...datamodel.tests.factories import (
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
 )
-from ..scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
+from ..scopes import (
+    SCOPE_CATALOGI_FORCED_WRITE,
+    SCOPE_CATALOGI_READ,
+    SCOPE_CATALOGI_WRITE,
+)
 from ..validators import ConceptUpdateValidator, M2MConceptUpdateValidator
 from .base import APITestCase
 
@@ -785,3 +794,28 @@ class InformatieObjectTypePaginationTestCase(APITestCase):
         self.assertEqual(response_data["count"], 2)
         self.assertIsNone(response_data["previous"])
         self.assertIsNone(response_data["next"])
+
+
+class InformatieObjectTypeScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_CATALOGI_FORCED_WRITE]
+
+    def test_update_informatieobjecttype_not_concept_with_forced_scope(self):
+
+        informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype_url = reverse(informatieobjecttype)
+
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "omschrijving": "test",
+            "vertrouwelijkheidaanduiding": "openbaar",
+            "beginGeldigheid": "2019-01-01",
+        }
+
+        response = self.client.put(informatieobjecttype_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["omschrijving"], "test")
+
+        informatieobjecttype.refresh_from_db()
+        self.assertEqual(informatieobjecttype.omschrijving, "test")
