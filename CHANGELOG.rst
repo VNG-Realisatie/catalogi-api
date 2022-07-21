@@ -2,7 +2,12 @@
 Wijzigingen
 ===========
 
-1.2.0-rc2 (2022-06-22)
+1.2.0-rc3 (2022-07-21)
+==================
+
+* Added "geforceerd-schrijven" scope to all resources.
+
+1.2.0-rc2 (2022-07-19)
 ==================
 
 * Update python requirements (e.g django upgraded to 3.2)
