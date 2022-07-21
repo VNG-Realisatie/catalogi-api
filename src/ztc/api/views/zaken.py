@@ -113,19 +113,6 @@ class ZaakTypeViewSet(
     notifications_kanaal = KANAAL_ZAAKTYPEN
     relation_fields = ["zaaktypenrelaties"]
 
-    # def get_serializer_context(self):
-    #     context = super().get_serializer_context()
-    #     if self.action in ["update", "partial_update"]:
-    #         allow_update = False
-    #         instance = self.get_object()
-    #         if self.request.jwt_auth.has_auth(
-    #             scopes=SCOPE_CATALOGI_FORCED_WRITE,
-    #         ) or instance.concept == True:
-    #             allow_update = True
-    #         context.update({"allow_update": allow_update})
-    #
-    #     return context
-
     @swagger_auto_schema(
         request_body=no_body,
         responses={

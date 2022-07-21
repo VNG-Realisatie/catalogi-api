@@ -57,13 +57,14 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         self.fields["richting"].help_text += f"\n\n{value_display_mapping}"
 
     def validate(self, attrs):
-        super().validate(attrs)
+        validated_data = super().validate(attrs)
         allow_action_with_force = self.context.get("allow_action_with_force", False)
 
         if self.instance:
-            zaaktype = attrs.get("zaaktype") or self.instance.zaaktype
+            zaaktype = validated_data.get("zaaktype") or self.instance.zaaktype
             informatieobjecttype = (
-                attrs.get("informatieobjecttype") or self.instance.informatieobjecttype
+                validated_data.get("informatieobjecttype")
+                or self.instance.informatieobjecttype
             )
 
             if (
@@ -73,8 +74,8 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
                 message = _("Objects related to non-concept objects can't be updated")
                 raise serializers.ValidationError(message, code="non-concept-relation")
         else:
-            zaaktype = attrs.get("zaaktype")
-            informatieobjecttype = attrs.get("informatieobjecttype")
+            zaaktype = validated_data.get("zaaktype")
+            informatieobjecttype = validated_data.get("informatieobjecttype")
 
             if (
                 not (zaaktype.concept or informatieobjecttype.concept)
@@ -85,7 +86,7 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
                 )
                 raise serializers.ValidationError(message, code="non-concept-relation")
 
-        return attrs
+        return validated_data
 
 
 # class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,

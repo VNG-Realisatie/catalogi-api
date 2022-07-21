@@ -1854,6 +1854,9 @@ class ZaakTypeScopeTests(APITestCase, JWTAuthMixin):
         self.assertEqual(data["identificatie"], "0")
         self.assertEqual(data["verantwoordelijke"], "Organisatie eenheid X")
 
+        zaaktype.refresh_from_db()
+        self.assertEqual(zaaktype.identificatie, "0")
+
     def test_partial_update_non_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse(zaaktype)

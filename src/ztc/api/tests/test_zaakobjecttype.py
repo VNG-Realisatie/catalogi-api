@@ -439,7 +439,7 @@ class ZaakObjectTypeScopeTests(APITestCase, JWTAuthMixin):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ZaakObjectType.objects.count(), 1)
 
-    def test_update(self):
+    def test_update_non_concept_zaaktype(self):
         """Update a `ZaakObjectType` object."""
         zaakobjecttype = ZaakObjectTypeFactory(
             relatie_omschrijving="Omschrijving 123",
@@ -470,7 +470,7 @@ class ZaakObjectTypeScopeTests(APITestCase, JWTAuthMixin):
 
         self.assertEqual(zaakobjecttype.relatie_omschrijving, "Omschrijving 321")
 
-    def test_partial_update(self):
+    def test_partial_update_non_concept_zaaktype(self):
         """Partially update a `ZaakObjectType` object."""
         zaakobjecttype = ZaakObjectTypeFactory()
         zaaktype = ZaakTypeFactory(catalogus=zaakobjecttype.catalogus, concept=False)

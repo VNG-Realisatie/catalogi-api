@@ -107,21 +107,20 @@ class ZaakTypeConceptValidator:
         """
         # Determine the existing instance, if this is an update operation.
         self.instance = getattr(serializer, "instance", None)
-        self.serializer = serializer
-
-    def __call__(self, attrs):
-        allow_action_with_force = self.serializer.context.get(
+        self.allow_action_with_force = serializer.context.get(
             "allow_action_with_force", False
         )
 
+    def __call__(self, attrs):
+
         if self.instance:
             zaaktype = self.instance.zaaktype
-            if not zaaktype.concept and not allow_action_with_force:
+            if not zaaktype.concept and not self.allow_action_with_force:
                 raise ValidationError(self.message, code=self.code)
 
         zaaktype_in_attrs = attrs.get("zaaktype")
         if zaaktype_in_attrs:
-            if not zaaktype_in_attrs.concept and not allow_action_with_force:
+            if not zaaktype_in_attrs.concept and not self.allow_action_with_force:
                 msg = _(
                     "Creating a relation to non-concept zaaktype is forbidden unless forced scope is applied"
                 )

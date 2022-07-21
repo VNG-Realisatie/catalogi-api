@@ -1747,7 +1747,6 @@ class ResultaatTypeScopeTests(APITestCase, JWTAuthMixin):
         zaaktype = ZaakTypeFactory.create(
             selectielijst_procestype=PROCESTYPE_URL, concept=False
         )
-        reverse(zaaktype)
         resultaattype = ResultaatTypeFactory.create(zaaktype=zaaktype)
         resultaattype_url = reverse(resultaattype)
 

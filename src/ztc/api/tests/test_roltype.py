@@ -470,7 +470,6 @@ class RolTypeScopeTests(APITestCase, JWTAuthMixin):
 
     def test_partial_update_roltype_non_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
-        reverse(zaaktype)
         roltype = RolTypeFactory.create(zaaktype=zaaktype)
         roltype_url = reverse(roltype)
 
