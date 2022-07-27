@@ -11,7 +11,7 @@ django-choices
 django-hijack
 django-hijack-admin
 django-choices
-django-markup
+django-markup[all_filter_dependencies]
 django-rosetta
 django-redis
 django_admin_index
