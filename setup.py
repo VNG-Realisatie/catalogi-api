@@ -76,7 +76,7 @@ else:
 
 setuptools.setup(
     name=NAME,
-    version="1.2.0-rc3",
+    version="1.2.0-rc4",
     description="Implementatie van het component Zaaktypecatalogus (ZTC)",
     long_description=long_description,
     keywords="zaaktypen ztc imztc ztc2, ztcaas, saas, rest, api",
