@@ -2,7 +2,7 @@ import os
 
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
-API_VERSION = "1.2.0-rc4"
+API_VERSION = "1.2.0-rc5"
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
 REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
