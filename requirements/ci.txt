@@ -53,7 +53,6 @@ django==3.2.14
     #   django-choices
     #   django-filter
     #   django-hijack
-    #   django-jenkins
     #   django-markup
     #   django-redis
     #   django-relativedelta
@@ -94,8 +93,6 @@ django-ipware==4.0.2
     # via
     #   -r requirements/base.txt
     #   django-axes
-django-jenkins==0.110.0
-    # via -r requirements/ci.in
 django-markup[all_filter_dependencies]==1.5
     # via -r requirements/base.txt
 django-ordered-model==3.6
