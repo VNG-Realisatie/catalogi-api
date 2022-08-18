@@ -9,6 +9,13 @@ pip-compile^
     --no-index^
     requirements/base.in
 
+REM Production deps
+pip-compile^
+    --no-index^
+    --output-file requirements/production.txt^
+    requirements/base.txt^
+    requirements/production.in
+
 REM Dev deps
 pip-compile^
     --no-index^
@@ -17,10 +24,10 @@ pip-compile^
     requirements/testing.in^
     requirements/dev.in
 
-REM Jenkins/tests deps
+REM CI deps
 pip-compile^
     --no-index^
-    --output-file requirements/jenkins.txt^
+    --output-file requirements/ci.txt^
     requirements/base.txt^
     requirements/testing.in^
-    requirements/jenkins.in
+    requirements/ci.in

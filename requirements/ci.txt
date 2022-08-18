@@ -39,7 +39,7 @@ coreschema==0.0.4
     #   -r requirements/base.txt
     #   coreapi
     #   drf-yasg
-coverage==6.4.1
+coverage==6.4.4
     # via -r requirements/testing.in
 deprecated==1.2.13
     # via
@@ -95,7 +95,7 @@ django-ipware==4.0.2
     #   -r requirements/base.txt
     #   django-axes
 django-jenkins==0.110.0
-    # via -r requirements/jenkins.in
+    # via -r requirements/ci.in
 django-markup[all_filter_dependencies]==1.5
     # via -r requirements/base.txt
 django-ordered-model==3.6
@@ -145,9 +145,9 @@ drf-yasg==1.20.0
     #   vng-api-common
 factory-boy==3.2.1
     # via -r requirements/testing.in
-faker==13.15.0
+faker==14.1.0
     # via factory-boy
-freezegun==1.2.1
+freezegun==1.2.2
     # via -r requirements/testing.in
 gemma-zds-client==1.0.1
     # via
