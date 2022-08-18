@@ -39,8 +39,8 @@ COPY src/ztc/sass/ /app/src/ztc/sass/
 RUN npm run build
 
 
-# Stage 3 - Prepare jenkins tests image
-FROM build AS jenkins
+# Stage 3 - Prepare CI tests image
+FROM build AS ci
 
 RUN apk --no-cache add \
     postgresql-client
@@ -48,7 +48,7 @@ RUN apk --no-cache add \
 COPY --from=build /usr/local/lib/python3.9 /usr/local/lib/python3.9
 COPY --from=build /app/requirements /app/requirements
 
-RUN pip install -r requirements/jenkins.txt --exists-action=s
+RUN pip install -r requirements/ci.txt --exists-action=s
 
 # Stage 3.2 - Set up testing config
 COPY ./setup.cfg /app/setup.cfg
