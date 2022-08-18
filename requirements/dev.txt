@@ -41,8 +41,6 @@ coreschema==0.0.4
     #   -r requirements/base.txt
     #   coreapi
     #   drf-yasg
-coverage==6.4.1
-    # via -r requirements/testing.in
 deprecated==1.2.13
     # via
     #   -r requirements/base.txt

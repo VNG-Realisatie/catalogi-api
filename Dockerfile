@@ -52,7 +52,6 @@ RUN pip install -r requirements/ci.txt --exists-action=s
 
 # Stage 3.2 - Set up testing config
 COPY ./setup.cfg /app/setup.cfg
-COPY ./bin/runtests.sh /runtests.sh
 
 # Stage 3.3 - Copy source code
 COPY --from=frontend-build /app/src/ztc/static/bundles /app/src/ztc/static/bundles
@@ -61,7 +60,6 @@ ARG COMMIT_HASH
 ENV GIT_SHA=${COMMIT_HASH}
 
 RUN mkdir /app/log && rm /app/src/ztc/conf/test.py
-CMD ["/runtests.sh"]
 
 
 # Stage 4 - Build docker image suitable for execution and deployment
