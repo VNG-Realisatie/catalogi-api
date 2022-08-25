@@ -13,7 +13,9 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
     def test_retrieve_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
         url = get_operation_url(
-            "zaaktype_read", catalogus_uuid=zaaktype.catalogus.uuid, uuid=zaaktype.uuid
+            "zaaktypen_retrieve",
+            catalogus_uuid=zaaktype.catalogus.uuid,
+            uuid=zaaktype.uuid,
         )
 
         response = self.client.get(url)
@@ -38,7 +40,7 @@ class US39TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
     def test_retrieve_statustype(self):
         statustype = StatusTypeFactory.create()
         url = get_operation_url(
-            "statustype_read",
+            "statustypen_retrieve",
             catalogus_uuid=statustype.zaaktype.catalogus.uuid,
             zaaktype_uuid=statustype.zaaktype.uuid,
             uuid=statustype.uuid,

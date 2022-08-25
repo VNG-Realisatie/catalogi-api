@@ -28,9 +28,9 @@ class CatalogusAPITestMixin:
 
         self.catalogus = CatalogusFactory.create(domein="ABCDE", rsin="000000001")
 
-        self.catalogus_list_url = get_operation_url("catalogus_list")
+        self.catalogus_list_url = get_operation_url("catalogussen_list")
         self.catalogus_detail_url = get_operation_url(
-            "catalogus_read", uuid=self.catalogus.uuid
+            "catalogussen_retrieve", uuid=self.catalogus.uuid
         )
 
 

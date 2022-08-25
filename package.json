@@ -19,6 +19,7 @@
   "license": "EUPL-1.2",
   "homepage": "https://catalogi-api.vng.cloud",
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.1",
     "microscope-sass": "latest"
   },
   "devDependencies": {

@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     "vng_api_common.notifications",
     "solo",
     "drf_yasg",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "rest_framework",
     "django_markup",
     "django_better_admin_arrayfield.apps.DjangoBetterAdminArrayfieldConfig",

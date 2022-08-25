@@ -4,6 +4,7 @@ from typing import Union
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from drf_spectacular.utils import extend_schema
 from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
@@ -19,8 +20,9 @@ from ..utils.viewsets import set_geldigheid
 def swagger_publish_schema(viewset_cls):
     real_publish = viewset_cls.publish
 
-    @swagger_auto_schema(
-        request_body=no_body,
+    @wraps(real_publish)
+    @extend_schema(
+        request=None,
         responses={
             status.HTTP_200_OK: viewset_cls.serializer_class,
             status.HTTP_400_BAD_REQUEST: ValidatieFoutSerializer,
@@ -28,7 +30,6 @@ def swagger_publish_schema(viewset_cls):
             **{exc.status_code: FoutSerializer for exc in COMMON_ERRORS},
         },
     )
-    @wraps(real_publish)
     def _publish(*args, **kwargs):
         return real_publish(*args, **kwargs)
 

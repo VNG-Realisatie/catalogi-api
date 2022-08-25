@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
@@ -15,6 +16,32 @@ from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 
 
 @conditional_retrieve()
+@extend_schema_view(
+    list=extend_schema(
+        summary="Alle STATUSTYPEn opvragen.",
+        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+    ),
+    retrieve=extend_schema(
+        summary="Een specifieke STATUSTYPE opvragen.",
+        description="Een specifieke STATUSTYPE opvragen.",
+    ),
+    create=extend_schema(
+        summary="Maak een STATUSTYPE aan.",
+        description="Maak een STATUSTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+    ),
+    update=extend_schema(
+        summary="Werk een STATUSTYPE in zijn geheel bij.",
+        description="Werk een STATUSTYPE in zijn geheel bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+    ),
+    partial_update=extend_schema(
+        summary="Werk een STATUSTYPE deels bij.",
+        description="Werk een STATUSTYPE deels bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+    ),
+    destroy=extend_schema(
+        summary="Verwijder een STATUSTYPE.",
+        description="Verwijder een STATUSTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+    ),
+)
 class StatusTypeViewSet(
     CheckQueryParamsMixin,
     ZaakTypeConceptMixin,
@@ -23,42 +50,7 @@ class StatusTypeViewSet(
 ):
     """
     Opvragen en bewerken van STATUSTYPEn van een ZAAKTYPE.
-
     Generieke aanduiding van de aard van een status.
-
-    create:
-    Maak een STATUSTYPE aan.
-
-    Maak een STATUSTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een
-    concept betreft.
-
-    list:
-    Alle STATUSTYPEn opvragen.
-
-    Deze lijst kan gefilterd wordt met query-string parameters.
-
-    retrieve:
-    Een specifieke STATUSTYPE opvragen.
-
-    Een specifieke STATUSTYPE opvragen.
-
-    update:
-    Werk een STATUSTYPE in zijn geheel bij.
-
-    Werk een STATUSTYPE in zijn geheel bij. Dit kan alleen als het
-    bijbehorende ZAAKTYPE een concept betreft.
-
-    partial_update:
-    Werk een STATUSTYPE deels bij.
-
-    Werk een STATUSTYPE deels bij. Dit kan alleen als het bijbehorende
-    ZAAKTYPE een concept betreft.
-
-    destroy:
-    Verwijder een STATUSTYPE.
-
-    Verwijder een STATUSTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een
-    concept betreft.
     """
 
     queryset = StatusType.objects.all().order_by("-pk")

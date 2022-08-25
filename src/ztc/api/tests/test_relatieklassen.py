@@ -598,7 +598,7 @@ class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         ZaakInformatieobjectTypeFactory.create_batch(2)
         zaakinformatieobjecttype_list_url = get_operation_url(
-            "zaakinformatieobjecttype_list"
+            "zaaktype_informatieobjecttypen_list"
         )
 
         response = self.client.get(

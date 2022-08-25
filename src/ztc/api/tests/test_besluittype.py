@@ -833,8 +833,10 @@ class BesluitTypeFilterAPITests(APITestCase):
     def test_filter_omschrijving(self):
         besluittype1 = BesluitTypeFactory.create(concept=False, omschrijving="foobar1")
         besluittype2 = BesluitTypeFactory.create(concept=False, omschrijving="foobar2")
-        list_url = get_operation_url("besluittype_list")
-        besluittype1_url = get_operation_url("besluittype_read", uuid=besluittype1.uuid)
+        list_url = get_operation_url("besluittypen_list")
+        besluittype1_url = get_operation_url(
+            "besluittypen_retrieve", uuid=besluittype1.uuid
+        )
 
         response = self.client.get(
             list_url, {"omschrijving": besluittype1.omschrijving}
@@ -857,7 +859,7 @@ class BesluitTypeFilterAPITests(APITestCase):
             omschrijving="foobar",
             datum_begin_geldigheid="2020-03-01",
         )
-        list_url = get_operation_url("besluittype_list")
+        list_url = get_operation_url("besluittypen_list")
 
         response = self.client.get(list_url, {"datumGeldigheid": "2020-03-05"})
         self.assertEqual(response.status_code, 200)
@@ -879,7 +881,7 @@ class BesluitTypeFilterAPITests(APITestCase):
             omschrijving="foobar",
             datum_begin_geldigheid="2020-03-01",
         )
-        list_url = get_operation_url("besluittype_list")
+        list_url = get_operation_url("besluittypen_list")
 
         response = self.client.get(list_url, {"datumGeldigheid": "2020-01-05"})
         self.assertEqual(response.status_code, 200)
@@ -893,7 +895,7 @@ class BesluitTypeFilterAPITests(APITestCase):
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         BesluitTypeFactory.create_batch(2)
-        besluittype_list_url = get_operation_url("besluittype_list")
+        besluittype_list_url = get_operation_url("besluittypen_list")
 
         response = self.client.get(besluittype_list_url, {"someparam": "somevalue"})
 

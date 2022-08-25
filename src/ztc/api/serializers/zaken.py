@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
+from drf_spectacular.utils import extend_schema_field
 from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
 from rest_framework.serializers import (
     HyperlinkedModelSerializer,
@@ -136,6 +137,14 @@ class ZaakTypeSerializer(
         resource_serializer=ZaakObjectTypeSerializer,
     )
 
+    @extend_schema_field(
+        {
+            "type": "array",
+            "items": {"type": "URL"},
+            "description": f"URL-referenties van de meest recente objecten waartoe dit ZAAKTYPE behoort.",
+            "example": ["http://example.com"],
+        }
+    )
     def create_custom_urls(self, zaaktype, resource, resource_serializer):
         if not zaaktype.datum_einde_geldigheid:
             valid_resources = resource.objects.filter(

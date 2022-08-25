@@ -22,10 +22,9 @@ class DocumentationAPITests(ClientAPITestMixin, APITestCase):
 
         See: https://github.com/rsinger86/drf-flex-fields/issues/9
         """
-        response = self.api_client.get("{}?format=openapi".format(self.schema_url))
+        response = self.api_client.get(f"{self.schema_url}openapi.json")
         self.assertEqual(response.status_code, 200)
 
         data = json.loads(response.content.decode("utf-8"))
 
-        self.assertIn("swagger", data)
         self.assertNotIn("DynamicFieldsModel", data)

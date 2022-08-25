@@ -403,7 +403,7 @@ class StatusTypeFilterAPITests(APITestCase):
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         StatusTypeFactory.create_batch(2)
-        statustype_list_url = get_operation_url("statustype_list")
+        statustype_list_url = get_operation_url("statustypen_list")
 
         response = self.client.get(statustype_list_url, {"someparam": "somevalue"})
 

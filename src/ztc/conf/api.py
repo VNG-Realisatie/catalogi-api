@@ -13,29 +13,75 @@ REST_FRAMEWORK[
     "DEFAULT_PAGINATION_CLASS"
 ] = "rest_framework.pagination.PageNumberPagination"
 
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "vng_api_common.inspectors.view.AutoSchema"
+
 SECURITY_DEFINITION_NAME = "JWT-Claims"
 
-SWAGGER_SETTINGS = BASE_SWAGGER_SETTINGS.copy()
-SWAGGER_SETTINGS.update(
-    {
-        "DEFAULT_INFO": "ztc.api.schema.info",
-        "SECURITY_DEFINITIONS": {
-            SECURITY_DEFINITION_NAME: {
-                # OAS 3.0
+SPECTACULAR_SETTINGS = {
+    "TAGS": [
+        {
+            "name": "besluittypen",
+            "path": "ztc.api.views.besluittype",
+            "view": "BesluitTypeViewSet",
+        },
+        {
+            "name": "catalogussen",
+            "path": "ztc.api.views.catalogus",
+            "view": "CatalogusViewSet",
+        },
+        {
+            "name": "eigenschappen",
+            "path": "ztc.api.views.eigenschap",
+            "view": "EigenschapViewSet",
+        },
+        {
+            "name": "informatieobjecttypen",
+            "path": "ztc.api.views.informatieobjecttype",
+            "view": "InformatieObjectTypeViewSet",
+        },
+        {
+            "name": "zaaktype-informatieobjecttypen",
+            "path": "ztc.api.views.relatieklassen",
+            "view": "ZaakTypeInformatieObjectTypeViewSet",
+        },
+        {
+            "name": "resultaattypen",
+            "path": "ztc.api.views.resultaattype",
+            "view": "ResultaatTypeViewSet",
+        },
+        {"name": "roltypen", "path": "ztc.api.views.roltype", "view": "RolTypeViewSet"},
+        {
+            "name": "statustypen",
+            "path": "ztc.api.views.statustype",
+            "view": "StatusTypeViewSet",
+        },
+        {
+            "name": "zaakobjecttypen",
+            "path": "ztc.api.views.zaakobjecttype",
+            "view": "ZaakObjectTypeViewSet",
+        },
+        {"name": "zaaktypen", "path": "ztc.api.views.zaken", "view": "ZaakTypeViewSet"},
+    ],
+    "DESCRIPTION": "ztc.api.schema",
+    "SCHEMA_PATH_PREFIX": "/api/v1",
+    "SERVERS": [{"url": "/api/v1"}],
+    "DEFAULT_GENERATOR_CLASS": "vng_api_common.generators.OpenAPISchemaGenerator",
+    "PREPROCESSING_HOOKS": ["vng_api_common.utils.preprocessing_filter_spec"],
+    "APPEND_COMPONENTS": {
+        "securitySchemes": {
+            "JWT-Claims": {
                 "type": "http",
-                "scheme": "bearer",
                 "bearerFormat": "JWT",
-                # not official...
-                # 'scopes': {},  # TODO: set up registry that's filled in later...
-                # Swagger 2.0
-                # 'name': 'Authorization',
-                # 'in': 'header'
-                # 'type': 'apiKey',
+                "scheme": "bearer",
             }
         },
-    }
-)
-
+    },
+    "SECURITY": [
+        {
+            "JWT-Claims": [],
+        }
+    ],
+}
 GEMMA_URL_INFORMATIEMODEL = "Imztc"
 GEMMA_URL_INFORMATIEMODEL_VERSIE = "2.1"
 

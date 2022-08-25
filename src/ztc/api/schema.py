@@ -1,12 +1,11 @@
 from django.conf import settings
 
-from drf_yasg import openapi
 from vng_api_common.doc import DOC_AUTH_JWT
 from vng_api_common.notifications.utils import notification_documentation
 
 from .kanalen import KANAAL_BESLUITTYPEN, KANAAL_INFORMATIEOBJECTTYPEN, KANAAL_ZAAKTYPEN
 
-description = f"""Een API om een zaaktypecatalogus (ZTC) te benaderen.
+DESCRIPTION = f"""Een API om een zaaktypecatalogus (ZTC) te benaderen.
 
 De zaaktypecatalogus helpt gemeenten om het proces vanuit de 'vraag van een
 klant' (productaanvraag, melding, aangifte, informatieverzoek e.d.) tot en met
@@ -41,14 +40,10 @@ Deze API is afhankelijk van:
 * [Zaakgericht werken]({settings.DOCUMENTATION_URL})
 """
 
-info = openapi.Info(
-    title=f"{settings.PROJECT_NAME} API",
-    default_version=settings.API_VERSION,
-    description=description,
-    contact=openapi.Contact(
-        email="standaarden.ondersteuning@vng.nl", url=settings.DOCUMENTATION_URL
-    ),
-    license=openapi.License(
-        name="EUPL 1.2", url="https://opensource.org/licenses/EUPL-1.2"
-    ),
-)
+VERSION = settings.API_VERSION
+TITLE = f"{settings.PROJECT_NAME} API"
+CONTACT = {
+    "email": "standaarden.ondersteuning@vng.nl",
+    "url": settings.DOCUMENTATION_URL,
+}
+LICENSE = {"name": "EUPL 1.2", "url": "https://opensource.org/licenses/EUPL-1.2"}
