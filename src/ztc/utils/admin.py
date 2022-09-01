@@ -78,7 +78,7 @@ class EditInlineAdminMixin(object):
     can_delete = False
     show_change_link = True
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, obj):
         return False
 
     def get_readonly_fields(self, request, obj=None):
