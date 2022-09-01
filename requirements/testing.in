@@ -1,5 +1,4 @@
 black
-coverage
 factory_boy
 freezegun
 isort
