@@ -29,6 +29,9 @@ STATUS_HELP_TEXT = """filter objects depending on their concept status:
 * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
 """
 
+DATUM_GELDIGHEID_HELP_TEXT = """filter objecten op hun geldigheids datum.
+"""
+
 
 def get_objects_between_geldigheid_dates(queryset, name, value):
     qs_old_version = queryset.filter(
@@ -67,7 +70,10 @@ class RolTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
@@ -112,7 +118,10 @@ class ResultaatTypeFilter(FilterSet):
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
 
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
@@ -125,7 +134,10 @@ class StatusTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
@@ -138,7 +150,10 @@ class EigenschapFilter(FilterSet):
     status = filters.CharFilter(
         field_name="zaaktype__concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
@@ -153,7 +168,10 @@ class ZaakTypeFilter(FilterSet):
     )
     trefwoorden = CharArrayFilter(field_name="trefwoorden", lookup_expr="contains")
 
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     class Meta:
         model = ZaakType
@@ -167,7 +185,10 @@ class ZaakTypeFilter(FilterSet):
 
 
 class ZaakObjectTypeFilter(FilterSet):
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
     zaaktype_identificatie = filters.CharFilter(field_name="zaaktype__identificatie")
 
     class Meta:
@@ -189,7 +210,10 @@ class InformatieObjectTypeFilter(FilterSet):
     status = filters.CharFilter(
         field_name="concept", method=status_filter, help_text=STATUS_HELP_TEXT
     )
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     class Meta:
         model = InformatieObjectType
@@ -197,7 +221,10 @@ class InformatieObjectTypeFilter(FilterSet):
 
 
 class BesluitTypeFilter(FilterSet):
-    datum_geldigheid = filters.DateFilter(method=get_objects_between_geldigheid_dates)
+    datum_geldigheid = filters.DateFilter(
+        method=get_objects_between_geldigheid_dates,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     zaaktypen = filters.CharFilter(
         field_name="zaaktypen",

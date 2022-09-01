@@ -1,46 +1,45 @@
 {
-  "name": "ztc",
-  "version": "1.2.0-rc5",
-  "description": "ztc referentie-implementatie API",
-  "directories": {
-    "doc": "doc"
-  },
-  "scripts": {
-    "convert": "swagger2openapi src/swagger2.0.json -o src/openapi.yaml",
-    "build": "npm run bundle",
-    "bundle": "webpack",
-    "watch": "webpack -w"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com:VNG-Realisatie/catalogi-api"
-  },
-  "author": "VNG-Realisatie",
-  "license": "EUPL-1.2",
-  "homepage": "https://catalogi-api.vng.cloud",
-  "dependencies": {
-    "@openapitools/openapi-generator-cli": "^2.5.1",
-    "microscope-sass": "latest"
-  },
-  "devDependencies": {
-    "@babel/core": "latest",
-    "@babel/preset-env": "latest",
-    "autoprefixer": "latest",
-    "babel-loader": "latest",
-    "cssnano": "latest",
-    "css-loader": "latest",
-    "file-loader": "^6.2.0",
-    "mini-css-extract-plugin": "latest",
-    "postcss-loader": "latest",
-    "postcss-selector-lint": "latest",
-    "sass": "latest",
-    "sass-loader": "latest",
-    "swagger2openapi": "^7.0.8",
-    "url-loader": "latest",
-    "webpack": "latest",
-    "webpack-cli": "latest",
-    "webpack-dev-server": "latest",
-    "webpack-stream": "latest",
-    "yargs": "16.2.0"
-  }
+    "name": "ztc",
+    "version": "1.2.0-rc5",
+    "description": "ztc referentie-implementatie API",
+    "directories": {
+        "doc": "doc"
+    },
+    "scripts": {
+        "build": "npm run bundle",
+        "bundle": "webpack",
+        "watch": "webpack -w"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com:VNG-Realisatie/catalogi-api"
+    },
+    "author": "VNG-Realisatie",
+    "license": "EUPL-1.2",
+    "homepage": "https://catalogi-api.vng.cloud",
+    "dependencies": {
+        "@openapitools/openapi-generator-cli": "^2.5.1",
+        "microscope-sass": "latest"
+    },
+    "devDependencies": {
+        "@babel/core": "latest",
+        "@babel/preset-env": "latest",
+        "autoprefixer": "latest",
+        "babel-loader": "latest",
+        "cssnano": "latest",
+        "css-loader": "latest",
+        "file-loader": "^6.2.0",
+        "mini-css-extract-plugin": "latest",
+        "postcss-loader": "latest",
+        "postcss-selector-lint": "latest",
+        "sass": "latest",
+        "sass-loader": "latest",
+        "prettier": "^2.7.1",
+        "url-loader": "latest",
+        "webpack": "latest",
+        "webpack-cli": "latest",
+        "webpack-dev-server": "latest",
+        "webpack-stream": "latest",
+        "yargs": "16.2.0"
+    }
 }

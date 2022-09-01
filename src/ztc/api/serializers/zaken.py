@@ -76,7 +76,7 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
 
 
 class HistoryURLField(SerializerMethodField):
-    def __init__(self, resource, resource_serializer, method_name=None, **kwargs):
+    def __init__(self, resource, resource_serializer, method_name=None):
         super().__init__(method_name)
         self.func_args = (resource, resource_serializer)
 
@@ -131,6 +131,7 @@ class ZaakTypeSerializer(
         resource=Eigenschap,
         resource_serializer=EigenschapSerializer,
     )
+
     zaakobjecttypen = HistoryURLField(
         method_name="create_custom_urls",
         resource=ZaakObjectType,
@@ -140,12 +141,13 @@ class ZaakTypeSerializer(
     @extend_schema_field(
         {
             "type": "array",
-            "items": {"type": "URL"},
-            "description": f"URL-referenties van de meest recente objecten waartoe dit ZAAKTYPE behoort.",
+            "items": {"type": "string"},
+            "description": "description set in vng-api-common/inspector/view/_map_serializer_field",
             "example": ["http://example.com"],
-        }
+        },
     )
     def create_custom_urls(self, zaaktype, resource, resource_serializer):
+
         if not zaaktype.datum_einde_geldigheid:
             valid_resources = resource.objects.filter(
                 Q(datum_einde_geldigheid=zaaktype.datum_einde_geldigheid)

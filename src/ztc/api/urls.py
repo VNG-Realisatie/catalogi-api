@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.urls import include, path
 
 from vng_api_common import routers
-from vng_api_common.schema import SchemaViewAPI, SchemaViewRedoc
+from vng_api_common.views import SchemaViewAPI, SchemaViewRedoc
 
 from .views import (
     BesluitTypeViewSet,
@@ -47,7 +47,7 @@ urlpatterns = [
                 ),
                 # actual API
                 url(r"^", include(router.urls)),
-                # should not be picked up by drf-yasg
+                # should not be picked up by drf-spectacular
                 path("", include("vng_api_common.api.urls")),
                 path("", include("vng_api_common.notifications.api.urls")),
             ]

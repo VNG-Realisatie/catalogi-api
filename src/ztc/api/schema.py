@@ -5,6 +5,15 @@ from vng_api_common.notifications.utils import notification_documentation
 
 from .kanalen import KANAAL_BESLUITTYPEN, KANAAL_INFORMATIEOBJECTTYPEN, KANAAL_ZAAKTYPEN
 
+__all__ = [
+    "TITLE",
+    "DESCRIPTION",
+    "CONTACT",
+    "LICENSE",
+    "VERSION",
+]
+TITLE = f"{settings.PROJECT_NAME} API"
+
 DESCRIPTION = f"""Een API om een zaaktypecatalogus (ZTC) te benaderen.
 
 De zaaktypecatalogus helpt gemeenten om het proces vanuit de 'vraag van een
@@ -41,7 +50,6 @@ Deze API is afhankelijk van:
 """
 
 VERSION = settings.API_VERSION
-TITLE = f"{settings.PROJECT_NAME} API"
 CONTACT = {
     "email": "standaarden.ondersteuning@vng.nl",
     "url": settings.DOCUMENTATION_URL,

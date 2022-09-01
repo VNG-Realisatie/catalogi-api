@@ -5,12 +5,11 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from drf_spectacular.utils import extend_schema
-from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
-from vng_api_common.inspectors.view import COMMON_ERRORS
+from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
 from ..scopes import SCOPE_CATALOGI_FORCED_DELETE, SCOPE_CATALOGI_FORCED_WRITE
@@ -20,7 +19,6 @@ from ..utils.viewsets import set_geldigheid
 def swagger_publish_schema(viewset_cls):
     real_publish = viewset_cls.publish
 
-    @wraps(real_publish)
     @extend_schema(
         request=None,
         responses={
@@ -30,6 +28,7 @@ def swagger_publish_schema(viewset_cls):
             **{exc.status_code: FoutSerializer for exc in COMMON_ERRORS},
         },
     )
+    @wraps(real_publish)
     def _publish(*args, **kwargs):
         return real_publish(*args, **kwargs)
 

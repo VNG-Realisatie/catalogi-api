@@ -1,15 +1,14 @@
 from django.utils.translation import ugettext_lazy as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_yasg.utils import no_body, swagger_auto_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.settings import api_settings
 from vng_api_common.caching import conditional_retrieve
-from vng_api_common.inspectors.view import COMMON_ERRORS
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
+from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 

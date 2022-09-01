@@ -1,4 +1,4 @@
-from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.notifications.viewsets import NotificationViewSetMixin
@@ -51,7 +51,7 @@ from .mixins import (
     publish=extend_schema(
         summary="Publiceer het concept BESLUITTYPE.",
         description="Publiceren van het besluittype zorgt ervoor dat dit in een Besluiten API kan gebruikt worden. "
-        "Na het publiceren van een besluittype zijn geen inhoudelijke wijzigingen meer mogelijk."
+        "Na het publiceren van een besluittype zijn geen inhoudelijke wijzigingen meer mogelijk. "
         "Indien er na het publiceren nog wat gewijzigd moet worden, dan moet je een nieuwe versie aanmaken.",
     ),
 )
@@ -65,6 +65,7 @@ class BesluitTypeViewSet(
 ):
     """
     Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten API.
+
     Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het zaakgericht werken van de behandelende organisatie(s).
     """
 

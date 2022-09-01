@@ -37,7 +37,7 @@ from . import ForcedCreateUpdateMixin
     ),
     partial_update=extend_schema(
         summary="Werk een ZAAKOBJECTTYPE deels bij.",
-        description="    Werk een ZAAKOBJECTTYPE deels bij.",
+        description="Werk een ZAAKOBJECTTYPE deels bij.",
     ),
     destroy=extend_schema(
         summary="Verwijder een ZAAKOBJECTTYPE.",
