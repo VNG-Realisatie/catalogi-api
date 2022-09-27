@@ -712,7 +712,7 @@ class ResultaatTypeFilterAPITests(APITestCase):
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         ResultaatTypeFactory.create_batch(2)
-        resultaattype_list_url = get_operation_url("resultaattypen_list")
+        resultaattype_list_url = get_operation_url("resultaattype_list")
 
         response = self.client.get(resultaattype_list_url, {"someparam": "somevalue"})
 

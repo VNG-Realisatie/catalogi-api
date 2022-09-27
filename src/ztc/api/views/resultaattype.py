@@ -48,11 +48,11 @@ class ResultaatTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """
-    Opvragen en bewerken van RESULTAATTYPEn van een ZAAKTYPE.
-
-    Het betreft de indeling of groepering van resultaten van zaken van hetzelfde ZAAKTYPE naar hun aard, zoals 'verleend', 'geweigerd', 'verwerkt', etc.
-    """
+    global_description = (
+        "Opvragen en bewerken van RESULTAATTYPEn van een ZAAKTYPE. Het betreft de indeling of "
+        "groepering van resultaten van zaken van hetzelfde ZAAKTYPE naar hun aard, zoals "
+        "'verleend', 'geweigerd', 'verwerkt', etc."
+    )
 
     queryset = ResultaatType.objects.all().order_by("-pk")
     serializer_class = ResultaatTypeSerializer

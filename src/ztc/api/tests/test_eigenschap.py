@@ -519,7 +519,7 @@ class EigenschapFilterAPITests(APITestCase):
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         EigenschapFactory.create_batch(2)
-        eigenschap_list_url = get_operation_url("eigenschappen_list")
+        eigenschap_list_url = get_operation_url("eigenschap_list")
 
         response = self.client.get(eigenschap_list_url, {"someparam": "somevalue"})
 

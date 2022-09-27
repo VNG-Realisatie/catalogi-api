@@ -36,12 +36,12 @@ urlpatterns = [
         include(
             [
                 url(
-                    r"^schema-redoc/openapi(.json|.yaml)",
+                    r"^schema/openapi.yaml",
                     SchemaViewAPI.as_view(),
                     name="schema-json",
                 ),
                 url(
-                    r"^schema-redoc/",
+                    r"^schema/",
                     SchemaViewRedoc.as_view(url_name="schema-redoc"),
                     name="schema-redoc",
                 ),

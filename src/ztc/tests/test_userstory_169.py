@@ -17,7 +17,7 @@ class US169TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
     def test_ophalen_servicenorm_doorlooptijd(self):
         zaaktype = ZaakTypeFactory.create()
         url = get_operation_url(
-            "zaaktypen_retrieve",
+            "zaaktype_retrieve",
             catalogus_uuid=zaaktype.catalogus.uuid,
             uuid=zaaktype.uuid,
         )

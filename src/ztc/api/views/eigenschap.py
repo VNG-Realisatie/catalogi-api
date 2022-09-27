@@ -52,11 +52,11 @@ class EigenschapViewSet(
     viewsets.ModelViewSet,
 ):
 
-    """
-    Opvragen en bewerken van EIGENSCHAPpen van een ZAAKTYPE.
-
-    Een relevant inhoudelijk gegeven dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard kenmerk is van een zaak.
-    """
+    global_description = (
+        "Opvragen en bewerken van EIGENSCHAPpen van een ZAAKTYPE. Een relevant inhoudelijk gegeven "
+        "dat bij ZAAKen van dit ZAAKTYPE geregistreerd moet kunnen worden en geen standaard kenmerk "
+        "is van een zaak."
+    )
 
     queryset = Eigenschap.objects.all().order_by("-pk")
     serializer_class = EigenschapSerializer

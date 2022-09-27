@@ -48,11 +48,10 @@ class RolTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """
-    Opvragen en bewerken van ROLTYPEn van een ZAAKTYPE.
-
-    Generieke aanduiding van de aard van een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE.
-    """
+    global_description = (
+        "Opvragen en bewerken van ROLTYPEn van een ZAAKTYPE. Generieke aanduiding van de aard van "
+        "een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE."
+    )
 
     queryset = RolType.objects.order_by("-pk")
     serializer_class = RolTypeSerializer

@@ -63,11 +63,11 @@ class InformatieObjectTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """
-    Opvragen en bewerken van INFORMATIEOBJECTTYPEn nodig voor INFORMATIEOBJECTen in de Documenten API.
-
-    Een INFORMATIEOBJECTTYPE beschijft de karakteristieken van een document of ander object dat informatie bevat.
-    """
+    global_description = (
+        "Opvragen en bewerken van INFORMATIEOBJECTTYPEn nodig voor INFORMATIEOBJECTen in de Documenten "
+        "API. Een INFORMATIEOBJECTTYPE beschijft de karakteristieken van een document of ander object"
+        " dat informatie bevat."
+    )
 
     queryset = InformatieObjectType.objects.all().order_by("-pk")
     serializer_class = InformatieObjectTypeSerializer

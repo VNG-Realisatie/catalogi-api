@@ -63,11 +63,12 @@ class BesluitTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """
-    Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten API.
 
-    Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het zaakgericht werken van de behandelende organisatie(s).
-    """
+    global_description = (
+        "Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten API. "
+        "Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het zaakgericht werken "
+        "van de behandelende organisatie(s)."
+    )
 
     queryset = BesluitType.objects.all().order_by("-pk")
     serializer_class = BesluitTypeSerializer

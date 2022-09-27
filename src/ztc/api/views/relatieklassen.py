@@ -63,11 +63,10 @@ class ZaakTypeInformatieObjectTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """
-    Opvragen en bewerken van ZAAKTYPE-INFORMATIEOBJECTTYPE relaties.
-
-    Geeft aan welke INFORMATIEOBJECTTYPEn binnen een ZAAKTYPE mogelijk zijn en hoe de richting is.
-    """
+    global_description = (
+        "Opvragen en bewerken van ZAAKTYPE-INFORMATIEOBJECTTYPE relaties. Geeft aan welke "
+        "INFORMATIEOBJECTTYPEn binnen een ZAAKTYPE mogelijk zijn en hoe de richting is."
+    )
 
     queryset = ZaakInformatieobjectType.objects.all().order_by("-pk")
     serializer_class = ZaakTypeInformatieObjectTypeSerializer

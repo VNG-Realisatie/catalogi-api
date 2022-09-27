@@ -47,14 +47,10 @@ from . import ForcedCreateUpdateMixin
 class ZaakObjectTypeViewSet(
     CheckQueryParamsMixin, ForcedCreateUpdateMixin, viewsets.ModelViewSet
 ):
-    """
-    Opvragen en bewerken van ZAAKOBJECTTYPEn.
-
-    Er wordt gevalideerd op:
-
-    - `zaaktype` behoort tot dezelfde `catalogus`
-
-    """
+    global_description = (
+        "Opvragen en bewerken van ZAAKOBJECTTYPEn. Er wordt "
+        "gevalideerd op:\n - `zaaktype` behoort tot dezelfde `catalogus`"
+    )
 
     queryset = ZaakObjectType.objects.select_related(
         "zaaktype",

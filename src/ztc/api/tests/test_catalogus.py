@@ -117,7 +117,7 @@ class CatalogusAPITests(APITestCase):
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         CatalogusFactory.create_batch(2)
-        catalogus_list_url = get_operation_url("catalogussen_list")
+        catalogus_list_url = get_operation_url("catalogus_list")
 
         response = self.client.get(catalogus_list_url, {"someparam": "somevalue"})
 

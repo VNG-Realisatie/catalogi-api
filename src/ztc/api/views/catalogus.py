@@ -41,11 +41,10 @@ from ..serializers import CatalogusSerializer
 class CatalogusViewSet(
     CheckQueryParamsMixin, mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet
 ):
-    """
-    Opvragen en bewerken van CATALOGUSsen.
-
-    De verzameling van ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn voor een domein die als één geheel beheerd wordt.
-    """
+    global_description = (
+        "Opvragen en bewerken van CATALOGUSsen. De verzameling van ZAAKTYPEn, INFORMATIEOBJECTTYPEn en "
+        "BESLUITTYPEn voor een domein die als één geheel beheerd wordt."
+    )
 
     queryset = Catalogus.objects.all().order_by("-pk")
     serializer_class = CatalogusSerializer

@@ -48,10 +48,10 @@ class StatusTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """
-    Opvragen en bewerken van STATUSTYPEn van een ZAAKTYPE.
-    Generieke aanduiding van de aard van een status.
-    """
+    global_description = (
+        "Opvragen en bewerken van STATUSTYPEn van een ZAAKTYPE. "
+        "Generieke aanduiding van de aard van een status."
+    )
 
     queryset = StatusType.objects.all().order_by("-pk")
     serializer_class = StatusTypeSerializer

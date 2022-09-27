@@ -78,9 +78,11 @@ class ZaakTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.
-    Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
-    """
+    global_description = (
+        "Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API."
+        "Een ZAAKTYPE beschrijft het geheel van karakteristieke "
+        "eigenschappen van zaken van eenzelfde soort."
+    )
 
     queryset = ZaakType.objects.prefetch_related(
         "statustypen",
