@@ -12664,6 +12664,6 @@ tags:
     aan welke INFORMATIEOBJECTTYPEn binnen een ZAAKTYPE mogelijk zijn en hoe de richting
     is.
 - name: zaaktypen
-  description: |-
-    Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.
-    Een ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen van zaken van eenzelfde soort.
+  description: Opvragen en bewerken van ZAAKTYPEn nodig voor ZAKEN in de Zaken API.Een
+    ZAAKTYPE beschrijft het geheel van karakteristieke eigenschappen van zaken van
+    eenzelfde soort.
