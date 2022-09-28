@@ -238,15 +238,6 @@ class DocumentationAPITests(SimpleTestCase):
 
     schema_url = reverse_lazy("schema-redoc", kwargs={"version": "1"})
 
-    def test_api_19_documentation_version_json(self):
-        response = self.client.get(f"{self.schema_url}openapi.json")
-
-        self.assertIn("application/vnd.oai.openapi+json", response["Content-Type"])
-
-        doc = response.json()
-
-        self.assertGreaterEqual(doc["openapi"], "3.0.3")
-
     def test_api_19_documentation_version_yaml(self):
         response = self.client.get(f"{self.schema_url}openapi.yaml")
 

@@ -2028,7 +2028,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
 
         zaakobjecttype2 = ZaakObjectTypeFactory(zaaktype=zaaktype2, objecttype="foobar")
 
-        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
