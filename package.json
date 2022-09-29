@@ -2,14 +2,8 @@
     "name": "ztc",
     "version": "1.2.0-rc5",
     "description": "ztc referentie-implementatie API",
-    "directories": {
-        "doc": "doc"
-    },
-    "scripts": {
-        "build": "npm run bundle",
-        "bundle": "webpack",
-        "watch": "webpack -w"
-    },
+    "directories": {"doc": "doc"},
+    "scripts": {"build": "npm run bundle", "bundle": "webpack", "watch": "webpack -w"},
     "repository": {
         "type": "git",
         "url": "git+ssh://git@github.com:VNG-Realisatie/catalogi-api"
@@ -17,10 +11,7 @@
     "author": "VNG-Realisatie",
     "license": "EUPL-1.2",
     "homepage": "https://catalogi-api.vng.cloud",
-    "dependencies": {
-        "@openapitools/openapi-generator-cli": "^2.5.1",
-        "microscope-sass": "latest"
-    },
+    "dependencies": {"microscope-sass": "latest"},
     "devDependencies": {
         "@babel/core": "latest",
         "@babel/preset-env": "latest",

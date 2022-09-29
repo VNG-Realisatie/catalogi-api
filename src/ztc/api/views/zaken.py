@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status, viewsets
@@ -28,45 +28,55 @@ from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixi
 
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle ZAAKTYPEn opvragen.",
-        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        summary=_("Alle ZAAKTYPEn opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
     ),
     retrieve=extend_schema(
-        summary="Een specifieke ZAAKTYPE opvragen.",
-        description="Een specifieke ZAAKTYPE opvragen.",
+        summary=_("Een specifieke ZAAKTYPE opvragen."),
+        description=_("Een specifieke ZAAKTYPE opvragen."),
     ),
     create=extend_schema(
-        summary="Maak een ZAAKTYPE aan.",
-        description="Er wordt gevalideerd op:\n"
-        "- geldigheid `catalogus` URL, dit moet een catalogus binnen dezelfde API zijn\n"
-        " - Uniciteit `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel"
-        "  opnieuw gebruikt worden als het zaaktype een andere geldigheidsperiode"
-        "  kent dan bestaande zaaktypen.\n"
-        " - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.",
+        summary=_("Maak een ZAAKTYPE aan."),
+        description=_(
+            "Er wordt gevalideerd op:\n"
+            "- geldigheid `catalogus` URL, dit moet een catalogus binnen dezelfde API zijn\n"
+            " - Uniciteit `catalogus` en `omschrijving`. Dezelfde omeschrijving mag enkel"
+            "  opnieuw gebruikt worden als het zaaktype een andere geldigheidsperiode"
+            "  kent dan bestaande zaaktypen.\n"
+            " - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE."
+        ),
     ),
     update=extend_schema(
-        summary="Werk een ZAAKTYPE in zijn geheel bij.",
-        description="Werk een ZAAKTYPE in zijn geheel bij. Dit kan alleen als het een concept betreft."
-        " Er wordt gevalideerd op:\n"
-        "  - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.",
+        summary=_("Werk een ZAAKTYPE in zijn geheel bij."),
+        description=_(
+            "Werk een ZAAKTYPE in zijn geheel bij. Dit kan alleen als het een concept betreft."
+            " Er wordt gevalideerd op:\n"
+            "  - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE."
+        ),
     ),
     partial_update=extend_schema(
-        summary="Werk een ZAAKTYPE deels bij.",
-        description="Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept betreft."
-        " Er wordt gevalideerd op:\n"
-        " - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE.",
+        summary=_("Werk een ZAAKTYPE deels bij."),
+        description=_(
+            "Werk een ZAAKTYPE deels bij. Dit kan alleen als het een concept betreft."
+            " Er wordt gevalideerd op:\n"
+            " - `deelzaaktypen` moeten tot dezelfde catalogus behoren als het ZAAKTYPE."
+        ),
     ),
     destroy=extend_schema(
-        summary="Verwijder een ZAAKTYPE.",
-        description="Verwijder een ZAAKTYPE. Dit kan alleen als het een concept betreft.",
+        summary=_("Verwijder een ZAAKTYPE."),
+        description=_(
+            "Verwijder een ZAAKTYPE. Dit kan alleen als het een concept betreft."
+        ),
     ),
     publish=extend_schema(
-        summary="Publiceer het concept ZAAKTYPE.",
-        description="Publiceren van het zaaktype zorgt ervoor dat dit in een Zaken API kan gebruikt"
-        "worden. Na het publiceren van een zaaktype zijn geen inhoudelijke wijzigingen"
-        "meer mogelijk - ook niet de statustypen, eigenschappen... etc. Indien er na het"
-        "publiceren nog wat gewijzigd moet worden, dan moet je een nieuwe versie"
-        "aanmaken.",
+        summary=_("Publiceer het concept ZAAKTYPE."),
+        description=_(
+            "Publiceren van het zaaktype zorgt ervoor dat dit in een Zaken API kan gebruikt"
+            "worden. Na het publiceren van een zaaktype zijn geen inhoudelijke wijzigingen"
+            "meer mogelijk - ook niet de statustypen, eigenschappen... etc. Indien er na het"
+            "publiceren nog wat gewijzigd moet worden, dan moet je een nieuwe versie"
+            "aanmaken."
+        ),
     ),
 )
 @conditional_retrieve()
@@ -113,7 +123,6 @@ class ZaakTypeViewSet(
 
     @action(detail=True, methods=["post"])
     @extend_schema(
-        request=None,
         responses={
             status.HTTP_200_OK: serializer_class,
             status.HTTP_400_BAD_REQUEST: ValidatieFoutSerializer,

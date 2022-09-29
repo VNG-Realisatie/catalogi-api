@@ -381,7 +381,7 @@ class ZaakTypeAPITests(APITestCase):
         ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype, informatieobjecttype__concept=False
         )
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
         response = self.client.post(zaaktype_url)
 
@@ -416,7 +416,7 @@ class ZaakTypeAPITests(APITestCase):
             zaaktype=zaaktype2, informatieobjecttype__concept=False
         )
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -435,7 +435,7 @@ class ZaakTypeAPITests(APITestCase):
         besluittype = BesluitTypeFactory.create()
         zaaktype.besluittypen.add(besluittype)
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
         response = self.client.post(zaaktype_url)
 
@@ -448,7 +448,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create()
         ZaakInformatieobjectTypeFactory.create(zaaktype=zaaktype)
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
         response = self.client.post(zaaktype_url)
 
@@ -461,7 +461,7 @@ class ZaakTypeAPITests(APITestCase):
         deelzaaktype = ZaakTypeFactory.create(concept=True, catalogus=self.catalogus)
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         zaaktype.deelzaaktypen.add(deelzaaktype)
-        publish_url = get_operation_url("zaaktypen_publish", uuid=zaaktype.uuid)
+        publish_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
 
         response = self.client.post(publish_url)
 
@@ -1904,7 +1904,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
         rol_type1 = RolTypeFactory.create(zaaktype=zaaktype1, omschrijving="foobar")
 
         rol_type2 = RolTypeFactory.create(zaaktype=zaaktype2, omschrijving="foobar")
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
 
@@ -1949,7 +1949,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
             zaaktype=zaaktype2, statustype_omschrijving="omschrijving1"
         )
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -1995,7 +1995,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
             eigenschapnaam="foobar",
         )
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -2028,7 +2028,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
 
         zaakobjecttype2 = ZaakObjectTypeFactory(zaaktype=zaaktype2, objecttype="foobar")
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -2062,7 +2062,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
 
         resultaattype2 = ResultaatTypeFactory(zaaktype=zaaktype2, omschrijving="om1")
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -2104,7 +2104,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
             eigenschapnaam="foobar",
         )
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -2152,7 +2152,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
             datum_begin_geldigheid=date(2018, 1, 1),
         )
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         data = response.json()
@@ -2183,7 +2183,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
             datum_begin_geldigheid=datetime.now().date() - timedelta(days=1),
         )
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         data = response.json()
@@ -2202,7 +2202,7 @@ class ZaakTypeGeldigheidTests(APITestCase):
             datum_begin_geldigheid=datetime.now().date(),
         )
 
-        zaaktype_url = get_operation_url("zaaktypen_publish", uuid=zaaktype2.uuid)
+        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype2.uuid)
 
         response = self.client.post(zaaktype_url)
         data = response.json()

@@ -4,8 +4,6 @@
 #
 #    ./bin/compile_dependencies.sh
 #
--e git+https://github.com//MatthijsBekendam/vng-api-common.git@drf_compatibilty_newer_django_fix#egg=vng_api_common
-    # via -r requirements/base.in
 asgiref==3.5.2
     # via django
 async-timeout==4.0.2
@@ -187,6 +185,8 @@ uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.10
     # via requests
+vng_api_common @ git+https://github.com//MatthijsBekendam/vng-api-common.git@drf_compatibilty_newer_django_fix
+    # via -r requirements/base.in
 webencodings==0.5.1
     # via
     #   bleach

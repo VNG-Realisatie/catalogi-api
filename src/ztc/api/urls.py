@@ -38,7 +38,7 @@ urlpatterns = [
                 url(
                     r"^schema/openapi.yaml",
                     SchemaViewAPI.as_view(),
-                    name="schema-json",
+                    name="schema",
                 ),
                 url(
                     r"^schema/",

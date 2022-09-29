@@ -174,7 +174,7 @@ class InformatieObjectTypeAPITests(APITestCase):
     def test_publish_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttypee_url = get_operation_url(
-            "informatieobjecttypen_publish", uuid=informatieobjecttype.uuid
+            "informatieobjecttype_publish", uuid=informatieobjecttype.uuid
         )
 
         response = self.client.post(informatieobjecttypee_url)
@@ -204,7 +204,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         )
 
         informatieobjecttypee_url = get_operation_url(
-            "informatieobjecttypen_publish", uuid=informatieobjecttype3.uuid
+            "informatieobjecttype_publish", uuid=informatieobjecttype3.uuid
         )
 
         response = self.client.post(informatieobjecttypee_url)
@@ -238,7 +238,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         )
 
         informatieobjecttypee_url = get_operation_url(
-            "informatieobjecttypen_publish", uuid=informatieobjecttype2.uuid
+            "informatieobjecttype_publish", uuid=informatieobjecttype2.uuid
         )
 
         response = self.client.post(informatieobjecttypee_url)

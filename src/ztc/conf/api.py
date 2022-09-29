@@ -13,8 +13,6 @@ REST_FRAMEWORK[
     "DEFAULT_PAGINATION_CLASS"
 ] = "rest_framework.pagination.PageNumberPagination"
 
-REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "vng_api_common.schema.AutoSchema"
-
 SECURITY_DEFINITION_NAME = "JWT-Claims"
 
 DOCUMENTATION_INFO_MODULE = "ztc.api.schema"
@@ -23,7 +21,6 @@ SPECTACULAR_SETTINGS = BASE_SPECTACULAR_SETTINGS.copy()
 SPECTACULAR_SETTINGS.update(
     {
         "SERVERS": [{"url": "https://catalogi-api.test.vng.cloud/api/v1"}],
-        "COMPONENT_NO_READ_ONLY_REQUIRED": True,
     }
 )
 

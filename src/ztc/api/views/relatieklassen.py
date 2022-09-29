@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
@@ -22,39 +22,47 @@ from .mixins import ConceptFilterMixin, ForcedCreateUpdateMixin
 @conditional_retrieve()
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle ZAAKTYPE-INFORMATIEOBJECTTYPE relaties opvragen.",
-        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        summary=_("Alle ZAAKTYPE-INFORMATIEOBJECTTYPE relaties opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
     ),
     retrieve=extend_schema(
-        summary="Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.",
-        description="Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.",
+        summary=_("Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen."),
+        description=_("Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen."),
     ),
     create=extend_schema(
-        summary="Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan.",
-        description="Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan. Dit kan alleen als het"
-        " bijbehorende ZAAKTYPE een concept betreft. Er wordt gevalideerd op:\n"
-        "- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
+        summary=_("Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan."),
+        description=_(
+            "Maak een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie aan. Dit kan alleen als het"
+            " bijbehorende ZAAKTYPE een concept betreft. Er wordt gevalideerd op:\n"
+            "- `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`"
+        ),
     ),
     update=extend_schema(
-        summary="Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij.",
-        description="Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij. "
-        "Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft. "
-        "Er wordt gevalideerd op:\n"
-        " - `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
+        summary=_("Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij."),
+        description=_(
+            "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij. "
+            "Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft. "
+            "Er wordt gevalideerd op:\n"
+            " - `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`"
+        ),
     ),
     partial_update=extend_schema(
-        summary="Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij.",
-        description="Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij. "
-        "Dit kan alleen  als het bijbehorende ZAAKTYPE een concept betreft.  "
-        "Er wordt gevalideerd op:\n"
-        "  - `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`",
+        summary=_("Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij."),
+        description=_(
+            "Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij. "
+            "Dit kan alleen  als het bijbehorende ZAAKTYPE een concept betreft.  "
+            "Er wordt gevalideerd op:\n"
+            "  - `zaaktype` en `informatieobjecttype` behoren tot dezelfde `catalogus`"
+        ),
     ),
     destroy=extend_schema(
-        summary="Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie.",
-        description="Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie. "
-        "Dit kan alleen als  het bijbehorende ZAAKTYPE een concept betreft."
-        " Er wordt gevalideerd op:\n"
-        "  - `zaaktype` of `informatieobjecttype` is nog niet gepubliceerd",
+        summary=_("Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie."),
+        description=_(
+            "Verwijder een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie. "
+            "Dit kan alleen als  het bijbehorende ZAAKTYPE een concept betreft."
+            " Er wordt gevalideerd op:\n"
+            "  - `zaaktype` of `informatieobjecttype` is nog niet gepubliceerd"
+        ),
     ),
 )
 class ZaakTypeInformatieObjectTypeViewSet(

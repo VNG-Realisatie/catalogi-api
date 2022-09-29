@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from vng_api_common.caching import conditional_retrieve
@@ -13,29 +15,31 @@ from ..serializers import CatalogusSerializer
 @conditional_retrieve()
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle CATALOGUSsen opvragen.",
-        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        summary=_("Alle CATALOGUSsen opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
     ),
     retrieve=extend_schema(
-        summary="Een specifieke CATALOGUS opvragen.",
-        description="Een specifieke CATALOGUS opvragen.",
+        summary=_("Een specifieke CATALOGUS opvragen."),
+        description=_("Een specifieke CATALOGUS opvragen."),
     ),
     create=extend_schema(
-        summary="Maak een CATALOGUS aan.",
-        description="Maak een CATALOGUS aan.",
+        summary=_("Maak een CATALOGUS aan."),
+        description=_("Maak een CATALOGUS aan."),
     ),
     update=extend_schema(
-        summary="Werk een CATALOGUS in zijn geheel bij.",
-        description="Werk een CATALOGUS in zijn geheel bij.",
+        summary=_("Werk een CATALOGUS in zijn geheel bij."),
+        description=_("Werk een CATALOGUS in zijn geheel bij."),
     ),
     partial_update=extend_schema(
-        summary="Werk een CATALOGUS deels bij.",
-        description="Werk een CATALOGUS deels bij.",
+        summary=_("Werk een CATALOGUS deels bij."),
+        description=_("Werk een CATALOGUS deels bij."),
     ),
     destroy=extend_schema(
-        summary="Verwijder een CATALOGUS.",
-        description="Verwijder een CATALOGUS. "
-        "Dit kan alleen als er geen onderliggende ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn zijn.",
+        summary=_("Verwijder een CATALOGUS."),
+        description=_(
+            "Verwijder een CATALOGUS. "
+            "Dit kan alleen als er geen onderliggende ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn zijn."
+        ),
     ),
 )
 class CatalogusViewSet(

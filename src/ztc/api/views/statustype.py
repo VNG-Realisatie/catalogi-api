@@ -1,5 +1,7 @@
+from django.utils.translation import gettext as _
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import mixins, viewsets
+from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -18,28 +20,36 @@ from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 @conditional_retrieve()
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle STATUSTYPEn opvragen.",
-        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        summary=_("Alle STATUSTYPEn opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
     ),
     retrieve=extend_schema(
-        summary="Een specifieke STATUSTYPE opvragen.",
-        description="Een specifieke STATUSTYPE opvragen.",
+        summary=_("Een specifieke STATUSTYPE opvragen."),
+        description=_("Een specifieke STATUSTYPE opvragen."),
     ),
     create=extend_schema(
-        summary="Maak een STATUSTYPE aan.",
-        description="Maak een STATUSTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Maak een STATUSTYPE aan."),
+        description=_(
+            "Maak een STATUSTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
     update=extend_schema(
-        summary="Werk een STATUSTYPE in zijn geheel bij.",
-        description="Werk een STATUSTYPE in zijn geheel bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Werk een STATUSTYPE in zijn geheel bij."),
+        description=_(
+            "Werk een STATUSTYPE in zijn geheel bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
     partial_update=extend_schema(
-        summary="Werk een STATUSTYPE deels bij.",
-        description="Werk een STATUSTYPE deels bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Werk een STATUSTYPE deels bij."),
+        description=_(
+            "Werk een STATUSTYPE deels bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
     destroy=extend_schema(
-        summary="Verwijder een STATUSTYPE.",
-        description="Verwijder een STATUSTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Verwijder een STATUSTYPE."),
+        description=_(
+            "Verwijder een STATUSTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
 )
 class StatusTypeViewSet(

@@ -29,8 +29,7 @@ STATUS_HELP_TEXT = """filter objects depending on their concept status:
 * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
 """
 
-DATUM_GELDIGHEID_HELP_TEXT = """filter objecten op hun geldigheids datum.
-"""
+DATUM_GELDIGHEID_HELP_TEXT = "filter objecten op hun geldigheids datum."
 
 
 def get_objects_between_geldigheid_dates(queryset, name, value):

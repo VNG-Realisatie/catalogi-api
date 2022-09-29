@@ -1,3 +1,5 @@
+from django.utils.translation import gettext as _
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
@@ -25,34 +27,42 @@ from .mixins import (
 @conditional_retrieve()
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle INFORMATIEOBJECTTYPEn opvragen.",
-        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        summary=_("Alle INFORMATIEOBJECTTYPEn opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
     ),
     retrieve=extend_schema(
-        summary="Een specifieke INFORMATIEOBJECTTYPE opvragen.",
-        description="Een specifieke INFORMATIEOBJECTTYPE opvragen.",
+        summary=_("Een specifieke INFORMATIEOBJECTTYPE opvragen."),
+        description=_("Een specifieke INFORMATIEOBJECTTYPE opvragen."),
     ),
     create=extend_schema(
-        summary="Maak een INFORMATIEOBJECTTYPE aan.",
-        description="Maak een INFORMATIEOBJECTTYPE aan.",
+        summary=_("Maak een INFORMATIEOBJECTTYPE aan."),
+        description=_("Maak een INFORMATIEOBJECTTYPE aan."),
     ),
     update=extend_schema(
-        summary="Werk een INFORMATIEOBJECTTYPE in zijn geheel bij.",
-        description="Werk een INFORMATIEOBJECTTYPE in zijn geheel bij. Dit kan alleen als het een concept betreft.",
+        summary=_("Werk een INFORMATIEOBJECTTYPE in zijn geheel bij."),
+        description=_(
+            "Werk een INFORMATIEOBJECTTYPE in zijn geheel bij. Dit kan alleen als het een concept betreft."
+        ),
     ),
     partial_update=extend_schema(
-        summary="     Werk een INFORMATIEOBJECTTYPE deels bij.",
-        description="Werk een INFORMATIEOBJECTTYPE deels bij. Dit kan alleen als het een concept betreft.",
+        summary=_("     Werk een INFORMATIEOBJECTTYPE deels bij."),
+        description=_(
+            "Werk een INFORMATIEOBJECTTYPE deels bij. Dit kan alleen als het een concept betreft."
+        ),
     ),
     destroy=extend_schema(
-        summary="Verwijder een INFORMATIEOBJECTTYPE.",
-        description="Verwijder een INFORMATIEOBJECTTYPE. Dit kan alleen als het een concept betreft.",
+        summary=_("Verwijder een INFORMATIEOBJECTTYPE."),
+        description=_(
+            "Verwijder een INFORMATIEOBJECTTYPE. Dit kan alleen als het een concept betreft."
+        ),
     ),
     publish=extend_schema(
-        summary="Publiceer het concept INFORMATIEOBJECTTYPE.",
-        description="Publiceren van het informatieobjecttype zorgt ervoor dat dit in een Documenten API kan gebruikt worden."
-        " Na het publiceren van een informatieobjecttype zijn geen inhoudelijke wijzigingen meer mogelijk. "
-        "Indien er na het publiceren nog wat gewijzigd moet worden, dan moet je een nieuwe versie aanmaken.",
+        summary=_("Publiceer het concept INFORMATIEOBJECTTYPE."),
+        description=_(
+            "Publiceren van het informatieobjecttype zorgt ervoor dat dit in een Documenten API kan gebruikt worden."
+            " Na het publiceren van een informatieobjecttype zijn geen inhoudelijke wijzigingen meer mogelijk. "
+            "Indien er na het publiceren nog wat gewijzigd moet worden, dan moet je een nieuwe versie aanmaken."
+        ),
     ),
 )
 class InformatieObjectTypeViewSet(

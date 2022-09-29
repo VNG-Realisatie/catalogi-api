@@ -1,7 +1,7 @@
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import mixins, viewsets
+from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -21,28 +21,36 @@ from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 @conditional_retrieve()
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle EIGENSCHAPpen opvragen.",
-        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        summary=_("Alle EIGENSCHAPpen opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
     ),
     retrieve=extend_schema(
-        summary="Een specifieke EIGENSCHAP opvragen.",
-        description="Een specifieke EIGENSCHAP opvragen.",
+        summary=_("Een specifieke EIGENSCHAP opvragen."),
+        description=_("Een specifieke EIGENSCHAP opvragen."),
     ),
     create=extend_schema(
-        summary="Maak een EIGENSCHAP aan.",
-        description="Maak een EIGENSCHAP aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Maak een EIGENSCHAP aan."),
+        description=_(
+            "Maak een EIGENSCHAP aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
     update=extend_schema(
-        summary="Werk een EIGENSCHAP in zijn geheel bij.",
-        description="Werk een EIGENSCHAP in zijn geheel bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Werk een EIGENSCHAP in zijn geheel bij."),
+        description=_(
+            "Werk een EIGENSCHAP in zijn geheel bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
     partial_update=extend_schema(
-        summary="Werk een EIGENSCHAP deels bij.",
-        description="Werk een EIGENSCHAP deels bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Werk een EIGENSCHAP deels bij."),
+        description=_(
+            "Werk een EIGENSCHAP deels bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
     destroy=extend_schema(
-        summary="Verwijder een EIGENSCHAP.",
-        description="Verwijder een EIGENSCHAP. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Verwijder een EIGENSCHAP."),
+        description=_(
+            "Verwijder een EIGENSCHAP. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
 )
 class EigenschapViewSet(

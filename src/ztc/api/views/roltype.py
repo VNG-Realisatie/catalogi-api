@@ -1,5 +1,7 @@
+from django.utils.translation import gettext as _
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import mixins, viewsets
+from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -18,28 +20,36 @@ from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 @conditional_retrieve()
 @extend_schema_view(
     list=extend_schema(
-        summary="Alle ROLTYPEn opvragen.",
-        description="Deze lijst kan gefilterd wordt met query-string parameters.",
+        summary=_("Alle ROLTYPEn opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
     ),
     retrieve=extend_schema(
-        summary="Een specifieke ROLTYPE opvragen.",
-        description="Een specifieke ROLTYPE opvragen.",
+        summary=_("Een specifieke ROLTYPE opvragen."),
+        description=_("Een specifieke ROLTYPE opvragen."),
     ),
     create=extend_schema(
-        summary="Maak een ROLTYPE aan.",
-        description="Maak een ROLTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.",
+        summary=_("Maak een ROLTYPE aan."),
+        description=_(
+            "Maak een ROLTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
     ),
     update=extend_schema(
-        summary="Werk een ROLTYPE in zijn geheel bij.",
-        description="Werk een ROLTYPE in zijn geheel bij. Dit kan alleen als het een concept betreft.",
+        summary=_("Werk een ROLTYPE in zijn geheel bij."),
+        description=_(
+            "Werk een ROLTYPE in zijn geheel bij. Dit kan alleen als het een concept betreft."
+        ),
     ),
     partial_update=extend_schema(
-        summary="Werk een ROLTYPE deels bij.",
-        description="Werk een ROLTYPE deels bij. Dit kan alleen als het een concept betreft.",
+        summary=_("Werk een ROLTYPE deels bij."),
+        description=_(
+            "Werk een ROLTYPE deels bij. Dit kan alleen als het een concept betreft."
+        ),
     ),
     destroy=extend_schema(
-        summary="Verwijder een ROLTYPE.",
-        description="Verwijder een ROLTYPE. Dit kan alleen als het een concept betreft.",
+        summary=_("Verwijder een ROLTYPE."),
+        description=_(
+            "Verwijder een ROLTYPE. Dit kan alleen als het een concept betreft."
+        ),
     ),
 )
 class RolTypeViewSet(

@@ -4,8 +4,6 @@
 #
 #    ./bin/compile_dependencies.sh
 #
--e git+https://github.com//MatthijsBekendam/vng-api-common.git@drf_compatibilty_newer_django_fix#egg=vng_api_common
-    # via -r requirements/base.txt
 asgiref==3.5.2
     # via
     #   -r requirements/base.txt
@@ -313,6 +311,8 @@ urllib3==1.26.10
     # via
     #   -r requirements/base.txt
     #   requests
+vng_api_common @ git+https://github.com//MatthijsBekendam/vng-api-common.git@drf_compatibilty_newer_django_fix
+    # via -r requirements/base.txt
 webencodings==0.5.1
     # via
     #   -r requirements/base.txt
