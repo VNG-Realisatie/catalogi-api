@@ -23,6 +23,15 @@ SPECTACULAR_SETTINGS.update(
         "SERVERS": [{"url": "https://catalogi-api.test.vng.cloud/api/v1"}],
     }
 )
+SPECTACULAR_EXTENSIONS = [
+    "vng_api_common.extensions.fields.duration.DurationFieldExtension",
+    "vng_api_common.extensions.fields.history_url.HistoryURLFieldExtension",
+    "vng_api_common.extensions.fields.hyperlink_identity.HyperlinkedIdentityFieldExtension",
+    "vng_api_common.extensions.fields.many_related.ManyRelatedFieldExtension",
+    "vng_api_common.extensions.fields.read_only.ReadOnlyFieldExtension",
+    "vng_api_common.extensions.filters.query.FilterExtension",
+    "vng_api_common.extensions.serializers.gegevensgroep.GegevensGroepExtension",
+]
 
 GEMMA_URL_INFORMATIEMODEL = "Imztc"
 GEMMA_URL_INFORMATIEMODEL_VERSIE = "2.1"
