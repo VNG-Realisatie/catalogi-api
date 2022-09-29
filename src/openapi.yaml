@@ -11903,15 +11903,14 @@ components:
         zaakobjecttypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de zaakobjecttypen welke horen bij deze versie van
-            het ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de zaakobjecttypen welke horen bij deze
+            versie van het ZAAKTYPE.
         broncatalogus:
           allOf:
           - $ref: '#/components/schemas/BronCatalogus'
@@ -11928,39 +11927,36 @@ components:
         statustypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de statustypen welke horen bij deze versie van het
-            ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de statustypen welke horen bij deze versie
+            van het ZAAKTYPE.
         resultaattypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de resultaattypen welke horen bij deze versie van
-            het ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de resultaattypen welke horen bij deze
+            versie van het ZAAKTYPE.
         eigenschappen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de eigenschappen welke horen bij deze versie van het
-            ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de eigenschappen welke horen bij deze versie
+            van het ZAAKTYPE.
         informatieobjecttypen:
           type: array
           items:
@@ -11974,14 +11970,14 @@ components:
         roltypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de roltypen welke horen bij deze versie van het ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de roltypen welke horen bij deze versie
+            van het ZAAKTYPE.
         besluittypen:
           type: array
           items:
@@ -12858,15 +12854,14 @@ components:
         zaakobjecttypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de zaakobjecttypen welke horen bij deze versie van
-            het ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de zaakobjecttypen welke horen bij deze
+            versie van het ZAAKTYPE.
         broncatalogus:
           allOf:
           - $ref: '#/components/schemas/BronCatalogus'
@@ -12883,39 +12878,36 @@ components:
         statustypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de statustypen welke horen bij deze versie van het
-            ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de statustypen welke horen bij deze versie
+            van het ZAAKTYPE.
         resultaattypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de resultaattypen welke horen bij deze versie van
-            het ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de resultaattypen welke horen bij deze
+            versie van het ZAAKTYPE.
         eigenschappen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de eigenschappen welke horen bij deze versie van het
-            ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de eigenschappen welke horen bij deze versie
+            van het ZAAKTYPE.
         informatieobjecttypen:
           type: array
           items:
@@ -12929,14 +12921,14 @@ components:
         roltypen:
           type: array
           items:
-          - type: array
+            type: string
+            format: uri
           readOnly: true
-          description:
-          - URL referenties van de roltypen welke horen bij deze versie van het ZAAKTYPE.
           example:
           - http://example.com
-          format:
-          - uri
+          format: uri
+          description: URL referenties van de roltypen welke horen bij deze versie
+            van het ZAAKTYPE.
         besluittypen:
           type: array
           items:
