@@ -1,3 +1,6 @@
+from django.utils.translation import gettext as _
+
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins, viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
@@ -10,46 +13,42 @@ from ..serializers import CatalogusSerializer
 
 
 @conditional_retrieve()
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("Alle CATALOGUSsen opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
+    ),
+    retrieve=extend_schema(
+        summary=_("Een specifieke CATALOGUS opvragen."),
+        description=_("Een specifieke CATALOGUS opvragen."),
+    ),
+    create=extend_schema(
+        summary=_("Maak een CATALOGUS aan."),
+        description=_("Maak een CATALOGUS aan."),
+    ),
+    update=extend_schema(
+        summary=_("Werk een CATALOGUS in zijn geheel bij."),
+        description=_("Werk een CATALOGUS in zijn geheel bij."),
+    ),
+    partial_update=extend_schema(
+        summary=_("Werk een CATALOGUS deels bij."),
+        description=_("Werk een CATALOGUS deels bij."),
+    ),
+    destroy=extend_schema(
+        summary=_("Verwijder een CATALOGUS."),
+        description=_(
+            "Verwijder een CATALOGUS. "
+            "Dit kan alleen als er geen onderliggende ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn zijn."
+        ),
+    ),
+)
 class CatalogusViewSet(
     CheckQueryParamsMixin, mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet
 ):
-    """
-    Opvragen en bewerken van CATALOGUSsen.
-
-    De verzameling van ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn voor
-    een domein die als één geheel beheerd wordt.
-
-    create:
-    Maak een CATALOGUS aan.
-
-    Maak een CATALOGUS aan.
-
-    list:
-    Alle CATALOGUSsen opvragen.
-
-    Deze lijst kan gefilterd wordt met query-string parameters.
-
-    retrieve:
-    Een specifieke CATALOGUS opvragen.
-
-    Een specifieke CATALOGUS opvragen.
-
-    update:
-    Werk een CATALOGUS in zijn geheel bij.
-
-    Werk een CATALOGUS in zijn geheel bij.
-
-    partial_update:
-    Werk een CATALOGUS deels bij.
-
-    Werk een CATALOGUS deels bij.
-
-    destroy:
-    Verwijder een CATALOGUS.
-
-    Verwijder een CATALOGUS. Dit kan alleen als er geen onderliggende
-    ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn zijn.
-    """
+    global_description = (
+        "Opvragen en bewerken van CATALOGUSsen. De verzameling van ZAAKTYPEn, INFORMATIEOBJECTTYPEn en "
+        "BESLUITTYPEn voor een domein die als één geheel beheerd wordt."
+    )
 
     queryset = Catalogus.objects.all().order_by("-pk")
     serializer_class = CatalogusSerializer

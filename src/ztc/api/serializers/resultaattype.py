@@ -57,10 +57,19 @@ class ResultaatTypeSerializer(
     )
 
     zaaktype_identificatie = serializers.SlugRelatedField(
-        source="zaaktype", read_only=True, slug_field="identificatie"
+        source="zaaktype",
+        read_only=True,
+        slug_field="identificatie",
+        help_text=_(
+            "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
+        ),
     )
     besluittype_omschrijving = serializers.SlugRelatedField(
-        many=True, source="besluittype_set", read_only=True, slug_field="omschrijving"
+        many=True,
+        source="besluittype_set",
+        read_only=True,
+        slug_field="omschrijving",
+        help_text=_("Omschrijving van de aard van BESLUITen van het BESLUITTYPE."),
     )
 
     informatieobjecttype_omschrijving = serializers.SlugRelatedField(
@@ -68,6 +77,9 @@ class ResultaatTypeSerializer(
         source="informatieobjecttypen",
         read_only=True,
         slug_field="omschrijving",
+        help_text=_(
+            "Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE."
+        ),
     )
 
     class Meta:

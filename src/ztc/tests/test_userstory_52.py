@@ -91,15 +91,17 @@ class US52TestCase(TypeCheckMixin, ClientAPITestMixin, APITestCase):
         )
 
         zaaktype_url = get_operation_url(
-            "zaaktype_read", catalogus_uuid=zaaktype.catalogus.uuid, uuid=zaaktype.uuid
+            "zaaktype_retrieve",
+            catalogus_uuid=zaaktype.catalogus.uuid,
+            uuid=zaaktype.uuid,
         )
         catalogus_url = get_operation_url(
-            "catalogus_read",
+            "catalogus_retrieve",
             uuid=zaaktype.catalogus.uuid,
         )
-        statustype_url = get_operation_url("statustype_read", uuid=statustype.uuid)
+        statustype_url = get_operation_url("statustype_retrieve", uuid=statustype.uuid)
         detail_url = get_operation_url(
-            "eigenschap_read",
+            "eigenschap_retrieve",
             catalogus_uuid=zaaktype.catalogus.uuid,
             zaaktype_uuid=zaaktype.uuid,
             uuid=eigenschap1.uuid,

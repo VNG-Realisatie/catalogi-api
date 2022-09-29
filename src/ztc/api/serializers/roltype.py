@@ -1,3 +1,5 @@
+from django.utils.translation import ugettext_lazy as _
+
 from drf_writable_nested import NestedCreateMixin
 from rest_framework import serializers
 from vng_api_common.constants import RolOmschrijving
@@ -12,7 +14,12 @@ class RolTypeSerializer(
     serializers.HyperlinkedModelSerializer,
 ):
     zaaktype_identificatie = serializers.SlugRelatedField(
-        source="zaaktype", read_only=True, slug_field="identificatie"
+        source="zaaktype",
+        read_only=True,
+        slug_field="identificatie",
+        help_text=_(
+            "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
+        ),
     )
 
     class Meta:

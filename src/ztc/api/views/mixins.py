@@ -4,12 +4,12 @@ from typing import Union
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from drf_yasg.utils import no_body, swagger_auto_schema
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
-from vng_api_common.inspectors.view import COMMON_ERRORS
+from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
 from ..scopes import SCOPE_CATALOGI_FORCED_DELETE, SCOPE_CATALOGI_FORCED_WRITE
@@ -19,8 +19,8 @@ from ..utils.viewsets import set_geldigheid
 def swagger_publish_schema(viewset_cls):
     real_publish = viewset_cls.publish
 
-    @swagger_auto_schema(
-        request_body=no_body,
+    @extend_schema(
+        request=None,
         responses={
             status.HTTP_200_OK: viewset_cls.serializer_class,
             status.HTTP_400_BAD_REQUEST: ValidatieFoutSerializer,

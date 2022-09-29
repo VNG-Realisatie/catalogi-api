@@ -51,10 +51,10 @@ class ZaakTypeAPITests(APITestCase):
     def test_get_list_default_definitief(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)  # noqa
         zaaktype2 = ZaakTypeFactory.create(concept=False)
-        zaaktype_list_url = get_operation_url("zaaktype_list")
-        zaaktype2_url = get_operation_url("zaaktype_read", uuid=zaaktype2.uuid)
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
+        zaaktype2_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype2.uuid)
 
-        response = self.client.get(zaaktype_list_url)
+        response = self.client.get(zaaktypen_list_url)
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -74,9 +74,9 @@ class ZaakTypeAPITests(APITestCase):
             bronzaaktype_identificatie="1",
             bronzaaktype_omschrijving="omschrijving",
         )
-        zaaktype_detail_url = get_operation_url("zaaktype_read", uuid=zaaktype.uuid)
+        zaaktype_detail_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
         zaakobjecttype_url = get_operation_url(
-            "zaakobjecttype_read", uuid=zaaktype.objecttypen.first().uuid
+            "zaakobjecttype_retrieve", uuid=zaaktype.objecttypen.first().uuid
         )
 
         response = self.api_client.get(zaaktype_detail_url)
@@ -143,7 +143,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_get_detail_404(self):
         ZaakTypeFactory.create(catalogus=self.catalogus)
 
-        url = get_operation_url("zaaktype_read", uuid=uuid.uuid4())
+        url = get_operation_url("zaaktype_retrieve", uuid=uuid.uuid4())
 
         response = self.client.get(url)
 
@@ -169,7 +169,9 @@ class ZaakTypeAPITests(APITestCase):
 
     def test_create_zaaktype(self):
         besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
-        besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
+        besluittype_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype.uuid
+        )
 
         deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
         deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
@@ -233,7 +235,9 @@ class ZaakTypeAPITests(APITestCase):
 
     def test_create_zaaktype_fails_no_identificatie(self):
         besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
-        besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
+        besluittype_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype.uuid
+        )
 
         deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
         deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
@@ -279,7 +283,9 @@ class ZaakTypeAPITests(APITestCase):
 
     def test_create_zaaktype_fail_besluittype_non_concept(self):
         besluittype = BesluitTypeFactory.create(concept=False, catalogus=self.catalogus)
-        besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
+        besluittype_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype.uuid
+        )
 
         zaaktype_list_url = get_operation_url("zaaktype_list")
         data = {
@@ -323,9 +329,11 @@ class ZaakTypeAPITests(APITestCase):
 
     def test_create_zaaktype_fail_different_catalogus_zaaktypes(self):
         besluittype = BesluitTypeFactory.create()
-        besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
+        besluittype_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype.uuid
+        )
 
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
         data = {
             "identificatie": 0,
             "doel": "some test",
@@ -357,7 +365,7 @@ class ZaakTypeAPITests(APITestCase):
             "versiedatum": "2018-01-01",
             "verantwoordelijke": "Organisatie eenheid X",
         }
-        response = self.client.post(zaaktype_list_url, data)
+        response = self.client.post(zaaktypen_list_url, data)
 
         self.assertEqual(
             response.status_code, status.HTTP_400_BAD_REQUEST, response.data
@@ -464,7 +472,7 @@ class ZaakTypeAPITests(APITestCase):
 
     def test_delete_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
-        zaaktype_url = get_operation_url("zaaktype_read", uuid=zaaktype.uuid)
+        zaaktype_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
 
         response = self.client.delete(zaaktype_url)
 
@@ -473,7 +481,7 @@ class ZaakTypeAPITests(APITestCase):
 
     def test_delete_zaaktype_fail_not_concept(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
-        zaaktype_url = get_operation_url("zaaktype_read", uuid=zaaktype.uuid)
+        zaaktype_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
 
         response = self.client.delete(zaaktype_url)
 
@@ -1193,7 +1201,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype.delete()
 
     def test_zaaktype_broncatalogus(self):
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
 
         data = {
             "identificatie": 0,
@@ -1229,7 +1237,7 @@ class ZaakTypeAPITests(APITestCase):
                 "rsin": "222222222",
             },
         }
-        response = self.client.post(zaaktype_list_url, data)
+        response = self.client.post(zaaktypen_list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1238,7 +1246,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(error["code"], "required")
 
     def test_zaaktype_bronzaaktype(self):
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
 
         data = {
             "identificatie": 0,
@@ -1274,7 +1282,7 @@ class ZaakTypeAPITests(APITestCase):
                 "omschrijving": "omschrijving foo",
             },
         }
-        response = self.client.post(zaaktype_list_url, data)
+        response = self.client.post(zaaktypen_list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1539,9 +1547,9 @@ class ZaakTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype_status_alles(self):
         ZaakTypeFactory.create(concept=True)
         ZaakTypeFactory.create(concept=False)
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
 
-        response = self.client.get(zaaktype_list_url, {"status": "alles"})
+        response = self.client.get(zaaktypen_list_url, {"status": "alles"})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -1551,10 +1559,10 @@ class ZaakTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype_status_concept(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)
         zaaktype2 = ZaakTypeFactory.create(concept=False)
-        zaaktype_list_url = get_operation_url("zaaktype_list")
-        zaaktype1_url = get_operation_url("zaaktype_read", uuid=zaaktype1.uuid)
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
+        zaaktype1_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype1.uuid)
 
-        response = self.client.get(zaaktype_list_url, {"status": "concept"})
+        response = self.client.get(zaaktypen_list_url, {"status": "concept"})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -1565,10 +1573,10 @@ class ZaakTypeFilterAPITests(APITestCase):
     def test_filter_zaaktype_status_definitief(self):
         zaaktype1 = ZaakTypeFactory.create(concept=True)
         zaaktype2 = ZaakTypeFactory.create(concept=False)
-        zaaktype_list_url = get_operation_url("zaaktype_list")
-        zaaktype2_url = get_operation_url("zaaktype_read", uuid=zaaktype2.uuid)
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
+        zaaktype2_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype2.uuid)
 
-        response = self.client.get(zaaktype_list_url, {"status": "definitief"})
+        response = self.client.get(zaaktypen_list_url, {"status": "definitief"})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -1579,11 +1587,11 @@ class ZaakTypeFilterAPITests(APITestCase):
     def test_filter_identificatie(self):
         zaaktype1 = ZaakTypeFactory.create(concept=False)
         zaaktype2 = ZaakTypeFactory.create(concept=False)
-        zaaktype_list_url = get_operation_url("zaaktype_list")
-        zaaktype1_url = get_operation_url("zaaktype_read", uuid=zaaktype1.uuid)
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
+        zaaktype1_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype1.uuid)
 
         response = self.client.get(
-            zaaktype_list_url, {"identificatie": zaaktype1.identificatie}
+            zaaktypen_list_url, {"identificatie": zaaktype1.identificatie}
         )
         self.assertEqual(response.status_code, 200)
 
@@ -1609,9 +1617,11 @@ class ZaakTypeFilterAPITests(APITestCase):
             identificatie=123,
             datum_begin_geldigheid="2020-03-01",
         )
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
 
-        response = self.client.get(zaaktype_list_url, {"datumGeldigheid": "2020-03-05"})
+        response = self.client.get(
+            zaaktypen_list_url, {"datumGeldigheid": "2020-03-05"}
+        )
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -1637,9 +1647,11 @@ class ZaakTypeFilterAPITests(APITestCase):
             identificatie=123,
             datum_begin_geldigheid="2020-03-01",
         )
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
 
-        response = self.client.get(zaaktype_list_url, {"datumGeldigheid": "2020-01-05"})
+        response = self.client.get(
+            zaaktypen_list_url, {"datumGeldigheid": "2020-01-05"}
+        )
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -1655,10 +1667,10 @@ class ZaakTypeFilterAPITests(APITestCase):
         zaaktype2 = ZaakTypeFactory.create(
             concept=False, trefwoorden=["other", "words"]
         )
-        zaaktype_list_url = get_operation_url("zaaktype_list")
-        zaaktype1_url = get_operation_url("zaaktype_read", uuid=zaaktype1.uuid)
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
+        zaaktype1_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype1.uuid)
 
-        response = self.client.get(zaaktype_list_url, {"trefwoorden": "key"})
+        response = self.client.get(zaaktypen_list_url, {"trefwoorden": "key"})
         self.assertEqual(response.status_code, 200)
 
         data = response.json()["results"]
@@ -1686,9 +1698,9 @@ class ZaakTypeFilterAPITests(APITestCase):
 class FilterValidationTests(APITestCase):
     def test_unknown_query_params_give_error(self):
         ZaakTypeFactory.create_batch(2, concept=False)
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
 
-        response = self.client.get(zaaktype_list_url, {"someparam": "somevalue"})
+        response = self.client.get(zaaktypen_list_url, {"someparam": "somevalue"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -1701,9 +1713,9 @@ class ZaakTypePaginationTestCase(APITestCase):
 
     def test_pagination_default(self):
         ZaakTypeFactory.create_batch(2, concept=False)
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
 
-        response = self.client.get(zaaktype_list_url)
+        response = self.client.get(zaaktypen_list_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -1740,7 +1752,9 @@ class ZaaktypeValidationTests(APITestCase):
     @override_settings(LINK_FETCHER="vng_api_common.mocks.link_fetcher_200")
     def test_selectielijstprocestype_invalid_resource(self):
         besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
-        besluittype_url = get_operation_url("besluittype_read", uuid=besluittype.uuid)
+        besluittype_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype.uuid
+        )
 
         responses = {
             "http://referentielijsten.nl/procestypen/1234": {
@@ -1748,7 +1762,7 @@ class ZaaktypeValidationTests(APITestCase):
             }
         }
 
-        zaaktype_list_url = get_operation_url("zaaktype_list")
+        zaaktypen_list_url = get_operation_url("zaaktype_list")
         data = {
             "identificatie": 0,
             "doel": "some test",
@@ -1782,7 +1796,7 @@ class ZaaktypeValidationTests(APITestCase):
         }
 
         with mock_client(responses):
-            response = self.client.post(zaaktype_list_url, data)
+            response = self.client.post(zaaktypen_list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 

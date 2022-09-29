@@ -211,6 +211,7 @@ class SecurityAPITests(CatalogusAPITestMixin, APILiveServerTestCase):
         A valid API key is required to access any resource.
         """
         response = self.client.get(self.catalogus_list_url)
+
         self.assertEqual(response.status_code, 403)
 
     @skip("We do not use OAUTH but JWT based OAUTH")
@@ -237,37 +238,14 @@ class DocumentationAPITests(SimpleTestCase):
 
     schema_url = reverse_lazy("schema-redoc", kwargs={"version": "1"})
 
-    def test_documentation_is_oas_2(self):
-        """DSO: API-19 (documentation is OAS 2)"""
-        response = self.client.get("{}?format=openapi".format(self.schema_url))
-        self.assertEqual(response.status_code, 200)
-
-        data = json.loads(response.content.decode("utf-8"))
-
-        self.assertTrue("swagger" in data)
-        self.assertEqual(data["swagger"], "2.0")
-
-    def test_api_19_documentation_version_json(self):
-        url = reverse("schema-json", kwargs={"format": ".json"})
-
-        response = self.client.get(url)
-
-        self.assertIn("application/json", response["Content-Type"])
-
-        doc = response.json()
-
-        self.assertGreaterEqual(doc["openapi"], "3.0.0")
-
     def test_api_19_documentation_version_yaml(self):
-        url = reverse("schema-json", kwargs={"format": ".yaml"})
+        response = self.client.get(f"{self.schema_url}openapi.yaml")
 
-        response = self.client.get(url)
-
-        self.assertIn("application/yaml", response["Content-Type"])
+        self.assertIn("application/vnd.oai.openapi", response["Content-Type"])
 
         doc = yaml.safe_load(response.content)
 
-        self.assertGreaterEqual(doc["openapi"], "3.0.0")
+        self.assertGreaterEqual(doc["openapi"], "3.0.3")
 
     def test_documentation_can_be_accepted(self):
         """DSO: API-21 (documentation can be tested)

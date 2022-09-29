@@ -21,9 +21,8 @@ django-better-admin-arrayfield
 djangorestframework
 django-filter~=21.1
 djangorestframework-camel-case
-drf-yasg
-vng-api-common
-
+drf_spectacular
+git+https://github.com//MatthijsBekendam/vng-api-common.git@drf_compatibilty_newer_django_fix#egg=vng_api_common
 drf-flex-fields
 django-cors-middleware
 drf-writable-nested

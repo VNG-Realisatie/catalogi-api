@@ -39,7 +39,12 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
         required=False, many=True, source="checklistitem"
     )
     zaaktype_identificatie = serializers.SlugRelatedField(
-        source="zaaktype", read_only=True, slug_field="identificatie"
+        source="zaaktype",
+        read_only=True,
+        slug_field="identificatie",
+        help_text=_(
+            "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
+        ),
     )
 
     class Meta:

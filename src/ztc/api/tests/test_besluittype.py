@@ -834,7 +834,9 @@ class BesluitTypeFilterAPITests(APITestCase):
         besluittype1 = BesluitTypeFactory.create(concept=False, omschrijving="foobar1")
         besluittype2 = BesluitTypeFactory.create(concept=False, omschrijving="foobar2")
         list_url = get_operation_url("besluittype_list")
-        besluittype1_url = get_operation_url("besluittype_read", uuid=besluittype1.uuid)
+        besluittype1_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype1.uuid
+        )
 
         response = self.client.get(
             list_url, {"omschrijving": besluittype1.omschrijving}

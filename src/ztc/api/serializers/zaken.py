@@ -1,3 +1,5 @@
+from typing import List
+
 from django.conf import settings
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
@@ -75,7 +77,7 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
 
 
 class HistoryURLField(SerializerMethodField):
-    def __init__(self, resource, resource_serializer, method_name=None, **kwargs):
+    def __init__(self, resource, resource_serializer, method_name=None):
         super().__init__(method_name)
         self.func_args = (resource, resource_serializer)
 
@@ -130,13 +132,15 @@ class ZaakTypeSerializer(
         resource=Eigenschap,
         resource_serializer=EigenschapSerializer,
     )
+
     zaakobjecttypen = HistoryURLField(
         method_name="create_custom_urls",
         resource=ZaakObjectType,
         resource_serializer=ZaakObjectTypeSerializer,
     )
 
-    def create_custom_urls(self, zaaktype, resource, resource_serializer):
+    def create_custom_urls(self, zaaktype, resource, resource_serializer) -> List[str]:
+
         if not zaaktype.datum_einde_geldigheid:
             valid_resources = resource.objects.filter(
                 Q(datum_einde_geldigheid=zaaktype.datum_einde_geldigheid)

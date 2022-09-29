@@ -37,8 +37,7 @@ class BesluitTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
 
     def test_head_in_apischema(self):
         spec = get_spec()
-
-        endpoint = spec["paths"]["/besluittypen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/besluittypen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -120,7 +119,7 @@ class CatalogusCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
     def test_head_in_apischema(self):
         spec = get_spec()
 
-        endpoint = spec["paths"]["/catalogussen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/catalogussen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -202,7 +201,7 @@ class EigenschapCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
     def test_head_in_apischema(self):
         spec = get_spec()
 
-        endpoint = spec["paths"]["/eigenschappen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/eigenschappen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -284,7 +283,7 @@ class InformatieObjectTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
     def test_head_in_apischema(self):
         spec = get_spec()
 
-        endpoint = spec["paths"]["/informatieobjecttypen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/informatieobjecttypen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -373,7 +372,7 @@ class ResultaatTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
     def test_head_in_apischema(self):
         spec = get_spec()
 
-        endpoint = spec["paths"]["/resultaattypen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/resultaattypen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -459,7 +458,7 @@ class RolTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
     def test_head_in_apischema(self):
         spec = get_spec()
 
-        endpoint = spec["paths"]["/roltypen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/roltypen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -539,7 +538,7 @@ class StatusTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
     def test_head_in_apischema(self):
         spec = get_spec()
 
-        endpoint = spec["paths"]["/statustypen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/statustypen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -621,7 +620,7 @@ class ZaakInformatieobjectTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
     def test_head_in_apischema(self):
         spec = get_spec()
 
-        endpoint = spec["paths"]["/zaaktype-informatieobjecttypen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/zaaktype-informatieobjecttypen/{uuid}"]
 
         self.assertIn("head", endpoint)
 
@@ -715,8 +714,7 @@ class ZaakTypeCacheTests(CacheMixin, JWTAuthMixin, APITestCase):
 
     def test_head_in_apischema(self):
         spec = get_spec()
-
-        endpoint = spec["paths"]["/zaaktypen/{uuid}"]
+        endpoint = spec["paths"]["/api/v1/zaaktypen/{uuid}"]
 
         self.assertIn("head", endpoint)
 

@@ -1,4 +1,7 @@
-from rest_framework import mixins, viewsets
+from django.utils.translation import gettext as _
+
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -15,52 +18,50 @@ from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 
 
 @conditional_retrieve()
+@extend_schema_view(
+    list=extend_schema(
+        summary=_("Alle ROLTYPEn opvragen."),
+        description=_("Deze lijst kan gefilterd wordt met query-string parameters."),
+    ),
+    retrieve=extend_schema(
+        summary=_("Een specifieke ROLTYPE opvragen."),
+        description=_("Een specifieke ROLTYPE opvragen."),
+    ),
+    create=extend_schema(
+        summary=_("Maak een ROLTYPE aan."),
+        description=_(
+            "Maak een ROLTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
+        ),
+    ),
+    update=extend_schema(
+        summary=_("Werk een ROLTYPE in zijn geheel bij."),
+        description=_(
+            "Werk een ROLTYPE in zijn geheel bij. Dit kan alleen als het een concept betreft."
+        ),
+    ),
+    partial_update=extend_schema(
+        summary=_("Werk een ROLTYPE deels bij."),
+        description=_(
+            "Werk een ROLTYPE deels bij. Dit kan alleen als het een concept betreft."
+        ),
+    ),
+    destroy=extend_schema(
+        summary=_("Verwijder een ROLTYPE."),
+        description=_(
+            "Verwijder een ROLTYPE. Dit kan alleen als het een concept betreft."
+        ),
+    ),
+)
 class RolTypeViewSet(
     CheckQueryParamsMixin,
     ZaakTypeConceptMixin,
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-    """
-    Opvragen en bewerken van ROLTYPEn van een ZAAKTYPE.
-
-    Generieke aanduiding van de aard van een ROL die een BETROKKENE kan
-    uitoefenen in ZAAKen van een ZAAKTYPE.
-
-    create:
-    Maak een ROLTYPE aan.
-
-    Maak een ROLTYPE aan. Dit kan alleen als het bijbehorende ZAAKTYPE een
-    concept betreft.
-
-    list:
-    Alle ROLTYPEn opvragen.
-
-    Deze lijst kan gefilterd wordt met query-string parameters.
-
-    retrieve:
-    Een specifieke ROLTYPE opvragen.
-
-    Een specifieke ROLTYPE opvragen.
-
-    update:
-    Werk een ROLTYPE in zijn geheel bij.
-
-    Werk een ROLTYPE in zijn geheel bij. Dit kan alleen als het
-    bijbehorende ZAAKTYPE een concept betreft.
-
-    partial_update:
-    Werk een ROLTYPE deels bij.
-
-    Werk een ROLTYPE deels bij. Dit kan alleen als het bijbehorende
-    ZAAKTYPE een concept betreft.
-
-    destroy:
-    Verwijder een ROLTYPE.
-
-    Verwijder een ROLTYPE. Dit kan alleen als het bijbehorende ZAAKTYPE een
-    concept betreft.
-    """
+    global_description = (
+        "Opvragen en bewerken van ROLTYPEn van een ZAAKTYPE. Generieke aanduiding van de aard van "
+        "een ROL die een BETROKKENE kan uitoefenen in ZAAKen van een ZAAKTYPE."
+    )
 
     queryset = RolType.objects.order_by("-pk")
     serializer_class = RolTypeSerializer

@@ -30,7 +30,7 @@ class CatalogusAPITestMixin:
 
         self.catalogus_list_url = get_operation_url("catalogus_list")
         self.catalogus_detail_url = get_operation_url(
-            "catalogus_read", uuid=self.catalogus.uuid
+            "catalogus_retrieve", uuid=self.catalogus.uuid
         )
 
 

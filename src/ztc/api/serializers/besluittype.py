@@ -14,13 +14,20 @@ from ..validators import (
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
     resultaattypen_omschrijving = serializers.SlugRelatedField(
-        many=True, source="resultaattypen", read_only=True, slug_field="omschrijving"
+        many=True,
+        source="resultaattypen",
+        read_only=True,
+        slug_field="omschrijving",
+        help_text=_("Omschrijving van de aard van resultaten van het RESULTAATTYPE."),
     )
     vastgelegd_in = serializers.SlugRelatedField(
         many=True,
         source="informatieobjecttypen",
         read_only=True,
         slug_field="omschrijving",
+        help_text=_(
+            "Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE."
+        ),
     )
 
     class Meta:

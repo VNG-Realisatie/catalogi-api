@@ -17,11 +17,21 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
     """
 
     zaaktype_identificatie = serializers.SlugRelatedField(
-        source="zaaktype", read_only=True, slug_field="identificatie"
+        source="zaaktype",
+        read_only=True,
+        slug_field="identificatie",
+        help_text=_(
+            "Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt."
+        ),
     )
 
     informatieobjecttype_omschrijving = serializers.SlugRelatedField(
-        source="informatieobjecttype", read_only=True, slug_field="omschrijving"
+        source="informatieobjecttype",
+        read_only=True,
+        slug_field="omschrijving",
+        help_text=_(
+            "Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE."
+        ),
     )
 
     catalogus = serializers.HyperlinkedRelatedField(
