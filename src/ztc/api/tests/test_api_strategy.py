@@ -33,7 +33,7 @@ class RestfulPrinciplesAPITests(APITestCase):
         """
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         kwargs = {"catalogus_uuid": self.catalogus.uuid, "uuid": zaaktype.uuid}
-        zaaktype_detail_url = get_operation_url("zaaktypen_retrieve", **kwargs)
+        zaaktype_detail_url = get_operation_url("zaaktype_read", **kwargs)
 
         self.assertEqual(
             zaaktype_detail_url,
