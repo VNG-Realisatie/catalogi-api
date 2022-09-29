@@ -730,7 +730,7 @@ class ErrorHandlingTests(APITestCase):
     def test_standard_json_error_response_404(self):
         """DSO: API-50 (standard JSON error response 404)"""
         non_existing_detail_url = reverse(
-            "catalogusse-detail", kwargs={"version": self.API_VERSION, "uuid": "dummy"}
+            "catalogus-detail", kwargs={"version": self.API_VERSION, "uuid": "dummy"}
         )
 
         response = self.client.get(non_existing_detail_url)
