@@ -1,4 +1,4 @@
-from vng_api_common.notifications.kanalen import Kanaal
+from notifications_api_common.kanalen import Kanaal
 
 from ztc.datamodel.models import BesluitType, InformatieObjectType, ZaakType
 
