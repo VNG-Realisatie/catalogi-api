@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     "axes",
     "django_filters",
     "corsheaders",
-    "vng_api_common",  # before drf_yasg to override the management command
+    "vng_api_common",  # before drf_spectacular to override the management command
     "vng_api_common.authorizations",
     "vng_api_common.notifications",
     "solo",

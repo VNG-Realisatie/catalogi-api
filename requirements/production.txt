@@ -204,7 +204,7 @@ markdown==3.3.7
     #   django-markup
 newrelic==8.0.0.179
     # via -r requirements/production.in
-notifications-api-common==0.1.0
+notifications-api-common @ git+https://github.com/MatthijsBekendam/notifications-api-common@catalogi_bug_fix
     # via
     #   -r requirements/base.txt
     #   vng-api-common

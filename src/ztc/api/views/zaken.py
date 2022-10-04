@@ -157,9 +157,3 @@ class ZaakTypeViewSet(
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
-
-    def create(self, request, *args, **kwargs):
-        try:
-            return super(self).create(request, *args, **kwargs)
-        except Exception as e:
-            print(e)
