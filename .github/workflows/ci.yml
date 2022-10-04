@@ -55,7 +55,7 @@ jobs:
       - name: Run tests
         run: |
           python src/manage.py collectstatic --noinput --link
-          coverage run src/manage.py test ztc.api.tests.test_zaken.ZaakTypeAPITests.test_update_zaaktype_not_concept_with_forced_scope --verbosity=3
+          coverage run src/manage.py test ztc.api.tests.test_zaken.ZaakTypeScopeTests.test_update_zaaktype_not_concept_with_forced_scope --verbosity=3
           coverage xml
 
       - name: Publish coverage report
