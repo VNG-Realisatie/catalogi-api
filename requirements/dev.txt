@@ -231,7 +231,7 @@ mccabe==0.7.0
     # via pylint
 mypy-extensions==0.4.3
     # via black
-notifications-api-common @ git+https://github.com/MatthijsBekendam/notifications-api-common@catalogi_bug_fix
+notifications-api-common==0.1.0
     # via
     #   -r requirements/base.txt
     #   vng-api-common

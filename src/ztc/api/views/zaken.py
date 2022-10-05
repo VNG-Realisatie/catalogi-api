@@ -1,11 +1,7 @@
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from notifications_api_common.viewsets import (
-    NotificationCreateMixin,
-    NotificationDestroyMixin,
-    NotificationUpdateMixin,
-)
+from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -88,9 +84,7 @@ class ZaakTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
     M2MConceptDestroyMixin,
-    NotificationCreateMixin,
-    NotificationUpdateMixin,
-    NotificationDestroyMixin,
+    NotificationViewSetMixin,
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):

@@ -23,7 +23,6 @@ djangorestframework-camel-case
 drf_spectacular
 # TODO: this should eventually be reverted to vng-api-common
 git+https://github.com/VNG-Realisatie/vng-api-common@drf-spectacular-upgrade#egg=vng_api_common
-git+https://github.com/MatthijsBekendam/notifications-api-common@catalogi_bug_fix#egg=notifications_api_common
 drf-flex-fields
 django-cors-middleware
 drf-writable-nested

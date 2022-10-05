@@ -149,10 +149,8 @@ markdown==3.3.7
     # via
     #   -r requirements/base.in
     #   django-markup
-notifications-api-common @ git+https://github.com/MatthijsBekendam/notifications-api-common@catalogi_bug_fix
-    # via
-    #   -r requirements/base.in
-    #   vng-api-common
+notifications-api-common==0.1.0
+    # via vng-api-common
 oyaml==1.0
     # via vng-api-common
 packaging==21.3
