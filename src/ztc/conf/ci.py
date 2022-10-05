@@ -24,7 +24,8 @@ LOGGING["loggers"].update(
 
 #
 # Custom settings
-#
+NOTIFICATIONS_DISABLED = True
+
 
 # Show active environment in admin.
 ENVIRONMENT = "CI"

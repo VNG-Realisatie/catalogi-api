@@ -69,6 +69,8 @@ if "test" not in sys.argv:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += (
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
+if "test" in sys.argv:
+    NOTIFICATIONS_DISABLED = True
 
 # Override settings with local settings.
 try:
