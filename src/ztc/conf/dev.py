@@ -70,7 +70,7 @@ if "test" not in sys.argv:
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
 if "test" in sys.argv:
-    NOTIFICATIONS_DISABLED = True
+    NOTIFICATIONS_DISABLED = True  # During dev unable to create 'notifications_api_service' required for sending notifications.
 
 # Override settings with local settings.
 try:
