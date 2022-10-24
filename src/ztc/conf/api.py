@@ -21,6 +21,8 @@ SPECTACULAR_SETTINGS = BASE_SPECTACULAR_SETTINGS.copy()
 SPECTACULAR_SETTINGS.update(
     {
         "SERVERS": [{"url": "https://catalogi-api.test.vng.cloud/api/v1"}],
+        # todo remove this line below when deploying to production
+        "SORT_OPERATION_PARAMETERS": False,
     }
 )
 SPECTACULAR_EXTENSIONS = [

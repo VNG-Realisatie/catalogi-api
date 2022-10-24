@@ -22,7 +22,7 @@ django-filter~=21.1
 djangorestframework-camel-case
 drf_spectacular
 
-vng_api_common
+vng_api_common==1.11.0
 drf-flex-fields
 django-cors-middleware
 drf-writable-nested
