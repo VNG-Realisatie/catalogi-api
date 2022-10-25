@@ -87,6 +87,8 @@ class InformatieObjectTypeAPITests(APITestCase):
             "beginGeldigheid": "2019-01-01",
             "eindeGeldigheid": None,
             "concept": True,
+            "informatieobjectcategorie": "informatieobjectcategorie",
+            "trefwoord": ["abc", "def"],
             "zaaktypen": [f"http://testserver{reverse(zaaktype)}"],
             "besluittypen": [f"http://testserver{reverse(besluittype)}"],
             "beginObject": None,
@@ -148,6 +150,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
         informatieobjecttypen_list_url = get_operation_url("informatieobjecttype_list")
 
@@ -169,6 +172,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": informatieobjecttype.omschrijving,
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.post(list_url, data)
@@ -289,6 +293,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": "openbaar",
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.put(informatieobjecttype_url, data)
@@ -308,6 +313,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": "openbaar",
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.put(informatieobjecttype_url, data)
@@ -418,6 +424,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": "openbaar",
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.put(informatieobjecttype_url, data)
@@ -441,10 +448,10 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": "openbaar",
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.put(informatieobjecttype_url, data)
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["omschrijving"], "test")
         informatieobjecttype.delete()
@@ -465,6 +472,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": "openbaar",
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.put(informatieobjecttype_url, data)
@@ -492,6 +500,7 @@ class InformatieObjectTypeAPITests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": "openbaar",
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.put(informatieobjecttype_url, data)
@@ -817,6 +826,7 @@ class InformatieObjectTypeScopeTests(APITestCase, JWTAuthMixin):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": "openbaar",
             "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
         }
 
         response = self.client.put(informatieobjecttype_url, data)
