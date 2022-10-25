@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Catalogi API
-  version: 1.2.0-rc6
+  version: 1.2.0-rc8
   description:
     "Een API om een zaaktypecatalogus (ZTC) te benaderen.\n\nDe zaaktypecatalogus\
     \ helpt gemeenten om het proces vanuit de 'vraag van een\nklant' (productaanvraag,\
@@ -59,10 +59,10 @@ paths:
           schema:
             type: string
             format: uri
-        - name: datumGeldigheid
+        - name: zaaktypen
           required: false
           in: query
-          description: filter objecten op hun geldigheids datum.
+          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
           schema:
             type: string
         - name: informatieobjecttypen
@@ -73,18 +73,6 @@ paths:
             van dit BESLUITTYPE worden vastgelegd.
           schema:
             type: string
-        - name: omschrijving
-          required: false
-          in: query
-          description: Omschrijving van de aard van BESLUITen van het BESLUITTYPE.
-          schema:
-            type: string
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
         - name: status
           required: false
           in: query
@@ -99,12 +87,24 @@ paths:
             '
           schema:
             type: string
-        - name: zaaktypen
+        - name: omschrijving
           required: false
           in: query
-          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
+          description: Omschrijving van de aard van BESLUITen van het BESLUITTYPE.
           schema:
             type: string
+        - name: datumGeldigheid
+          required: false
+          in: query
+          description: filter objecten op hun geldigheids datum.
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Een pagina binnen de gepagineerde set resultaten.
+          schema:
+            type: integer
       tags:
         - besluittypen
       security:
@@ -407,6 +407,14 @@ paths:
       description: Een specifieke BESLUITTYPE opvragen.
       summary: Een specifieke BESLUITTYPE opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -425,14 +433,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - besluittypen
       security:
@@ -583,14 +583,6 @@ paths:
         een concept betreft.
       summary: Werk een BESLUITTYPE in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -598,6 +590,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - besluittypen
@@ -761,14 +761,6 @@ paths:
         betreft.
       summary: Werk een BESLUITTYPE deels bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -776,6 +768,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - besluittypen
@@ -1074,6 +1074,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) BESLUITTYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -1092,14 +1100,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - besluittypen
       responses:
@@ -1133,14 +1133,6 @@ paths:
         worden, dan moet je een nieuwe versie aanmaken.
       summary: Publiceer het concept BESLUITTYPE.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -1148,6 +1140,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - besluittypen
@@ -1246,12 +1246,6 @@ paths:
           description: domein__in
           schema:
             type: string
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
         - name: rsin
           required: false
           in: query
@@ -1264,6 +1258,12 @@ paths:
           description: rsin__in
           schema:
             type: string
+        - name: page
+          required: false
+          in: query
+          description: Een pagina binnen de gepagineerde set resultaten.
+          schema:
+            type: integer
       tags:
         - catalogussen
       security:
@@ -1566,6 +1566,14 @@ paths:
       description: Een specifieke CATALOGUS opvragen.
       summary: Een specifieke CATALOGUS opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -1584,14 +1592,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - catalogussen
       security:
@@ -1740,6 +1740,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) CATALOGUS opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -1758,14 +1766,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - catalogussen
       responses:
@@ -1795,32 +1795,6 @@ paths:
       description: Deze lijst kan gefilterd wordt met query-string parameters.
       summary: Alle EIGENSCHAPpen opvragen.
       parameters:
-        - name: datumGeldigheid
-          required: false
-          in: query
-          description: filter objecten op hun geldigheids datum.
-          schema:
-            type: string
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
-        - name: status
-          required: false
-          in: query
-          description: 'filter objects depending on their concept status:
-
-            * `alles`: Toon objecten waarvan het attribuut `concept` true of false is.
-
-            * `concept`: Toon objecten waarvan het attribuut `concept` true is.
-
-            * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
-
-            '
-          schema:
-            type: string
         - name: zaaktype
           required: false
           in: query
@@ -1836,6 +1810,32 @@ paths:
           description: zaaktype_identificatie
           schema:
             type: string
+        - name: status
+          required: false
+          in: query
+          description: 'filter objects depending on their concept status:
+
+            * `alles`: Toon objecten waarvan het attribuut `concept` true of false is.
+
+            * `concept`: Toon objecten waarvan het attribuut `concept` true is.
+
+            * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
+
+            '
+          schema:
+            type: string
+        - name: datumGeldigheid
+          required: false
+          in: query
+          description: filter objecten op hun geldigheids datum.
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Een pagina binnen de gepagineerde set resultaten.
+          schema:
+            type: integer
       tags:
         - eigenschappen
       security:
@@ -2140,6 +2140,14 @@ paths:
       description: Een specifieke EIGENSCHAP opvragen.
       summary: Een specifieke EIGENSCHAP opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -2158,14 +2166,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - eigenschappen
       security:
@@ -2316,14 +2316,6 @@ paths:
         bijbehorende ZAAKTYPE een concept betreft.
       summary: Werk een EIGENSCHAP in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -2331,6 +2323,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - eigenschappen
@@ -2494,14 +2494,6 @@ paths:
         ZAAKTYPE een concept betreft.
       summary: Werk een EIGENSCHAP deels bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -2509,6 +2501,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - eigenschappen
@@ -2809,6 +2809,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) EIGENSCHAP opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -2827,14 +2835,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - eigenschappen
       responses:
@@ -2873,6 +2873,20 @@ paths:
           schema:
             type: string
             format: uri
+        - name: status
+          required: false
+          in: query
+          description: 'filter objects depending on their concept status:
+
+            * `alles`: Toon objecten waarvan het attribuut `concept` true of false is.
+
+            * `concept`: Toon objecten waarvan het attribuut `concept` true is.
+
+            * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
+
+            '
+          schema:
+            type: string
         - name: datumGeldigheid
           required: false
           in: query
@@ -2891,20 +2905,6 @@ paths:
           description: Een pagina binnen de gepagineerde set resultaten.
           schema:
             type: integer
-        - name: status
-          required: false
-          in: query
-          description: 'filter objects depending on their concept status:
-
-            * `alles`: Toon objecten waarvan het attribuut `concept` true of false is.
-
-            * `concept`: Toon objecten waarvan het attribuut `concept` true is.
-
-            * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
-
-            '
-          schema:
-            type: string
       tags:
         - informatieobjecttypen
       security:
@@ -3207,6 +3207,14 @@ paths:
       description: Een specifieke INFORMATIEOBJECTTYPE opvragen.
       summary: Een specifieke INFORMATIEOBJECTTYPE opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -3225,14 +3233,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - informatieobjecttypen
       security:
@@ -3383,14 +3383,6 @@ paths:
         als het een concept betreft.
       summary: Werk een INFORMATIEOBJECTTYPE in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -3398,6 +3390,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - informatieobjecttypen
@@ -3561,14 +3561,6 @@ paths:
         een concept betreft.
       summary: '     Werk een INFORMATIEOBJECTTYPE deels bij.'
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -3576,6 +3568,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - informatieobjecttypen
@@ -3876,6 +3876,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) INFORMATIEOBJECTTYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -3894,14 +3902,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - informatieobjecttypen
       responses:
@@ -3935,14 +3935,6 @@ paths:
         nog wat gewijzigd moet worden, dan moet je een nieuwe versie aanmaken.
       summary: Publiceer het concept INFORMATIEOBJECTTYPE.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -3950,6 +3942,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - informatieobjecttypen
@@ -4036,24 +4036,6 @@ paths:
       description: Deze lijst kan gefilterd wordt met query-string parameters.
       summary: Alle RESULTAATTYPEn opvragen.
       parameters:
-        - name: datum_geldigheid
-          required: false
-          in: query
-          description: datum_geldigheid
-          schema:
-            type: string
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
-        - name: status
-          required: false
-          in: query
-          description: status
-          schema:
-            type: string
         - name: zaaktype
           required: false
           in: query
@@ -4066,6 +4048,24 @@ paths:
           description: zaaktype_identificatie
           schema:
             type: string
+        - name: status
+          required: false
+          in: query
+          description: status
+          schema:
+            type: string
+        - name: datum_geldigheid
+          required: false
+          in: query
+          description: datum_geldigheid
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Een pagina binnen de gepagineerde set resultaten.
+          schema:
+            type: integer
       tags:
         - resultaattypen
       security:
@@ -4370,6 +4370,14 @@ paths:
       description: Een specifieke RESULTAATTYPE opvragen.
       summary: Een specifieke RESULTAATTYPE opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -4388,14 +4396,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - resultaattypen
       security:
@@ -4546,14 +4546,6 @@ paths:
         bijbehorende ZAAKTYPE een concept betreft.
       summary: Werk een RESULTAATTYPE in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -4561,6 +4553,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - resultaattypen
@@ -4724,14 +4724,6 @@ paths:
         ZAAKTYPE een concept betreft.
       summary: Werk een RESULTAATTYPE deels bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -4739,6 +4731,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - resultaattypen
@@ -5039,6 +5039,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) RESULTAATTYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -5057,14 +5065,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - resultaattypen
       responses:
@@ -5094,10 +5094,19 @@ paths:
       description: Deze lijst kan gefilterd wordt met query-string parameters.
       summary: Alle ROLTYPEn opvragen.
       parameters:
-        - name: datumGeldigheid
+        - name: zaaktype
           required: false
           in: query
-          description: filter objecten op hun geldigheids datum.
+          description:
+            URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken
+            kunnen zijn.
+          schema:
+            type: string
+            format: uri
+        - name: zaaktypeIdentificatie
+          required: false
+          in: query
+          description: zaaktype_identificatie
           schema:
             type: string
         - name: omschrijvingGeneriek
@@ -5115,12 +5124,6 @@ paths:
               - klantcontacter
               - zaakcoordinator
               - mede_initiator
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
         - name: status
           required: false
           in: query
@@ -5135,21 +5138,18 @@ paths:
             '
           schema:
             type: string
-        - name: zaaktype
+        - name: datumGeldigheid
           required: false
           in: query
-          description:
-            URL-referentie naar het ZAAKTYPE waar deze ROLTYPEn betrokken
-            kunnen zijn.
+          description: filter objecten op hun geldigheids datum.
           schema:
             type: string
-            format: uri
-        - name: zaaktypeIdentificatie
+        - name: page
           required: false
           in: query
-          description: zaaktype_identificatie
+          description: Een pagina binnen de gepagineerde set resultaten.
           schema:
-            type: string
+            type: integer
       tags:
         - roltypen
       security:
@@ -5454,6 +5454,13 @@ paths:
       description: Een specifieke ROLTYPE opvragen.
       summary: Een specifieke ROLTYPE opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -5472,13 +5479,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            title: uuid
-          required: true
       tags:
         - roltypen
       security:
@@ -5629,6 +5629,13 @@ paths:
         concept betreft.
       summary: Werk een ROLTYPE in zijn geheel bij.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            title: uuid
+          required: true
         - in: header
           name: Content-Type
           schema:
@@ -5636,13 +5643,6 @@ paths:
             enum:
               - application/json
           description: Content type van de verzoekinhoud.
-          required: true
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            title: uuid
           required: true
       tags:
         - roltypen
@@ -5806,6 +5806,13 @@ paths:
         betreft.
       summary: Werk een ROLTYPE deels bij.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            title: uuid
+          required: true
         - in: header
           name: Content-Type
           schema:
@@ -5813,13 +5820,6 @@ paths:
             enum:
               - application/json
           description: Content type van de verzoekinhoud.
-          required: true
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            title: uuid
           required: true
       tags:
         - roltypen
@@ -6117,6 +6117,13 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) ROLTYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -6135,13 +6142,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            title: uuid
-          required: true
       tags:
         - roltypen
       responses:
@@ -6171,32 +6171,6 @@ paths:
       description: Deze lijst kan gefilterd wordt met query-string parameters.
       summary: Alle STATUSTYPEn opvragen.
       parameters:
-        - name: datumGeldigheid
-          required: false
-          in: query
-          description: filter objecten op hun geldigheids datum.
-          schema:
-            type: string
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
-        - name: status
-          required: false
-          in: query
-          description: 'filter objects depending on their concept status:
-
-            * `alles`: Toon objecten waarvan het attribuut `concept` true of false is.
-
-            * `concept`: Toon objecten waarvan het attribuut `concept` true is.
-
-            * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
-
-            '
-          schema:
-            type: string
         - name: zaaktype
           required: false
           in: query
@@ -6212,6 +6186,32 @@ paths:
           description: zaaktype_identificatie
           schema:
             type: string
+        - name: status
+          required: false
+          in: query
+          description: 'filter objects depending on their concept status:
+
+            * `alles`: Toon objecten waarvan het attribuut `concept` true of false is.
+
+            * `concept`: Toon objecten waarvan het attribuut `concept` true is.
+
+            * `definitief`: Toon objecten waarvan het attribuut `concept` false is (standaard).
+
+            '
+          schema:
+            type: string
+        - name: datumGeldigheid
+          required: false
+          in: query
+          description: filter objecten op hun geldigheids datum.
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Een pagina binnen de gepagineerde set resultaten.
+          schema:
+            type: integer
       tags:
         - statustypen
       security:
@@ -6516,6 +6516,14 @@ paths:
       description: Een specifieke STATUSTYPE opvragen.
       summary: Een specifieke STATUSTYPE opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -6534,14 +6542,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - statustypen
       security:
@@ -6692,14 +6692,6 @@ paths:
         bijbehorende ZAAKTYPE een concept betreft.
       summary: Werk een STATUSTYPE in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -6707,6 +6699,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - statustypen
@@ -6870,14 +6870,6 @@ paths:
         ZAAKTYPE een concept betreft.
       summary: Werk een STATUSTYPE deels bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -6885,6 +6877,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - statustypen
@@ -7185,6 +7185,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) STATUSTYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -7203,14 +7211,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - statustypen
       responses:
@@ -7282,12 +7282,6 @@ paths:
           schema:
             type: string
             format: uri
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
         - name: relatieOmschrijving
           required: false
           in: query
@@ -7309,6 +7303,12 @@ paths:
           description: zaaktype_identificatie
           schema:
             type: string
+        - name: page
+          required: false
+          in: query
+          description: Een pagina binnen de gepagineerde set resultaten.
+          schema:
+            type: integer
       tags:
         - zaakobjecttypen
       security:
@@ -7611,6 +7611,14 @@ paths:
       description: Een specifieke ZAAKOBJECTTYPE opvragen.
       summary: Een specifieke ZAAKOBJECTTYPE opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -7629,14 +7637,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - zaakobjecttypen
       security:
@@ -7785,14 +7785,6 @@ paths:
       description: Werk een ZAAKOBJECTTYPE in zijn geheel bij.
       summary: Werk een ZAAKOBJECTTYPE in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -7800,6 +7792,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - zaakobjecttypen
@@ -7961,14 +7961,6 @@ paths:
       description: Werk een ZAAKOBJECTTYPE deels bij.
       summary: Werk een ZAAKOBJECTTYPE deels bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -7976,6 +7968,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - zaakobjecttypen
@@ -8274,6 +8274,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) ZAAKOBJECTTYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -8292,14 +8300,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - zaakobjecttypen
       responses:
@@ -8329,6 +8329,13 @@ paths:
       description: Deze lijst kan gefilterd wordt met query-string parameters.
       summary: Alle ZAAKTYPE-INFORMATIEOBJECTTYPE relaties opvragen.
       parameters:
+        - name: zaaktype
+          required: false
+          in: query
+          description: URL-referentie naar het ZAAKTYPE.
+          schema:
+            type: string
+            format: uri
         - name: informatieobjecttype
           required: false
           in: query
@@ -8336,12 +8343,6 @@ paths:
           schema:
             type: string
             format: uri
-        - name: page
-          required: false
-          in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
-          schema:
-            type: integer
         - name: richting
           required: false
           in: query
@@ -8368,13 +8369,12 @@ paths:
             '
           schema:
             type: string
-        - name: zaaktype
+        - name: page
           required: false
           in: query
-          description: URL-referentie naar het ZAAKTYPE.
+          description: Een pagina binnen de gepagineerde set resultaten.
           schema:
-            type: string
-            format: uri
+            type: integer
       tags:
         - zaaktype-informatieobjecttypen
       security:
@@ -8681,6 +8681,14 @@ paths:
       description: Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.
       summary: Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -8699,14 +8707,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - zaaktype-informatieobjecttypen
       security:
@@ -8859,14 +8859,6 @@ paths:
         \ dezelfde `catalogus`"
       summary: Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -8874,6 +8866,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - zaaktype-informatieobjecttypen
@@ -9039,14 +9039,6 @@ paths:
         \ `catalogus`"
       summary: Werk een ZAAKTYPE-INFORMATIEOBJECTTYPE relatie deels bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -9054,6 +9046,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - zaaktype-informatieobjecttypen
@@ -9355,6 +9355,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) ZAAK-INFORMATIEOBJECT-TYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -9373,14 +9381,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - zaaktype-informatieobjecttypen
       responses:
@@ -9417,12 +9417,6 @@ paths:
           schema:
             type: string
             format: uri
-        - name: datumGeldigheid
-          required: false
-          in: query
-          description: filter objecten op hun geldigheids datum.
-          schema:
-            type: string
         - name: identificatie
           required: false
           in: query
@@ -9431,12 +9425,16 @@ paths:
             het ZAAKTYPE voorkomt.
           schema:
             type: string
-        - name: page
+        - name: trefwoorden
           required: false
           in: query
-          description: Een pagina binnen de gepagineerde set resultaten.
+          description: Multiple values may be separated by commas.
           schema:
-            type: integer
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
         - name: status
           required: false
           in: query
@@ -9451,16 +9449,18 @@ paths:
             '
           schema:
             type: string
-        - name: trefwoorden
+        - name: datumGeldigheid
           required: false
           in: query
-          description: Multiple values may be separated by commas.
+          description: filter objecten op hun geldigheids datum.
           schema:
-            type: array
-            items:
-              type: string
-          style: form
-          explode: false
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Een pagina binnen de gepagineerde set resultaten.
+          schema:
+            type: integer
       tags:
         - zaaktypen
       security:
@@ -9768,6 +9768,14 @@ paths:
       description: Een specifieke ZAAKTYPE opvragen.
       summary: Een specifieke ZAAKTYPE opvragen.
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -9786,14 +9794,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - zaaktypen
       security:
@@ -9945,14 +9945,6 @@ paths:
         \ dezelfde catalogus behoren als het ZAAKTYPE."
       summary: Werk een ZAAKTYPE in zijn geheel bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -9960,6 +9952,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - zaaktypen
@@ -10124,14 +10124,6 @@ paths:
         \ catalogus behoren als het ZAAKTYPE."
       summary: Werk een ZAAKTYPE deels bij.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -10139,6 +10131,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - zaaktypen
@@ -10437,6 +10437,14 @@ paths:
       description: Vraag de headers op die je bij een GET request zou krijgen.
       summary: 'De headers voor een specifiek(e) ZAAKTYPE opvragen '
       parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+            format: uuid
+            description: Unieke resource identifier (UUID4)
+            title: uuid
+          required: true
         - in: header
           name: If-None-Match
           schema:
@@ -10455,14 +10463,6 @@ paths:
             MultipleValues:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
-        - in: path
-          name: uuid
-          schema:
-            type: string
-            format: uuid
-            description: Unieke resource identifier (UUID4)
-            title: uuid
-          required: true
       tags:
         - zaaktypen
       responses:
@@ -10497,14 +10497,6 @@ paths:
         nieuwe versieaanmaken.
       summary: Publiceer het concept ZAAKTYPE.
       parameters:
-        - in: header
-          name: Content-Type
-          schema:
-            type: string
-            enum:
-              - application/json
-          description: Content type van de verzoekinhoud.
-          required: true
         - in: path
           name: uuid
           schema:
@@ -10512,6 +10504,14 @@ paths:
             format: uuid
             description: Unieke resource identifier (UUID4)
             title: uuid
+          required: true
+        - in: header
+          name: Content-Type
+          schema:
+            type: string
+            enum:
+              - application/json
+          description: Content type van de verzoekinhoud.
           required: true
       tags:
         - zaaktypen
