@@ -28,7 +28,7 @@ from ...datamodel.tests.factories import (
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
 )
-from ..scopes import SCOPE_CATALOGI_FORCED_DELETE, SCOPE_CATALOGI_WRITE
+from ..scopes import SCOPE_CATALOGI_FORCED_DELETE
 from .base import APITestCase as _APITestCase
 
 

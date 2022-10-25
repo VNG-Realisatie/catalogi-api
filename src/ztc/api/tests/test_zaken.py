@@ -212,6 +212,7 @@ class ZaakTypeAPITests(APITestCase):
             "versiedatum": "2018-01-01",
             "verantwoordelijke": "Organisatie eenheid X",
         }
+
         response = self.client.post(zaaktype_list_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -473,7 +474,6 @@ class ZaakTypeAPITests(APITestCase):
     def test_delete_zaaktype(self):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
-
         response = self.client.delete(zaaktype_url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -1859,7 +1859,6 @@ class ZaakTypeScopeTests(APITestCase, JWTAuthMixin):
             "versiedatum": "2018-01-01",
             "verantwoordelijke": "Organisatie eenheid X",
         }
-
         response = self.client.put(zaaktype_url, data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

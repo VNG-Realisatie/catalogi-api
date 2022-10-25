@@ -24,7 +24,8 @@ LOGGING["loggers"].update(
 
 #
 # Custom settings
-#
+NOTIFICATIONS_DISABLED = True  # During dev unable to create 'notifications_api_service' required for sending notifications.
+
 
 # Show active environment in admin.
 ENVIRONMENT = "CI"

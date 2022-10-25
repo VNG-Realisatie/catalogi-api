@@ -69,6 +69,8 @@ if "test" not in sys.argv:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += (
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
+if "test" in sys.argv:
+    NOTIFICATIONS_DISABLED = True  # During dev unable to create 'notifications_api_service' required for sending notifications.
 
 # Override settings with local settings.
 try:

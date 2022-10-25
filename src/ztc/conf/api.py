@@ -2,7 +2,7 @@ import os
 
 from vng_api_common.conf.api import *  # noqa - imports white-listed
 
-API_VERSION = "1.2.0-rc6"
+API_VERSION = "1.2.0-rc7"
 
 REST_FRAMEWORK = BASE_REST_FRAMEWORK.copy()
 REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
@@ -21,6 +21,8 @@ SPECTACULAR_SETTINGS = BASE_SPECTACULAR_SETTINGS.copy()
 SPECTACULAR_SETTINGS.update(
     {
         "SERVERS": [{"url": "https://catalogi-api.test.vng.cloud/api/v1"}],
+        # todo remove this line below when deploying to production
+        "SORT_OPERATION_PARAMETERS": False,
     }
 )
 SPECTACULAR_EXTENSIONS = [
