@@ -91,6 +91,13 @@ class InformatieObjectTypeAPITests(APITestCase):
             "besluittypen": [f"http://testserver{reverse(besluittype)}"],
             "beginObject": None,
             "eindeObject": None,
+            "omschrijvingGeneriek": {
+                "definitieInformatieobjecttypeOmschrijvingGeneriek": "",
+                "herkomstInformatieobjecttypeOmschrijvingGeneriek": "",
+                "hierarchieInformatieobjecttypeOmschrijvingGeneriek": "",
+                "informatieobjecttypeOmschrijvingGeneriek": "",
+                "opmerkingInformatieobjecttypeOmschrijvingGeneriek": None,
+            },
         }
         self.assertEqual(expected, response.json())
 
@@ -789,7 +796,6 @@ class InformatieObjectTypePaginationTestCase(APITestCase):
         informatieobjecttypen_list_url = get_operation_url("informatieobjecttype_list")
 
         response = self.client.get(informatieobjecttypen_list_url, {"page": 1})
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         response_data = response.json()
@@ -803,7 +809,6 @@ class InformatieObjectTypeScopeTests(APITestCase, JWTAuthMixin):
     scopes = [SCOPE_CATALOGI_FORCED_WRITE]
 
     def test_update_informatieobjecttype_not_concept_with_forced_scope(self):
-
         informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
         informatieobjecttype_url = reverse(informatieobjecttype)
 

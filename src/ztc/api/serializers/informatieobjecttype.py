@@ -5,7 +5,10 @@ from rest_framework.validators import UniqueTogetherValidator
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import add_choice_values_help_text
 
-from ...datamodel.models import InformatieObjectType
+from ...datamodel.models import (
+    InformatieObjectType,
+    InformatieObjectTypeOmschrijvingGeneriek,
+)
 from ..validators import (
     ConceptUpdateValidator,
     M2MConceptCreateValidator,
@@ -13,10 +16,26 @@ from ..validators import (
 )
 
 
+class InformatieObjectTypeOmschrijvingGeneriekSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InformatieObjectTypeOmschrijvingGeneriek
+        fields = (
+            "informatieobjecttype_omschrijving_generiek",
+            "definitie_informatieobjecttype_omschrijving_generiek",
+            "herkomst_informatieobjecttype_omschrijving_generiek",
+            "hierarchie_informatieobjecttype_omschrijving_generiek",
+            "opmerking_informatieobjecttype_omschrijving_generiek",
+        )
+
+
 class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializer based on ``IOT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
     """
+
+    omschrijving_generiek = InformatieObjectTypeOmschrijvingGeneriekSerializer(
+        required=False
+    )
 
     class Meta:
         model = InformatieObjectType
@@ -57,6 +76,7 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "concept",
             "zaaktypen",
             "besluittypen",
+            "omschrijving_generiek",
         )
         validators = [
             ConceptUpdateValidator(),

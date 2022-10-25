@@ -128,6 +128,19 @@ Uitleg bij mogelijke waarden:
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | ja | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktypen | URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| omschrijvingGeneriek |  |  | nee | C​R​U​D |
+
+## InformatieObjectTypeOmschrijvingGeneriek
+
+Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/objecttype/informatieobjecttypeomschrijvinggeneriek)
+
+| Attribuut | Omschrijving | Type | Verplicht | CRUD* |
+| --- | --- | --- | --- | --- |
+| informatieobjecttypeOmschrijvingGeneriek | Algemeen gehanteerde omschrijving van het type informatieobject. | string | ja | C​R​U​D |
+| definitieInformatieobjecttypeOmschrijvingGeneriek | Nauwkeurige beschrijving van het generieke type informatieobject | string | ja | C​R​U​D |
+| herkomstInformatieobjecttypeOmschrijvingGeneriek | De naam van de waardenverzameling, of van de beherende organisatie daarvan, waaruit de waarde is overgenomen. | string | ja | C​R​U​D |
+| hierarchieInformatieobjecttypeOmschrijvingGeneriek | De plaats in de rangorde van het informatieobjecttype. | string | ja | C​R​U​D |
+| opmerkingInformatieobjecttypeOmschrijvingGeneriek | Zinvolle toelichting bij het informatieobjecttype | string | nee | C​R​U​D |
 
 ## ResultaatType
 
