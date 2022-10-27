@@ -128,6 +128,8 @@ Uitleg bij mogelijke waarden:
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | ja | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktypen | URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| informatieobjectcategorie | Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | string | ja | C​R​U​D |
+| trefwoord | Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar te onderscheiden.) | array | nee | C​R​U​D |
 | omschrijvingGeneriek |  |  | nee | C​R​U​D |
 
 ## InformatieObjectTypeOmschrijvingGeneriek

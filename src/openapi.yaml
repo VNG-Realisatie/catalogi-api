@@ -11524,6 +11524,21 @@ components:
             waarin besluiten van dit BESLUITTYPE worden vastgelegd.
           title: informatieobjecttypen
           uniqueItems: true
+        informatieobjectcategorie:
+          type: string
+          title: Categorie
+          description: Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
+          maxLength: 80
+        trefwoord:
+          type: array
+          items:
+            type: string
+            maxLength: 30
+          description:
+            Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE
+            kunnen worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar
+            te onderscheiden.)
+          title: trefwoord
         omschrijvingGeneriek:
           allOf:
             - $ref: '#/components/schemas/InformatieObjectTypeOmschrijvingGeneriek'
@@ -11533,6 +11548,7 @@ components:
         - besluittypen
         - catalogus
         - concept
+        - informatieobjectcategorie
         - omschrijving
         - url
         - vertrouwelijkheidaanduiding
@@ -12161,6 +12177,21 @@ components:
             waarin besluiten van dit BESLUITTYPE worden vastgelegd.
           title: informatieobjecttypen
           uniqueItems: true
+        informatieobjectcategorie:
+          type: string
+          title: Categorie
+          description: Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
+          maxLength: 80
+        trefwoord:
+          type: array
+          items:
+            type: string
+            maxLength: 30
+          description:
+            Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE
+            kunnen worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar
+            te onderscheiden.)
+          title: trefwoord
         omschrijvingGeneriek:
           allOf:
             - $ref: '#/components/schemas/InformatieObjectTypeOmschrijvingGeneriek'
