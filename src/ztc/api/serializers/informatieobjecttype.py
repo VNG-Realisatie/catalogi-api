@@ -76,6 +76,8 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "concept",
             "zaaktypen",
             "besluittypen",
+            "informatieobjectcategorie",
+            "trefwoord",
             "omschrijving_generiek",
         )
         validators = [
