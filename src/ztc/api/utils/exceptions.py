@@ -42,7 +42,7 @@ def exception_handler(exc, context):
 class OverlappingException(APIException):
     status_code = 400
     default_detail = _(
-        f"De object komt al voor binnen de catalogus en opgegeven geldigheidsperiode."
+        f"Het object komt al voor binnen de catalogus en opgegeven geldigheidsperiode."
     )
     default_code = "overlapping-geldigheiden"
 

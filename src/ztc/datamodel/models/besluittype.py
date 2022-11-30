@@ -138,7 +138,7 @@ class BesluitType(
     class Meta:
         verbose_name = _("besluittype")
         verbose_name_plural = _("besluittypen")
-        unique_together = ("catalogus", "omschrijving")
+        # unique_together = ("catalogus", "omschrijving")
 
     def __str__(self):
         """

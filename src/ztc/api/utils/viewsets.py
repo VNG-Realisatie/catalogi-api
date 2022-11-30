@@ -71,13 +71,13 @@ def set_geldigheid(
     instance: Union[ZaakType, BesluitType, InformatieObjectType]
 ) -> Union[ZaakType, BesluitType, InformatieObjectType]:
     filters = get_filters(instance)
-
     previous_version = type(instance).objects.filter(**filters)
     if len(previous_version) == 1:
         if (
             previous_version[0].datum_begin_geldigheid
             >= instance.datum_begin_geldigheid
         ):
+            breakpoint()
             raise OverlappingException()
 
         previous_version[
@@ -97,8 +97,10 @@ def get_relevant_nested_resources(nested_resources) -> dict:
         "besluittypen",
         "zaaktypenrelaties",
     ]
+
     for resource in nested_resources_no_new_zaaktype_on_publish:
-        del nested_resources[resource]
+        if resource in nested_resources:
+            del nested_resources[resource]
     return nested_resources
 
 

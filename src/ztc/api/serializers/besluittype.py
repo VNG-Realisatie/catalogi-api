@@ -3,7 +3,7 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
-from ...datamodel.models import BesluitType
+from ...datamodel.models import BesluitType, InformatieObjectType, ZaakType
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
@@ -78,12 +78,23 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             "vastgelegd_in",
         )
         validators = [
-            UniqueTogetherValidator(
-                queryset=BesluitType.objects.all(), fields=["catalogus", "omschrijving"]
-            ),
+            # UniqueTogetherValidator(
+            #     queryset=BesluitType.objects.all(), fields=["catalogus", "omschrijving"]
+            # ),
             RelationCatalogValidator("informatieobjecttypen"),
             RelationCatalogValidator("zaaktypen"),
             ConceptUpdateValidator(),
-            M2MConceptCreateValidator(["zaaktypen", "informatieobjecttypen"]),
-            M2MConceptUpdateValidator(["zaaktypen", "informatieobjecttypen"]),
+            # M2MConceptCreateValidator(["zaaktypen", "informatieobjecttypen"]),
+            # M2MConceptUpdateValidator(["zaaktypen", "informatieobjecttypen"]),
         ]
+
+    # def create(self, validated_data):
+    #     zaaktypen = validated_data.pop("zaaktypen")
+    #     informatieobjecttypen = validated_data.pop("informatieobjecttypen")
+    #     obj = BesluitType.objects.create(**validated_data)
+    #     for item in zaaktypen:
+    #         obj.zaaktypen.add(item)
+    #         item.besluittypen.add(obj)
+    #     for item in informatieobjecttypen:
+    #         obj.informatieobjecttypen.add(item)
+    #     return obj

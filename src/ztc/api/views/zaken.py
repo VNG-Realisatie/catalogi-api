@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -12,7 +14,8 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import ZaakType
+from ...datamodel.models import BesluitType, ZaakType
+from ...datamodel.utils import is_url
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -151,3 +154,42 @@ class ZaakTypeViewSet(
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        request = self.besluittype_omschrijving_to_url(request)
+        return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        request = self.besluittype_omschrijving_to_url(request)
+        return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
+
+    def besluittype_omschrijving_to_url(self, request):
+        """
+        The array of 'besluittypen_omschrijvingen' is transformed to an array of urls, which are required for the
+        m2m relationship. The corresponding urls are based on their most recent 'geldigheid' date, denoted by 'datum_einde_geldigheid=None'.
+        """
+        urls = []
+        for omschrijving in request.data.get("besluittypen", []):
+            if is_url(omschrijving):
+                return request
+
+            besluiten = BesluitType.objects.filter(
+                omschrijving=omschrijving, datum_einde_geldigheid=None
+            )
+
+            for besluit in besluiten:
+                urls.append(
+                    f"http://testserver/api/v1/besluittypen/{str(besluit.uuid)}"
+                )
+        request.data["besluittypen"] = urls
+        return request
+
+    def get_object(self):
+        """
+        return only the most recent object based on 'datum_geldigheid'
+        """
+        obj = super(ZaakTypeViewSet, self).get_object()
+        most_recent_besluittype = obj.besluittypen.filter(datum_einde_geldigheid=None)
+        if most_recent_besluittype:
+            obj.besluittypen.set(most_recent_besluittype)
+        return obj

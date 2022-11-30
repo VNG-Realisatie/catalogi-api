@@ -6,7 +6,8 @@ from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import BesluitType
+from ...datamodel.models import BesluitType, ZaakType
+from ...datamodel.utils import is_url
 from ..filters import BesluitTypeFilter
 from ..kanalen import KANAAL_BESLUITTYPEN
 from ..scopes import (
@@ -73,7 +74,6 @@ class BesluitTypeViewSet(
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
-
     global_description = _(
         "Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten API. "
         "Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het zaakgericht werken "
@@ -96,6 +96,42 @@ class BesluitTypeViewSet(
     }
     concept_related_fields = ["informatieobjecttypen", "zaaktypen"]
     notifications_kanaal = KANAAL_BESLUITTYPEN
+
+    def create(self, request, *args, **kwargs):
+        request = self.zaaktypen_identificaties_to_urls(request)
+        return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        request = self.zaaktypen_identificaties_to_urls(request)
+        return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
+
+    def zaaktypen_identificaties_to_urls(self, request):
+        """
+        The array of 'zaaktypen_identificaties' is transformed to an array of urls, which are required for the
+        m2m relationship. The corresponding urls are based on their most recent 'geldigheid' date, denoted by 'datum_einde_geldigheid=None'.
+        """
+        urls = []
+        for identificatie in request.data.get("zaaktypen", []):
+            if is_url(identificatie):
+                return request
+
+            zaaktypen = ZaakType.objects.filter(
+                identificatie=identificatie, datum_einde_geldigheid=None
+            )
+            for zaaktype in zaaktypen:
+                urls.append(f"http://testserver/api/v1/zaaktypen/{str(zaaktype.uuid)}")
+        request.data["zaaktypen"] = urls
+        return request
+
+    def get_object(self):
+        """
+        return only the most recent object based on 'datum_geldigheid'
+        """
+        obj = super(BesluitTypeViewSet, self).get_object()
+        most_recent_zaaktype = obj.zaaktypen.filter(datum_einde_geldigheid=None)
+        if most_recent_zaaktype:
+            obj.zaaktypen.set(most_recent_zaaktype)
+        return obj
 
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)
