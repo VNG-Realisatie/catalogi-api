@@ -11,7 +11,6 @@ from rest_framework.serializers import (
     SerializerMethodField,
 )
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
-from vng_api_common.descriptors import GegevensGroepType
 from vng_api_common.serializers import (
     GegevensGroepSerializer,
     NestedGegevensGroepMixin,
@@ -93,6 +92,7 @@ class ZaakTypeSerializer(
     NestedUpdateMixin,
     HyperlinkedModelSerializer,
 ):
+
     referentieproces = ReferentieProcesSerializer(
         required=True,
         help_text=_("Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE."),
@@ -245,9 +245,6 @@ class ZaakTypeSerializer(
             "besluittypen": {
                 "label": _("heeft relevante besluittypen"),
                 "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-                ),
             },
             "deelzaaktypen": {"lookup_field": "uuid"},
         }
@@ -274,24 +271,3 @@ class ZaakTypeSerializer(
         self.fields[
             "indicatie_intern_of_extern"
         ].help_text += f"\n\n{value_display_mapping}"
-
-    # def create(self, validated_data):
-    #     besluittypen = validated_data.pop("besluittypen")
-    # gerelateerde_zaaktypen = validated_data.pop("zaaktypenrelaties")
-    # referentieproces = validated_data.pop("referentieproces")
-    #
-    # relatie = ZaakTypenRelatie.objects.create(zaaktype="http://example.com/zaaktype/1",
-    #                                           aard_relatie=AardRelatieChoices.bijdrage,
-    #                                           toelichting="test relations", )
-    # relatie.save()
-    #
-    # obj = ZaakType.objects.create(**validated_data, referentieproces_naam=referentieproces["naam"],
-    #                               referentieproces_link=referentieproces["link"]
-    #                               )
-    # breakpoint()
-    # for item in besluittypen:
-    #     obj.besluittypen.add(item)
-    #     item.zaaktypen.add(obj)
-    # for item in gerelateerde_zaaktypen:
-    #     obj.zaaktypenrelaties.add(relatie)
-    # return obj

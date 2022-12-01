@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+import uuid
 
 from django.utils.translation import gettext as _
 
@@ -15,7 +15,6 @@ from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import BesluitType, ZaakType
-from ...datamodel.utils import is_url
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -25,7 +24,12 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import ZaakTypeSerializer
-from ..utils.viewsets import set_geldigheid, set_geldigheid_nestled_resources
+from ..utils.viewsets import (
+    build_absolute_url,
+    is_url,
+    set_geldigheid,
+    set_geldigheid_nestled_resources,
+)
 from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
 
 
@@ -163,6 +167,24 @@ class ZaakTypeViewSet(
         request = self.besluittype_omschrijving_to_url(request)
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
+    def retrieve(self, request, *args, **kwargs):
+        """
+        return only the most recent object based on 'datum_geldigheid' and 'concept=False'
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        besluittypen = serializer.data["besluittypen"]
+
+        for i, url in enumerate(besluittypen):
+            uuid_from_url = uuid.UUID(url.rsplit("/", 1)[1]).hex
+            valid_besluit = BesluitType.objects.filter(
+                uuid=uuid_from_url, concept=False, datum_einde_geldigheid=None
+            )
+            if not valid_besluit:
+                serializer.data["besluittypen"].pop(i)
+
+        return Response(serializer.data)
+
     def besluittype_omschrijving_to_url(self, request):
         """
         The array of 'besluittypen_omschrijvingen' is transformed to an array of urls, which are required for the
@@ -179,17 +201,8 @@ class ZaakTypeViewSet(
 
             for besluit in besluiten:
                 urls.append(
-                    f"http://testserver/api/v1/besluittypen/{str(besluit.uuid)}"
+                    f"{build_absolute_url(self.action, request)}/besluittypen/{str(besluit.uuid)}"
                 )
         request.data["besluittypen"] = urls
-        return request
 
-    def get_object(self):
-        """
-        return only the most recent object based on 'datum_geldigheid'
-        """
-        obj = super(ZaakTypeViewSet, self).get_object()
-        most_recent_besluittype = obj.besluittypen.filter(datum_einde_geldigheid=None)
-        if most_recent_besluittype:
-            obj.besluittypen.set(most_recent_besluittype)
-        return obj
+        return request

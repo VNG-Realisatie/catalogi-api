@@ -1,9 +1,11 @@
 from django.conf import settings
 
+from drf_spectacular.extensions import OpenApiSerializerFieldExtension
 from notifications_api_common.utils import notification_documentation
 from vng_api_common.doc import DOC_AUTH_JWT
 
 from .kanalen import KANAAL_BESLUITTYPEN, KANAAL_INFORMATIEOBJECTTYPEN, KANAAL_ZAAKTYPEN
+from .serializers import ZaakTypeSerializer
 
 __all__ = [
     "TITLE",
@@ -12,6 +14,8 @@ __all__ = [
     "LICENSE",
     "VERSION",
 ]
+
+
 TITLE = f"{settings.PROJECT_NAME} API"
 
 DESCRIPTION = f"""Een API om een zaaktypecatalogus (ZTC) te benaderen.
@@ -55,3 +59,30 @@ CONTACT = {
     "url": settings.DOCUMENTATION_URL,
 }
 LICENSE = {"name": "EUPL 1.2", "url": "https://opensource.org/licenses/EUPL-1.2"}
+
+
+class HyperlinkedRelatedFieldExtension(OpenApiSerializerFieldExtension):
+    target_class = "rest_framework.relations.ManyRelatedField"
+    match_subclasses = True
+
+    def map_serializer_field(self, auto_schema, direction):
+        default_schema = auto_schema._map_serializer_field(
+            self.target, direction, bypass_extensions=True
+        )
+        if isinstance(self.target.parent, ZaakTypeSerializer):
+            if direction == "response":
+                default_schema |= {
+                    "description": f"URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                }
+                default_schema |= {"example": ["http://example.com"]}
+                default_schema |= {"items": {"type": "string", "format": "uri"}}
+                default_schema |= {"format": "uri"}
+            else:
+                default_schema |= {
+                    "description": f"omschrijving-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                }
+                default_schema |= {"example": ["omschrijving"]}
+                default_schema |= {"items": {"type": "string", "format": "str"}}
+                default_schema |= {"format": "str"}
+
+        return {**default_schema, "uniqueItems": True}

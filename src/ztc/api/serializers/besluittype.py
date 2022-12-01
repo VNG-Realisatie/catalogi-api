@@ -87,14 +87,3 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             # M2MConceptCreateValidator(["zaaktypen", "informatieobjecttypen"]),
             # M2MConceptUpdateValidator(["zaaktypen", "informatieobjecttypen"]),
         ]
-
-    # def create(self, validated_data):
-    #     zaaktypen = validated_data.pop("zaaktypen")
-    #     informatieobjecttypen = validated_data.pop("informatieobjecttypen")
-    #     obj = BesluitType.objects.create(**validated_data)
-    #     for item in zaaktypen:
-    #         obj.zaaktypen.add(item)
-    #         item.besluittypen.add(obj)
-    #     for item in informatieobjecttypen:
-    #         obj.informatieobjecttypen.add(item)
-    #     return obj

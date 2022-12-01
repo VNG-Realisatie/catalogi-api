@@ -23,16 +23,18 @@ SPECTACULAR_SETTINGS.update(
         "SERVERS": [{"url": "https://catalogi-api.test.vng.cloud/api/v1"}],
         # todo remove this line below when deploying to production
         "SORT_OPERATION_PARAMETERS": False,
+        "COMPONENT_SPLIT_REQUEST": True,
     }
 )
 SPECTACULAR_EXTENSIONS = [
     "vng_api_common.extensions.fields.duration.DurationFieldExtension",
     "vng_api_common.extensions.fields.history_url.HistoryURLFieldExtension",
     "vng_api_common.extensions.fields.hyperlink_identity.HyperlinkedIdentityFieldExtension",
-    "vng_api_common.extensions.fields.many_related.ManyRelatedFieldExtension",
+    "vng_api_common.extensions.fields.hyperlinked_related.HyperlinkedRelatedFieldExtension",
     "vng_api_common.extensions.fields.read_only.ReadOnlyFieldExtension",
     "vng_api_common.extensions.filters.query.FilterExtension",
     "vng_api_common.extensions.serializers.gegevensgroep.GegevensGroepExtension",
+    "ztc.api.schema.HyperlinkedRelatedFieldExtension",
 ]
 
 GEMMA_URL_INFORMATIEMODEL = "Imztc"

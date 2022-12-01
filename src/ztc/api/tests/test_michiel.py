@@ -228,6 +228,33 @@ class BesluitTypeAPITests(APITestCase):
         response_besluit_1 = self.client.post(besluittype_list_url, data)
         self.assertEqual(response_besluit_1.status_code, 201)
 
+    def post_besluittype_3(self):
+        informatieobjecttype = InformatieObjectType.objects.get()
+        informatieobjecttype_detail_url = get_operation_url(
+            "informatieobjecttype_retrieve", uuid=informatieobjecttype.uuid
+        )
+        besluittype_list_url = reverse("besluittype-list")
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "zaaktypen": [f"0"],
+            "omschrijving": "foo",
+            "omschrijvingGeneriek": "",
+            "besluitcategorie": "",
+            "reactietermijn": "P14D",
+            "publicatieIndicatie": True,
+            "publicatietekst": "",
+            "publicatietermijn": None,
+            "toelichting": "",
+            "informatieobjecttypen": [
+                f"http://testserver{informatieobjecttype_detail_url}"
+            ],
+            "beginGeldigheid": "2030-01-01",
+            "concept": True,
+        }
+
+        response_besluit_1 = self.client.post(besluittype_list_url, data)
+        self.assertEqual(response_besluit_1.status_code, 201)
+
     def get_zaaktype_2(self):
         zaaktype_2 = ZaakType.objects.filter(datum_begin_geldigheid="2018-01-01")[0]
         zaaktype_detail_url = get_operation_url(
@@ -238,7 +265,6 @@ class BesluitTypeAPITests(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["besluittypen"]), 1)
-
         self.assertEqual(
             str(zaaktype_2.besluittypen.first().datum_begin_geldigheid), "2016-01-01"
         )
@@ -300,4 +326,7 @@ class BesluitTypeAPITests(APITestCase):
         self.post_besluittype_2()
         self.publish_besluittype_2()
 
+        self.post_besluittype_3()
+
         self.get_zaaktype_2()
+        breakpoint()

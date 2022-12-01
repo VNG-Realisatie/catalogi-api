@@ -1,5 +1,6 @@
 from datetime import timedelta
 from typing import Optional, Union
+from urllib.parse import urlparse
 
 from django.apps import apps
 from django.db.models import Q
@@ -15,6 +16,17 @@ from ztc.datamodel.models import (
     ZaakObjectType,
     ZaakType,
 )
+
+
+def is_url(pattern: str):
+    is_url = urlparse(pattern)
+    return all([is_url.scheme, is_url.netloc])
+
+
+def build_absolute_url(action, request):
+    if action in ["update", "partial_update"]:
+        return request.build_absolute_uri().rsplit("/", 2)[0]
+    return request.build_absolute_uri().rsplit("/", 1)[0]
 
 
 class FilterSearchOrderingViewSetMixin(object):
@@ -77,7 +89,6 @@ def set_geldigheid(
             previous_version[0].datum_begin_geldigheid
             >= instance.datum_begin_geldigheid
         ):
-            breakpoint()
             raise OverlappingException()
 
         previous_version[

@@ -1,13 +1,15 @@
+import uuid
+
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
+from rest_framework.response import Response
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.models import BesluitType, ZaakType
-from ...datamodel.utils import is_url
 from ..filters import BesluitTypeFilter
 from ..kanalen import KANAAL_BESLUITTYPEN
 from ..scopes import (
@@ -17,6 +19,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import BesluitTypeSerializer
+from ..utils.viewsets import build_absolute_url, is_url
 from .mixins import (
     ConceptMixin,
     ForcedCreateUpdateMixin,
@@ -105,6 +108,24 @@ class BesluitTypeViewSet(
         request = self.zaaktypen_identificaties_to_urls(request)
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
+    def retrieve(self, request, *args, **kwargs):
+        """
+        return only the most recent object based on 'datum_geldigheid' and 'concept=False'
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        zaaktypen = serializer.data["zaaktypen"]
+
+        for i, url in enumerate(zaaktypen):
+            uuid_from_url = uuid.UUID(url.rsplit("/", 1)[1]).hex
+            valid_zaak = ZaakType.objects.filter(
+                uuid=uuid_from_url, concept=False, datum_einde_geldigheid=None
+            )
+            if not valid_zaak:
+                serializer.data["zaaktypen"].pop(i)
+
+        return Response(serializer.data)
+
     def zaaktypen_identificaties_to_urls(self, request):
         """
         The array of 'zaaktypen_identificaties' is transformed to an array of urls, which are required for the
@@ -119,16 +140,20 @@ class BesluitTypeViewSet(
                 identificatie=identificatie, datum_einde_geldigheid=None
             )
             for zaaktype in zaaktypen:
-                urls.append(f"http://testserver/api/v1/zaaktypen/{str(zaaktype.uuid)}")
+                urls.append(
+                    f"{build_absolute_url(self.action, request)}/zaaktypen/{str(zaaktype.uuid)}"
+                )
         request.data["zaaktypen"] = urls
         return request
 
     def get_object(self):
         """
-        return only the most recent object based on 'datum_geldigheid'
+        return only the most recent object based on 'datum_geldigheid' and 'concept=False'
         """
         obj = super(BesluitTypeViewSet, self).get_object()
-        most_recent_zaaktype = obj.zaaktypen.filter(datum_einde_geldigheid=None)
+        most_recent_zaaktype = obj.zaaktypen.filter(
+            datum_einde_geldigheid=None, concept=False
+        )
         if most_recent_zaaktype:
             obj.zaaktypen.set(most_recent_zaaktype)
         return obj

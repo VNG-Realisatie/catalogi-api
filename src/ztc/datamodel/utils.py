@@ -1,6 +1,5 @@
 from datetime import date
 from typing import Optional
-from urllib.parse import urlparse
 
 from django.db.models import Q, QuerySet
 
@@ -27,8 +26,3 @@ def get_overlapping_zaaktypes(
         query = query.exclude(pk=instance.pk)
 
     return query
-
-
-def is_url(pattern: str):
-    is_url = urlparse(pattern)
-    return all([is_url.scheme, is_url.netloc])
