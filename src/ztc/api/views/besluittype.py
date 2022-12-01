@@ -112,6 +112,7 @@ class BesluitTypeViewSet(
         """
         return only the most recent object based on 'datum_geldigheid' and 'concept=False'
         """
+
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         zaaktypen = serializer.data["zaaktypen"]
@@ -145,18 +146,6 @@ class BesluitTypeViewSet(
                 )
         request.data["zaaktypen"] = urls
         return request
-
-    def get_object(self):
-        """
-        return only the most recent object based on 'datum_geldigheid' and 'concept=False'
-        """
-        obj = super(BesluitTypeViewSet, self).get_object()
-        most_recent_zaaktype = obj.zaaktypen.filter(
-            datum_einde_geldigheid=None, concept=False
-        )
-        if most_recent_zaaktype:
-            obj.zaaktypen.set(most_recent_zaaktype)
-        return obj
 
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)
