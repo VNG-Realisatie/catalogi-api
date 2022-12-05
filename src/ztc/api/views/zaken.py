@@ -169,7 +169,7 @@ class ZaakTypeViewSet(
 
     def retrieve(self, request, *args, **kwargs):
         """
-        return only the most recent object based on 'datum_geldigheid' and 'concept=False'
+        return only the most recent objects based on 'datum_geldigheid' and 'concept=False'
         """
         instance = self.get_object()
         serializer = self.get_serializer(instance)
