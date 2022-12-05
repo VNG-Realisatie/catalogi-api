@@ -1,3 +1,4 @@
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.db.models import Q
 from django.utils.translation import gettext as _
 
@@ -7,7 +8,7 @@ from rest_framework.serializers import ValidationError
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import ZaakInformatieobjectType
+from ...datamodel.models import InformatieObjectType, ZaakInformatieobjectType, ZaakType
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
@@ -16,6 +17,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import ZaakTypeInformatieObjectTypeSerializer
+from ..utils.viewsets import build_absolute_url, is_url
 from .mixins import ConceptFilterMixin, ForcedCreateUpdateMixin
 
 
@@ -113,3 +115,46 @@ class ZaakTypeInformatieObjectTypeViewSet(
                 )
 
         super().perform_destroy(instance)
+
+    def create(self, request, *args, **kwargs):
+        request = self.zaaktype_informatieobjecttype_to_url(request)
+        return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        request = self.zaaktype_informatieobjecttype_to_url(request)
+        return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
+
+    # def zaaktype_informatieobjecttype_to_url(self, request):
+    #     """
+    #     The arrays of 'zaaktype_identificaties' and 'informatieobjecttype_omschrijving' are transformed to an array of urls, which are required for the
+    #     m2m relationship. The corresponding urls are based on their most recent 'geldigheid' date, denoted by 'datum_einde_geldigheid=None'.
+    #     """
+    #
+    #     urls = {"zaaktype": "", "informatieobjecttype": ""}
+    #     if identificatie := request.data.get("zaaktype", []):
+    #         zaak = ZaakType.objects.filter(
+    #             identificatie=identificatie, datum_einde_geldigheid=None, concept=False
+    #         )
+    #         if not zaak:
+    #             zaak = ZaakType.objects.filter(
+    #                 identificatie=identificatie, datum_einde_geldigheid=None, concept=True
+    #             )
+    #
+    #         urls["zaaktype"] = f"{build_absolute_url(self.action, request)}/zaaktypen/{str(zaak[0].uuid)}"
+    #         request.data["zaaktype"] = urls["zaaktype"]
+    #
+    #     if omschrijving := request.data.get("informatieobjecttype", []):
+    #         informatieobjecttype = InformatieObjectType.objects.filter(
+    #             omschrijving=omschrijving, datum_einde_geldigheid=None, concept=False
+    #         )
+    #         if not informatieobjecttype:
+    #             informatieobjecttype = InformatieObjectType.objects.filter(
+    #                 omschrijving=omschrijving, datum_einde_geldigheid=None, concept=True
+    #             )
+    #
+    #         urls[
+    #             "informatieobjecttype"] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(informatieobjecttype[0].uuid)}"
+    #
+    #         request.data["informatieobjecttype"] = urls["informatieobjecttype"]
+    #
+    #     return request

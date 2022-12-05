@@ -79,15 +79,21 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.json(), expected)
 
     def test_create_ziot(self):
-        zaaktype = ZaakTypeFactory.create()
+        zaaktype = ZaakTypeFactory.create(
+            identificatie="test", concept=True, datum_einde_geldigheid=None
+        )
+
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus
+            catalogus=zaaktype.catalogus,
+            omschrijving="foo",
+            concept=True,
+            datum_einde_geldigheid=None,
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
-            "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "zaaktype": f"test",
+            "informatieobjecttype": "foo",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -102,15 +108,15 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(ziot.informatieobjecttype, informatieobjecttype)
 
     def test_create_ziot_not_concept_zaaktype(self):
-        zaaktype = ZaakTypeFactory.create(concept=False)
+        zaaktype = ZaakTypeFactory.create(concept=False, identificatie="test")
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus
+            catalogus=zaaktype.catalogus, omschrijving="foo", concept=False
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
-            "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "zaaktype": f"test",
+            "informatieobjecttype": f"foo",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }

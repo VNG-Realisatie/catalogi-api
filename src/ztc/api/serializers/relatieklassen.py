@@ -106,6 +106,12 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
 
         return validated_data
 
+    def create(self, validated_data):
+        breakpoint()
+        # customer_serializer = ZaakTypeInformatieObjectTypeSerializer(validated_data.get('customer'))
+        # customer_serializer.save()
+        # return User.objects.create(**validated_data)
+
 
 # class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
 #                                                       NestedHyperlinkedModelSerializer):
