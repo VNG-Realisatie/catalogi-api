@@ -109,7 +109,30 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatieobjecttype, informatieobjecttype)
 
-    def test_create_zaaktype_with_ziot(self):
+    def test_create_ziot_on_informatieobjecttype_post(self):
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            omschrijving="test", concept=False
+        )
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "omschrijving": "test",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "beginGeldigheid": "2019-01-01",
+            "informatieobjectcategorie": "test",
+        }
+        informatieobjecttypen_list_url = get_operation_url("informatieobjecttype_list")
+
+        response = self.client.post(informatieobjecttypen_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        informatieobjecttype = InformatieObjectType.objects.get()
+
+        self.assertEqual(informatieobjecttype.omschrijving, "test")
+        self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
+        self.assertEqual(informatieobjecttype.concept, True)
+
+    def test_create_ziot_on_zaaktype_post(self):
         besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
         besluittype_url = get_operation_url(
             "besluittype_retrieve", uuid=besluittype.uuid
@@ -117,6 +140,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(concept=False, identificatie="test")
 
         ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype=zaaktype)
+
         deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
         deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
 
@@ -162,24 +186,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         ziots = ZaakInformatieobjectType.objects.all()
-        breakpoint()
-
-        # zaaktype = ZaakType.objects.get(zaaktype_omschrijving="some test")
-        #
-        # self.assertEqual(zaaktype.catalogus, self.catalogus)
-        # self.assertEqual(zaaktype.besluittypen.get(), besluittype)
-        # self.assertEqual(zaaktype.referentieproces_naam, "ReferentieProces 0")
-        # self.assertEqual(
-        #     zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype,
-        #     "http://example.com/zaaktype/1",
-        # )
-        # self.assertEqual(zaaktype.concept, True)
-        # self.assertQuerysetEqual(
-        #     zaaktype.deelzaaktypen.all(),
-        #     {deelzaaktype1.pk, deelzaaktype2.pk},
-        #     transform=lambda x: x.pk,
-        #     ordered=False,
-        # )
+        self.assertEqual(len(ziots), 2)
 
     def test_create_ziot_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False, identificatie="test")

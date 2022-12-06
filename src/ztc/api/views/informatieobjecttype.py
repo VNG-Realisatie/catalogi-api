@@ -1,3 +1,4 @@
+from django.forms import model_to_dict
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -6,7 +7,7 @@ from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import InformatieObjectType
+from ...datamodel.models import InformatieObjectType, ZaakInformatieobjectType
 from ..filters import InformatieObjectTypeFilter
 from ..kanalen import KANAAL_INFORMATIEOBJECTTYPEN
 from ..scopes import (
@@ -94,6 +95,25 @@ class InformatieObjectTypeViewSet(
     }
     concept_related_fields = ["besluittypen", "zaaktypen"]
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN
+
+    def perform_create(self, serializer):
+        """Automatically create new ZaakInformatieobjectType relation on POST"""
+
+        informatieobjecttype = serializer.save()
+        associated_ziot = ZaakInformatieobjectType.objects.filter(
+            informatieobjecttype__omschrijving=informatieobjecttype.omschrijving,
+            informatieobjecttype__datum_einde_geldigheid=None,
+            informatieobjecttype__concept=False,
+        ).get()
+        kwargs = model_to_dict(
+            associated_ziot, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+        )
+
+        ZaakInformatieobjectType.objects.create(
+            **kwargs,
+            informatieobjecttype=informatieobjecttype,
+            zaaktype=associated_ziot.zaaktype
+        )
 
 
 InformatieObjectTypeViewSet.publish = swagger_publish_schema(

@@ -157,8 +157,9 @@ class ZaakTypeViewSet(
         zaak = serializer.save()
         associated_ziot = ZaakInformatieobjectType.objects.filter(
             zaaktype__identificatie=zaak.identificatie,
-            zaaktype__begin_datum_geldigheid=None,
-        )
+            zaaktype__datum_einde_geldigheid=None,
+            zaaktype__concept=False,
+        ).get()
         kwargs = model_to_dict(
             associated_ziot, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
         )

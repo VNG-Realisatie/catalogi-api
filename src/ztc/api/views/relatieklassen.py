@@ -120,16 +120,16 @@ class ZaakTypeInformatieObjectTypeViewSet(
         request = self.zaaktype_informatieobjecttype_to_url(request)
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
-    #
-    # def update(self, request, *args, **kwargs):
-    #     request = self.zaaktype_informatieobjecttype_to_url(request)
-    #     return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
+    def update(self, request, *args, **kwargs):
+        request = self.zaaktype_informatieobjecttype_to_url(request)
+        return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def zaaktype_informatieobjecttype_to_url(self, request):
         """
         The arrays of 'zaaktype_identificaties' and 'informatieobjecttype_omschrijving' are transformed to an array of urls, which are required for the
         m2m relationship. The corresponding urls are based on their most recent 'geldigheid' date, denoted by 'datum_einde_geldigheid=None'.
         """
+        # todo discuss proper way to filter this.
 
         urls = {"zaaktype": "", "informatieobjecttype": ""}
         if identificatie := request.data.get("zaaktype", []):
