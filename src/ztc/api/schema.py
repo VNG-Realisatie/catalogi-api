@@ -1,5 +1,7 @@
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
+from drf_spectacular.extensions import OpenApiSerializerFieldExtension
 from notifications_api_common.utils import notification_documentation
 from vng_api_common.doc import DOC_AUTH_JWT
 
@@ -12,6 +14,9 @@ __all__ = [
     "LICENSE",
     "VERSION",
 ]
+
+from .serializers import ZaakTypeInformatieObjectTypeSerializer
+
 TITLE = f"{settings.PROJECT_NAME} API"
 
 DESCRIPTION = f"""Een API om een zaaktypecatalogus (ZTC) te benaderen.
@@ -55,3 +60,45 @@ CONTACT = {
     "url": settings.DOCUMENTATION_URL,
 }
 LICENSE = {"name": "EUPL 1.2", "url": "https://opensource.org/licenses/EUPL-1.2"}
+
+
+class HyperlinkedRelatedFieldExtension(OpenApiSerializerFieldExtension):
+    target_class = "rest_framework.relations.HyperlinkedRelatedField"
+    match_subclasses = True
+
+    def map_serializer_field(self, auto_schema, direction):
+        default_schema = auto_schema._map_serializer_field(
+            self.target, direction, bypass_extensions=True
+        )
+        if isinstance(self.target.parent, ZaakTypeInformatieObjectTypeSerializer):
+            if direction == "request":
+                if self.target.view_name == "zaaktype-detail":
+                    default_schema |= {
+                        "description": f"identificatie-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                    }
+
+                    default_schema |= {"example": ["identificatie"]}
+                    default_schema |= {"format": "string"}
+
+                elif self.target.view_name == "informatieobjecttype-detail":
+                    default_schema |= {
+                        "description": f"omcshrijving-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                    }
+
+                    default_schema |= {"example": ["omschrijving"]}
+                    default_schema |= {"format": "string"}
+
+            if direction == "response":
+                if self.target.view_name == "zaaktype-detail":
+                    default_schema |= {
+                        "description": _("URL-referentie naar ZAAKTYPE.")
+                    }
+
+                elif self.target.view_name == "informatieobjecttype-detail":
+                    default_schema |= {
+                        "description": _("URL-referentie naar INFORMATIEOBJECTTYPE.")
+                    }
+        if self.target.view_name == "catalogus-detail":
+            default_schema |= {"description": _("URL-referentie naar CATALOGUS.")}
+
+        return default_schema

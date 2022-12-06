@@ -1,6 +1,7 @@
 from unittest import skip
 
 from rest_framework import status
+from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import (
     JWTAuthMixin,
     get_operation_url,
@@ -9,9 +10,10 @@ from vng_api_common.tests import (
     reverse_lazy,
 )
 
-from ztc.datamodel.choices import RichtingChoices
+from ztc.datamodel.choices import AardRelatieChoices, InternExtern, RichtingChoices
 from ztc.datamodel.models import ZaakInformatieobjectType
 from ztc.datamodel.tests.factories import (
+    BesluitTypeFactory,
     InformatieObjectTypeFactory,
     ZaakInformatieobjectTypeArchiefregimeFactory,
     ZaakInformatieobjectTypeFactory,
@@ -93,7 +95,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"test",
-            "informatieobjecttype": "foo",
+            "informatieobjecttype": f"foo",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -106,6 +108,78 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatieobjecttype, informatieobjecttype)
+
+    def test_create_zaaktype_with_ziot(self):
+        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
+        besluittype_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype.uuid
+        )
+        zaaktype = ZaakTypeFactory.create(concept=False, identificatie="test")
+
+        ziot1 = ZaakInformatieobjectTypeFactory.create(zaaktype=zaaktype)
+        deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
+        deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
+
+        zaaktype_list_url = get_operation_url("zaaktype_list")
+        data = {
+            "identificatie": "test",
+            "doel": "some test",
+            "aanleiding": "some test",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "deelzaaktypen": [
+                f"http://testserver{reverse(deelzaaktype1)}",
+                f"http://testserver{reverse(deelzaaktype2)}",
+            ],
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "besluittypen": [f"http://testserver{besluittype_url}"],
+            "beginGeldigheid": "2018-01-01",
+            "versiedatum": "2018-01-01",
+            "verantwoordelijke": "Organisatie eenheid X",
+        }
+
+        response = self.client.post(zaaktype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        ziots = ZaakInformatieobjectType.objects.all()
+        breakpoint()
+
+        # zaaktype = ZaakType.objects.get(zaaktype_omschrijving="some test")
+        #
+        # self.assertEqual(zaaktype.catalogus, self.catalogus)
+        # self.assertEqual(zaaktype.besluittypen.get(), besluittype)
+        # self.assertEqual(zaaktype.referentieproces_naam, "ReferentieProces 0")
+        # self.assertEqual(
+        #     zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype,
+        #     "http://example.com/zaaktype/1",
+        # )
+        # self.assertEqual(zaaktype.concept, True)
+        # self.assertQuerysetEqual(
+        #     zaaktype.deelzaaktypen.all(),
+        #     {deelzaaktype1.pk, deelzaaktype2.pk},
+        #     transform=lambda x: x.pk,
+        #     ordered=False,
+        # )
 
     def test_create_ziot_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False, identificatie="test")

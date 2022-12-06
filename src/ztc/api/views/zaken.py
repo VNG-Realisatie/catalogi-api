@@ -1,3 +1,4 @@
+from django.forms import model_to_dict
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -12,7 +13,7 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import ZaakType
+from ...datamodel.models import ZaakInformatieobjectType, ZaakType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -151,3 +152,19 @@ class ZaakTypeViewSet(
         serializer = self.get_serializer(instance)
 
         return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        zaak = serializer.save()
+        associated_ziot = ZaakInformatieobjectType.objects.filter(
+            zaaktype__identificatie=zaak.identificatie,
+            zaaktype__begin_datum_geldigheid=None,
+        )
+        kwargs = model_to_dict(
+            associated_ziot, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+        )
+
+        ZaakInformatieobjectType.objects.create(
+            **kwargs,
+            zaaktype=zaak,
+            informatieobjecttype=associated_ziot.informatieobjecttype
+        )

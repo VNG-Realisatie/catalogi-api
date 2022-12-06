@@ -20,10 +20,12 @@ from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
 from ...datamodel.models import (
+    BesluitType,
     Eigenschap,
     ResultaatType,
     RolType,
     StatusType,
+    ZaakInformatieobjectType,
     ZaakObjectType,
     ZaakType,
     ZaakTypenRelatie,
