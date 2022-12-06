@@ -69,7 +69,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | --- | --- | --- | --- | --- |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 | naam | De naam van de EIGENSCHAP | string | ja | C​R​U​D |
-| catalogus |  | string | ja | ~~C~~​R​~~U~~​~~D~~ |
+| catalogus | URL-referentie naar CATALOGUS. | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 | definitie | De beschrijving van de betekenis van deze EIGENSCHAP | string | ja | C​R​U​D |
 | specificatie |  |  | ja | C​R​U​D |
 | toelichting | Een toelichting op deze EIGENSCHAP en het belang hiervan voor zaken van dit ZAAKTYPE. | string | nee | C​R​U​D |
@@ -218,7 +218,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van STATUSsen van het STATUSTYPE | string | nee | C​R​U​D |
 | statustekst | De tekst die wordt gebruikt om de Initiator te informeren over het bereiken van een STATUS van dit STATUSTYPE bij het desbetreffende ZAAKTYPE. | string | nee | C​R​U​D |
 | zaaktype | URL-referentie naar het ZAAKTYPE van ZAAKen waarin STATUSsen van dit STATUSTYPE bereikt kunnen worden. | string | ja | C​R​U​D |
-| catalogus |  | string | ja | ~~C~~​R​~~U~~​~~D~~ |
+| catalogus | URL-referentie naar CATALOGUS. | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 | zaaktypeIdentificatie | Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt. | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 | volgnummer | Een volgnummer voor statussen van het STATUSTYPE binnen een zaak. | integer | ja | C​R​U​D |
 | isEindstatus | Geeft aan dat dit STATUSTYPE een eindstatus betreft. Dit gegeven is afgeleid uit alle STATUSTYPEn van dit ZAAKTYPE met het hoogste volgnummer. | boolean | ja | ~~C~~​R​~~U~~​~~D~~ |

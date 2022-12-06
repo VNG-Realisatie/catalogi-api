@@ -74,18 +74,18 @@ class HyperlinkedRelatedFieldExtension(OpenApiSerializerFieldExtension):
             if direction == "request":
                 if self.target.view_name == "zaaktype-detail":
                     default_schema |= {
-                        "description": f"identificatie-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                        "description": f"identificatie-referentie naar de bijbehoorende ZAAKTYPEs."
                     }
 
-                    default_schema |= {"example": ["identificatie"]}
+                    default_schema |= {"example": "zaaktype_identificatie"}
                     default_schema |= {"format": "string"}
 
                 elif self.target.view_name == "informatieobjecttype-detail":
                     default_schema |= {
-                        "description": f"omcshrijving-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                        "description": f"omschrijving-referentie naar de bijbehoorende INFORMATIEOBJECTTYPEs."
                     }
 
-                    default_schema |= {"example": ["omschrijving"]}
+                    default_schema |= {"example": "informatieobjecttype_omschrijving"}
                     default_schema |= {"format": "string"}
 
             if direction == "response":

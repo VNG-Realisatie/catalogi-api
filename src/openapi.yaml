@@ -12282,18 +12282,14 @@ components:
           type: string
           format: string
           title: zaaktype
-          description: identificatie-referenties naar de BESLUITTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          example:
-          - identificatie
+          description: identificatie-referentie naar de bijbehoorende ZAAKTYPEs.
+          example: zaaktype_identificatie
         informatieobjecttype:
           type: string
           format: string
           title: informatie object type
-          description: omcshrijving-referenties naar de BESLUITTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          example:
-          - omschrijving
+          description: omschrijving-referentie naar de bijbehoorende INFORMATIEOBJECTTYPEs.
+          example: informatieobjecttype_omschrijving
         volgnummer:
           type: integer
           maximum: 999
@@ -14019,18 +14015,14 @@ components:
           type: string
           format: string
           title: zaaktype
-          description: identificatie-referenties naar de BESLUITTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          example:
-          - identificatie
+          description: identificatie-referentie naar de bijbehoorende ZAAKTYPEs.
+          example: zaaktype_identificatie
         informatieobjecttype:
           type: string
           format: string
           title: informatie object type
-          description: omcshrijving-referenties naar de BESLUITTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          example:
-          - omschrijving
+          description: omschrijving-referentie naar de bijbehoorende INFORMATIEOBJECTTYPEs.
+          example: informatieobjecttype_omschrijving
         volgnummer:
           type: integer
           maximum: 999
