@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.forms import model_to_dict
 from django.utils.translation import gettext as _
 
@@ -153,8 +154,10 @@ class ZaakTypeViewSet(
 
         return Response(serializer.data)
 
+    @transaction.atomic
     def perform_create(self, serializer):
         zaak = serializer.save()
+
         associated_ziot = ZaakInformatieobjectType.objects.filter(
             zaaktype__identificatie=zaak.identificatie,
             zaaktype__datum_einde_geldigheid=None,

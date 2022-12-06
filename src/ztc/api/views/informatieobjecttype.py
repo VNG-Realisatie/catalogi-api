@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.forms import model_to_dict
 from django.utils.translation import gettext as _
 
@@ -96,6 +97,7 @@ class InformatieObjectTypeViewSet(
     concept_related_fields = ["besluittypen", "zaaktypen"]
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN
 
+    @transaction.atomic
     def perform_create(self, serializer):
         """Automatically create new ZaakInformatieobjectType relation on POST"""
 
