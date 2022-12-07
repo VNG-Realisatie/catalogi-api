@@ -169,7 +169,7 @@ class ZaakTypeViewSet(
 
     def retrieve(self, request, *args, **kwargs):
         """
-        return only the most recent objects based on 'datum_geldigheid' and 'concept=False'
+        prefilter the correlated 'besluittypen' array, based on 'datum_geldigheid'=None and 'concept'=False
         """
         instance = self.get_object()
         serializer = self.get_serializer(instance)
@@ -192,12 +192,12 @@ class ZaakTypeViewSet(
         """
         urls = []
         for omschrijving in request.data.get("besluittypen", []):
-            if is_url(omschrijving):
+            if is_url(omschrijving):  # todo laten we nog urls toe?
                 return request
 
             besluiten = BesluitType.objects.filter(
                 omschrijving=omschrijving, datum_einde_geldigheid=None
-            )
+            )  # add concept and non-concept
 
             for besluit in besluiten:
                 urls.append(

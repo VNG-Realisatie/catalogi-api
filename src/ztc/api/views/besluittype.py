@@ -110,7 +110,7 @@ class BesluitTypeViewSet(
 
     def retrieve(self, request, *args, **kwargs):
         """
-        return only the most recent object based on 'datum_geldigheid' and 'concept=False'
+        prefilter the correlated 'zaaktypen' array, based on 'datum_geldigheid'=None and 'concept'=False
         """
 
         instance = self.get_object()

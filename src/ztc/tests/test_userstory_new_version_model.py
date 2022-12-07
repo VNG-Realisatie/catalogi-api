@@ -8,7 +8,7 @@ from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import BesluitType, InformatieObjectType, ZaakType
 
 
-class BesluitTypeAPITests(APITestCase):
+class HistoryModelUserStoryTests(APITestCase):
     maxDiff = None
     heeft_alle_autorisaties = False
     scopes = [SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE]
