@@ -104,8 +104,8 @@ class InformatieObjectTypeViewSet(
         informatieobjecttype = serializer.save()
         associated_ziot = ZaakInformatieobjectType.objects.filter(
             informatieobjecttype__omschrijving=informatieobjecttype.omschrijving,
-            informatieobjecttype__datum_einde_geldigheid=None,
-            informatieobjecttype__concept=False,
+            informatieobjecttype__datum_einde_geldigheid=None,  # of hoger dan vandaag
+            informatieobjecttype__concept=False,  # deze niet meer meerdere records aanmaken
         ).get()
         kwargs = model_to_dict(
             associated_ziot, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
@@ -121,3 +121,6 @@ class InformatieObjectTypeViewSet(
 InformatieObjectTypeViewSet.publish = swagger_publish_schema(
     InformatieObjectTypeViewSet
 )
+
+
+## on post if both in concept, update ZIOT record.
