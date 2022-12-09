@@ -38,6 +38,11 @@ class HistoryModelUserStoryTests(APITestCase):
         self.post_besluittype_3()
 
         self.get_zaaktype_2()
+        self.get_zaaktype_list()
+
+    def get_zaaktype_list(self):
+        zaaktype_list_url = get_operation_url("zaaktype_list")
+        response = self.client.get(zaaktype_list_url)
 
     def post_informatieobjecttype(self):
         data = {
@@ -273,7 +278,6 @@ class HistoryModelUserStoryTests(APITestCase):
         )
 
         response = self.client.get(zaaktype_detail_url)
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["besluittypen"]), 1)
         self.assertEqual(

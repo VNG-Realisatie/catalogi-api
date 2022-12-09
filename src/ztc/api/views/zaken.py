@@ -175,16 +175,60 @@ class ZaakTypeViewSet(
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         besluittypen = serializer.data["besluittypen"]
-
+        valid_urls = []
         for i, url in enumerate(besluittypen):
             uuid_from_url = uuid.UUID(url.rsplit("/", 1)[1]).hex
             valid_besluit = BesluitType.objects.filter(
-                uuid=uuid_from_url, concept=False, datum_einde_geldigheid=None
+                Q(uuid=uuid_from_url)
+                & Q(concept=False)
+                & (
+                    Q(datum_begin_geldigheid__lte=serializer.data["begin_geldigheid"])
+                    & Q(datum_einde_geldigheid__gte=serializer.data["begin_geldigheid"])
+                    | Q(datum_begin_geldigheid__lte=serializer.data["begin_geldigheid"])
+                    & Q(datum_einde_geldigheid=None)
+                )
             )
-            if not valid_besluit:
-                serializer.data["besluittypen"].pop(i)
+            if valid_besluit:
+                valid_urls.append(valid_besluit[0])
+        serializer.data["besluittypen"].clear()
+        serializer.data["besluittypen"].extend(valid_urls)
 
         return Response(serializer.data)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer = self.remove_irrelevant_besluittypen(serializer)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer = self.remove_irrelevant_besluittypen(serializer)
+
+        return Response(serializer.data)
+
+    def remove_irrelevant_besluittypen(self, serializer):
+        valid_urls = []
+        for j, zaak in enumerate(serializer.data):
+            for i, besluit_url in enumerate(zaak["besluittypen"]):
+                uuid_from_url = uuid.UUID(besluit_url.rsplit("/", 1)[1]).hex
+                valid_besluit = BesluitType.objects.filter(
+                    Q(uuid=uuid_from_url)
+                    & (
+                        Q(datum_begin_geldigheid__lte=zaak["begin_geldigheid"])
+                        & Q(datum_einde_geldigheid__gte=zaak["begin_geldigheid"])
+                        | Q(datum_begin_geldigheid__lte=zaak["begin_geldigheid"])
+                        & Q(datum_einde_geldigheid=None)
+                    )
+                )
+                if not valid_besluit:
+                    valid_urls.append(valid_besluit[0])
+
+        serializer.data["besluittypen"].clear()
+        serializer.data["besluittypen"].extend(valid_urls)
+
+        return serializer
 
     def besluittype_omschrijving_to_url(self, request):
         """
@@ -214,6 +258,7 @@ class ZaakTypeViewSet(
                 urls.append(
                     f"{build_absolute_url(self.action, request)}/besluittypen/{str(besluit.uuid)}"
                 )
-        request.data["besluittypen"] = urls
+        request.data["besluittypen"].clear()
+        request.data["besluittypen"].extend(urls)
 
         return request
