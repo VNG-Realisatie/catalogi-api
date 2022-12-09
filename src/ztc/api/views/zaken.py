@@ -1,5 +1,6 @@
 import uuid
 
+from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -188,7 +189,7 @@ class ZaakTypeViewSet(
     def besluittype_omschrijving_to_url(self, request):
         """
         The array of 'besluittypen_omschrijvingen' is transformed to an array of urls, which are required for the
-        m2m relationship. The corresponding urls are based on their most recent 'geldigheid' date, denoted by 'datum_einde_geldigheid=None'.
+        m2m relationship.
         """
         urls = []
         for omschrijving in request.data.get("besluittypen", []):
@@ -196,8 +197,18 @@ class ZaakTypeViewSet(
                 return request
 
             besluiten = BesluitType.objects.filter(
-                omschrijving=omschrijving, datum_einde_geldigheid=None
-            )  # add concept and non-concept
+                (
+                    Q(datum_begin_geldigheid__lte=request.data.get("begin_geldigheid"))
+                    & Q(
+                        datum_einde_geldigheid__gte=request.data.get("begin_geldigheid")
+                    )
+                    | Q(
+                        datum_begin_geldigheid__lte=request.data.get("begin_geldigheid")
+                    )
+                    & Q(datum_einde_geldigheid=None)
+                )
+                & Q(omschrijving=omschrijving)
+            )  # add both concept and non-concept
 
             for besluit in besluiten:
                 urls.append(

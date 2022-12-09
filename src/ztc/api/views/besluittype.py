@@ -1,5 +1,6 @@
 import uuid
 
+from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -130,15 +131,25 @@ class BesluitTypeViewSet(
     def zaaktypen_identificaties_to_urls(self, request):
         """
         The array of 'zaaktypen_identificaties' is transformed to an array of urls, which are required for the
-        m2m relationship. The corresponding urls are based on their most recent 'geldigheid' date, denoted by 'datum_einde_geldigheid=None'.
+        m2m relationship.
         """
         urls = []
         for identificatie in request.data.get("zaaktypen", []):
-            if is_url(identificatie):
+            if is_url(identificatie):  # todo laten we urls toe?
                 return request
 
             zaaktypen = ZaakType.objects.filter(
-                identificatie=identificatie, datum_einde_geldigheid=None
+                (
+                    Q(datum_begin_geldigheid__lte=request.data.get("begin_geldigheid"))
+                    & Q(
+                        datum_einde_geldigheid__gte=request.data.get("begin_geldigheid")
+                    )
+                    | Q(
+                        datum_begin_geldigheid__lte=request.data.get("begin_geldigheid")
+                    )
+                    & Q(datum_einde_geldigheid=None)
+                )
+                & Q(identificatie=identificatie)
             )
             for zaaktype in zaaktypen:
                 urls.append(
