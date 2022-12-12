@@ -5,7 +5,7 @@ from notifications_api_common.utils import notification_documentation
 from vng_api_common.doc import DOC_AUTH_JWT
 
 from .kanalen import KANAAL_BESLUITTYPEN, KANAAL_INFORMATIEOBJECTTYPEN, KANAAL_ZAAKTYPEN
-from .serializers import ZaakTypeSerializer
+from .serializers import BesluitTypeSerializer, ZaakTypeSerializer
 
 __all__ = [
     "TITLE",
@@ -14,7 +14,6 @@ __all__ = [
     "LICENSE",
     "VERSION",
 ]
-
 
 TITLE = f"{settings.PROJECT_NAME} API"
 
@@ -74,14 +73,24 @@ class HyperlinkedRelatedFieldExtension(OpenApiSerializerFieldExtension):
                 default_schema |= {
                     "description": f"URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
                 }
-                default_schema |= {"example": ["http://example.com"]}
-                default_schema |= {"items": {"type": "string", "format": "uri"}}
-                default_schema |= {"format": "uri"}
             else:
                 default_schema |= {
                     "description": f"omschrijving-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
                 }
                 default_schema |= {"example": ["omschrijving"]}
+                default_schema |= {"items": {"type": "string", "format": "str"}}
+                default_schema |= {"format": "str"}
+
+        if isinstance(self.target.parent, BesluitTypeSerializer):
+            if direction == "response":
+                default_schema |= {
+                    "description": f"URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                }
+            else:
+                default_schema |= {
+                    "description": f"Identificatie-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+                }
+                default_schema |= {"example": ["identificaties"]}
                 default_schema |= {"items": {"type": "string", "format": "str"}}
                 default_schema |= {"format": "str"}
 

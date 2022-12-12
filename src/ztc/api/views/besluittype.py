@@ -1,6 +1,3 @@
-import uuid
-
-from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -20,7 +17,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import BesluitTypeSerializer
-from ..utils.viewsets import build_absolute_url, is_url
+from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
 from .mixins import (
     ConceptMixin,
     ForcedCreateUpdateMixin,
@@ -102,61 +99,32 @@ class BesluitTypeViewSet(
     notifications_kanaal = KANAAL_BESLUITTYPEN
 
     def create(self, request, *args, **kwargs):
-        request = self.zaaktypen_identificaties_to_urls(request)
+        request = m2m_array_of_str_to_url(request, "zaaktypen", ZaakType, self.action)
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        request = self.zaaktypen_identificaties_to_urls(request)
+        request = m2m_array_of_str_to_url(request, "zaaktypen", ZaakType, self.action)
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
-        """
-        prefilter the correlated 'zaaktypen' array, based on 'datum_geldigheid'=None and 'concept'=False
-        """
-
         instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        zaaktypen = serializer.data["zaaktypen"]
-
-        for i, url in enumerate(zaaktypen):
-            uuid_from_url = uuid.UUID(url.rsplit("/", 1)[1]).hex
-            valid_zaak = ZaakType.objects.filter(
-                uuid=uuid_from_url, concept=False, datum_einde_geldigheid=None
-            )
-            if not valid_zaak:
-                serializer.data["zaaktypen"].pop(i)
-
+        serializer = remove_invalid_m2m(
+            self.get_serializer(instance), "zaaktypen", ZaakType, self.action
+        )
         return Response(serializer.data)
 
-    def zaaktypen_identificaties_to_urls(self, request):
-        """
-        The array of 'zaaktypen_identificaties' is transformed to an array of urls, which are required for the
-        m2m relationship.
-        """
-        urls = []
-        for identificatie in request.data.get("zaaktypen", []):
-            if is_url(identificatie):  # todo laten we urls toe?
-                return request
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer = remove_invalid_m2m(serializer, "zaaktypen", ZaakType)
+            return self.get_paginated_response(serializer.data)
 
-            zaaktypen = ZaakType.objects.filter(
-                (
-                    Q(datum_begin_geldigheid__lte=request.data.get("begin_geldigheid"))
-                    & Q(
-                        datum_einde_geldigheid__gte=request.data.get("begin_geldigheid")
-                    )
-                    | Q(
-                        datum_begin_geldigheid__lte=request.data.get("begin_geldigheid")
-                    )
-                    & Q(datum_einde_geldigheid=None)
-                )
-                & Q(identificatie=identificatie)
-            )
-            for zaaktype in zaaktypen:
-                urls.append(
-                    f"{build_absolute_url(self.action, request)}/zaaktypen/{str(zaaktype.uuid)}"
-                )
-        request.data["zaaktypen"] = urls
-        return request
+        serializer = self.get_serializer(queryset, many=True)
+        serializer = remove_invalid_m2m(serializer, "zaaktypen", ZaakType)
+
+        return Response(serializer.data)
 
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)

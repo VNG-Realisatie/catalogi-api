@@ -45,7 +45,11 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
                 "required": True,
                 "allow_empty": True,
             },
-            "zaaktypen": {"lookup_field": "uuid", "allow_empty": True},
+            "zaaktypen": {
+                "lookup_field": "uuid",
+                "allow_empty": True,
+                "help_text": _(""),
+            },
             "resultaattypen": {
                 "lookup_field": "uuid",
                 "read_only": True,

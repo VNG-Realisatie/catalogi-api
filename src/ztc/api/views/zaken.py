@@ -1,6 +1,3 @@
-import uuid
-
-from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -26,8 +23,8 @@ from ..scopes import (
 )
 from ..serializers import ZaakTypeSerializer
 from ..utils.viewsets import (
-    build_absolute_url,
-    is_url,
+    m2m_array_of_str_to_url,
+    remove_invalid_m2m,
     set_geldigheid,
     set_geldigheid_nestled_resources,
 )
@@ -161,38 +158,22 @@ class ZaakTypeViewSet(
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-        request = self.besluittype_omschrijving_to_url(request)
+        request = m2m_array_of_str_to_url(
+            request, "besluittypen", BesluitType, self.action
+        )
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        request = self.besluittype_omschrijving_to_url(request)
+        request = m2m_array_of_str_to_url(
+            request, "besluittypen", BesluitType, self.action
+        )
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
-        """
-        prefilter the correlated 'besluittypen' array, based on 'datum_geldigheid'=None and 'concept'=False
-        """
         instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        besluittypen = serializer.data["besluittypen"]
-        valid_urls = []
-        for i, url in enumerate(besluittypen):
-            uuid_from_url = uuid.UUID(url.rsplit("/", 1)[1]).hex
-            valid_besluit = BesluitType.objects.filter(
-                Q(uuid=uuid_from_url)
-                & Q(concept=False)
-                & (
-                    Q(datum_begin_geldigheid__lte=serializer.data["begin_geldigheid"])
-                    & Q(datum_einde_geldigheid__gte=serializer.data["begin_geldigheid"])
-                    | Q(datum_begin_geldigheid__lte=serializer.data["begin_geldigheid"])
-                    & Q(datum_einde_geldigheid=None)
-                )
-            )
-            if valid_besluit:
-                valid_urls.append(valid_besluit[0])
-        serializer.data["besluittypen"].clear()
-        serializer.data["besluittypen"].extend(valid_urls)
-
+        serializer = remove_invalid_m2m(
+            self.get_serializer(instance), "besluittypen", BesluitType, self.action
+        )
         return Response(serializer.data)
 
     def list(self, request, *args, **kwargs):
@@ -200,65 +181,14 @@ class ZaakTypeViewSet(
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            serializer = self.remove_irrelevant_besluittypen(serializer)
+            serializer = remove_invalid_m2m(
+                serializer, "besluittypen", BesluitType, self.action
+            )
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        serializer = self.remove_irrelevant_besluittypen(serializer)
+        serializer = remove_invalid_m2m(
+            serializer, "besluittypen", BesluitType, self.action
+        )
 
         return Response(serializer.data)
-
-    def remove_irrelevant_besluittypen(self, serializer):
-        valid_urls = []
-        for j, zaak in enumerate(serializer.data):
-            for i, besluit_url in enumerate(zaak["besluittypen"]):
-                uuid_from_url = uuid.UUID(besluit_url.rsplit("/", 1)[1]).hex
-                valid_besluit = BesluitType.objects.filter(
-                    Q(uuid=uuid_from_url)
-                    & (
-                        Q(datum_begin_geldigheid__lte=zaak["begin_geldigheid"])
-                        & Q(datum_einde_geldigheid__gte=zaak["begin_geldigheid"])
-                        | Q(datum_begin_geldigheid__lte=zaak["begin_geldigheid"])
-                        & Q(datum_einde_geldigheid=None)
-                    )
-                )
-                if not valid_besluit:
-                    valid_urls.append(valid_besluit[0])
-
-        serializer.data["besluittypen"].clear()
-        serializer.data["besluittypen"].extend(valid_urls)
-
-        return serializer
-
-    def besluittype_omschrijving_to_url(self, request):
-        """
-        The array of 'besluittypen_omschrijvingen' is transformed to an array of urls, which are required for the
-        m2m relationship.
-        """
-        urls = []
-        for omschrijving in request.data.get("besluittypen", []):
-            if is_url(omschrijving):  # todo laten we nog urls toe?
-                return request
-
-            besluiten = BesluitType.objects.filter(
-                (
-                    Q(datum_begin_geldigheid__lte=request.data.get("begin_geldigheid"))
-                    & Q(
-                        datum_einde_geldigheid__gte=request.data.get("begin_geldigheid")
-                    )
-                    | Q(
-                        datum_begin_geldigheid__lte=request.data.get("begin_geldigheid")
-                    )
-                    & Q(datum_einde_geldigheid=None)
-                )
-                & Q(omschrijving=omschrijving)
-            )  # add both concept and non-concept
-
-            for besluit in besluiten:
-                urls.append(
-                    f"{build_absolute_url(self.action, request)}/besluittypen/{str(besluit.uuid)}"
-                )
-        request.data["besluittypen"].clear()
-        request.data["besluittypen"].extend(urls)
-
-        return request

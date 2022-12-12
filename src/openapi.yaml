@@ -10060,8 +10060,9 @@ components:
             title: ''
             minLength: 1
             maxLength: 1000
-          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
           title: zaaktypen
+          description: URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen
+            dit ZAAKTYPE.
           uniqueItems: true
         omschrijving:
           type: string
@@ -10207,12 +10208,13 @@ components:
           type: array
           items:
             type: string
-            format: uri
-            title: ''
-            minLength: 1
-            maxLength: 1000
-          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
+            format: str
           title: zaaktypen
+          description: Identificatie-referenties naar de BESLUITTYPEN die mogelijk
+            zijn binnen dit ZAAKTYPE.
+          example:
+          - identificaties
+          format: str
           uniqueItems: true
         omschrijving:
           type: string
@@ -10264,13 +10266,13 @@ components:
           type: array
           items:
             type: string
-            format: uri
-            title: ''
-            minLength: 1
-            maxLength: 1000
+            format: str
           description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
             waarin besluiten van dit BESLUITTYPE worden vastgelegd.
           title: informatieobjecttypen
+          example:
+          - identificaties
+          format: str
           uniqueItems: true
         beginGeldigheid:
           type: string
@@ -11716,12 +11718,13 @@ components:
           type: array
           items:
             type: string
-            format: uri
-            title: ''
-            minLength: 1
-            maxLength: 1000
-          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
+            format: str
           title: zaaktypen
+          description: Identificatie-referenties naar de BESLUITTYPEN die mogelijk
+            zijn binnen dit ZAAKTYPE.
+          example:
+          - identificaties
+          format: str
           uniqueItems: true
         omschrijving:
           type: string
@@ -11773,13 +11776,13 @@ components:
           type: array
           items:
             type: string
-            format: uri
-            title: ''
-            minLength: 1
-            maxLength: 1000
+            format: str
           description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
             waarin besluiten van dit BESLUITTYPE worden vastgelegd.
           title: informatieobjecttypen
+          example:
+          - identificaties
+          format: str
           uniqueItems: true
         beginGeldigheid:
           type: string
@@ -13929,13 +13932,13 @@ components:
           items:
             type: string
             format: uri
+            title: ''
+            minLength: 1
+            maxLength: 1000
           readOnly: true
           description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
             zijn binnen dit ZAAKTYPE.
           title: zaaktypen
-          example:
-          - http://example.com
-          format: uri
           uniqueItems: true
         roltypen:
           type: array
@@ -13954,24 +13957,25 @@ components:
           items:
             type: string
             format: uri
+            title: heeft relevante besluittypen
+            minLength: 1
+            maxLength: 1000
           title: heeft relevante besluittypen
           description: URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen
             dit ZAAKTYPE.
-          example:
-          - http://example.com
-          format: uri
           uniqueItems: true
         deelzaaktypen:
           type: array
           items:
             type: string
             format: uri
+            nullable: true
+            title: ''
+            minLength: 1
+            maxLength: 1000
           description: De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen
             bij ZAAKen van dit ZAAKTYPE.
           title: deelzaaktypen
-          example:
-          - http://example.com
-          format: uri
           uniqueItems: true
         gerelateerdeZaaktypen:
           type: array
