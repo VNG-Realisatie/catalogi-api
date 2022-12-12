@@ -1,6 +1,6 @@
 import uuid
 from datetime import timedelta
-from typing import Optional, Union
+from typing import Union
 from urllib.parse import urlparse
 
 from django.apps import apps

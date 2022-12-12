@@ -131,7 +131,6 @@ class HistoryModelUserStoryTests(APITestCase):
 
         response_zaaktype_1 = self.client.post(zaaktype_list_url, data)
         self.assertEqual(response_zaaktype_1.status_code, 201)
-        zaaktype_1 = ZaakType.objects.all().first()
 
     def publish_besluittype_1(self):
         self.besluittype_1 = BesluitType.objects.all().first()
@@ -314,6 +313,7 @@ class HistoryModelUserStoryTests(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["besluittypen"]), 1)
+
         self.assertEqual(
             response.json()["besluittypen"][0],
             f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_2.uuid)}",
