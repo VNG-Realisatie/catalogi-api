@@ -34,7 +34,6 @@ SPECTACULAR_EXTENSIONS = [
     "vng_api_common.extensions.fields.read_only.ReadOnlyFieldExtension",
     "vng_api_common.extensions.filters.query.FilterExtension",
     "vng_api_common.extensions.serializers.gegevensgroep.GegevensGroepExtension",
-    "ztc.api.schema.HyperlinkedRelatedFieldExtension",
 ]
 
 GEMMA_URL_INFORMATIEMODEL = "Imztc"

@@ -71,10 +71,8 @@ class ZaakInformatieobjectType(ETagMixin, models.Model):
 
     class Meta:
         # NOTE: The uniqueness is implied in the specification.
-        unique_together = ("zaaktype", "volgnummer")
         verbose_name = _("Zaak-Informatieobject-Type")
         verbose_name_plural = _("Zaak-Informatieobject-Typen")
-        ordering = unique_together
 
         filter_fields = ("zaaktype", "informatieobjecttype", "richting")
         ordering_fields = filter_fields

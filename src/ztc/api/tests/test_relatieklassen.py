@@ -11,7 +11,11 @@ from vng_api_common.tests import (
 )
 
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern, RichtingChoices
-from ztc.datamodel.models import ZaakInformatieobjectType
+from ztc.datamodel.models import (
+    InformatieObjectType,
+    ZaakInformatieobjectType,
+    ZaakType,
+)
 from ztc.datamodel.tests.factories import (
     BesluitTypeFactory,
     InformatieObjectTypeFactory,
@@ -94,8 +98,8 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
-            "zaaktype": f"test",
-            "informatieobjecttype": f"foo",
+            "zaaktype": f"http://testserver{zaaktype_url}",
+            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -126,11 +130,50 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        informatieobjecttype = InformatieObjectType.objects.get()
+        ziot = ZaakInformatieobjectType.objects.all()
 
-        self.assertEqual(informatieobjecttype.omschrijving, "test")
-        self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
-        self.assertEqual(informatieobjecttype.concept, True)
+        self.assertEqual(len(ziot), 2)
+
+    def test_create_two_ziot_on_informatieobjecttype_post(self):
+        informatieobjecttype_1 = InformatieObjectTypeFactory.create(
+            omschrijving="test", concept=False, datum_begin_geldigheid="2018-01-01"
+        )
+        zaak = ZaakType.objects.get()
+        zaak.concept = False
+        zaak.save()
+
+        informatieobjecttype_2 = InformatieObjectTypeFactory.create(
+            omschrijving="test", concept=True, datum_begin_geldigheid="2019-01-01"
+        )
+        informatieobjecttypen_list_url = get_operation_url("informatieobjecttype_list")
+
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "omschrijving": "test",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "beginGeldigheid": "2020-01-01",
+            "informatieobjectcategorie": "test",
+        }
+
+        response = self.client.post(informatieobjecttypen_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        ziot = ZaakInformatieobjectType.objects.all()
+        self.assertEqual(len(ziot), 4)
+        ziot_zaaktype_concept = ziot.filter(
+            informatieobjecttype__datum_begin_geldigheid="2020-01-01",
+            zaaktype__concept=True,
+        )
+        ziot_zaaktype_non_concept = ziot.filter(
+            informatieobjecttype__datum_begin_geldigheid="2020-01-01",
+            zaaktype__concept=False,
+        )
+
+        self.assertEqual(len(ziot_zaaktype_concept), 1)
+
+        self.assertEqual(len(ziot_zaaktype_non_concept), 1)
+        self.assertNotEqual(ziot_zaaktype_concept[0], ziot_zaaktype_non_concept[0])
 
     def test_create_ziot_on_zaaktype_post(self):
         besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
@@ -187,6 +230,89 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
         ziots = ZaakInformatieobjectType.objects.all()
         self.assertEqual(len(ziots), 2)
+
+    def test_create_two_ziot_on_zaaktype_post(self):
+        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
+        besluittype_url = get_operation_url(
+            "besluittype_retrieve", uuid=besluittype.uuid
+        )
+
+        informatieobjecttype_1 = InformatieObjectTypeFactory.create(
+            omschrijving="test", concept=False, datum_begin_geldigheid="2018-01-01"
+        )
+
+        informatieobjecttype_2 = InformatieObjectTypeFactory.create(
+            omschrijving="test", concept=True, datum_begin_geldigheid="2019-01-01"
+        )
+        for query in ZaakType.objects.all():
+            query.concept = False
+            query.identificatie = "test"
+            query.save()
+
+        deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
+        deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
+
+        zaaktype_list_url = get_operation_url("zaaktype_list")
+        data = {
+            "identificatie": "test",
+            "doel": "some test",
+            "aanleiding": "some test",
+            "indicatieInternOfExtern": InternExtern.extern,
+            "handelingInitiator": "indienen",
+            "onderwerp": "Klacht",
+            "handelingBehandelaar": "uitvoeren",
+            "doorlooptijd": "P30D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": True,
+            "verlengingstermijn": "P30D",
+            "publicatieIndicatie": True,
+            "verantwoordingsrelatie": [],
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "omschrijving": "some test",
+            "deelzaaktypen": [
+                f"http://testserver{reverse(deelzaaktype1)}",
+                f"http://testserver{reverse(deelzaaktype2)}",
+            ],
+            "gerelateerdeZaaktypen": [
+                {
+                    "zaaktype": "http://example.com/zaaktype/1",
+                    "aard_relatie": AardRelatieChoices.bijdrage,
+                    "toelichting": "test relations",
+                }
+            ],
+            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "besluittypen": [f"http://testserver{besluittype_url}"],
+            "beginGeldigheid": "2020-01-01",
+            "versiedatum": "2020-01-01",
+            "verantwoordelijke": "Organisatie eenheid X",
+        }
+
+        response = self.client.post(zaaktype_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        ziots = ZaakInformatieobjectType.objects.all()
+
+        self.assertEqual(len(ziots), 4)
+
+        ziot_informatieobjecttype_concept = ziots.filter(
+            zaaktype__datum_begin_geldigheid="2020-01-01",
+            informatieobjecttype__concept=True,
+        )
+        ziot_informatieobjecttype_non_concept = ziots.filter(
+            zaaktype__datum_begin_geldigheid="2020-01-01",
+            informatieobjecttype__concept=False,
+        )
+
+        self.assertEqual(len(ziot_informatieobjecttype_concept), 1)
+
+        self.assertEqual(len(ziot_informatieobjecttype_non_concept), 1)
+        self.assertNotEqual(
+            ziot_informatieobjecttype_concept[0],
+            ziot_informatieobjecttype_non_concept[0],
+        )
 
     def test_create_ziot_not_concept_zaaktype(self):
         zaaktype = ZaakTypeFactory.create(concept=False, identificatie="test")

@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import Q
 from django.forms import model_to_dict
 from django.utils.translation import gettext as _
 
@@ -156,19 +157,32 @@ class ZaakTypeViewSet(
 
     @transaction.atomic
     def perform_create(self, serializer):
+        """Automatically create new ZaakInformatieobjectType relation on POST, both for concept and non-concept."""
+
         zaak = serializer.save()
 
         associated_ziot = ZaakInformatieobjectType.objects.filter(
-            zaaktype__identificatie=zaak.identificatie,
-            zaaktype__datum_einde_geldigheid=None,
-            zaaktype__concept=False,
-        ).get()
-        kwargs = model_to_dict(
-            associated_ziot, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+            Q(zaaktype__identificatie=zaak.identificatie)
+            & (
+                Q(
+                    informatieobjecttype__datum_begin_geldigheid__lte=zaak.datum_begin_geldigheid
+                )
+                & Q(
+                    informatieobjecttype__datum_einde_geldigheid__gte=zaak.datum_begin_geldigheid
+                )
+                | Q(
+                    informatieobjecttype__datum_begin_geldigheid__lte=zaak.datum_begin_geldigheid
+                )
+                & Q(informatieobjecttype__datum_einde_geldigheid=None)
+            )
         )
+        for object in associated_ziot:
+            kwargs = model_to_dict(
+                object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+            )
 
-        ZaakInformatieobjectType.objects.create(
-            **kwargs,
-            zaaktype=zaak,
-            informatieobjecttype=associated_ziot.informatieobjecttype
-        )
+            ZaakInformatieobjectType.objects.create(
+                **kwargs,
+                zaaktype=zaak,
+                informatieobjecttype=object.informatieobjecttype
+            )

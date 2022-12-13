@@ -100,7 +100,7 @@ class InformatieObjectTypeViewSet(
 
     @transaction.atomic
     def perform_create(self, serializer):
-        """Automatically create new ZaakInformatieobjectType relation on POST"""
+        """Automatically create new ZaakInformatieobjectType relation on POST, both for concept and non-concept."""
 
         informatieobjecttype = serializer.save()
         associated_ziot = ZaakInformatieobjectType.objects.filter(
@@ -118,6 +118,7 @@ class InformatieObjectTypeViewSet(
                 & Q(zaaktype__datum_einde_geldigheid=None)
             )
         )
+
         for object in associated_ziot:
             kwargs = model_to_dict(
                 object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
