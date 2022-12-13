@@ -94,22 +94,9 @@ class ZaakInformatieobjectTypeFilter(FilterSet):
         help_text=STATUS_HELP_TEXT,
     )
 
-    # informatieobjecttype = filters.CharFilter(
-    #     field_name="informatieobjecttype",
-    #     method="informatieobjecttype_filter",
-    #     # help_text=STATUS_HELP_TEXT,
-    # )
-
     class Meta:
         model = ZaakInformatieobjectType
         fields = ("zaaktype", "informatieobjecttype", "richting", "status")
-
-    def informatieobjecttype_filter(self, queryset, name, value):
-        breakpoint()
-        qs = queryset.filter(
-            zaaktype__concept=False, informatieobjecttype__concept=False
-        )
-        return qs
 
     def status_filter_m2m(self, queryset, name, value):
         if value == "concept":

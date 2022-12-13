@@ -113,24 +113,6 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatieobjecttype, informatieobjecttype)
 
-    def test_create_ziot_not_concept_zaaktype(self):
-        zaaktype = ZaakTypeFactory.create(concept=False, identificatie="test")
-        zaaktype_url = reverse(zaaktype)
-        informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus, omschrijving="foo", concept=False
-        )
-        informatieobjecttype_url = reverse(informatieobjecttype)
-        data = {
-            "zaaktype": f"test",
-            "informatieobjecttype": f"foo",
-            "volgnummer": 13,
-            "richting": RichtingChoices.inkomend,
-        }
-
-        response = self.client.post(self.list_url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
     def test_create_ziot_not_concept_informatieobjecttype(self):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
@@ -188,25 +170,6 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "relations-incorrect-catalogus")
-
-    def test_create_ziot_fail_not_unique(self):
-        ziot = ZaakInformatieobjectTypeFactory(volgnummer=1)
-        informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=ziot.zaaktype.catalogus
-        )
-        data = {
-            "zaaktype": f"http://testserver.com{reverse(ziot.zaaktype)}",
-            "informatieobjecttype": f"http://testserver.com{reverse(informatieobjecttype)}",
-            "volgnummer": ziot.volgnummer,
-            "richting": RichtingChoices.inkomend,
-        }
-
-        response = self.client.post(self.list_url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], "unique")
 
     def test_delete_ziot(self):
         ziot = ZaakInformatieobjectTypeFactory.create()
@@ -1098,27 +1061,3 @@ class ZaakInformatieobjectTypeHistoryModelTests(APITestCase):
         ziot = ZaakInformatieobjectType.objects.all()
 
         self.assertEqual(len(ziot), 2)
-
-    def test_filter_informatieobjecttype(self):
-        ztiot1, ztiot2 = ZaakInformatieobjectTypeFactory.create_batch(
-            2, zaaktype__concept=False, informatieobjecttype__concept=False
-        )
-        url = f"http://testserver.com{reverse(ztiot1)}"
-        informatieobjecttype1_url = reverse(ztiot1.informatieobjecttype)
-        informatieobjecttype2_url = reverse(ztiot2.informatieobjecttype)
-        informatieobjecttype1_url = f"http://testserver.com{informatieobjecttype1_url}"
-        informatieobjecttype2_url = f"http://testserver.com{informatieobjecttype2_url}"
-
-        response = self.client.get(
-            self.list_url,
-            {"informatieobjecttype": informatieobjecttype1_url},
-            HTTP_HOST="testserver.com",
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        data = response.json()["results"]
-
-        self.assertEqual(data[0]["url"], url)
-        self.assertEqual(data[0]["informatieobjecttype"], informatieobjecttype1_url)
-        self.assertNotEqual(data[0]["informatieobjecttype"], informatieobjecttype2_url)
