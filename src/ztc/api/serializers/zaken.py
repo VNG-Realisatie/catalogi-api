@@ -254,6 +254,7 @@ class ZaakTypeSerializer(
         }
 
         validators = [
+            # ZaaktypeGeldigheidValidator(),
             RelationCatalogValidator("besluittypen"),
             ConceptUpdateValidator(),
             M2MConceptCreateValidator(["besluittypen", "informatieobjecttypen"]),

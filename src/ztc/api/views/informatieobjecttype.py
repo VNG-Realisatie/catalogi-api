@@ -118,7 +118,6 @@ class InformatieObjectTypeViewSet(
                 & Q(zaaktype__datum_einde_geldigheid=None)
             )
         )
-
         for object in associated_ziot:
             kwargs = model_to_dict(
                 object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
