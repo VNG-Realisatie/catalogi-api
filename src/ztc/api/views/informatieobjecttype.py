@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.db.models import Q
 from django.forms import model_to_dict
 from django.utils.translation import gettext as _
 
@@ -103,24 +104,34 @@ class InformatieObjectTypeViewSet(
 
         informatieobjecttype = serializer.save()
         associated_ziot = ZaakInformatieobjectType.objects.filter(
-            informatieobjecttype__omschrijving=informatieobjecttype.omschrijving,
-            informatieobjecttype__datum_einde_geldigheid=None,  # of hoger dan vandaag
-            informatieobjecttype__concept=False,  # deze niet meer meerdere records aanmaken
-        ).get()
-        kwargs = model_to_dict(
-            associated_ziot, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+            Q(informatieobjecttype__omschrijving=informatieobjecttype.omschrijving)
+            & (
+                Q(
+                    zaaktype__datum_begin_geldigheid__lte=informatieobjecttype.datum_begin_geldigheid
+                )
+                & Q(
+                    zaaktype__datum_einde_geldigheid__gte=informatieobjecttype.datum_begin_geldigheid
+                )
+                | Q(
+                    zaaktype__datum_begin_geldigheid__lte=informatieobjecttype.datum_begin_geldigheid
+                )
+                & Q(zaaktype__datum_einde_geldigheid=None)
+            )
         )
+        for object in associated_ziot:
+            kwargs = model_to_dict(
+                object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+            )
 
-        ZaakInformatieobjectType.objects.create(
-            **kwargs,
-            informatieobjecttype=informatieobjecttype,
-            zaaktype=associated_ziot.zaaktype
-        )
+            ZaakInformatieobjectType.objects.create(
+                **kwargs,
+                informatieobjecttype=informatieobjecttype,
+                zaaktype=object.zaaktype
+            )
 
 
 InformatieObjectTypeViewSet.publish = swagger_publish_schema(
     InformatieObjectTypeViewSet
 )
-
 
 ## on post if both in concept, update ZIOT record.
