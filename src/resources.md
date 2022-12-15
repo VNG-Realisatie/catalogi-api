@@ -300,15 +300,15 @@ Uitleg bij mogelijke waarden:
 | selectielijstProcestype | URL-referentie naar een vanuit archiveringsoptiek onderkende groep processen met dezelfde kenmerken (PROCESTYPE in de Selectielijst API). | string | nee | C​R​U​D |
 | referentieproces | Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE. |  | ja | C​R​U​D |
 | verantwoordelijke | De (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE. | string | ja | C​R​U​D |
-| zaakobjecttypen | URL referenties van de zaakobjecttypen welke horen bij deze versie van het ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| zaakobjecttypen |  | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | broncatalogus | De CATALOGUS waaraan het ZAAKTYPE is ontleend. |  | nee | C​R​U​D |
 | bronzaaktype | Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend. |  | nee | C​R​U​D |
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort. | string | ja | C​R​U​D |
-| statustypen | URL referenties van de statustypen welke horen bij deze versie van het ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
-| resultaattypen | URL referenties van de resultaattypen welke horen bij deze versie van het ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
-| eigenschappen | URL referenties van de eigenschappen welke horen bij deze versie van het ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| statustypen | URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| resultaattypen | URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| eigenschappen | URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | informatieobjecttypen | URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
-| roltypen | URL referenties van de roltypen welke horen bij deze versie van het ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| roltypen | URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | C​R​U​D |
 | deelzaaktypen | De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij ZAAKen van dit ZAAKTYPE. | array | nee | C​R​U​D |
 | gerelateerdeZaaktypen | De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE. | array | ja | C​R​U​D |

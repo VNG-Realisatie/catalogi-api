@@ -13,7 +13,6 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 
 from ..scopes import SCOPE_CATALOGI_FORCED_DELETE, SCOPE_CATALOGI_FORCED_WRITE
-from ..utils.viewsets import set_geldigheid
 
 
 def swagger_publish_schema(viewset_cls):
@@ -39,7 +38,6 @@ class ConceptPublishMixin:
     @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()
-        set_geldigheid(instance)
         instance.concept = False
         instance.save()
 
