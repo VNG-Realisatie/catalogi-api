@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 
 from drf_writable_nested import NestedCreateMixin, NestedUpdateMixin
+from rest_framework import serializers
 from rest_framework.serializers import (
     HyperlinkedModelSerializer,
     ModelSerializer,
@@ -273,3 +274,15 @@ class ZaakTypeSerializer(
         self.fields[
             "indicatie_intern_of_extern"
         ].help_text += f"\n\n{value_display_mapping}"
+
+    def validate(self, attrs):
+        verlenging_mogelijk = attrs.get("verlenging_mogelijk", {})
+        verlengingstermijn = attrs.get("verlengingstermijn", {})
+        if verlenging_mogelijk and not verlengingstermijn:
+            message = _(
+                "'verlengingstermijn' must be set if 'verlenging_mogelijk' is set."
+            )
+            raise serializers.ValidationError(message, code="value-error")
+
+        validated_data = super(ZaakTypeSerializer, self).validate(attrs)
+        return validated_data
