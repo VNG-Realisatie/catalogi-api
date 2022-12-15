@@ -326,51 +326,6 @@ class BesluitTypeAPITests(APITestCase):
 
         self.assertEqual(besluittype.concept, False)
 
-    def test_publish_besluittype_geldigheid(self):
-
-        zaaktype1 = ZaakTypeFactory.create(
-            concept=False,
-            identificatie="ZAAKTYPE-2018-0000000001",
-            datum_begin_geldigheid=date(2018, 1, 1),
-        )
-        zaaktype2 = ZaakTypeFactory.create(
-            concept=True,
-            identificatie="ZAAKTYPE-2018-0000000001",
-            datum_begin_geldigheid=date(2019, 1, 1),
-        )
-        besluittype1 = BesluitTypeFactory.create(
-            concept=False,
-            omschrijving="foobar",
-            zaaktypen=[zaaktype1],
-        )
-        besluittype2 = BesluitTypeFactory.create(
-            concept=True,
-            omschrijving="foobar",
-            zaaktypen=[zaaktype2],
-        )
-
-        besluittype_url = reverse(
-            "besluittype-publish", kwargs={"uuid": besluittype2.uuid}
-        )
-
-        response = self.client.post(besluittype_url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        besluittype1.refresh_from_db()
-        besluittype2.refresh_from_db()
-
-        self.assertEqual(besluittype2.concept, False)
-        self.assertEqual(
-            besluittype1.datum_einde_geldigheid,
-            besluittype2.datum_begin_geldigheid - timedelta(days=1),
-        )
-        self.assertEqual(
-            besluittype1.datum_einde_geldigheid,
-            besluittype2.datum_begin_geldigheid - timedelta(days=1),
-        )
-        self.assertEqual(besluittype2.datum_einde_geldigheid, None)
-
     def test_delete_besluittype(self):
         besluittype = BesluitTypeFactory.create()
         besluittype_url = reverse(

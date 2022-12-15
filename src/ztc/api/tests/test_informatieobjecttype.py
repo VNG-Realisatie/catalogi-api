@@ -196,68 +196,6 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         self.assertEqual(informatieobjecttype.concept, False)
 
-    def test_publish_informatieobjecttype_geldigheid(self):
-        informatieobjecttype1 = InformatieObjectTypeFactory.create(
-            concept=False,
-            datum_begin_geldigheid=date(2018, 1, 1),
-            datum_einde_geldigheid=date(2020, 5, 4),
-            omschrijving="foobar",
-        )
-        informatieobjecttype2 = InformatieObjectTypeFactory.create(
-            concept=False,
-            datum_begin_geldigheid=date(2020, 5, 5),
-            omschrijving="foobar",
-        )
-        informatieobjecttype3 = InformatieObjectTypeFactory.create(
-            concept=True,
-            omschrijving="foobar",
-            datum_begin_geldigheid=date(2021, 1, 6),
-        )
-
-        informatieobjecttypee_url = get_operation_url(
-            "informatieobjecttype_publish", uuid=informatieobjecttype3.uuid
-        )
-
-        response = self.client.post(informatieobjecttypee_url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-        informatieobjecttype1.refresh_from_db()
-        informatieobjecttype2.refresh_from_db()
-        informatieobjecttype3.refresh_from_db()
-
-        self.assertEqual(informatieobjecttype3.concept, False)
-        self.assertEqual(
-            informatieobjecttype2.datum_einde_geldigheid,
-            informatieobjecttype3.datum_begin_geldigheid - timedelta(days=1),
-        )
-
-        self.assertEqual(
-            informatieobjecttype2.datum_einde_geldigheid,
-            informatieobjecttype3.datum_begin_geldigheid - timedelta(days=1),
-        )
-        self.assertEqual(informatieobjecttype3.datum_einde_geldigheid, None)
-
-    def test_publish_informatieobjecttype_overlapping_geldigheid(self):
-        informatieobjecttype1 = InformatieObjectTypeFactory.create(
-            concept=False,
-            datum_begin_geldigheid=datetime.now().date(),
-            omschrijving="foobar",
-        )
-        informatieobjecttype2 = InformatieObjectTypeFactory.create(
-            concept=True, omschrijving="foobar"
-        )
-
-        informatieobjecttypee_url = get_operation_url(
-            "informatieobjecttype_publish", uuid=informatieobjecttype2.uuid
-        )
-
-        response = self.client.post(informatieobjecttypee_url)
-
-        data = response.json()
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(data["code"], "overlapping-geldigheiden")
-
     def test_delete_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
         informatieobjecttypee_url = get_operation_url(
