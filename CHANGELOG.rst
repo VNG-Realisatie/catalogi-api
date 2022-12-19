@@ -1,6 +1,13 @@
 ===========
 Wijzigingen
 ===========
+1.2.0-rc9 (2022-12-19)
+===========
+
+* Remove (incomplete) history model
+* Added 'omschrijving_generiek' to informatieobjecttype
+* Added 'trefwoorden' to informatieobjecttype
+
 
 1.2.0-rc7 (2022-10-13)
 ===========
