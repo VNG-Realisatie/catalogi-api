@@ -1,68 +1,65 @@
 ===========
 Wijzigingen
 ===========
-1.2.0-rc9 (2022-12-19)
+1.2.0 (2022-12-19)
 ===========
 
-* Remove (incomplete) history model
-* Added 'omschrijving_generiek' to informatieobjecttype
-* Added 'trefwoorden' to informatieobjecttype
+API spec New Features
+----------------
 
-
-1.2.0-rc7 (2022-10-13)
-===========
-
-* Added new notifications module
-
-1.2.0-rc6 (2022-10-01)
-===========
-
-* replaced drf-yasg by drf-spectacular because yasg does not support Django 3.2
-
-1.2.0-rc4 (2022-07-27)
-==================
-
-* Updated dependencies
-
-1.2.0-rc3 (2022-07-21)
-==================
-
-* Added "geforceerd-schrijven" scope to all resources.
-
-1.2.0-rc2 (2022-07-19)
-==================
-
-* Update python requirements (e.g django upgraded to 3.2)
-* Replace Gulp with Webpack
-* Change ``ResultaatType.omschrijving`` max length from 20 to 30
-* Change unique constraint of ``ZaakType.omschrijving`` & ``ZaakType.catalogus``
-  to ``ZaakType.identificatie`` & ``ZaakType.catalogus``
-* Added ``Eigenschap.catalogus``
-* Added ``ZaakTypeInformatieObjectType.catalogus``
-* Added ``StatusType.catalogus``
-
-1.2.0-rc1 (2022-07-06)
-==================
-
-* Implemented history model, see the `documentation`_ for more information
-* Added ``resulttaattypenOmschrijving`` and ``vastgelegdIn`` fields to ``BesluitType``
-* Added ``BesluitType.resultaattypen``
-* Added ``Catalogus.naam``
-* Added ``Eigenschap.zaaktype``, ``Eigenschap.statustype`` and ``Eigenschap.statustype``
-* Added ``InformatieObjectType.zaaktype`` and ``InformatieObjectType.besluittypen``
-* Added the following fields to ``ResultaatType``:
+* Added 'omschrijving_generiek' to informatieobjecttype (`Issue 1847`_):
+* Added 'trefwoorden' to informatieobjecttype (`Issue 2058`_):
+* Added "geforceerd-schrijven" scope to all resources to allow ``Correcties``. (`Issue 1923`_):
+* Added ``Eigenschap.catalogus`` (`Issue 1879`_):
+* Added ``ZaakTypeInformatieObjectType.catalogus`` (`Issue 1879`_):
+* Added ``StatusType.catalogus`` (`Issue 1879`_):
+* Added ``resulttaattypenOmschrijving`` and ``vastgelegdIn`` fields to ``BesluitType``  (`Issue 1847`_):
+* Added ``BesluitType.resultaattypen`` (`Issue 1847`_):
+* Added ``Catalogus.naam`` (`Issue 1847`_):
+* Added ``Eigenschap.zaaktype``, ``Eigenschap.statustype`` and ``Eigenschap.statustype`` (`Issue 1847`_):
+* Added ``InformatieObjectType.zaaktype`` and ``InformatieObjectType.besluittypen`` (`Issue 1847`_):
+* Added the following fields to ``ResultaatType``:  (`Issue 1847`_):
     * ``catalogus``
     * ``besluittypen``
     * ``informatieobjecttypen``
-* Added ``RolType.catalogus``
-* Added ``StatusType.doorlooptijd`` and ``StatusType.eigenschappen``
-* Added the following fields to ``ZaakType``:
+* Added ``RolType.catalogus``  (`Issue 1879`_):
+* Added ``StatusType.doorlooptijd`` and ``StatusType.eigenschappen``  (`Issue 1847`_):
+* Added the following fields to ``ZaakType``:  (`Issue 1847`_):
     * ``verantwoordelijke``
     * ``zaakobjecttypen``
     * ``broncatalogus``
     * ``bronzaaktype``
-* Documentation updated: Clarification of publish operation, beginGeldigheid/eindGeldigheid and beginObject/eindObject.
-* Business rules `ZTC-010`_ and `ZTC-011`_ updated to allow better version management
+* Added Zaakobjecttype resource (`Issue 1864`_): (`Issue 1880`_);
+
+
+Implementation changes
+----------------------
+
+* Added new notifications module (`Issue 1918`_);
+* replaced drf-yasg by drf-spectacular because yasg does not support Django 3.2 (`Issue 1918`_);
+* Updated dependencies (`Issue 1918`_);
+* Update python requirements (e.g django upgraded to 3.2) (`Issue 1918`_);
+* Replace Gulp with Webpack (`Issue 1918`_);
+
+
+API spec changes
+----------------
+
+* Change ``ResultaatType.omschrijving`` max length from 20 to 30 (`Issue 1766`_);
+* Change unique constraint of ``ZaakType.omschrijving`` & ``ZaakType.catalogus`` to ``ZaakType.identificatie`` & ``ZaakType.catalogus`` (`Issue 1639`_); 
+
+
+.. _Issue 1847: https://github.com/VNG-Realisatie/gemma-zaken/issues/1847
+.. _Issue 2058: https://github.com/VNG-Realisatie/gemma-zaken/issues/2058
+.. _Issue 1923: https://github.com/VNG-Realisatie/gemma-zaken/issues/1923
+.. _Issue 1879: https://github.com/VNG-Realisatie/gemma-zaken/issues/1879
+.. _Issue 1864: https://github.com/VNG-Realisatie/gemma-zaken/issues/1864
+.. _Issue 1880: https://github.com/VNG-Realisatie/gemma-zaken/issues/1880
+.. _Issue 1918: https://github.com/VNG-Realisatie/gemma-zaken/issues/1918
+.. _Issue 1776: https://github.com/VNG-Realisatie/gemma-zaken/issues/1776
+.. _Issue 1639: https://github.com/VNG-Realisatie/gemma-zaken/issues/1639
+
+
 
 1.1.1 (2022-06-22)
 ==================
