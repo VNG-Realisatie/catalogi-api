@@ -46,7 +46,7 @@ info:
     name: EUPL 1.2
     url: https://opensource.org/licenses/EUPL-1.2
 paths:
-  /api/v1/besluittypen:
+  /besluittypen:
     get:
       operationId: besluittype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -401,7 +401,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/besluittypen/{uuid}:
+  /besluittypen/{uuid}:
     get:
       operationId: besluittype_retrieve
       description: Een specifieke BESLUITTYPE opvragen.
@@ -1123,7 +1123,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/BesluitType'
           description: OK
-  /api/v1/besluittypen/{uuid}/publish:
+  /besluittypen/{uuid}/publish:
     post:
       operationId: besluittype_publish
       description:
@@ -1228,7 +1228,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/catalogussen:
+  /catalogussen:
     get:
       operationId: catalogus_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -1560,7 +1560,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/catalogussen/{uuid}:
+  /catalogussen/{uuid}:
     get:
       operationId: catalogus_retrieve
       description: Een specifieke CATALOGUS opvragen.
@@ -1789,7 +1789,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Catalogus'
           description: OK
-  /api/v1/eigenschappen:
+  /eigenschappen:
     get:
       operationId: eigenschap_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -2134,7 +2134,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/eigenschappen/{uuid}:
+  /eigenschappen/{uuid}:
     get:
       operationId: eigenschap_retrieve
       description: Een specifieke EIGENSCHAP opvragen.
@@ -2858,7 +2858,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Eigenschap'
           description: OK
-  /api/v1/informatieobjecttypen:
+  /informatieobjecttypen:
     get:
       operationId: informatieobjecttype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -3201,7 +3201,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/informatieobjecttypen/{uuid}:
+  /informatieobjecttypen/{uuid}:
     get:
       operationId: informatieobjecttype_retrieve
       description: Een specifieke INFORMATIEOBJECTTYPE opvragen.
@@ -3925,7 +3925,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/InformatieObjectType'
           description: OK
-  /api/v1/informatieobjecttypen/{uuid}/publish:
+  /informatieobjecttypen/{uuid}/publish:
     post:
       operationId: informatieobjecttype_publish
       description:
@@ -4030,7 +4030,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/resultaattypen:
+  /resultaattypen:
     get:
       operationId: resultaattype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -4364,7 +4364,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/resultaattypen/{uuid}:
+  /resultaattypen/{uuid}:
     get:
       operationId: resultaattype_retrieve
       description: Een specifieke RESULTAATTYPE opvragen.
@@ -5088,7 +5088,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResultaatType'
           description: OK
-  /api/v1/roltypen:
+  /roltypen:
     get:
       operationId: roltype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -5448,7 +5448,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/roltypen/{uuid}:
+  /roltypen/{uuid}:
     get:
       operationId: roltype_retrieve
       description: Een specifieke ROLTYPE opvragen.
@@ -6165,7 +6165,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RolType'
           description: OK
-  /api/v1/statustypen:
+  /statustypen:
     get:
       operationId: statustype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -6510,7 +6510,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/statustypen/{uuid}:
+  /statustypen/{uuid}:
     get:
       operationId: statustype_retrieve
       description: Een specifieke STATUSTYPE opvragen.
@@ -7234,7 +7234,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/StatusType'
           description: OK
-  /api/v1/zaakobjecttypen:
+  /zaakobjecttypen:
     get:
       operationId: zaakobjecttype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -7605,7 +7605,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/zaakobjecttypen/{uuid}:
+  /zaakobjecttypen/{uuid}:
     get:
       operationId: zaakobjecttype_retrieve
       description: Een specifieke ZAAKOBJECTTYPE opvragen.
@@ -8323,7 +8323,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ZaakObjectType'
           description: OK
-  /api/v1/zaaktype-informatieobjecttypen:
+  /zaaktype-informatieobjecttypen:
     get:
       operationId: zaakinformatieobjecttype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -8675,7 +8675,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/zaaktype-informatieobjecttypen/{uuid}:
+  /zaaktype-informatieobjecttypen/{uuid}:
     get:
       operationId: zaakinformatieobjecttype_retrieve
       description: Een specifieke ZAAKTYPE-INFORMATIEOBJECTTYPE relatie opvragen.
@@ -9404,7 +9404,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
           description: OK
-  /api/v1/zaaktypen:
+  /zaaktypen:
     get:
       operationId: zaaktype_list
       description: Deze lijst kan gefilterd wordt met query-string parameters.
@@ -9762,7 +9762,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Fout'
           description: Internal server error
-  /api/v1/zaaktypen/{uuid}:
+  /zaaktypen/{uuid}:
     get:
       operationId: zaaktype_retrieve
       description: Een specifieke ZAAKTYPE opvragen.
@@ -10486,7 +10486,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ZaakType'
           description: OK
-  /api/v1/zaaktypen/{uuid}/publish:
+  /zaaktypen/{uuid}/publish:
     post:
       operationId: zaaktype_publish
       description:
@@ -14308,6 +14308,9 @@ components:
       bearerFormat: JWT
       scheme: bearer
 servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/michielverhoef/Catalogussen_API/1.2.0
   - url: https://catalogi-api.test.vng.cloud/api/v1
 tags:
   - name: besluittypen
