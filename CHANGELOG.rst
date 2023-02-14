@@ -1,6 +1,15 @@
 ===========
 Wijzigingen
 ===========
+1.2.1 (2023-02-14)
+===========
+
+* Bumped common-api version
+* Fixed generation of openapi.yaml to not include /api/v1 in it's path
+* Added a way to turn off Notifications when running in a container
+
+
+
 1.2.0 (2022-12-19)
 ===========
 
@@ -46,7 +55,7 @@ API spec changes
 ----------------
 
 * Change ``ResultaatType.omschrijving`` max length from 20 to 30 (`Issue 1766`_);
-* Change unique constraint of ``ZaakType.omschrijving`` & ``ZaakType.catalogus`` to ``ZaakType.identificatie`` & ``ZaakType.catalogus`` (`Issue 1639`_); 
+* Change unique constraint of ``ZaakType.omschrijving`` & ``ZaakType.catalogus`` to ``ZaakType.identificatie`` & ``ZaakType.catalogus`` (`Issue 1639`_);
 
 
 .. _Issue 1847: https://github.com/VNG-Realisatie/gemma-zaken/issues/1847
