@@ -10,7 +10,6 @@ django-axes
 django-choices
 django-hijack
 django-hijack-admin
-django-choices
 django-markup[all_filter_dependencies]
 django-rosetta
 django-redis
@@ -22,7 +21,7 @@ django-filter~=21.1
 djangorestframework-camel-case
 drf_spectacular
 
-vng_api_common==2.0.0
+vng_api_common==2.0.3
 drf-flex-fields
 django-cors-middleware
 drf-writable-nested

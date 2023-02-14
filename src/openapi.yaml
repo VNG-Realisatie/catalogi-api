@@ -14308,9 +14308,6 @@ components:
       bearerFormat: JWT
       scheme: bearer
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/michielverhoef/Catalogussen_API/1.2.0
   - url: https://catalogi-api.test.vng.cloud/api/v1
 tags:
   - name: besluittypen
