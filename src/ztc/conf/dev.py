@@ -1,6 +1,8 @@
 import os
 import sys
 
+from .docker import getenv  # noqa isort:skip
+
 os.environ.setdefault(
     "SECRET_KEY", "i3yihsrle$16%4_&0_ic5psrzih+ostvzkzn7zwj$qddcl18+j"
 )
@@ -50,6 +52,7 @@ CSRF_COOKIE_SECURE = False
 # Custom settings
 #
 ENVIRONMENT = "development"
+NOTIFICATIONS_DISABLED = bool(getenv("NOTIFICATIONS_DISABLED", False))
 
 #
 # Library settings
@@ -69,8 +72,6 @@ if "test" not in sys.argv:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] += (
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
-if "test" in sys.argv:
-    NOTIFICATIONS_DISABLED = True  # During dev unable to create 'notifications_api_service' required for sending notifications.
 
 # Override settings with local settings.
 try:
