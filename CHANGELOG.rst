@@ -4,11 +4,17 @@ Wijzigingen
 1.2.1 (2023-02-14)
 ===========
 
-* Bumped common-api version
-* Fixed generation of openapi.yaml to not include /api/v1 in it's path
-* Added a way to turn off Notifications when running in a container
+API spec bugfixes
+-----------------
 
+* Fixed generation of openapi.yaml to not include ``/api/v1``
 
+Implementation changes
+----------------------
+
+* Bumps ``vng-api-common`` to version ``2.0.4``
+* Sets baseUrl to production server
+* Added ``ENV`` variable to turn off Notifications when running in a Container
 
 1.2.0 (2022-12-19)
 ===========
