@@ -14308,7 +14308,8 @@ components:
       bearerFormat: JWT
       scheme: bearer
 servers:
-  - url: https://catalogi-api.test.vng.cloud/api/v1
+  - url: https://catalogi-api.vng.cloud/api/v1
+    description: Productie Omgeving
 tags:
   - name: besluittypen
     description:
