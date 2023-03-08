@@ -55,6 +55,12 @@ class ZaakTypenRelatieSerializer(ModelSerializer):
         self.fields["aard_relatie"].help_text += f"\n\n{value_display_mapping}"
 
 
+class ZaakTypenRelatieCreateSerializer(ZaakTypenRelatieSerializer):
+    zaaktype = serializers.CharField(
+        help_text=_("`zaaktype.identificatie` naar het ZAAKTYPE.")
+    )
+
+
 class ZaakTypeSerializer(
     NestedGegevensGroepMixin,
     NestedCreateMixin,
@@ -204,8 +210,6 @@ class ZaakTypeSerializer(
             ZaaktypeGeldigheidValidator(),
             RelationCatalogValidator("besluittypen"),
             ConceptUpdateValidator(),
-            M2MConceptCreateValidator(["besluittypen", "informatieobjecttypen"]),
-            M2MConceptUpdateValidator(["besluittypen", "informatieobjecttypen"]),
             DeelzaaktypeCatalogusValidator(),
         ]
 
@@ -234,3 +238,23 @@ class ZaakTypeSerializer(
 
         validated_data = super(ZaakTypeSerializer, self).validate(attrs)
         return validated_data
+
+
+class ZaakTypeCreateSerializer(ZaakTypeSerializer):
+    besluittypen = serializers.ListSerializer(
+        child=serializers.CharField(),
+        help_text="`Omschrijvingen` van BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE.",
+    )
+    deelzaaktypen = serializers.ListSerializer(
+        child=serializers.CharField(),
+        help_text="De `zaaktypen.identificaties` waaronder ZAAKen als deelzaak kunnen voorkomen bij ZAAKen van dit ZAAKTYPE.",
+    )
+    gerelateerde_zaaktypen = ZaakTypenRelatieCreateSerializer(
+        many=True,
+        source="zaaktypenrelaties",
+        help_text="De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit ZAAKTYPE.",
+    )
+
+
+class ZaakTypeUpdateSerializer(ZaakTypeCreateSerializer):
+    pass

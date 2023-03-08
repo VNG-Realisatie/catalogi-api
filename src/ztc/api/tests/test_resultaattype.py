@@ -227,6 +227,13 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         resultaattypeomschrijving_url = "http://example.com/omschrijving/1"
+        besluittype = BesluitTypeFactory(
+            catalogus=self.catalogus,
+            omschrijving="foobarios",
+            datum_begin_geldigheid="2021-10-30",
+            datum_einde_geldigheid="2022-10-31",
+        )
+
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
             "omschrijving": "illum",
@@ -234,6 +241,8 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
             "selectielijstklasse": SELECTIELIJSTKLASSE_URL,
             "archiefnominatie": "blijvend_bewaren",
             "archiefactietermijn": "P10Y",
+            "beginGeldigheid": "2021-10-30",
+            "eindeGeldigheid": "2021-10-31",
             "brondatumArchiefprocedure": {
                 "afleidingswijze": Afleidingswijze.afgehandeld,
                 "einddatumBekend": False,
@@ -242,7 +251,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 "objecttype": "",
                 "registratie": "",
             },
-            "besluittype_omschrijving": ["foobar", "foobar2"],
+            "besluittypen": [f"{besluittype.omschrijving}"],
         }
 
         responses = {
@@ -258,15 +267,20 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 m.register_uri(
                     "GET", resultaattypeomschrijving_url, json={"omschrijving": "test"}
                 )
-                response = self.client.post(self.list_url, data)
+                response = self.client.post(
+                    self.list_url, data, SERVER_NAME="testserver.com"
+                )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        resultaattype = ResultaatType.objects.get()
-        self.assertEqual(resultaattype.omschrijving_generiek, "test")
-        self.assertEqual(resultaattype.zaaktype, zaaktype)
+        resultaattype = response.json()
+
+        self.assertEqual(resultaattype["omschrijvingGeneriek"], "test")
         self.assertEqual(
-            resultaattype.brondatum_archiefprocedure_afleidingswijze,
+            resultaattype["zaaktype"], f"http://testserver.com{zaaktype_url}"
+        )
+        self.assertEqual(
+            resultaattype["brondatumArchiefprocedure"]["afleidingswijze"],
             Afleidingswijze.afgehandeld,
         )
 

@@ -1,4 +1,3 @@
-from datetime import date, datetime, timedelta
 from unittest import skip
 
 from django.urls import reverse
@@ -163,24 +162,6 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(informatieobjecttype.omschrijving, "test")
         self.assertEqual(informatieobjecttype.catalogus, self.catalogus)
         self.assertEqual(informatieobjecttype.concept, True)
-
-    def test_create_informatieobjecttype_fail_not_unique(self):
-        informatieobjecttype = InformatieObjectTypeFactory.create()
-        list_url = get_operation_url("informatieobjecttype_list")
-        data = {
-            "catalogus": f"http://testserver{reverse(informatieobjecttype.catalogus)}",
-            "omschrijving": informatieobjecttype.omschrijving,
-            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
-            "beginGeldigheid": "2019-01-01",
-            "informatieobjectcategorie": "test",
-        }
-
-        response = self.client.post(list_url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], "unique")
 
     def test_publish_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
@@ -394,61 +375,6 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(response.data["omschrijving"], "test")
         informatieobjecttype.delete()
 
-    def test_update_informatieobjecttype_related_to_non_concept_zaaktype_fails(self):
-        catalogus = CatalogusFactory.create()
-        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
-
-        zaaktype = ZaakTypeFactory.create(concept=False, catalogus=catalogus)
-        ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
-        )
-
-        informatieobjecttype_url = reverse(informatieobjecttype)
-
-        data = {
-            "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "omschrijving": "test",
-            "vertrouwelijkheidaanduiding": "openbaar",
-            "beginGeldigheid": "2019-01-01",
-            "informatieobjectcategorie": "test",
-        }
-
-        response = self.client.put(informatieobjecttype_url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
-        informatieobjecttype.delete()
-
-    def test_update_informatieobjecttype_related_to_non_concept_besluittype_fails(self):
-        catalogus = CatalogusFactory.create()
-        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
-
-        besluittype = BesluitTypeFactory.create(
-            informatieobjecttypen=[informatieobjecttype],
-            concept=False,
-            catalogus=catalogus,
-        )
-
-        informatieobjecttype_url = reverse(informatieobjecttype)
-
-        data = {
-            "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "omschrijving": "test",
-            "vertrouwelijkheidaanduiding": "openbaar",
-            "beginGeldigheid": "2019-01-01",
-            "informatieobjectcategorie": "test",
-        }
-
-        response = self.client.put(informatieobjecttype_url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
-        informatieobjecttype.delete()
-
     def test_partial_update_informatieobjecttype_not_related_to_non_concept_zaaktype(
         self,
     ):
@@ -484,51 +410,6 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["omschrijving"], "test")
-        informatieobjecttype.delete()
-
-    def test_partial_update_informatieobjecttype_related_to_non_concept_zaaktype_fails(
-        self,
-    ):
-        catalogus = CatalogusFactory.create()
-        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
-        zaaktype = ZaakTypeFactory.create(catalogus=catalogus, concept=False)
-        ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
-        )
-
-        informatieobjecttype_url = reverse(informatieobjecttype)
-
-        response = self.client.patch(
-            informatieobjecttype_url, {"omschrijving": "aangepast"}
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
-        informatieobjecttype.delete()
-
-    def test_partial_update_informatieobjecttype_related_to_non_concept_besluittype_fails(
-        self,
-    ):
-        catalogus = CatalogusFactory.create()
-        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
-        besluittype = BesluitTypeFactory.create(
-            informatieobjecttypen=[informatieobjecttype],
-            catalogus=catalogus,
-            concept=False,
-        )
-
-        informatieobjecttype_url = reverse(informatieobjecttype)
-
-        response = self.client.patch(
-            informatieobjecttype_url, {"omschrijving": "aangepast"}
-        )
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], M2MConceptUpdateValidator.code)
         informatieobjecttype.delete()
 
     def test_partial_update_non_concept_informatieobjecttype_einde_geldigheid(self):

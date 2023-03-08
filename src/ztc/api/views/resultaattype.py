@@ -2,6 +2,7 @@ from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
+from rest_framework.response import Response
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
@@ -13,7 +14,12 @@ from ..scopes import (
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
 )
-from ..serializers import ResultaatTypeSerializer
+from ..serializers import (
+    ResultaatTypeCreateSerializer,
+    ResultaatTypeSerializer,
+    ResultaatTypeUpdateSerializer,
+)
+from ..utils.viewsets import extract_relevant_m2m, m2m_array_of_str_to_url
 from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 
 
@@ -76,3 +82,56 @@ class ResultaatTypeViewSet(
         "partial_update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
     }
+
+    @extend_schema(
+        request=ResultaatTypeCreateSerializer,
+        responses={201: ResultaatTypeSerializer},
+    )
+    def create(self, request, *args, **kwargs):
+        request = m2m_array_of_str_to_url(request, ["besluittypen"], self.action)
+        return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = extract_relevant_m2m(
+            self.get_serializer(instance), ["besluittypen"], self.action
+        )
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=ResultaatTypeCreateSerializer,
+        responses={200: ResultaatTypeUpdateSerializer},
+    )
+    def update(self, request, *args, **kwargs):
+        request = m2m_array_of_str_to_url(request, ["besluittypen"], self.action)
+        return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        self._check_query_params(request)
+        queryset = self.filter_queryset(self.get_queryset())
+        filters = (
+            self.filter_backends[0]()
+            .get_filterset_kwargs(self.request, queryset, self)
+            .get("data", {})
+        )
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer = extract_relevant_m2m(
+                serializer,
+                ["besluittypen"],
+                self.action,
+                filters.get("datum_geldigheid", None),
+            )
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer = extract_relevant_m2m(
+            serializer,
+            ["besluittypen"],
+            self.action,
+            filters.get("datum_geldigheid", None),
+        )
+
+        return Response(serializer.data)

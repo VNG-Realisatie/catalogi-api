@@ -167,3 +167,13 @@ class ResultaatTypeSerializer(
         self.fields["archiefnominatie"].help_text += "\n\n{}".format(
             value_display_mapping
         )
+
+
+class ResultaatTypeCreateSerializer(ResultaatTypeSerializer):
+    besluittypen = serializers.ListSerializer(
+        child=serializers.CharField(), help_text=""
+    )
+
+
+class ResultaatTypeUpdateSerializer(ResultaatTypeCreateSerializer):
+    pass

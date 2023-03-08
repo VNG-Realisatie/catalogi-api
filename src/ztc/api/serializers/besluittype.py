@@ -1,15 +1,10 @@
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 
 from ...datamodel.models import BesluitType
 from ..utils.validators import RelationCatalogValidator
-from ..validators import (
-    ConceptUpdateValidator,
-    M2MConceptCreateValidator,
-    M2MConceptUpdateValidator,
-)
+from ..validators import ConceptUpdateValidator
 
 
 class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
@@ -45,7 +40,11 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
                 "required": True,
                 "allow_empty": True,
             },
-            "zaaktypen": {"lookup_field": "uuid", "allow_empty": True},
+            "zaaktypen": {
+                "lookup_field": "uuid",
+                "allow_empty": True,
+                "read_only": True,
+            },
             "resultaattypen": {
                 "lookup_field": "uuid",
                 "read_only": True,
@@ -78,12 +77,18 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             "vastgelegd_in",
         )
         validators = [
-            UniqueTogetherValidator(
-                queryset=BesluitType.objects.all(), fields=["catalogus", "omschrijving"]
-            ),
             RelationCatalogValidator("informatieobjecttypen"),
             RelationCatalogValidator("zaaktypen"),
             ConceptUpdateValidator(),
-            M2MConceptCreateValidator(["zaaktypen", "informatieobjecttypen"]),
-            M2MConceptUpdateValidator(["zaaktypen", "informatieobjecttypen"]),
         ]
+
+
+class BesluitTypeCreateSerializer(BesluitTypeSerializer):
+    informatieobjecttypen = serializers.ListSerializer(
+        child=serializers.CharField(),
+        help_text="`Omschrijvingen` van het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd.",
+    )
+
+
+class BesluitTypeUpdateSerializer(BesluitTypeCreateSerializer):
+    pass

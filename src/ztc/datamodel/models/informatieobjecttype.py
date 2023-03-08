@@ -164,7 +164,7 @@ class InformatieObjectType(
     )
 
     class Meta:
-        unique_together = ("catalogus", "omschrijving")
+        # unique_together = ("catalogus", "omschrijving")
         verbose_name = _("Informatieobjecttype")
         verbose_name_plural = _("Informatieobjecttypen")
 
