@@ -26,3 +26,4 @@ def get_overlapping_zaaktypes(
         query = query.exclude(pk=instance.pk)
 
     return query
+

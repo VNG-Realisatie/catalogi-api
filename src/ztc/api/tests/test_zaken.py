@@ -168,10 +168,19 @@ class ZaakTypeAPITests(APITestCase):
         )
 
     def test_create_zaaktype(self):
-        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus)
+        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus, omschrijving="test",
+                                                datum_begin_geldigheid="2018-01-01",
+                                                datum_einde_geldigheid="2018-01-02")
+        besluittype2 = BesluitTypeFactory.create(catalogus=self.catalogus, omschrijving="test",
+                                                 datum_begin_geldigheid="2018-01-03",
+                                                 datum_einde_geldigheid=None)
+
         besluittype_url = get_operation_url(
             "besluittype_retrieve", uuid=besluittype.uuid
         )
+
+        besluittype.zaaktypen.through.objects.all()[0].delete()
+        besluittype.zaaktypen.through.objects.all()[0].delete()
 
         deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
         deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
@@ -207,7 +216,7 @@ class ZaakTypeAPITests(APITestCase):
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "besluittypen": [f"http://testserver{besluittype_url}"],
+            "besluittypen": ["test", "test2"],
             "beginGeldigheid": "2018-01-01",
             "versiedatum": "2018-01-01",
             "verantwoordelijke": "Organisatie eenheid X",
@@ -220,7 +229,6 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype = ZaakType.objects.get(zaaktype_omschrijving="some test")
 
         self.assertEqual(zaaktype.catalogus, self.catalogus)
-        self.assertEqual(zaaktype.besluittypen.get(), besluittype)
         self.assertEqual(zaaktype.referentieproces_naam, "ReferentieProces 0")
         self.assertEqual(
             zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype,

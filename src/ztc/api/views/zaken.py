@@ -11,8 +11,8 @@ from vng_api_common.caching import conditional_retrieve
 from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
-
-from ...datamodel.models import ZaakType
+from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
+from ...datamodel.models import ZaakType, BesluitType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -147,4 +147,17 @@ class ZaakTypeViewSet(
 
         serializer = self.get_serializer(instance)
 
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        request = m2m_array_of_str_to_url(
+            request, "besluittypen", BesluitType, self.action
+        )
+        return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = remove_invalid_m2m(
+            self.get_serializer(instance), "besluittypen", BesluitType, self.action
+        )
         return Response(serializer.data)

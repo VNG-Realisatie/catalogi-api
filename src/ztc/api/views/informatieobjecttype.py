@@ -69,7 +69,6 @@ class InformatieObjectTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
     M2MConceptDestroyMixin,
-    NotificationViewSetMixin,
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
