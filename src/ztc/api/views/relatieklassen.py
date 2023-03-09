@@ -130,22 +130,24 @@ class ZaakTypeInformatieObjectTypeViewSet(
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    # def perform_create(self, serializer):
-    #     """Automatically create new ZaakInformatieobjectType relation on POST, both for concept and non-concept."""
-    #
-    #     # zaak = serializer.save()
-    #
-    #     breakpoint()
-    #     associated_ziot = ZaakInformatieobjectType.objects.filter(
-    #         Q(zaaktype__identificatie=zaak.identificatie)
-    #     )
-    #     for object in associated_ziot:
-    #         kwargs = model_to_dict(
-    #             object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
-    #         )
-    #
-    #         ZaakInformatieobjectType.objects.create(
-    #             **kwargs,
-    #             zaaktype=zaak,
-    #             informatieobjecttype=object.informatieobjecttype
-    #         )
+    def update(self, request, *args, **kwargs):
+        """
+        Update multiple ZIOT instances with `informatieobjecttype__omschrijving` as input. Update all correlated ZIOTs
+        """
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        search_parameter = Q(informatieobjecttype__omschrijving=instance.informatieobjecttype.omschrijving)
+        ziots = ZaakInformatieobjectType.objects.filter(search_parameter)
+
+        for ziot in ziots:
+            data = request.data.copy()
+            data[
+                "informatieobjecttype"] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(ziot.informatieobjecttype.uuid)}"
+
+            serializer = self.get_serializer(ziot, data=data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+
+
+        return Response(serializer.data)
