@@ -89,7 +89,6 @@ def m2m_array_of_str_to_url(request, m2m_field: str, m2m_model, action: str):
             else Q(identificatie=m2m_str)
         )
         m2m_objects = m2m_model.objects.filter(search_parameter)
-
         for m2m_object in m2m_objects:
             request.data[m2m_field].extend(
                 [
@@ -116,4 +115,4 @@ def remove_invalid_m2m(serializer, m2m_field: str, m2m_model, action: str):
         query_object[m2m_field].clear()
         query_object[m2m_field].extend(valid_urls)
 
-    return
+    return serializer

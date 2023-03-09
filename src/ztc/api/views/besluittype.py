@@ -113,5 +113,22 @@ class BesluitTypeViewSet(
         )
         return Response(serializer.data)
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer = remove_invalid_m2m(
+                serializer, "zaaktypen", ZaakType, self.action
+            )
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer = remove_invalid_m2m(
+            serializer, "zaaktypen", ZaakType, self.action
+        )
+
+        return Response(serializer.data)
+
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)

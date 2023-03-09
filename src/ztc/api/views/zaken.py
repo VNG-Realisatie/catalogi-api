@@ -161,3 +161,23 @@ class ZaakTypeViewSet(
             self.get_serializer(instance), "besluittypen", BesluitType, self.action
         )
         return Response(serializer.data)
+    def update(self, request, *args, **kwargs):
+        request = m2m_array_of_str_to_url(request, "besluittypen", BesluitType, self.action)
+        return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer = remove_invalid_m2m(
+                serializer, "besluittypen", BesluitType, self.action
+            )
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer = remove_invalid_m2m(
+            serializer, "besluittypen", BesluitType, self.action
+        )
+
+        return Response(serializer.data)

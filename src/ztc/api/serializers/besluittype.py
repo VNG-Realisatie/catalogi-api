@@ -78,12 +78,12 @@ class BesluitTypeSerializer(serializers.HyperlinkedModelSerializer):
             "vastgelegd_in",
         )
         validators = [
-            UniqueTogetherValidator(
-                queryset=BesluitType.objects.all(), fields=["catalogus", "omschrijving"]
-            ),
+            # UniqueTogetherValidator(
+            #     queryset=BesluitType.objects.all(), fields=["catalogus", "omschrijving"]
+            # ),
             RelationCatalogValidator("informatieobjecttypen"),
             RelationCatalogValidator("zaaktypen"),
-            ConceptUpdateValidator(),
-            M2MConceptCreateValidator(["zaaktypen", "informatieobjecttypen"]),
-            M2MConceptUpdateValidator(["zaaktypen", "informatieobjecttypen"]),
+            # ConceptUpdateValidator(),
+            # M2MConceptCreateValidator(["zaaktypen", "informatieobjecttypen"]),
+            # M2MConceptUpdateValidator(["zaaktypen", "informatieobjecttypen"]),
         ]
