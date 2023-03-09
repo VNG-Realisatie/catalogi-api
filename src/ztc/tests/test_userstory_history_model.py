@@ -2,7 +2,7 @@ from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import get_operation_url, reverse
 
-from ztc.api.scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE
+from ztc.api.scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE, SCOPE_CATALOGI_FORCED_DELETE
 from ztc.api.tests.base import APITestCase
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import BesluitType, InformatieObjectType, ZaakType
@@ -13,7 +13,7 @@ from pprint import pprint
 class HistoryModelUserStoryTests(APITestCase):
     maxDiff = None
     heeft_alle_autorisaties = False
-    scopes = [SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE]
+    scopes = [SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE, SCOPE_CATALOGI_FORCED_DELETE]
 
     def test_user_story_new_version_model(self):
         """
@@ -22,31 +22,40 @@ class HistoryModelUserStoryTests(APITestCase):
         2. POST besluittypen with a zaaktypen array consisted of zaaktypen_identificatie (which is conventially an array of URI's)
         3. GET a specific zaaktype which contains a list of associated besluittypen. Only the most recent and concept = False besluittypen should be shown.
         """
-        self.post_informatieobjecttype()
-        self.post_besluittype_1()
-        self.post_zaaktype_1()
+
 
         print("B1V1_omschrijving = foo")
         print("B2V1_omschrijving = foo2")
+        print("B3V1_omschrijving = foo3")
         print("Z1V1_identificatie = 0, created with [foo, foo2]")
+
+        self.post_informatieobjecttype()
+        self.post_besluittype_1()
+        self.post_zaaktype_1()
 
         self.publish_besluittype_1()
         self.publish_informatieobject_1()
         self.publish_zaaktype_1()
 
-        self.post_besluittype_2()
         print("B1V2_omschrijving = foo, created with [0]")
         print("B2V2_omschrijving = foo2, created with [0]")
+        self.post_besluittype_2()
+
         self.publish_besluittype_2()
 
-        self.post_zaaktype_2()
         print("Z1V2_identificatie = 0, created with [foo, foo2]")
+        self.post_zaaktype_2()
 
+        print("Z1V2_identificatie = 0, created with [foo, foo2,foo3]")
         self.update_zaaktype_2()
+
         self.publish_zaaktype_2()
 
-        self.post_besluittype_3()
+        print("B1V3_omschrijving = foo3")
+        self.delete_besluittype_3()
+
         print("B1V3_omschrijving = foo, created with [0], concept = False")
+        self.post_besluittype_3()
 
         self.get_zaaktype_2()
 
@@ -57,24 +66,30 @@ class HistoryModelUserStoryTests(APITestCase):
     def get_zaaktype_list(self):
         zaaktype_list_url = get_operation_url("zaaktype_list")
         response = self.client.get(zaaktype_list_url)
-        besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01", omschrijving="foo")[
+        besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2000-01-01", omschrijving="foo")[
             0
         ]
-        besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01", omschrijving="foo2")[
+        besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2000-01-01", omschrijving="foo2")[
+            0
+        ]
+        besluittype_3 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01", omschrijving="foo")[
+            0
+        ]
+        besluittype_4 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01", omschrijving="foo2")[
             0
         ]
         data_zaaktype_2 = response.json()["results"]
 
         self.assertEqual(
-            sorted(data_zaaktype_2[0]["besluittypen"]),
+            sorted(data_zaaktype_2[1]["besluittypen"]),
             sorted([f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype.uuid)}",
                     f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_2.uuid)}"])
 
         )
         self.assertEqual(
-            sorted(data_zaaktype_2[1]["besluittypen"]),
-            sorted([f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype.uuid)}",
-                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_2.uuid)}"])
+            sorted(data_zaaktype_2[0]["besluittypen"]),
+            sorted([f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_3.uuid)}",
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_4.uuid)}"])
 
         )
 
@@ -162,6 +177,28 @@ class HistoryModelUserStoryTests(APITestCase):
         response_besluit_2 = self.client.post(besluittype_list_url, data2)
         self.assertEqual(response_besluit_2.status_code, 201)
 
+        data3 = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "omschrijving": "foo3",
+            "zaaktypen": ["0"],
+            "omschrijvingGeneriek": "",
+            "besluitcategorie": "",
+            "reactietermijn": "P14D",
+            "publicatieIndicatie": True,
+            "publicatietekst": "",
+            "publicatietermijn": None,
+            "toelichting": "",
+            "informatieobjecttypen": [
+                f"http://testserver{informatieobjecttype_detail_url}"
+            ],
+            "beginGeldigheid": "2000-01-01",
+            "eindeGeldigheid": None,
+            "concept": True,
+        }
+
+        response_besluit_3 = self.client.post(besluittype_list_url, data3)
+        self.assertEqual(response_besluit_3.status_code, 201)
+
     def post_zaaktype_1(self):
         """
         test if we can post with ' "besluittypen": ["foo"] '. Where "foo" is converted into a URL in the View.
@@ -208,6 +245,7 @@ class HistoryModelUserStoryTests(APITestCase):
     def publish_besluittype_1(self):
         self.besluittype_1 = BesluitType.objects.all()[0]
         self.besluittype_2 = BesluitType.objects.all()[1]
+        self.besluittype_3 = BesluitType.objects.all()[2]
 
         besluittype_url_publish = reverse(
             "besluittype-publish", kwargs={"uuid": self.besluittype_1.uuid}
@@ -220,6 +258,12 @@ class HistoryModelUserStoryTests(APITestCase):
         )
         response_besluittype2_publish = self.client.post(besluittype2_url_publish)
         self.assertEqual(response_besluittype2_publish.status_code, 200)
+
+        besluittype3_url_publish = reverse(
+            "besluittype-publish", kwargs={"uuid": self.besluittype_3.uuid}
+        )
+        response_besluittype3_publish = self.client.post(besluittype3_url_publish)
+        self.assertEqual(response_besluittype3_publish.status_code, 200)
 
     def publish_besluittype_2(self):
         besluittype = BesluitType.objects.filter(
@@ -424,7 +468,6 @@ class HistoryModelUserStoryTests(APITestCase):
         besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[
             1
         ]
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["besluittypen"]), 2)
 
@@ -467,13 +510,25 @@ class HistoryModelUserStoryTests(APITestCase):
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "besluittypen": ["foo", "foo2"],
+            "besluittypen": ["foo", "foo2", "foo3"],
             "beginGeldigheid": "2016-01-01",
             "versiedatum": "2016-01-01",
             "verantwoordelijke": "Organisatie eenheid X",
         }
 
         response = self.client.put(zaaktype_url, data)
+        print("response PUT zaaktype Z1V2")
+        pprint(response.json())
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["aanleiding"], "aangepast")
+
+    def delete_besluittype_3(self):
+        besluittype = BesluitType.objects.filter(omschrijving="foo3")[
+            0
+        ]
+        besluittype_url = reverse(besluittype)
+
+        response_besluit_1 = self.client.delete(besluittype_url)
+
+        self.assertEqual(response_besluit_1.status_code, 204)

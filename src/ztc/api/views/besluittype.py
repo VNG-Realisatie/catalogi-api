@@ -71,7 +71,6 @@ class BesluitTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
     M2MConceptDestroyMixin,
-    NotificationViewSetMixin,
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):

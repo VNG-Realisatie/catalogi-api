@@ -1,5 +1,6 @@
 from django.utils.translation import gettext as _
-
+from django.db.models import Q
+from django.forms import model_to_dict
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import status, viewsets
@@ -12,7 +13,7 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
-from ...datamodel.models import ZaakType, BesluitType
+from ...datamodel.models import ZaakType, BesluitType,ZaakInformatieobjectType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -83,7 +84,6 @@ class ZaakTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
     M2MConceptDestroyMixin,
-    NotificationViewSetMixin,
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
@@ -161,6 +161,7 @@ class ZaakTypeViewSet(
             self.get_serializer(instance), "besluittypen", BesluitType, self.action
         )
         return Response(serializer.data)
+
     def update(self, request, *args, **kwargs):
         request = m2m_array_of_str_to_url(request, "besluittypen", BesluitType, self.action)
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
@@ -181,3 +182,22 @@ class ZaakTypeViewSet(
         )
 
         return Response(serializer.data)
+
+    # def perform_create(self, serializer):
+    #     """Automatically create new ZaakInformatieobjectType relation on POST, both for concept and non-concept."""
+    #
+    #     zaak = serializer.save()
+    #
+    #     associated_ziot = ZaakInformatieobjectType.objects.filter(
+    #         Q(zaaktype__identificatie=zaak.identificatie)
+    #     )
+    #     for object in associated_ziot:
+    #         kwargs = model_to_dict(
+    #             object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+    #         )
+    #
+    #         ZaakInformatieobjectType.objects.create(
+    #             **kwargs,
+    #             zaaktype=zaak,
+    #             informatieobjecttype=object.informatieobjecttype
+    #         )

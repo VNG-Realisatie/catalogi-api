@@ -82,6 +82,7 @@ def m2m_array_of_str_to_url(request, m2m_field: str, m2m_model, action: str):
     """
     m2m_data = request.data.get(m2m_field, []).copy()
     request.data[m2m_field].clear()
+
     for m2m_str in m2m_data:
         search_parameter = (
             Q(omschrijving=m2m_str)
@@ -106,7 +107,7 @@ def remove_invalid_m2m(serializer, m2m_field: str, m2m_model, action: str):
             uuid_from_url = uuid.UUID(m2m_url.rsplit("/", 1)[1]).hex
             valid_m2m = m2m_model.objects.filter(
                 Q(uuid=uuid_from_url)
-                & Q(datum_einde_geldigheid=None)
+                & get_m2m_filters(query_object["begin_geldigheid"])
                 & Q(concept=False)
             )
             if valid_m2m:
@@ -116,3 +117,9 @@ def remove_invalid_m2m(serializer, m2m_field: str, m2m_model, action: str):
         query_object[m2m_field].extend(valid_urls)
 
     return serializer
+
+
+def get_m2m_filters(search_object):
+    return Q(datum_begin_geldigheid__lte=search_object) & Q(
+        datum_einde_geldigheid__gte=search_object
+    ) | Q(datum_begin_geldigheid__lte=search_object) & Q(datum_einde_geldigheid=None)
