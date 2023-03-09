@@ -82,12 +82,12 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
         )
         validators = [
             ConceptUpdateValidator(),
-            M2MConceptCreateValidator(["besluittypen", "zaaktypen"]),
-            M2MConceptUpdateValidator(["besluittypen", "zaaktypen"]),
-            UniqueTogetherValidator(
-                queryset=InformatieObjectType.objects.all(),
-                fields=["catalogus", "omschrijving"],
-            ),
+            # M2MConceptCreateValidator(["besluittypen", "zaaktypen"]),
+            # M2MConceptUpdateValidator(["besluittypen", "zaaktypen"]),
+            # UniqueTogetherValidator(
+            #     queryset=InformatieObjectType.objects.all(),
+            #     fields=["catalogus", "omschrijving"],
+            # ),
         ]
 
     def __init__(self, *args, **kwargs):

@@ -62,10 +62,10 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         }
         validators = [
             ZaakInformatieObjectTypeCatalogusValidator(),
-            UniqueTogetherValidator(
-                queryset=ZaakInformatieobjectType.objects.all(),
-                fields=["zaaktype", "volgnummer"],
-            ),
+            # UniqueTogetherValidator(
+            #     queryset=ZaakInformatieobjectType.objects.all(),
+            #     fields=["zaaktype", "volgnummer"],
+            # ),
         ]
 
     def __init__(self, *args, **kwargs):

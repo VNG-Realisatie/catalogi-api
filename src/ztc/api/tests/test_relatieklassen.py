@@ -82,12 +82,15 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus
+            catalogus=zaaktype.catalogus, omschrijving="test"
+        )
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(
+            catalogus=zaaktype.catalogus, omschrijving="test"
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": "test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -96,7 +99,9 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        ziot = ZaakInformatieobjectType.objects.get(volgnummer=13)
+        ziot = ZaakInformatieobjectType.objects.filter(volgnummer=13)
+
+        breakpoint()
 
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatieobjecttype, informatieobjecttype)

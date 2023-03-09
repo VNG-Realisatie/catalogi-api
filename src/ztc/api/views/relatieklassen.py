@@ -6,8 +6,11 @@ from rest_framework import viewsets
 from rest_framework.serializers import ValidationError
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
+from rest_framework.response import Response
+from rest_framework import status
 
-from ...datamodel.models import ZaakInformatieobjectType
+from ..utils.viewsets import m2m_array_of_str_to_url, build_absolute_url
+from ...datamodel.models import ZaakInformatieobjectType, InformatieObjectType
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
@@ -113,3 +116,36 @@ class ZaakTypeInformatieObjectTypeViewSet(
                 )
 
         super().perform_destroy(instance)
+
+    def create(self, request, *args, **kwargs):
+        search_parameter = Q(omschrijving=request.data["informatieobjecttype"])
+        iots = InformatieObjectType.objects.filter(search_parameter)
+        for iot in iots:
+            data = request.data.copy()
+            data[
+                "informatieobjecttype"] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(iot.uuid)}"
+            serializer = self.get_serializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # def perform_create(self, serializer):
+    #     """Automatically create new ZaakInformatieobjectType relation on POST, both for concept and non-concept."""
+    #
+    #     # zaak = serializer.save()
+    #
+    #     breakpoint()
+    #     associated_ziot = ZaakInformatieobjectType.objects.filter(
+    #         Q(zaaktype__identificatie=zaak.identificatie)
+    #     )
+    #     for object in associated_ziot:
+    #         kwargs = model_to_dict(
+    #             object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
+    #         )
+    #
+    #         ZaakInformatieobjectType.objects.create(
+    #             **kwargs,
+    #             zaaktype=zaak,
+    #             informatieobjecttype=object.informatieobjecttype
+    #         )
