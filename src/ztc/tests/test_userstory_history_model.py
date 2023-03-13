@@ -47,7 +47,6 @@ class HistoryModelUserStoryTests(APITestCase):
         self.post_zaaktype_2()
         self.post_ziot_2()
 
-
         print("Z1V2_identificatie = ID, created with [foo, foo2,foo3]")
         self.update_zaaktype_2()
 
@@ -226,11 +225,6 @@ class HistoryModelUserStoryTests(APITestCase):
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "omschrijving": "some test",
             "gerelateerdeZaaktypen": [
-                {
-                    "zaaktype": "http://example.com/zaaktype/1",
-                    "aard_relatie": AardRelatieChoices.bijdrage,
-                    "toelichting": "test relations",
-                }
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
@@ -244,6 +238,7 @@ class HistoryModelUserStoryTests(APITestCase):
         }
 
         response_zaaktype_1 = self.client.post(zaaktype_list_url, data)
+
         self.assertEqual(response_zaaktype_1.status_code, 201)
 
     def post_ziot(self):
@@ -364,7 +359,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "omschrijving": "some test",
             "gerelateerdeZaaktypen": [
                 {
-                    "zaaktype": "http://example.com/zaaktype/1",
+                    "zaaktype": "ID",
                     "aard_relatie": AardRelatieChoices.bijdrage,
                     "toelichting": "test relations",
                 }
@@ -378,7 +373,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "concept": True,
         }
 
-        response_zaaktype_2 = self.client.post(zaaktype_list_url, data_2)
+        response_zaaktype_2 = self.client.post(zaaktype_list_url, data_2, SERVER_NAME="testserver.com")
         self.assertEqual(response_zaaktype_2.status_code, 201)
 
     def publish_zaaktype_2(self):
@@ -508,7 +503,6 @@ class HistoryModelUserStoryTests(APITestCase):
         self.assertEqual(response.status_code, 200)
         pprint(response.json())
 
-        breakpoint()
         self.assertEqual(len(response.json()["besluittypen"]), 2)
 
         self.assertEqual(
@@ -519,11 +513,8 @@ class HistoryModelUserStoryTests(APITestCase):
         )
         print("response GET zaaktype Z1V2")
         pprint(response.json())
-        breakpoint()
-
 
     def get_informatieobjecttype(self):
-
         informatieobjecttype = InformatieObjectType.objects.get()
         informatieobjecttype_detail_url = get_operation_url(
             "informatieobjecttype_retrieve", uuid=informatieobjecttype.uuid
@@ -532,7 +523,6 @@ class HistoryModelUserStoryTests(APITestCase):
         response = self.client.get(informatieobjecttype_detail_url)
         print("response GET IOT")
         pprint(response.json())
-
 
     def update_zaaktype_2(self):
         zaaktype_2 = ZaakType.objects.filter(datum_begin_geldigheid="2011-01-01")[0]

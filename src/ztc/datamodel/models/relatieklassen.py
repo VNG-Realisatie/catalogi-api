@@ -197,7 +197,7 @@ class ZaakTypenRelatie(models.Model):
 
     class Meta:
         # NOTE: The uniqueness is not explicitly defined in specification:
-        unique_together = ("zaaktype", "gerelateerd_zaaktype")
+        # unique_together = ("zaaktype", "gerelateerd_zaaktype")
         verbose_name = _("Zaaktypenrelatie")
         verbose_name_plural = _("Zaaktypenrelaties")
         ordering = ("pk",)

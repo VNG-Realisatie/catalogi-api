@@ -210,7 +210,7 @@ class ZaakTypeAPITests(APITestCase):
             ],
             "gerelateerdeZaaktypen": [
                 {
-                    "zaaktype": "http://example.com/zaaktype/1",
+                    "zaaktype": "test1",
                     "aard_relatie": AardRelatieChoices.bijdrage,
                     "toelichting": "test relations",
                 }
@@ -223,7 +223,7 @@ class ZaakTypeAPITests(APITestCase):
             "verantwoordelijke": "Organisatie eenheid X",
         }
 
-        response = self.client.post(zaaktype_list_url, data)
+        response = self.client.post(zaaktype_list_url, data, SERVER_NAME="testserver.com")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -231,10 +231,16 @@ class ZaakTypeAPITests(APITestCase):
 
         self.assertEqual(zaaktype.catalogus, self.catalogus)
         self.assertEqual(zaaktype.referentieproces_naam, "ReferentieProces 0")
+
         self.assertEqual(
-            zaaktype.zaaktypenrelaties.get().gerelateerd_zaaktype,
-            "http://example.com/zaaktype/1",
+            len(zaaktype.zaaktypenrelaties.all()), 2)
+
+        self.assertEqual(
+            sorted([zaaktype.zaaktypenrelaties.all()[0].gerelateerd_zaaktype,
+                    zaaktype.zaaktypenrelaties.all()[1].gerelateerd_zaaktype]),
+            sorted([f"http://testserver.com{reverse(deelzaaktype1)}", f"http://testserver.com{reverse(deelzaaktype2)}"])
         )
+
         self.assertEqual(zaaktype.concept, True)
         self.assertQuerysetEqual(
             zaaktype.deelzaaktypen.all(),

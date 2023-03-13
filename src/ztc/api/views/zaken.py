@@ -149,54 +149,40 @@ class ZaakTypeViewSet(
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
+
         request = m2m_array_of_str_to_url(
-            request, ["besluittypen","deelzaaktypen"], self.action
+            request, ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action
         )
+
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = remove_invalid_m2m(
-            self.get_serializer(instance), ["besluittypen", "informatieobjecttypen", "resultaattypen"], self.action
+            self.get_serializer(instance), ["besluittypen", "informatieobjecttypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
+            self.action
         )
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(request, ["besluittypen"], self.action)
+        request = m2m_array_of_str_to_url(request, ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action)
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def list(self, request, *args, **kwargs):
+        # self.filter_backends[0]().get_filterset_kwargs(self.request, queryset, self)['data']
+
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             serializer = remove_invalid_m2m(
-                serializer, ["besluittypen", "informatieobjecttypen", "resultaattypen"], self.action
+                serializer, ["besluittypen", "informatieobjecttypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action
             )
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         serializer = remove_invalid_m2m(
-            serializer, ["besluittypen", "resultaattypen"], self.action
+            serializer, ["besluittypen", "informatieobjecttypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action
         )
 
         return Response(serializer.data)
-
-    # def perform_create(self, serializer):
-    #     """Automatically create new ZaakInformatieobjectType relation on POST, both for concept and non-concept."""
-    #
-    #     zaak = serializer.save()
-    #
-    #     associated_ziot = ZaakInformatieobjectType.objects.filter(
-    #         Q(zaaktype__identificatie=zaak.identificatie)
-    #     )
-    #     for object in associated_ziot:
-    #         kwargs = model_to_dict(
-    #             object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
-    #         )
-    #
-    #         ZaakInformatieobjectType.objects.create(
-    #             **kwargs,
-    #             zaaktype=zaak,
-    #             informatieobjecttype=object.informatieobjecttype
-    #         )

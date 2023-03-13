@@ -108,7 +108,7 @@ class BesluitTypeViewSet(
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = remove_invalid_m2m(
-            self.get_serializer(instance), ["zaaktypen", "informatieobjecttypen", "resultaattypen"], self.action
+            self.get_serializer(instance), ["zaaktypen", "informatieobjecttypen"], self.action
         )
         return Response(serializer.data)
 
@@ -118,7 +118,7 @@ class BesluitTypeViewSet(
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             serializer = remove_invalid_m2m(
-                serializer, ["zaaktypen", "informatieobjecttypen", "resultaattypen"], self.action
+                serializer, ["zaaktypen", "informatieobjecttypen"], self.action
             )
             return self.get_paginated_response(serializer.data)
 
@@ -131,3 +131,6 @@ class BesluitTypeViewSet(
 
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)
+
+
+
