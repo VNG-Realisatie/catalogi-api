@@ -182,8 +182,9 @@ class ZaakTypeAPITests(APITestCase):
         besluittype.zaaktypen.through.objects.all()[0].delete()
         besluittype.zaaktypen.through.objects.all()[0].delete()
 
-        deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False)
-        deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True)
+        deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False, identificatie="test1")
+        deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True, identificatie="test1")
+        deelzaaktype3 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False, identificatie="test2")
 
         zaaktype_list_url = get_operation_url("zaaktype_list")
         data = {
@@ -204,8 +205,8 @@ class ZaakTypeAPITests(APITestCase):
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "omschrijving": "some test",
             "deelzaaktypen": [
-                f"http://testserver{reverse(deelzaaktype1)}",
-                f"http://testserver{reverse(deelzaaktype2)}",
+                "test1",
+                "test2",
             ],
             "gerelateerdeZaaktypen": [
                 {
@@ -237,7 +238,7 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(zaaktype.concept, True)
         self.assertQuerysetEqual(
             zaaktype.deelzaaktypen.all(),
-            {deelzaaktype1.pk, deelzaaktype2.pk},
+            {deelzaaktype1.pk, deelzaaktype2.pk, deelzaaktype3.pk},
             transform=lambda x: x.pk,
             ordered=False,
         )

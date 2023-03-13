@@ -1,13 +1,12 @@
 from django.utils.translation import gettext as _
-from django.db.models import Q
-from django.forms import model_to_dict
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
+from rest_framework.response import Response
 
-from ...datamodel.models import InformatieObjectType, ZaakInformatieobjectType
+from ..utils.viewsets import remove_invalid_m2m
+from ...datamodel.models import InformatieObjectType
 from ..filters import InformatieObjectTypeFilter
 from ..kanalen import KANAAL_INFORMATIEOBJECTTYPEN
 from ..scopes import (
@@ -95,36 +94,29 @@ class InformatieObjectTypeViewSet(
     concept_related_fields = ["besluittypen", "zaaktypen"]
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = remove_invalid_m2m(
+            self.get_serializer(instance), ["besluittypen", "zaaktypen"], self.action
+        )
+        return Response(serializer.data)
 
-# def perform_create(self, serializer):
-#     """Automatically create new ZaakInformatieobjectType relation on POST, both for concept and non-concept."""
-#
-#     informatieobjecttype = serializer.save()
-#     associated_ziot = ZaakInformatieobjectType.objects.filter(
-#         Q(informatieobjecttype__omschrijving=informatieobjecttype.omschrijving)
-#         & (
-#             Q(
-#                 zaaktype__datum_begin_geldigheid__lte=informatieobjecttype.datum_begin_geldigheid
-#             )
-#             & Q(
-#             zaaktype__datum_einde_geldigheid__gte=informatieobjecttype.datum_begin_geldigheid
-#         )
-#             | Q(
-#             zaaktype__datum_begin_geldigheid__lte=informatieobjecttype.datum_begin_geldigheid
-#         )
-#             & Q(zaaktype__datum_einde_geldigheid=None)
-#         )
-#     )
-#     for object in associated_ziot:
-#         kwargs = model_to_dict(
-#             object, exclude=["uuid", "id", "zaaktype", "informatieobjecttype"]
-#         )
-#
-#         ZaakInformatieobjectType.objects.create(
-#             **kwargs,
-#             informatieobjecttype=informatieobjecttype,
-#             zaaktype=object.zaaktype
-#         )
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer = remove_invalid_m2m(
+                serializer, ["besluittypen", "zaaktypen"], self.action
+            )
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer = remove_invalid_m2m(
+            serializer, ["besluittypen", "zaaktypen"], self.action
+        )
+
+        return Response(serializer.data)
 
 
 InformatieObjectTypeViewSet.publish = swagger_publish_schema(

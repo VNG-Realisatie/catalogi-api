@@ -151,15 +151,16 @@ class BesluitTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=self.catalogus
+            catalogus=self.catalogus, omschrijving="test"
         )
         informatieobjecttype_url = reverse(
             "informatieobjecttype-detail", kwargs={"uuid": informatieobjecttype.uuid}
         )
         besluittype_list_url = reverse("besluittype-list")
+
         data = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "zaaktypen": [f"http://testserver{zaaktype_url}"],
+            "zaaktypen": [f"{zaaktype.identificatie}"],
             "omschrijving": "test",
             "omschrijvingGeneriek": "",
             "besluitcategorie": "",
@@ -168,7 +169,7 @@ class BesluitTypeAPITests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypen": [f"http://testserver{informatieobjecttype_url}"],
+            "informatieobjecttypen": ["test"],
             "beginGeldigheid": "2019-01-01",
         }
 

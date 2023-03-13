@@ -7,7 +7,7 @@ from vng_api_common.viewsets import CheckQueryParamsMixin
 from rest_framework.response import Response
 
 from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
-from ...datamodel.models import ResultaatType, BesluitType
+from ...datamodel.models import ResultaatType
 from ..filters import ResultaatTypeFilter
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
@@ -81,19 +81,19 @@ class ResultaatTypeViewSet(
 
     def create(self, request, *args, **kwargs):
         request = m2m_array_of_str_to_url(
-            request, "besluittypen", BesluitType, self.action
+            request, ["besluittypen", "informatieobjecttypen"], self.action
         )
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = remove_invalid_m2m(
-            self.get_serializer(instance), "besluittypen", BesluitType, self.action
+            self.get_serializer(instance), ["besluittypen", "informatieobjecttypen"], self.action
         )
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(request, "besluittypen", BesluitType, self.action)
+        request = m2m_array_of_str_to_url(request, ["besluittypen", "informatieobjecttypen"], self.action)
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def list(self, request, *args, **kwargs):
@@ -102,13 +102,13 @@ class ResultaatTypeViewSet(
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             serializer = remove_invalid_m2m(
-                serializer, "besluittypen", BesluitType, self.action
+                serializer, ["besluittypen", "informatieobjecttypen"], self.action
             )
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         serializer = remove_invalid_m2m(
-            serializer, "besluittypen", BesluitType, self.action
+            serializer, ["besluittypen", "informatieobjecttypen"], self.action
         )
 
         return Response(serializer.data)

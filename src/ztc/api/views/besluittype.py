@@ -98,17 +98,17 @@ class BesluitTypeViewSet(
     notifications_kanaal = KANAAL_BESLUITTYPEN
 
     def create(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(request, "zaaktypen", ZaakType, self.action)
+        request = m2m_array_of_str_to_url(request, ["zaaktypen", "informatieobjecttypen"], self.action)
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(request, "zaaktypen", ZaakType, self.action)
+        request = m2m_array_of_str_to_url(request, ["zaaktypen", "informatieobjecttypen"], self.action)
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = remove_invalid_m2m(
-            self.get_serializer(instance), "zaaktypen", ZaakType, self.action
+            self.get_serializer(instance), ["zaaktypen", "informatieobjecttypen", "resultaattypen"], self.action
         )
         return Response(serializer.data)
 
@@ -118,13 +118,13 @@ class BesluitTypeViewSet(
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             serializer = remove_invalid_m2m(
-                serializer, "zaaktypen", ZaakType, self.action
+                serializer, ["zaaktypen", "informatieobjecttypen", "resultaattypen"], self.action
             )
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         serializer = remove_invalid_m2m(
-            serializer, "zaaktypen", ZaakType, self.action
+            serializer, ["zaaktypen", "informatieobjecttypen", "resultaattypen"], self.action
         )
 
         return Response(serializer.data)
