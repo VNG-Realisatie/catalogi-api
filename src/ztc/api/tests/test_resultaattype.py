@@ -227,6 +227,8 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         resultaattypeomschrijving_url = "http://example.com/omschrijving/1"
+        besluittype = BesluitTypeFactory(catalogus=self.catalogus, omschrijving="foobarios")
+        besluittype_url = reverse(besluittype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
             "omschrijving": "illum",
@@ -242,7 +244,8 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 "objecttype": "",
                 "registratie": "",
             },
-            "besluittype_omschrijving": ["foobar", "foobar2"],
+            # "besluittype_omschrijving": ["foobar", "foobar2"],
+            "besluittypen": ["foobarios"]
         }
 
         responses = {
@@ -262,11 +265,12 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        resultaattype = ResultaatType.objects.get()
-        self.assertEqual(resultaattype.omschrijving_generiek, "test")
-        self.assertEqual(resultaattype.zaaktype, zaaktype)
+        resultaattype = response.json()
+
+        self.assertEqual(resultaattype['omschrijvingGeneriek'], "test")
+        self.assertEqual(resultaattype['zaaktype'], f"http://testserver{zaaktype_url}")
         self.assertEqual(
-            resultaattype.brondatum_archiefprocedure_afleidingswijze,
+            resultaattype['brondatumArchiefprocedure']['afleidingswijze'],
             Afleidingswijze.afgehandeld,
         )
 

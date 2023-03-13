@@ -9,7 +9,7 @@ from vng_api_common.viewsets import CheckQueryParamsMixin
 from rest_framework.response import Response
 from rest_framework import status
 
-from ..utils.viewsets import m2m_array_of_str_to_url, build_absolute_url
+from ..utils.viewsets import build_absolute_url
 from ...datamodel.models import ZaakInformatieobjectType, InformatieObjectType
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import (
@@ -148,6 +148,5 @@ class ZaakTypeInformatieObjectTypeViewSet(
             serializer = self.get_serializer(ziot, data=data, partial=partial)
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)
-
 
         return Response(serializer.data)

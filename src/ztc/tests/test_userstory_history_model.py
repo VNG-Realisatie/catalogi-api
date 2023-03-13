@@ -27,7 +27,7 @@ class HistoryModelUserStoryTests(APITestCase):
         print("B1V1_omschrijving = foo")
         print("B2V1_omschrijving = foo2")
         print("B3V1_omschrijving = foo3")
-        print("Z1V1_identificatie = 0, created with [foo, foo2]")
+        print("Z1V1_identificatie = ID, created with [foo, foo2]")
 
         self.post_informatieobjecttype()
         self.post_besluittype_1()
@@ -37,16 +37,16 @@ class HistoryModelUserStoryTests(APITestCase):
         self.publish_informatieobject_1()
         self.publish_zaaktype_1()
 
-        print("B1V2_omschrijving = foo, created with [0]")
-        print("B2V2_omschrijving = foo2, created with [0]")
+        print("B1V2_omschrijving = foo, created with [ID]")
+        print("B2V2_omschrijving = foo2, created with [ID]")
         self.post_besluittype_2()
 
         self.publish_besluittype_2()
 
-        print("Z1V2_identificatie = 0, created with [foo, foo2]")
+        print("Z1V2_identificatie = ID, created with [foo, foo2]")
         self.post_zaaktype_2()
 
-        print("Z1V2_identificatie = 0, created with [foo, foo2,foo3]")
+        print("Z1V2_identificatie = ID, created with [foo, foo2,foo3]")
         self.update_zaaktype_2()
 
         self.publish_zaaktype_2()
@@ -54,7 +54,7 @@ class HistoryModelUserStoryTests(APITestCase):
         print("B1V3_omschrijving = foo3")
         self.delete_besluittype_3()
 
-        print("B1V3_omschrijving = foo, created with [0], concept = False")
+        print("B1V3_omschrijving = foo, created with [ID], concept = False")
         self.post_besluittype_3()
 
         self.get_zaaktype_2()
@@ -100,7 +100,7 @@ class HistoryModelUserStoryTests(APITestCase):
         besluittype_list_url = get_operation_url("besluittype_list")
         response = self.client.get(besluittype_list_url)
 
-        zaaktype_2 = ZaakType.objects.filter(datum_begin_geldigheid="2016-01-01", identificatie="0")[
+        zaaktype_2 = ZaakType.objects.filter(datum_begin_geldigheid="2016-01-01", identificatie="ID")[
             0
         ]
         data_besluittype = response.json()["results"]
@@ -136,7 +136,7 @@ class HistoryModelUserStoryTests(APITestCase):
         data = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
             "omschrijving": "foo",
-            "zaaktypen": ["0"],
+            "zaaktypen": ["ID"],
             "omschrijvingGeneriek": "",
             "besluitcategorie": "",
             "reactietermijn": "P14D",
@@ -158,7 +158,7 @@ class HistoryModelUserStoryTests(APITestCase):
         data2 = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
             "omschrijving": "foo2",
-            "zaaktypen": ["0"],
+            "zaaktypen": ["ID"],
             "omschrijvingGeneriek": "",
             "besluitcategorie": "",
             "reactietermijn": "P14D",
@@ -180,7 +180,7 @@ class HistoryModelUserStoryTests(APITestCase):
         data3 = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
             "omschrijving": "foo3",
-            "zaaktypen": ["0"],
+            "zaaktypen": ["ID"],
             "omschrijvingGeneriek": "",
             "besluitcategorie": "",
             "reactietermijn": "P14D",
@@ -205,7 +205,7 @@ class HistoryModelUserStoryTests(APITestCase):
         """
         zaaktype_list_url = get_operation_url("zaaktype_list")
         data = {
-            "identificatie": "0",
+            "identificatie": "ID",
             "doel": "some test",
             "aanleiding": "some test",
             "indicatieInternOfExtern": InternExtern.extern,
@@ -309,7 +309,7 @@ class HistoryModelUserStoryTests(APITestCase):
         zaaktype_list_url = get_operation_url("zaaktype_list")
 
         data_2 = {
-            "identificatie": "0",
+            "identificatie": "ID",
             "doel": "some test",
             "aanleiding": "some test",
             "indicatieInternOfExtern": InternExtern.extern,
@@ -356,7 +356,7 @@ class HistoryModelUserStoryTests(APITestCase):
 
     def post_besluittype_2(self):
         """
-        test if we can post with ' "zaaktypen": ["0"], '. Where "0" is converted into a URL in the View.
+        test if we can post with ' "zaaktypen": ["ID"], '. Where "ID" is converted into a URL in the View.
         """
 
         informatieobjecttype = InformatieObjectType.objects.get()
@@ -366,7 +366,7 @@ class HistoryModelUserStoryTests(APITestCase):
         besluittype_list_url = reverse("besluittype-list")
         data = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "zaaktypen": ["0"],
+            "zaaktypen": ["ID"],
             "omschrijving": "foo",
             "omschrijvingGeneriek": "",
             "besluitcategorie": "",
@@ -387,7 +387,7 @@ class HistoryModelUserStoryTests(APITestCase):
 
         data2 = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "zaaktypen": ["0"],
+            "zaaktypen": ["ID"],
             "omschrijving": "foo2",
             "omschrijvingGeneriek": "",
             "besluitcategorie": "",
@@ -414,7 +414,7 @@ class HistoryModelUserStoryTests(APITestCase):
         besluittype_list_url = reverse("besluittype-list")
         data = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
-            "zaaktypen": [f"0"],
+            "zaaktypen": [f"ID"],
             "omschrijving": "foo",
             "omschrijvingGeneriek": "",
             "besluitcategorie": "",
@@ -485,7 +485,7 @@ class HistoryModelUserStoryTests(APITestCase):
         zaaktype_url = reverse(zaaktype_2)
 
         data = {
-            "identificatie": 0,
+            "identificatie": "ID",
             "doel": "some test",
             "aanleiding": "aangepast",
             "indicatieInternOfExtern": InternExtern.extern,

@@ -86,20 +86,13 @@ def m2m_array_of_str_to_url(request, m2m_field: str, m2m_model, action: str):
     for m2m_str in m2m_data:
         search_parameter = (
             Q(omschrijving=m2m_str)
-            if m2m_model in [BesluitType, InformatieObjectType]
+            if m2m_model == BesluitType
             else Q(identificatie=m2m_str)
         )
 
         m2m_objects = m2m_model.objects.filter(search_parameter)
 
         for m2m_object in m2m_objects:
-            if m2m_model == InformatieObjectType:
-                request.data[m2m_field].extend(
-                    [
-                        f"{build_absolute_url(action, request)}/{m2m_field}n/{str(m2m_object.uuid)}"
-                    ]
-                )
-            else:
                 request.data[m2m_field].extend(
                     [
                         f"{build_absolute_url(action, request)}/{m2m_field}/{str(m2m_object.uuid)}"
