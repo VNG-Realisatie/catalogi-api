@@ -1,12 +1,9 @@
-from ztc.datamodel.models import (
-    BesluitType,
-    InformatieObjectType,
-    ZaakType,
-)
 import uuid
-
 from urllib.parse import urlparse
+
 from django.db.models import Q
+
+from ztc.datamodel.models import BesluitType, InformatieObjectType, ZaakType
 
 
 def is_url(pattern: str):
@@ -76,7 +73,6 @@ MAPPING_FIELD_TO_MODEL = {
     "gerelateerde_zaaktypen": ZaakType,
     "besluittypen": BesluitType,
     "informatieobjecttypen": InformatieObjectType,
-
 }
 
 
@@ -94,16 +90,26 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
         for m2m_str in m2m_data:
             search_parameter = (
                 Q(omschrijving=m2m_str)
-                if MAPPING_FIELD_TO_MODEL[m2m_field] in [BesluitType, InformatieObjectType]
-                else Q(identificatie=m2m_str if m2m_field != "gerelateerde_zaaktypen" else m2m_str["zaaktype"])
+                if MAPPING_FIELD_TO_MODEL[m2m_field]
+                in [BesluitType, InformatieObjectType]
+                else Q(
+                    identificatie=m2m_str
+                    if m2m_field != "gerelateerde_zaaktypen"
+                    else m2m_str["zaaktype"]
+                )
             )
 
-            m2m_objects = MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(search_parameter)
+            m2m_objects = MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(
+                search_parameter
+            )
             for m2m_object in m2m_objects:
                 if m2m_field == "gerelateerde_zaaktypen":
                     new_m2m_str = m2m_str.copy()
-                    new_m2m_str.update({
-                                       "zaaktype": f"{build_absolute_url(action, request)}/{MAPPING_FIELD_TO_MODEL[m2m_field]._meta.verbose_name_plural.title().lower()}/{str(m2m_object.uuid)}"})
+                    new_m2m_str.update(
+                        {
+                            "zaaktype": f"{build_absolute_url(action, request)}/{MAPPING_FIELD_TO_MODEL[m2m_field]._meta.verbose_name_plural.title().lower()}/{str(m2m_object.uuid)}"
+                        }
+                    )
                     request.data[m2m_field].extend([new_m2m_str])
                 else:
                     request.data[m2m_field].extend(
@@ -125,7 +131,10 @@ def remove_invalid_m2m(serializer, m2m_fields: list, action: str):
 
                 valid_m2m = MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(
                     Q(uuid=uuid_from_url)
-                    & get_m2m_filters(query_object["begin_geldigheid"], query_object["einde_geldigheid"])
+                    & get_m2m_filters(
+                        query_object["begin_geldigheid"],
+                        query_object["einde_geldigheid"],
+                    )
                     & Q(concept=False)
                 )
 
@@ -143,8 +152,8 @@ def get_m2m_filters(start, end):
     #     datum_einde_geldigheid__gte=start
     # ) | Q(datum_begin_geldigheid__lte=start) & Q(datum_einde_geldigheid=None)
     if end:
-        return Q(datum_begin_geldigheid__lte=end) & Q(
-            datum_einde_geldigheid__gte=start
-        )
+        return Q(datum_begin_geldigheid__lte=end) & Q(datum_einde_geldigheid__gte=start)
     else:
-        return Q(datum_begin_geldigheid__gte=start)  # todo or return Q(datum_einde_geldigheid=None) ?
+        return Q(
+            datum_begin_geldigheid__gte=start
+        )  # todo or return Q(datum_einde_geldigheid=None) ?

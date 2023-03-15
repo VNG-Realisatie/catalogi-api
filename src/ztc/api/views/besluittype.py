@@ -1,13 +1,12 @@
 from django.utils.translation import gettext as _
-from rest_framework.response import Response
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
+from rest_framework.response import Response
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
 from ...datamodel.models import BesluitType, ZaakType
 from ..filters import BesluitTypeFilter
 from ..kanalen import KANAAL_BESLUITTYPEN
@@ -18,6 +17,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import BesluitTypeSerializer
+from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
 from .mixins import (
     ConceptMixin,
     ForcedCreateUpdateMixin,
@@ -98,17 +98,23 @@ class BesluitTypeViewSet(
     notifications_kanaal = KANAAL_BESLUITTYPEN
 
     def create(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(request, ["zaaktypen", "informatieobjecttypen"], self.action)
+        request = m2m_array_of_str_to_url(
+            request, ["zaaktypen", "informatieobjecttypen"], self.action
+        )
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(request, ["zaaktypen", "informatieobjecttypen"], self.action)
+        request = m2m_array_of_str_to_url(
+            request, ["zaaktypen", "informatieobjecttypen"], self.action
+        )
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = remove_invalid_m2m(
-            self.get_serializer(instance), ["zaaktypen", "informatieobjecttypen"], self.action
+            self.get_serializer(instance),
+            ["zaaktypen", "informatieobjecttypen"],
+            self.action,
         )
         return Response(serializer.data)
 
@@ -124,13 +130,12 @@ class BesluitTypeViewSet(
 
         serializer = self.get_serializer(queryset, many=True)
         serializer = remove_invalid_m2m(
-            serializer, ["zaaktypen", "informatieobjecttypen", "resultaattypen"], self.action
+            serializer,
+            ["zaaktypen", "informatieobjecttypen", "resultaattypen"],
+            self.action,
         )
 
         return Response(serializer.data)
 
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)
-
-
-

@@ -1,5 +1,5 @@
 import uuid
-from datetime import date, datetime, timedelta
+from datetime import date
 
 from django.test import override_settings
 from django.urls import reverse as django_reverse
@@ -24,17 +24,13 @@ from ztc.datamodel.models import ZaakType
 from ztc.datamodel.tests.factories import (
     BesluitTypeFactory,
     CatalogusFactory,
-    EigenschapFactory,
     InformatieObjectTypeFactory,
-    ResultaatTypeFactory,
-    StatusTypeFactory,
     ZaakInformatieobjectTypeFactory,
     ZaakTypeFactory,
     ZaakTypenRelatieFactory,
 )
 from ztc.datamodel.tests.factories.zaakobjecttype import ZaakObjectTypeFactory
 
-from ...datamodel.tests.factories import RolTypeFactory
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_WRITE,
     SCOPE_CATALOGI_READ,
@@ -168,12 +164,18 @@ class ZaakTypeAPITests(APITestCase):
         )
 
     def test_create_zaaktype(self):
-        besluittype = BesluitTypeFactory.create(catalogus=self.catalogus, omschrijving="test",
-                                                datum_begin_geldigheid="2018-01-01",
-                                                datum_einde_geldigheid="2018-01-02")
-        besluittype2 = BesluitTypeFactory.create(catalogus=self.catalogus, omschrijving="test",
-                                                 datum_begin_geldigheid="2018-01-03",
-                                                 datum_einde_geldigheid=None)
+        besluittype = BesluitTypeFactory.create(
+            catalogus=self.catalogus,
+            omschrijving="test",
+            datum_begin_geldigheid="2018-01-01",
+            datum_einde_geldigheid="2018-01-02",
+        )
+        besluittype2 = BesluitTypeFactory.create(
+            catalogus=self.catalogus,
+            omschrijving="test",
+            datum_begin_geldigheid="2018-01-03",
+            datum_einde_geldigheid=None,
+        )
 
         besluittype_url = get_operation_url(
             "besluittype_retrieve", uuid=besluittype.uuid
@@ -182,9 +184,15 @@ class ZaakTypeAPITests(APITestCase):
         besluittype.zaaktypen.through.objects.all()[0].delete()
         besluittype.zaaktypen.through.objects.all()[0].delete()
 
-        deelzaaktype1 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False, identificatie="test1")
-        deelzaaktype2 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=True, identificatie="test1")
-        deelzaaktype3 = ZaakTypeFactory.create(catalogus=self.catalogus, concept=False, identificatie="test2")
+        deelzaaktype1 = ZaakTypeFactory.create(
+            catalogus=self.catalogus, concept=False, identificatie="test1"
+        )
+        deelzaaktype2 = ZaakTypeFactory.create(
+            catalogus=self.catalogus, concept=True, identificatie="test1"
+        )
+        deelzaaktype3 = ZaakTypeFactory.create(
+            catalogus=self.catalogus, concept=False, identificatie="test2"
+        )
 
         zaaktype_list_url = get_operation_url("zaaktype_list")
         data = {
@@ -223,7 +231,9 @@ class ZaakTypeAPITests(APITestCase):
             "verantwoordelijke": "Organisatie eenheid X",
         }
 
-        response = self.client.post(zaaktype_list_url, data, SERVER_NAME="testserver.com")
+        response = self.client.post(
+            zaaktype_list_url, data, SERVER_NAME="testserver.com"
+        )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -232,13 +242,21 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(zaaktype.catalogus, self.catalogus)
         self.assertEqual(zaaktype.referentieproces_naam, "ReferentieProces 0")
 
-        self.assertEqual(
-            len(zaaktype.zaaktypenrelaties.all()), 2)
+        self.assertEqual(len(zaaktype.zaaktypenrelaties.all()), 2)
 
         self.assertEqual(
-            sorted([zaaktype.zaaktypenrelaties.all()[0].gerelateerd_zaaktype,
-                    zaaktype.zaaktypenrelaties.all()[1].gerelateerd_zaaktype]),
-            sorted([f"http://testserver.com{reverse(deelzaaktype1)}", f"http://testserver.com{reverse(deelzaaktype2)}"])
+            sorted(
+                [
+                    zaaktype.zaaktypenrelaties.all()[0].gerelateerd_zaaktype,
+                    zaaktype.zaaktypenrelaties.all()[1].gerelateerd_zaaktype,
+                ]
+            ),
+            sorted(
+                [
+                    f"http://testserver.com{reverse(deelzaaktype1)}",
+                    f"http://testserver.com{reverse(deelzaaktype2)}",
+                ]
+            ),
         )
 
         self.assertEqual(zaaktype.concept, True)

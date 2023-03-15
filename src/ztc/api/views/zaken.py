@@ -1,4 +1,5 @@
 from django.utils.translation import gettext as _
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import status, viewsets
@@ -10,8 +11,8 @@ from vng_api_common.caching import conditional_retrieve
 from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
-from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
-from ...datamodel.models import ZaakType, BesluitType
+
+from ...datamodel.models import BesluitType, ZaakType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -21,6 +22,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import ZaakTypeSerializer
+from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
 from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
 
 
@@ -83,7 +85,6 @@ class ZaakTypeViewSet(
     ConceptMixin,
     M2MConceptDestroyMixin,
     ForcedCreateUpdateMixin,
-    NotificationViewSetMixin,
     viewsets.ModelViewSet,
 ):
     global_description = (
@@ -151,7 +152,9 @@ class ZaakTypeViewSet(
     def create(self, request, *args, **kwargs):
 
         request = m2m_array_of_str_to_url(
-            request, ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action
+            request,
+            ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
+            self.action,
         )
 
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
@@ -159,30 +162,53 @@ class ZaakTypeViewSet(
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = remove_invalid_m2m(
-            self.get_serializer(instance), ["besluittypen", "informatieobjecttypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
-            self.action
+            self.get_serializer(instance),
+            [
+                "besluittypen",
+                "informatieobjecttypen",
+                "deelzaaktypen",
+                "gerelateerde_zaaktypen",
+            ],
+            self.action,
         )
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(request, ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action)
+        request = m2m_array_of_str_to_url(
+            request,
+            ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
+            self.action,
+        )
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
     def list(self, request, *args, **kwargs):
         # self.filter_backends[0]().get_filterset_kwargs(self.request, queryset, self)['data']
-
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             serializer = remove_invalid_m2m(
-                serializer, ["besluittypen", "informatieobjecttypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action
+                serializer,
+                [
+                    "besluittypen",
+                    "informatieobjecttypen",
+                    "deelzaaktypen",
+                    "gerelateerde_zaaktypen",
+                ],
+                self.action,
             )
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         serializer = remove_invalid_m2m(
-            serializer, ["besluittypen", "informatieobjecttypen", "deelzaaktypen", "gerelateerde_zaaktypen"], self.action
+            serializer,
+            [
+                "besluittypen",
+                "informatieobjecttypen",
+                "deelzaaktypen",
+                "gerelateerde_zaaktypen",
+            ],
+            self.action,
         )
 
         return Response(serializer.data)

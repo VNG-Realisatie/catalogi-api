@@ -1,13 +1,22 @@
+from pprint import pprint
+
 from rest_framework import status
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.tests import get_operation_url, reverse, reverse_lazy
 
-from ztc.api.scopes import SCOPE_CATALOGI_READ, SCOPE_CATALOGI_WRITE, SCOPE_CATALOGI_FORCED_DELETE
+from ztc.api.scopes import (
+    SCOPE_CATALOGI_FORCED_DELETE,
+    SCOPE_CATALOGI_READ,
+    SCOPE_CATALOGI_WRITE,
+)
 from ztc.api.tests.base import APITestCase
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern, RichtingChoices
-from ztc.datamodel.models import BesluitType, InformatieObjectType, ZaakType, ZaakInformatieobjectType
-
-from pprint import pprint
+from ztc.datamodel.models import (
+    BesluitType,
+    InformatieObjectType,
+    ZaakInformatieobjectType,
+    ZaakType,
+)
 
 
 class HistoryModelUserStoryTests(APITestCase):
@@ -69,31 +78,37 @@ class HistoryModelUserStoryTests(APITestCase):
     def get_zaaktype_list(self):
         zaaktype_list_url = get_operation_url("zaaktype_list")
         response = self.client.get(zaaktype_list_url)
-        besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2000-01-01", omschrijving="foo")[
-            0
-        ]
-        besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2000-01-01", omschrijving="foo2")[
-            0
-        ]
-        besluittype_3 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01", omschrijving="foo")[
-            0
-        ]
-        besluittype_4 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01", omschrijving="foo2")[
-            0
-        ]
+        besluittype = BesluitType.objects.filter(
+            datum_begin_geldigheid="2000-01-01", omschrijving="foo"
+        )[0]
+        besluittype_2 = BesluitType.objects.filter(
+            datum_begin_geldigheid="2000-01-01", omschrijving="foo2"
+        )[0]
+        besluittype_3 = BesluitType.objects.filter(
+            datum_begin_geldigheid="2016-01-01", omschrijving="foo"
+        )[0]
+        besluittype_4 = BesluitType.objects.filter(
+            datum_begin_geldigheid="2016-01-01", omschrijving="foo2"
+        )[0]
         data_zaaktype_2 = response.json()["results"]
 
         self.assertEqual(
             sorted(data_zaaktype_2[1]["besluittypen"]),
-            sorted([f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype.uuid)}",
-                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_2.uuid)}"])
-
+            sorted(
+                [
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype.uuid)}",
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_2.uuid)}",
+                ]
+            ),
         )
         self.assertEqual(
             sorted(data_zaaktype_2[0]["besluittypen"]),
-            sorted([f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_3.uuid)}",
-                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_4.uuid)}"])
-
+            sorted(
+                [
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_3.uuid)}",
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_4.uuid)}",
+                ]
+            ),
         )
 
         print("response GET zaaktype LIST")
@@ -103,15 +118,18 @@ class HistoryModelUserStoryTests(APITestCase):
         besluittype_list_url = get_operation_url("besluittype_list")
         response = self.client.get(besluittype_list_url)
 
-        zaaktype_2 = ZaakType.objects.filter(datum_begin_geldigheid="2016-01-01", identificatie="ID")[
-            0
-        ]
+        zaaktype_2 = ZaakType.objects.filter(
+            datum_begin_geldigheid="2016-01-01", identificatie="ID"
+        )[0]
         data_besluittype = response.json()["results"]
 
         self.assertEqual(
             sorted(data_besluittype[0]["zaaktypen"]),
-            sorted([f"http://testserver{get_operation_url('zaaktype_retrieve', uuid=zaaktype_2.uuid)}"])
-
+            sorted(
+                [
+                    f"http://testserver{get_operation_url('zaaktype_retrieve', uuid=zaaktype_2.uuid)}"
+                ]
+            ),
         )
         print("response GET besluittype LIST")
         pprint(response.json()["results"])
@@ -147,9 +165,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypen": [
-                f"{informatieobjecttype.omschrijving}"
-            ],
+            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"],
             "beginGeldigheid": "2000-01-01",
             "eindeGeldigheid": "2000-01-02",
             "concept": True,
@@ -169,9 +185,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypen": [
-                f"{informatieobjecttype.omschrijving}"
-            ],
+            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"],
             "beginGeldigheid": "2000-01-01",
             "eindeGeldigheid": "2000-01-02",
             "concept": True,
@@ -191,9 +205,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypen": [
-                f"{informatieobjecttype.omschrijving}"
-            ],
+            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"],
             "beginGeldigheid": "2000-01-01",
             "eindeGeldigheid": None,
             "concept": True,
@@ -224,8 +236,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "productenOfDiensten": ["https://example.com/product/123"],
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "omschrijving": "some test",
-            "gerelateerdeZaaktypen": [
-            ],
+            "gerelateerdeZaaktypen": [],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
             "besluittypen": ["foo", "foo2"],
@@ -244,9 +255,7 @@ class HistoryModelUserStoryTests(APITestCase):
     def post_ziot(self):
         list_url = reverse_lazy(ZaakInformatieobjectType)
         zaaktype = ZaakType.objects.get()
-        zaaktype_detail_url = get_operation_url(
-            "zaaktype_retrieve", uuid=zaaktype.uuid
-        )
+        zaaktype_detail_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
 
         data = {
             "zaaktype": f"http://testserver{zaaktype_detail_url}",
@@ -298,13 +307,11 @@ class HistoryModelUserStoryTests(APITestCase):
         self.assertEqual(response_besluittype3_publish.status_code, 200)
 
     def publish_besluittype_2(self):
-        besluittype = BesluitType.objects.filter(
-            datum_begin_geldigheid="2016-01-01"
-        )[0]
+        besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[0]
 
-        besluittype_2 = BesluitType.objects.filter(
-            datum_begin_geldigheid="2016-01-01"
-        )[1]
+        besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[
+            1
+        ]
 
         besluittype_url_publish_2 = reverse(
             "besluittype-publish", kwargs={"uuid": besluittype_2.uuid}
@@ -373,7 +380,9 @@ class HistoryModelUserStoryTests(APITestCase):
             "concept": True,
         }
 
-        response_zaaktype_2 = self.client.post(zaaktype_list_url, data_2, SERVER_NAME="testserver.com")
+        response_zaaktype_2 = self.client.post(
+            zaaktype_list_url, data_2, SERVER_NAME="testserver.com"
+        )
         self.assertEqual(response_zaaktype_2.status_code, 201)
 
     def publish_zaaktype_2(self):
@@ -407,9 +416,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypen": [
-                f"{informatieobjecttype.omschrijving}"
-            ],
+            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"],
             "beginGeldigheid": "2016-01-01",
             "concept": True,
         }
@@ -428,9 +435,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypen": [
-                f"{informatieobjecttype.omschrijving}"
-            ],
+            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"],
             "beginGeldigheid": "2016-01-01",
             "concept": True,
         }
@@ -455,9 +460,7 @@ class HistoryModelUserStoryTests(APITestCase):
             "publicatietekst": "",
             "publicatietermijn": None,
             "toelichting": "",
-            "informatieobjecttypen": [
-                f"{informatieobjecttype.omschrijving}"
-            ],
+            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"],
             "beginGeldigheid": "2030-01-01",
             "concept": True,
         }
@@ -494,9 +497,7 @@ class HistoryModelUserStoryTests(APITestCase):
         )
 
         response = self.client.get(zaaktype_detail_url)
-        besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[
-            0
-        ]
+        besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[0]
         besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[
             1
         ]
@@ -507,9 +508,12 @@ class HistoryModelUserStoryTests(APITestCase):
 
         self.assertEqual(
             sorted(response.json()["besluittypen"]),
-            sorted([f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype.uuid)}",
-                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_2.uuid)}"])
-
+            sorted(
+                [
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype.uuid)}",
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_2.uuid)}",
+                ]
+            ),
         )
         print("response GET zaaktype Z1V2")
         pprint(response.json())
@@ -568,9 +572,7 @@ class HistoryModelUserStoryTests(APITestCase):
         self.assertEqual(response.data["aanleiding"], "aangepast")
 
     def delete_besluittype_3(self):
-        besluittype = BesluitType.objects.filter(omschrijving="foo3")[
-            0
-        ]
+        besluittype = BesluitType.objects.filter(omschrijving="foo3")[0]
         besluittype_url = reverse(besluittype)
 
         response_besluit_1 = self.client.delete(besluittype_url)
