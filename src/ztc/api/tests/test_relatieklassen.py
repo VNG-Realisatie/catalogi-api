@@ -282,7 +282,8 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
     def test_partial_update_ziot(self):
         zaaktype = ZaakTypeFactory.create()
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus, omschrijving="test")
+            catalogus=zaaktype.catalogus, omschrijving="test"
+        )
 
         informatieobjecttype2 = InformatieObjectTypeFactory.create(
             catalogus=zaaktype.catalogus, omschrijving="test"

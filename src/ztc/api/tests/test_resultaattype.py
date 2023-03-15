@@ -227,18 +227,34 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
         zaaktype = ZaakTypeFactory.create(selectielijst_procestype=PROCESTYPE_URL)
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
         resultaattypeomschrijving_url = "http://example.com/omschrijving/1"
-        besluittype = BesluitTypeFactory(catalogus=self.catalogus, omschrijving="foobarios",
-                                         datum_begin_geldigheid="2021-10-30", datum_einde_geldigheid="2022-10-31")
-        informatieobjecttype = InformatieObjectTypeFactory(catalogus=self.catalogus, omschrijving="footest",
-                                                           datum_begin_geldigheid="2021-10-30",
-                                                           datum_einde_geldigheid="2022-10-31")
-        besluittype_url = reverse("besluittype-detail", kwargs={"uuid": besluittype.uuid})
+        besluittype = BesluitTypeFactory(
+            catalogus=self.catalogus,
+            omschrijving="foobarios",
+            datum_begin_geldigheid="2021-10-30",
+            datum_einde_geldigheid="2022-10-31",
+        )
+        informatieobjecttype = InformatieObjectTypeFactory(
+            catalogus=self.catalogus,
+            omschrijving="footest",
+            datum_begin_geldigheid="2021-10-30",
+            datum_einde_geldigheid="2022-10-31",
+        )
+        besluittype_url = reverse(
+            "besluittype-detail", kwargs={"uuid": besluittype.uuid}
+        )
 
-        besluittype2 = BesluitTypeFactory(catalogus=self.catalogus, omschrijving="foobarios",
-                                          datum_begin_geldigheid="2021-10-30", datum_einde_geldigheid=None)
-        informatieobjecttype2 = InformatieObjectTypeFactory(catalogus=self.catalogus, omschrijving="footest",
-                                                            datum_begin_geldigheid="2021-10-30",
-                                                            datum_einde_geldigheid=None)
+        besluittype2 = BesluitTypeFactory(
+            catalogus=self.catalogus,
+            omschrijving="foobarios",
+            datum_begin_geldigheid="2021-10-30",
+            datum_einde_geldigheid=None,
+        )
+        informatieobjecttype2 = InformatieObjectTypeFactory(
+            catalogus=self.catalogus,
+            omschrijving="footest",
+            datum_begin_geldigheid="2021-10-30",
+            datum_einde_geldigheid=None,
+        )
 
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
@@ -258,7 +274,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 "registratie": "",
             },
             "besluittypen": [f"{besluittype.omschrijving}"],
-            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"]
+            "informatieobjecttypen": [f"{informatieobjecttype.omschrijving}"],
         }
 
         responses = {
@@ -277,15 +293,14 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                 response = self.client.post(self.list_url, data)
                 response1 = self.client.get(self.list_url)
 
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         resultaattype = response.json()
 
-        self.assertEqual(resultaattype['omschrijvingGeneriek'], "test")
-        self.assertEqual(resultaattype['zaaktype'], f"http://testserver{zaaktype_url}")
+        self.assertEqual(resultaattype["omschrijvingGeneriek"], "test")
+        self.assertEqual(resultaattype["zaaktype"], f"http://testserver{zaaktype_url}")
         self.assertEqual(
-            resultaattype['brondatumArchiefprocedure']['afleidingswijze'],
+            resultaattype["brondatumArchiefprocedure"]["afleidingswijze"],
             Afleidingswijze.afgehandeld,
         )
 

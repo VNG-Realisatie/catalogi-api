@@ -2,11 +2,10 @@ from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
+from rest_framework.response import Response
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
-from rest_framework.response import Response
 
-from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
 from ...datamodel.models import ResultaatType
 from ..filters import ResultaatTypeFilter
 from ..scopes import (
@@ -16,6 +15,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import ResultaatTypeSerializer
+from ..utils.viewsets import m2m_array_of_str_to_url, remove_invalid_m2m
 from .mixins import ForcedCreateUpdateMixin, ZaakTypeConceptMixin
 
 
@@ -80,9 +80,7 @@ class ResultaatTypeViewSet(
     }
 
     def create(self, request, *args, **kwargs):
-        request = m2m_array_of_str_to_url(
-            request, ["besluittypen"], self.action
-        )
+        request = m2m_array_of_str_to_url(request, ["besluittypen"], self.action)
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
@@ -101,14 +99,10 @@ class ResultaatTypeViewSet(
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            serializer = remove_invalid_m2m(
-                serializer, ["besluittypen"], self.action
-            )
+            serializer = remove_invalid_m2m(serializer, ["besluittypen"], self.action)
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        serializer = remove_invalid_m2m(
-            serializer, ["besluittypen"], self.action
-        )
+        serializer = remove_invalid_m2m(serializer, ["besluittypen"], self.action)
 
         return Response(serializer.data)

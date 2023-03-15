@@ -1,11 +1,11 @@
 from django.utils.translation import gettext as _
+
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
+from rest_framework.response import Response
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
-from rest_framework.response import Response
 
-from ..utils.viewsets import remove_invalid_m2m
 from ...datamodel.models import InformatieObjectType
 from ..filters import InformatieObjectTypeFilter
 from ..kanalen import KANAAL_INFORMATIEOBJECTTYPEN
@@ -16,6 +16,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import InformatieObjectTypeSerializer
+from ..utils.viewsets import remove_invalid_m2m
 from .mixins import (
     ConceptMixin,
     ForcedCreateUpdateMixin,

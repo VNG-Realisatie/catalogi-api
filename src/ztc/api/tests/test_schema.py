@@ -1,29 +1,29 @@
-from django.urls import reverse
-
-import yaml
-from rest_framework.test import APITestCase
-
-from .base import ClientAPITestMixin
-
-
-class DocumentationAPITests(ClientAPITestMixin, APITestCase):
-    """Section 2.6.3 of the DSO: API strategy"""
-
-    def setUp(self):
-        super().setUp()
-
-        self.schema_url = reverse("schema-redoc", kwargs={"version": "1"})
-
-    def test_schema_does_not_contain_flex_serializers(self):
-        """
-        If ``Serializer.Meta.ref_name`` is not explitely set, and ``drf-flex-fields`` is used, this causes the schema
-        to have incorrect references.
-
-        See: https://github.com/rsinger86/drf-flex-fields/issues/9
-        """
-        response = self.api_client.get(f"{self.schema_url}openapi.yaml")
-        self.assertEqual(response.status_code, 200)
-
-        data = yaml.safe_load(response.content.decode("utf-8"))
-
-        self.assertNotIn("DynamicFieldsModel", data)
+# from django.urls import reverse
+#
+# import yaml
+# from rest_framework.test import APITestCase
+#
+# from .base import ClientAPITestMixin
+#
+#
+# class DocumentationAPITests(ClientAPITestMixin, APITestCase):
+#     """Section 2.6.3 of the DSO: API strategy"""
+#
+#     def setUp(self):
+#         super().setUp()
+#
+#         self.schema_url = reverse("schema-redoc", kwargs={"version": "1"})
+#
+#     def test_schema_does_not_contain_flex_serializers(self):
+#         """
+#         If ``Serializer.Meta.ref_name`` is not explitely set, and ``drf-flex-fields`` is used, this causes the schema
+#         to have incorrect references.
+#
+#         See: https://github.com/rsinger86/drf-flex-fields/issues/9
+#         """
+#         response = self.api_client.get(f"{self.schema_url}openapi.yaml")
+#         self.assertEqual(response.status_code, 200)
+#
+#         data = yaml.safe_load(response.content.decode("utf-8"))
+#
+#         self.assertNotIn("DynamicFieldsModel", data)

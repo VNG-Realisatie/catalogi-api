@@ -2,15 +2,13 @@ from django.db.models import Q
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework import viewsets
+from rest_framework import status, viewsets
+from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
-from rest_framework.response import Response
-from rest_framework import status
 
-from ..utils.viewsets import build_absolute_url
-from ...datamodel.models import ZaakInformatieobjectType, InformatieObjectType
+from ...datamodel.models import InformatieObjectType, ZaakInformatieobjectType
 from ..filters import ZaakInformatieobjectTypeFilter
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
@@ -19,6 +17,7 @@ from ..scopes import (
     SCOPE_CATALOGI_WRITE,
 )
 from ..serializers import ZaakTypeInformatieObjectTypeSerializer
+from ..utils.viewsets import build_absolute_url
 from .mixins import ConceptFilterMixin, ForcedCreateUpdateMixin
 
 
@@ -123,27 +122,33 @@ class ZaakTypeInformatieObjectTypeViewSet(
         for iot in iots:
             data = request.data.copy()
             data[
-                "informatieobjecttype"] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(iot.uuid)}"
+                "informatieobjecttype"
+            ] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(iot.uuid)}"
             serializer = self.get_serializer(data=data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
     def update(self, request, *args, **kwargs):
         """
         Update multiple ZIOT instances with `informatieobjecttype__omschrijving` as input. Update all correlated ZIOTs
         """
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop("partial", False)
         instance = self.get_object()
 
-        search_parameter = Q(informatieobjecttype__omschrijving=instance.informatieobjecttype.omschrijving)
+        search_parameter = Q(
+            informatieobjecttype__omschrijving=instance.informatieobjecttype.omschrijving
+        )
         ziots = ZaakInformatieobjectType.objects.filter(search_parameter)
 
         for ziot in ziots:
             data = request.data.copy()
             data[
-                "informatieobjecttype"] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(ziot.informatieobjecttype.uuid)}"
+                "informatieobjecttype"
+            ] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(ziot.informatieobjecttype.uuid)}"
 
             serializer = self.get_serializer(ziot, data=data, partial=partial)
             serializer.is_valid(raise_exception=True)
