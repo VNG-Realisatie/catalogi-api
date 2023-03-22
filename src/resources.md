@@ -12,7 +12,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | --- | --- | --- | --- | --- |
 | url | URL-referentie naar dit object. Dit is de unieke identificatie en locatie van dit object. | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort. | string | ja | C​R​U​D |
-| zaaktypen | ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE | array | ja | C​R​U​D |
+| zaaktypen | ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | omschrijving | Omschrijving van de aard van BESLUITen van het BESLUITTYPE. | string | nee | C​R​U​D |
 | omschrijvingGeneriek | Algemeen gehanteerde omschrijving van de aard van BESLUITen van het BESLUITTYPE | string | nee | C​R​U​D |
 | besluitcategorie | Typering van de aard van BESLUITen van het BESLUITTYPE. | string | nee | C​R​U​D |
