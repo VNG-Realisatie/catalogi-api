@@ -292,6 +292,7 @@ class UseJSONTests(APITestCase):
     def test_accept_and_return_json(self):
         """DSO: API-26 (accept and return JSON)"""
         response = self.client.get(self.catalogus_list_url)
+
         self.assertEqual(response.status_code, 200)
 
         self.assertEqual(response["content-type"], "application/json")

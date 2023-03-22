@@ -82,12 +82,15 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus
+            catalogus=zaaktype.catalogus, omschrijving="test"
+        )
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(
+            catalogus=zaaktype.catalogus, omschrijving="test"
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": "test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -96,7 +99,7 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        ziot = ZaakInformatieobjectType.objects.get(volgnummer=13)
+        ziot = ZaakInformatieobjectType.objects.filter(volgnummer=13)[0]
 
         self.assertEqual(ziot.zaaktype, zaaktype)
         self.assertEqual(ziot.informatieobjecttype, informatieobjecttype)
@@ -105,12 +108,12 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus
+            catalogus=zaaktype.catalogus, omschrijving="test"
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": "test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -123,12 +126,12 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            concept=False, catalogus=zaaktype.catalogus
+            concept=False, catalogus=zaaktype.catalogus, omschrijving="test"
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": "test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -141,12 +144,12 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            concept=False, catalogus=zaaktype.catalogus
+            concept=False, catalogus=zaaktype.catalogus, omschrijving="test"
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": "test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -161,11 +164,13 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
     def test_create_ziot_fail_catalogus_mismatch(self):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
-        informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
+        informatieobjecttype = InformatieObjectTypeFactory.create(
+            concept=False, omschrijving="test"
+        )  # todo make ticket omschrijving/identficatie verplicht veld
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": "test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -176,25 +181,6 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
 
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "relations-incorrect-catalogus")
-
-    def test_create_ziot_fail_not_unique(self):
-        ziot = ZaakInformatieobjectTypeFactory(volgnummer=1)
-        informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=ziot.zaaktype.catalogus
-        )
-        data = {
-            "zaaktype": f"http://testserver.com{reverse(ziot.zaaktype)}",
-            "informatieobjecttype": f"http://testserver.com{reverse(informatieobjecttype)}",
-            "volgnummer": ziot.volgnummer,
-            "richting": RichtingChoices.inkomend,
-        }
-
-        response = self.client.post(self.list_url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], "unique")
 
     def test_delete_ziot(self):
         ziot = ZaakInformatieobjectTypeFactory.create()
@@ -242,20 +228,28 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus
+            catalogus=zaaktype.catalogus, omschrijving="test"
         )
-        informatieobjecttype_url = reverse(informatieobjecttype)
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(
+            catalogus=zaaktype.catalogus, omschrijving="test"
+        )
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+        )
+        ziot2 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype2
         )
         ziot_url = reverse(ziot)
 
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": f"test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
+
+        self.assertNotEqual(ziot.volgnummer, 13)
+        self.assertNotEqual(ziot2.volgnummer, 13)
 
         response = self.client.put(ziot_url, data)
 
@@ -263,17 +257,33 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.data["volgnummer"], 13)
 
         ziot.refresh_from_db()
+        ziot2.refresh_from_db()
+
         self.assertEqual(ziot.volgnummer, 13)
+        self.assertEqual(ziot2.volgnummer, 13)
 
     def test_partial_update_ziot(self):
         zaaktype = ZaakTypeFactory.create()
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus
+            catalogus=zaaktype.catalogus, omschrijving="test"
         )
+
+        informatieobjecttype2 = InformatieObjectTypeFactory.create(
+            catalogus=zaaktype.catalogus, omschrijving="test"
+        )
+        for item in ZaakInformatieobjectType.objects.all():
+            item.delete()
+
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
         )
+        ziot2 = ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype2
+        )
         ziot_url = reverse(ziot)
+
+        self.assertNotEqual(ziot.volgnummer, 12)
+        self.assertNotEqual(ziot2.volgnummer, 12)
 
         response = self.client.patch(ziot_url, {"volgnummer": 12})
 
@@ -281,7 +291,10 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         self.assertEqual(response.data["volgnummer"], 12)
 
         ziot.refresh_from_db()
+        ziot2.refresh_from_db()
+
         self.assertEqual(ziot.volgnummer, 12)
+        self.assertEqual(ziot2.volgnummer, 12)
 
     def test_partial_update_ziot_informatieobjecttype(self):
         zaaktype = ZaakTypeFactory.create()
@@ -403,12 +416,13 @@ class ZaakInformatieobjectTypeAPITests(APITestCase):
         zaaktype = ZaakTypeFactory.create()
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus, concept=False
+            catalogus=zaaktype.catalogus, concept=False, omschrijving="test"
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
         )
+
         ziot_url = reverse(ziot)
 
         response = self.client.patch(ziot_url, {"volgnummer": 12})
@@ -729,12 +743,12 @@ class RolTypeScopeTests(APITestCase, JWTAuthMixin):
         zaaktype = ZaakTypeFactory.create(concept=False)
         zaaktype_url = reverse(zaaktype)
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=zaaktype.catalogus, concept=False
+            catalogus=zaaktype.catalogus, concept=False, omschrijving="test"
         )
         informatieobjecttype_url = reverse(informatieobjecttype)
         data = {
             "zaaktype": f"http://testserver{zaaktype_url}",
-            "informatieobjecttype": f"http://testserver{informatieobjecttype_url}",
+            "informatieobjecttype": "test",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }

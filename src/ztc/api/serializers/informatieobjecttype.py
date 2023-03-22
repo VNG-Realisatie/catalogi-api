@@ -1,7 +1,6 @@
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import add_choice_values_help_text
 
@@ -9,11 +8,7 @@ from ...datamodel.models import (
     InformatieObjectType,
     InformatieObjectTypeOmschrijvingGeneriek,
 )
-from ..validators import (
-    ConceptUpdateValidator,
-    M2MConceptCreateValidator,
-    M2MConceptUpdateValidator,
-)
+from ..validators import ConceptUpdateValidator
 
 
 class InformatieObjectTypeOmschrijvingGeneriekSerializer(serializers.ModelSerializer):
@@ -82,12 +77,6 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
         )
         validators = [
             ConceptUpdateValidator(),
-            M2MConceptCreateValidator(["besluittypen", "zaaktypen"]),
-            M2MConceptUpdateValidator(["besluittypen", "zaaktypen"]),
-            UniqueTogetherValidator(
-                queryset=InformatieObjectType.objects.all(),
-                fields=["catalogus", "omschrijving"],
-            ),
         ]
 
     def __init__(self, *args, **kwargs):

@@ -12,7 +12,7 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import ZaakType
+from ...datamodel.models import BesluitType, ZaakType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -21,7 +21,12 @@ from ..scopes import (
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
 )
-from ..serializers import ZaakTypeSerializer
+from ..serializers import (
+    ZaakTypeCreateSerializer,
+    ZaakTypeSerializer,
+    ZaakTypeUpdateSerializer,
+)
+from ..utils.viewsets import extract_relevant_m2m, m2m_array_of_str_to_url
 from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
 
 
@@ -83,7 +88,6 @@ class ZaakTypeViewSet(
     CheckQueryParamsMixin,
     ConceptMixin,
     M2MConceptDestroyMixin,
-    NotificationViewSetMixin,
     ForcedCreateUpdateMixin,
     viewsets.ModelViewSet,
 ):
@@ -146,5 +150,85 @@ class ZaakTypeViewSet(
         instance.save()
 
         serializer = self.get_serializer(instance)
+
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=ZaakTypeCreateSerializer,
+        responses={201: ZaakTypeSerializer},
+    )
+    def create(self, request, *args, **kwargs):
+
+        request = m2m_array_of_str_to_url(
+            request,
+            ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
+            self.action,
+        )
+
+        return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = extract_relevant_m2m(
+            self.get_serializer(instance),
+            [
+                "besluittypen",
+                "informatieobjecttypen",
+                "deelzaaktypen",
+                "gerelateerde_zaaktypen",
+            ],
+            self.action,
+        )
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=ZaakTypeUpdateSerializer,
+        responses={200: ZaakTypeSerializer},
+    )
+    def update(self, request, *args, **kwargs):
+        request = m2m_array_of_str_to_url(
+            request,
+            ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
+            self.action,
+        )
+        return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        self._check_query_params(request)
+        queryset = self.filter_queryset(self.get_queryset())
+        filters = (
+            self.filter_backends[0]()
+            .get_filterset_kwargs(self.request, queryset, self)
+            .get("data", {})
+        )
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer = extract_relevant_m2m(
+                serializer,
+                [
+                    "besluittypen",
+                    "informatieobjecttypen",
+                    "deelzaaktypen",
+                    "gerelateerde_zaaktypen",
+                ],
+                self.action,
+                filters.get("datum_geldigheid", None),
+            )
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer = extract_relevant_m2m(
+            serializer,
+            [
+                "besluittypen",
+                "informatieobjecttypen",
+                "deelzaaktypen",
+                "gerelateerde_zaaktypen",
+            ],
+            self.action,
+            filters.get("datum_geldigheid", None),
+        )
 
         return Response(serializer.data)

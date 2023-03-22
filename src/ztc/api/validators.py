@@ -45,7 +45,6 @@ class ZaaktypeGeldigheidValidator:
             datum_einde_geldigheid,
             instance,
         )
-
         if query.exists():
             # are we patching eindeGeldigheid?
             changing_published_geldigheid = self.serializer.partial and list(attrs) == [

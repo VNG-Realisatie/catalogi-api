@@ -71,10 +71,10 @@ class ZaakInformatieobjectType(ETagMixin, models.Model):
 
     class Meta:
         # NOTE: The uniqueness is implied in the specification.
-        unique_together = ("zaaktype", "volgnummer")
+        # unique_together = ("zaaktype", "volgnummer")
         verbose_name = _("Zaak-Informatieobject-Type")
         verbose_name_plural = _("Zaak-Informatieobject-Typen")
-        ordering = unique_together
+        # ordering = unique_together
 
         filter_fields = ("zaaktype", "informatieobjecttype", "richting")
         ordering_fields = filter_fields
@@ -197,7 +197,7 @@ class ZaakTypenRelatie(models.Model):
 
     class Meta:
         # NOTE: The uniqueness is not explicitly defined in specification:
-        unique_together = ("zaaktype", "gerelateerd_zaaktype")
+        # unique_together = ("zaaktype", "gerelateerd_zaaktype")
         verbose_name = _("Zaaktypenrelatie")
         verbose_name_plural = _("Zaaktypenrelaties")
         ordering = ("pk",)

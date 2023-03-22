@@ -1,7 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework import serializers
-from rest_framework.validators import UniqueTogetherValidator
 from vng_api_common.serializers import add_choice_values_help_text
 
 from ...datamodel.choices import RichtingChoices
@@ -62,10 +61,6 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         }
         validators = [
             ZaakInformatieObjectTypeCatalogusValidator(),
-            UniqueTogetherValidator(
-                queryset=ZaakInformatieobjectType.objects.all(),
-                fields=["zaaktype", "volgnummer"],
-            ),
         ]
 
     def __init__(self, *args, **kwargs):
@@ -107,45 +102,15 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         return validated_data
 
 
-# class ZaakInformatieobjectTypeArchiefregimeSerializer(FlexFieldsSerializerMixin, SourceMappingSerializerMixin,
-#                                                       NestedHyperlinkedModelSerializer):
-#     """
-#     RSTIOTARC-basis
-#
-#     Afwijkende archiveringskenmerken van informatieobjecten van een INFORMATIEOBJECTTYPE bij zaken van een ZAAKTYPE op
-#     grond van resultaten van een RESULTAATTYPE bij dat ZAAKTYPE.
-#     """
-#     parent_lookup_kwargs = {
-#         'catalogus_pk': 'zaak_informatieobject_type__zaaktype__catalogus__pk',
-#         'zaaktype_pk': 'zaak_informatieobject_type__zaaktype__pk',
-#     }
-#
-#     gerelateerde = NestedHyperlinkedRelatedField(
-#         read_only=True,
-#         source='zaak_informatieobject_type',
-#         view_name='api:informatieobjecttype-detail',
-#         parent_lookup_kwargs={
-#             'catalogus_pk': 'informatieobjecttype__catalogus__pk',
-#             'pk': 'informatieobjecttype__pk'
-#         },
-#     )
-#
-#     class Meta:
-#         model = ZaakInformatieobjectTypeArchiefregime
-#         ref_name = model.__name__
-#         source_mapping = {
-#             'rstzdt.selectielijstklasse': 'selectielijstklasse',
-#             'rstzdt.archiefnominatie': 'archiefnominatie',
-#             'rstzdt.archiefactietermijn': 'archiefactietermijn',
-#         }
-#
-#         fields = (
-#             'url',
-#             'gerelateerde',
-#             'rstzdt.selectielijstklasse',
-#             'rstzdt.archiefnominatie',
-#             'rstzdt.archiefactietermijn',
-#         )
-#         extra_kwargs = {
-#             'url': {'view_name': 'api:rstiotarc-detail'},
-#         }
+class ZaakTypeInformatieObjectTypeCreateSerializer(
+    ZaakTypeInformatieObjectTypeSerializer
+):
+    informatieobjecttype = serializers.CharField(
+        help_text="`Omschrijvingen` van het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd."
+    )
+
+
+class ZaakTypeInformatieObjectTypeUpdateSerializer(
+    ZaakTypeInformatieObjectTypeCreateSerializer
+):
+    pass
