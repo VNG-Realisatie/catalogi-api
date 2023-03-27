@@ -1,18 +1,14 @@
-name: ci-build
+name: ci
 
-# Run this workflow every time a new commit pushed to your repository
 on:
   push:
     branches:
-      - master
-      - stable/*
-    tags:
-      - '*'
+      - "stable/*"
   pull_request:
-  workflow_dispatch:
+    branches:
+      - "master"
 
 env:
-  IMAGE_NAME: vngr/gemma-ztc
   DJANGO_SETTINGS_MODULE: ztc.conf.ci
   SECRET_KEY: dummy
   DB_USER: postgres
@@ -20,13 +16,52 @@ env:
   DEPLOYMENT: ztc
 
 jobs:
-  tests:
+  check-sort:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: pip install -r requirements/ci.txt
+      - name: Run isort
+        run: isort --check-only --diff .
+
+  check-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: pip install -r requirements/ci.txt
+      - name: Run black
+        run: black --check --diff src docs
+
+  check-oas:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install spectral
+        run: npm install -g @stoplight/spectral@5.9.2
+      - name: Run OAS linter
+        run: spectral lint ./src/openapi.yaml
+
+  unit-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         postgres: ['10', '11', '12']
 
-    name: Tests (PG ${{ matrix.postgres }})
+    name: unit-test @postgres ${{ matrix.postgres }}
 
     services:
       postgres:
@@ -37,13 +72,16 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
+
+      # - name: Install system packages
+      #   run: sudo apt-get install libgdal-dev gdal-bin
 
       - name: Install dependencies
         run: pip install -r requirements/ci.txt
@@ -61,87 +99,45 @@ jobs:
       - name: Publish coverage report
         uses: codecov/codecov-action@v1
 
-  docker:
+  push-images:
     runs-on: ubuntu-latest
-    name: Docker image build
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Determine tag/commit hash
-        id: vars
-        run: |
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name (if present at all)
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
-          echo ::set-output name=tag::${VERSION}
-          echo ::set-output name=git_hash::${GITHUB_SHA}
-      - name: Build the Docker image
-        run: |
-          docker build . \
-          --build-arg COMMIT_HASH=${{ steps.vars.outputs.git_hash }}
-      # - run: docker image save -o image.tar $IMAGE_NAME:${{ steps.vars.outputs.tag }}
-      # - name: Store image artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: docker-image
-      #     path: image.tar
-      #     retention-days: 1
-
-  publish:
     needs:
-      - tests
-      - docker
-
-    name: Push Docker image
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'  # exclude PRs/forks
-
+      - check-format
+      - check-sort
+      - check-oas
+      - unit-tests
     steps:
-      - uses: actions/checkout@v2
-      # - name: Download built image
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: docker-image
-      - name: Publish latest image
-        env: # Or as an environment variable
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-          DEPLOY_BOT_TOKEN: ${{ secrets.DEPLOY_BOT_TOKEN }}
-        run: |
-          BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$BRANCH" == "master" ]; then
-          bash bin/cicd.sh latest no
-          fi
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ghcr.io/VNG-Realisatie/catalogi-api
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=ref,event=pr
+            type=ref,event=branch
+            type=sha
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Log in to github
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Publish tagged image
-        env: # Or as an environment variable
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-          DEPLOY_BOT_TOKEN: ${{ secrets.DEPLOY_BOT_TOKEN }}
-        run: |
-          TAG=$(git name-rev --tags --name-only $(git rev-parse HEAD))
-          if [ "$TAG" != "undefined" ]; then
-          bash bin/cicd.sh $TAG yes
-          fi
-
-      # - name: Determine tag/commit hash
-      #   id: vars
-      #   run: |
-      #     # Strip git ref prefix from version
-      #     VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-      #     # Strip "v" prefix from tag name (if present at all)
-      #     [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-      #     # Use Docker `latest` tag convention
-      #     [ "$VERSION" == "develop" ] && VERSION=latest
-      #     echo ::set-output name=tag::${VERSION}
-      # - name: Load image
-      #   run: |
-      #     docker image load -i image.tar
-      # - name: Log into registry
-      #   run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-
-      # - name: Push the Docker image
-      #   run: docker push $IMAGE_NAME:${{ steps.vars.outputs.tag }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
