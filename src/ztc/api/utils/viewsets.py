@@ -88,17 +88,30 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
     The m2m array 'm2m_field' (like 'besluittypen') is transformed to an array of urls, which are required for the
     m2m relationship.
     """
-
     for m2m_field in m2m_fields:
         m2m_data = request.data.get(m2m_field, []).copy()
         if m2m_data:
             request.data[m2m_field].clear()
+        # else:
+        #     if m2m_field == "gerelateerde_zaaktypen":
+        #
+        #         from django.shortcuts import get_object_or_404
+        #         for zaaktype in ZaakType.objects.all():
+        #             for relatie in zaaktype.zaaktypenrelaties.all():
+        #                 uuid = relatie.gerelateerd_zaaktype.split("/")[-1]
+        #                 model = get_object_or_404(ZaakType, uuid=uuid)
+        #                 if model.identificatie == request.data.get("identificatie", None):
+        #                     relatie.id = None
+        #                     relatie.gerelateerd_zaaktype = relatie.gerelateerd_zaaktype.split("/")[:-1] + [str(uuid.uuid4())]
+        #                     breakpoint()
+        # print(model.identificatie)
+        # breakpoint()
 
         for m2m_str in m2m_data:
             search_parameter = (
                 Q(omschrijving=m2m_str)
                 if MAPPING_FIELD_TO_MODEL[m2m_field]
-                in [BesluitType, InformatieObjectType]
+                   in [BesluitType, InformatieObjectType]
                 else Q(
                     identificatie=m2m_str
                     if m2m_field != "gerelateerde_zaaktypen"
@@ -117,7 +130,6 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
                     request.data[m2m_field].extend([new_m2m_str])
                 else:
                     request.data[m2m_field].extend([build_url])
-
     return request
 
 
@@ -128,8 +140,10 @@ def extract_relevant_m2m(serializer, m2m_fields: list, action: str, date=None):
         for query_object in data:
             valid_urls = []
             for m2m_url in query_object[m2m_field]:
-                uuid_from_url = uuid.UUID(m2m_url.rsplit("/", 1)[1]).hex
-
+                if m2m_field == "gerelateerde_zaaktypen":
+                    uuid_from_url = uuid.UUID(m2m_url["zaaktype"].rsplit("/", 1)[1]).hex
+                else:
+                    uuid_from_url = uuid.UUID(m2m_url.rsplit("/", 1)[1]).hex
                 valid_m2m = get_valid_m2m_objects(m2m_field, uuid_from_url, date)
 
                 if valid_m2m:
@@ -150,7 +164,12 @@ def get_valid_m2m_objects(m2m_field: str, uuid_from_url, date=None):
     )
 
     qs_old_version = MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(search_parameter)
+
     if not qs_old_version:
-        search_parameter = Q(datum_einde_geldigheid=None, uuid=uuid_from_url)
+        if date:
+            search_parameter = Q(datum_begin_geldigheid__lte=date, datum_einde_geldigheid=None, uuid=uuid_from_url)
+        else:
+            search_parameter = Q(datum_einde_geldigheid=None, uuid=uuid_from_url)
+
         return MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(search_parameter)
     return qs_old_version

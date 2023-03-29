@@ -1,7 +1,7 @@
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from notifications_api_common.viewsets import NotificationViewSetMixin
+from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,7 +12,7 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import BesluitType, ZaakType
+from ...datamodel.models import ZaakType
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -158,14 +158,26 @@ class ZaakTypeViewSet(
         responses={201: ZaakTypeSerializer},
     )
     def create(self, request, *args, **kwargs):
-
         request = m2m_array_of_str_to_url(
             request,
             ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
             self.action,
         )
-
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        """automatically create new zaaktype relations when creating a new version of a zaaktype"""
+        serializer.save()
+        if not serializer.data.get("gerelateerde_zaaktypen", []):
+            for zaaktype in ZaakType.objects.all():
+                for relatie in zaaktype.zaaktypenrelaties.all():
+                    uuid = relatie.gerelateerd_zaaktype.split("/")[-1]
+                    model = get_object_or_404(ZaakType, uuid=uuid)
+                    if model.identificatie == serializer.data.get("identificatie", None):
+                        relatie.id = None
+                        uuid = serializer.data.get("url", None).split("/")[-1]
+                        relatie.gerelateerd_zaaktype = relatie.gerelateerd_zaaktype.rsplit('/', 1)[0] + "/" + str(uuid)
+                        relatie.save()
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
