@@ -637,34 +637,6 @@ class HistoryModelMichielScenario1Test(APITestCase):
         response = self.client.post(list_url, data)
         self.assertEqual(response.status_code, 201)
 
-    # def publish_besluittype_1(self):
-    #     self.besluittype_1 = BesluitType.objects.all()[0]
-    #
-    #     besluittype_url_publish = reverse(
-    #         "besluittype-publish", kwargs={"uuid": self.besluittype_1.uuid}
-    #     )
-    #     response_besluittype_publish = self.client.post(besluittype_url_publish)
-    #     self.assertEqual(response_besluittype_publish.status_code, 200)
-    #
-    # def publish_informatieobject_1(self):
-    #     informatieobjecttype = InformatieObjectType.objects.get()
-    #
-    #     informatieobjecttypee_url = get_operation_url(
-    #         "informatieobjecttype_publish", uuid=informatieobjecttype.uuid
-    #     )
-    #
-    #     response_informatieobjecttypee_url = self.client.post(informatieobjecttypee_url)
-    #
-    #     self.assertEqual(
-    #         response_informatieobjecttypee_url.status_code, status.HTTP_200_OK
-    #     )
-    #
-    # def publish_zaaktype_1(self):
-    #     zaaktype_1 = ZaakType.objects.all().first()
-    #     zaaktype_1_publish = get_operation_url("zaaktype_publish", uuid=zaaktype_1.uuid)
-    #     response_1_publish = self.client.post(zaaktype_1_publish)
-    #     self.assertEqual(response_1_publish.status_code, status.HTTP_200_OK)
-
     def post_zaaktype_2(self):
         zaaktype_list_url = get_operation_url("zaaktype_list")
         data = {
