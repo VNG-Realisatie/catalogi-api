@@ -111,7 +111,7 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
             search_parameter = (
                 Q(omschrijving=m2m_str)
                 if MAPPING_FIELD_TO_MODEL[m2m_field]
-                   in [BesluitType, InformatieObjectType]
+                in [BesluitType, InformatieObjectType]
                 else Q(
                     identificatie=m2m_str
                     if m2m_field != "gerelateerde_zaaktypen"
@@ -167,7 +167,11 @@ def get_valid_m2m_objects(m2m_field: str, uuid_from_url, date=None):
 
     if not qs_old_version:
         if date:
-            search_parameter = Q(datum_begin_geldigheid__lte=date, datum_einde_geldigheid=None, uuid=uuid_from_url)
+            search_parameter = Q(
+                datum_begin_geldigheid__lte=date,
+                datum_einde_geldigheid=None,
+                uuid=uuid_from_url,
+            )
         else:
             search_parameter = Q(datum_einde_geldigheid=None, uuid=uuid_from_url)
 

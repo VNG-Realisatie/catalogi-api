@@ -1,7 +1,7 @@
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -176,7 +176,9 @@ class ZaakTypeViewSet(
                 if model.identificatie == serializer.data.get("identificatie", None):
                     relatie.id = None
                     uuid = serializer.data.get("url", None).split("/")[-1]
-                    relatie.gerelateerd_zaaktype = relatie.gerelateerd_zaaktype.rsplit('/', 1)[0] + "/" + str(uuid)
+                    relatie.gerelateerd_zaaktype = (
+                        relatie.gerelateerd_zaaktype.rsplit("/", 1)[0] + "/" + str(uuid)
+                    )
                     relatie.save()
 
     def retrieve(self, request, *args, **kwargs):
