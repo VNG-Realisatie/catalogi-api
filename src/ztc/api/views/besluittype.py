@@ -160,5 +160,13 @@ class BesluitTypeViewSet(
 
         return Response(serializer.data)
 
+    def perform_create(self, serializer):
+        """automatically create new zaaktype relations when creating a new version of a besluittype"""
+        new_besluittype = serializer.save()
+        besluittypen = BesluitType.objects.filter(omschrijving=serializer.data.get("omschrijving", []))
+        for besluittype in besluittypen:
+            for zaaktype in besluittype.zaaktypen.all():
+                new_besluittype.zaaktypen.add(zaaktype)
+                new_besluittype.save()
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)

@@ -168,16 +168,16 @@ class ZaakTypeViewSet(
     def perform_create(self, serializer):
         """automatically create new zaaktype relations when creating a new version of a zaaktype"""
         serializer.save()
-        if not serializer.data.get("gerelateerde_zaaktypen", []):
-            for zaaktype in ZaakType.objects.all():
-                for relatie in zaaktype.zaaktypenrelaties.all():
-                    uuid = relatie.gerelateerd_zaaktype.split("/")[-1]
-                    model = get_object_or_404(ZaakType, uuid=uuid)
-                    if model.identificatie == serializer.data.get("identificatie", None):
-                        relatie.id = None
-                        uuid = serializer.data.get("url", None).split("/")[-1]
-                        relatie.gerelateerd_zaaktype = relatie.gerelateerd_zaaktype.rsplit('/', 1)[0] + "/" + str(uuid)
-                        relatie.save()
+        # if not serializer.data.get("gerelateerde_zaaktypen", []):
+        for zaaktype in ZaakType.objects.all():
+            for relatie in zaaktype.zaaktypenrelaties.all():
+                uuid = relatie.gerelateerd_zaaktype.split("/")[-1]
+                model = get_object_or_404(ZaakType, uuid=uuid)
+                if model.identificatie == serializer.data.get("identificatie", None):
+                    relatie.id = None
+                    uuid = serializer.data.get("url", None).split("/")[-1]
+                    relatie.gerelateerd_zaaktype = relatie.gerelateerd_zaaktype.rsplit('/', 1)[0] + "/" + str(uuid)
+                    relatie.save()
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
