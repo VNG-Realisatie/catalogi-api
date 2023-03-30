@@ -65,18 +65,17 @@ class HistoryModelUserStoryTests(APITestCase):
     def get_zaaktype_list(self):
         zaaktype_list_url = get_operation_url("zaaktype_list")
         response = self.client.get(zaaktype_list_url)
-        besluittype = BesluitType.objects.filter(
-            datum_begin_geldigheid="2000-01-01", omschrijving="foo"
-        )[0]
-        besluittype_2 = BesluitType.objects.filter(
-            datum_begin_geldigheid="2000-01-01", omschrijving="foo2"
-        )[0]
+
         besluittype_3 = BesluitType.objects.filter(
             datum_begin_geldigheid="2016-01-01", omschrijving="foo"
         )[0]
         besluittype_4 = BesluitType.objects.filter(
             datum_begin_geldigheid="2016-01-01", omschrijving="foo2"
         )[0]
+        besluittype_5 = BesluitType.objects.filter(
+            datum_begin_geldigheid="2030-01-01"
+        )[0]
+
         data_zaaktype_2 = response.json()["results"]
 
         self.assertEqual(
@@ -85,6 +84,8 @@ class HistoryModelUserStoryTests(APITestCase):
                 [
                     f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_3.uuid)}",
                     f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_4.uuid)}",
+                    f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype_5.uuid)}",
+
                 ]
             ),
         )
