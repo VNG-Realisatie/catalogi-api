@@ -63,6 +63,7 @@ CSRF_COOKIE_SECURE = bool(getenv("CSRF_COOKIE_SECURE", False))
 # Custom settings
 #
 ENVIRONMENT = "docker"
+NOTIFICATIONS_DISABLED = bool(getenv("NOTIFICATIONS_DISABLED", False))
 
 
 if missing_environment_vars:

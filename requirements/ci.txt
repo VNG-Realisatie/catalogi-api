@@ -366,7 +366,7 @@ urllib3==1.26.10
     # via
     #   -r requirements/base.txt
     #   requests
-vng-api-common==2.0.0
+vng-api-common==2.0.4
     # via -r requirements/base.txt
 webencodings==0.5.1
     # via

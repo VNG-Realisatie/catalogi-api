@@ -1,6 +1,6 @@
 {
     "name": "ztc",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "ztc referentie-implementatie API",
     "directories": {"doc": "doc"},
     "scripts": {"build": "npm run bundle", "bundle": "webpack", "watch": "webpack -w"},

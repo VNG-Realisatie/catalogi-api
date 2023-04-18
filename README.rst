@@ -2,7 +2,7 @@
 Catalogi API
 ============
 
-:Version: 1.2.0
+:Version: 1.2.1
 :Source: https://github.com/VNG-Realisatie/zaaktypecataloguscomponent
 :Keywords: zaaktypen, ztc, imztc, ztc2, ztcaas, saas, rest, api
 
