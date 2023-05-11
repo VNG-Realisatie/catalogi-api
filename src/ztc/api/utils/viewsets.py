@@ -19,6 +19,7 @@ def is_valid_url(url):
     except ValueError:
         return False
 
+
 def build_absolute_url(action, request):
     if action in ["update", "partial_update"]:
         return request.build_absolute_uri().rsplit("/", 2)[0]
@@ -99,7 +100,7 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
             search_parameter = (
                 Q(omschrijving=m2m_str)
                 if MAPPING_FIELD_TO_MODEL[m2m_field]
-                   in [BesluitType, InformatieObjectType]
+                in [BesluitType, InformatieObjectType]
                 else Q(
                     identificatie=m2m_str
                     if m2m_field != "gerelateerde_zaaktypen"
@@ -131,7 +132,9 @@ def extract_relevant_m2m(serializer, m2m_fields: list, action: str, date=None):
                 if isinstance(m2m_object, dict):
                     for key, value in m2m_object.items():
                         if is_valid_url(value):
-                            uuid_from_url = uuid.UUID(m2m_object[key].rsplit("/", 1)[1]).hex
+                            uuid_from_url = uuid.UUID(
+                                m2m_object[key].rsplit("/", 1)[1]
+                            ).hex
 
                 else:
                     uuid_from_url = uuid.UUID(m2m_object.rsplit("/", 1)[1]).hex
