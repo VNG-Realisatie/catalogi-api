@@ -12,10 +12,12 @@ from ztc.datamodel.models import (
 )
 
 
-def is_url(pattern: str):
-    is_url = urlparse(pattern)
-    return all([is_url.scheme, is_url.netloc])
-
+def is_valid_url(url):
+    try:
+        result = urlparse(url)
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
 
 def build_absolute_url(action, request):
     if action in ["update", "partial_update"]:
@@ -92,26 +94,12 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
         m2m_data = request.data.get(m2m_field, []).copy()
         if m2m_data:
             request.data[m2m_field].clear()
-        # else:
-        #     if m2m_field == "gerelateerde_zaaktypen":
-        #
-        #         from django.shortcuts import get_object_or_404
-        #         for zaaktype in ZaakType.objects.all():
-        #             for relatie in zaaktype.zaaktypenrelaties.all():
-        #                 uuid = relatie.gerelateerd_zaaktype.split("/")[-1]
-        #                 model = get_object_or_404(ZaakType, uuid=uuid)
-        #                 if model.identificatie == request.data.get("identificatie", None):
-        #                     relatie.id = None
-        #                     relatie.gerelateerd_zaaktype = relatie.gerelateerd_zaaktype.split("/")[:-1] + [str(uuid.uuid4())]
-        #                     breakpoint()
-        # print(model.identificatie)
-        # breakpoint()
 
         for m2m_str in m2m_data:
             search_parameter = (
                 Q(omschrijving=m2m_str)
                 if MAPPING_FIELD_TO_MODEL[m2m_field]
-                in [BesluitType, InformatieObjectType]
+                   in [BesluitType, InformatieObjectType]
                 else Q(
                     identificatie=m2m_str
                     if m2m_field != "gerelateerde_zaaktypen"
@@ -139,15 +127,19 @@ def extract_relevant_m2m(serializer, m2m_fields: list, action: str, date=None):
         data = serializer.data if action == "list" else [serializer.data]
         for query_object in data:
             valid_urls = []
-            for m2m_url in query_object[m2m_field]:
-                if m2m_field == "gerelateerde_zaaktypen":
-                    uuid_from_url = uuid.UUID(m2m_url["zaaktype"].rsplit("/", 1)[1]).hex
+            for m2m_object in query_object[m2m_field]:
+                if isinstance(m2m_object, dict):
+                    for key, value in m2m_object.items():
+                        if is_valid_url(value):
+                            uuid_from_url = uuid.UUID(m2m_object[key].rsplit("/", 1)[1]).hex
+
                 else:
-                    uuid_from_url = uuid.UUID(m2m_url.rsplit("/", 1)[1]).hex
+                    uuid_from_url = uuid.UUID(m2m_object.rsplit("/", 1)[1]).hex
+
                 valid_m2m = get_valid_m2m_objects(m2m_field, uuid_from_url, date)
 
                 if valid_m2m:
-                    valid_urls.append(m2m_url)
+                    valid_urls.append(m2m_object)
 
             query_object[m2m_field].clear()
             query_object[m2m_field].extend(valid_urls)
