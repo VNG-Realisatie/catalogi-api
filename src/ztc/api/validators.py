@@ -27,17 +27,12 @@ class ZaaktypeGeldigheidValidator:
         """
         self.serializer = serializer
 
-    def __call__(self, attrs):
+    def __call__(self):
         instance = self.serializer.instance
-        catalogus = attrs.get("catalogus") or instance.catalogus
-        identificatie = attrs.get("identificatie") or instance.identificatie
-        datum_begin_geldigheid = (
-            attrs.get("datum_begin_geldigheid") or instance.datum_begin_geldigheid
-        )
-        datum_einde_geldigheid = get_from_serializer_data_or_instance(
-            "einde_geldigheid", attrs, self.serializer
-        )
-
+        catalogus = instance.catalogus
+        identificatie = instance.identificatie
+        datum_begin_geldigheid = instance.datum_begin_geldigheid
+        datum_einde_geldigheid = instance.datum_einde_geldigheid
         query = get_overlapping_zaaktypes(
             catalogus,
             identificatie,
@@ -47,9 +42,7 @@ class ZaaktypeGeldigheidValidator:
         )
         if query.exists():
             # are we patching eindeGeldigheid?
-            changing_published_geldigheid = self.serializer.partial and list(attrs) == [
-                "datum_einde_geldigheid"
-            ]
+            changing_published_geldigheid = self.serializer.partial
             error_field = (
                 "einde_geldigheid"
                 if changing_published_geldigheid

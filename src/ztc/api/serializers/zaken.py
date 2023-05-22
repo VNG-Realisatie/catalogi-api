@@ -207,7 +207,6 @@ class ZaakTypeSerializer(
         }
 
         validators = [
-            ZaaktypeGeldigheidValidator(),
             RelationCatalogValidator("besluittypen"),
             ConceptUpdateValidator(),
             DeelzaaktypeCatalogusValidator(),

@@ -27,6 +27,7 @@ from ..serializers import (
     ZaakTypeUpdateSerializer,
 )
 from ..utils.viewsets import extract_relevant_m2m, m2m_array_of_str_to_url
+from ..validators import ZaaktypeGeldigheidValidator
 from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
 
 
@@ -124,7 +125,6 @@ class ZaakTypeViewSet(
     notifications_kanaal = KANAAL_ZAAKTYPEN
     relation_fields = ["zaaktypenrelaties"]
 
-    @action(detail=True, methods=["post"])
     @extend_schema(
         responses={
             status.HTTP_200_OK: serializer_class,
@@ -133,6 +133,7 @@ class ZaakTypeViewSet(
             **{exc.status_code: FoutSerializer for exc in COMMON_ERRORS},
         },
     )
+    @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()
         # check related objects
@@ -145,6 +146,10 @@ class ZaakTypeViewSet(
             raise ValidationError(
                 {api_settings.NON_FIELD_ERRORS_KEY: msg}, code="concept-relation"
             )
+
+        geldigheid_validator = ZaaktypeGeldigheidValidator()
+        geldigheid_validator.set_context(serializer=self.get_serializer(instance))
+        geldigheid_validator()
 
         instance.concept = False
         instance.save()
