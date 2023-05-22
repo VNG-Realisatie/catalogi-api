@@ -2,9 +2,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.serializers import ValidationError
 
-from ztc.datamodel.utils import get_overlapping_zaaktypes
-
-from .utils.serializers import get_from_serializer_data_or_instance
+from ztc.datamodel.utils import (
+    get_overlapping_concept_zaaktypes,
+    get_overlapping_zaaktypes,
+)
 
 
 class ZaaktypeGeldigheidValidator:
@@ -48,6 +49,41 @@ class ZaaktypeGeldigheidValidator:
                 if changing_published_geldigheid
                 else "begin_geldigheid"
             )
+            raise ValidationError({error_field: self.message}, code=self.code)
+
+
+class ZaaktypeDoubleConceptValidator:
+    """
+    Validate that the (new) object is not a double concept
+
+    Empty end date is an open interval, which means that the object cannot
+    be created after the start date.
+    """
+
+    message = _("Dit zaaktype komt al voor binnen de catalogus met een concept versie")
+    code = "overlap"
+
+    def set_context(self, serializer):
+        """
+        This hook is called by the serializer instance,
+        prior to the validation call being made.
+        """
+        self.serializer = serializer
+
+    def __call__(self, attrs):
+        instance = self.serializer.instance
+        if instance is not None:
+            return
+
+        catalogus = attrs["catalogus"]
+        identificatie = attrs["identificatie"]
+        query = get_overlapping_concept_zaaktypes(
+            catalogus,
+            identificatie,
+        )
+        if query.exists():
+
+            error_field = "concept"
             raise ValidationError({error_field: self.message}, code=self.code)
 
 

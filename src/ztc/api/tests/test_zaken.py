@@ -1061,6 +1061,103 @@ class ZaakTypeAPITests(APITestCase):
         self.assertEqual(error["code"], "required")
 
 
+class ZaakTypeCreateDuplicateTests(APITestCase):
+    """
+    Test the creation business rules w/r to duplicates.
+    A Zaaktype with the same code is allowed IF and ONLY IF it does not overlap
+    in validity period.
+    """
+
+    heeft_alle_autorisaties = True
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+
+        cls.catalogus = CatalogusFactory.create()
+
+        cls.url = get_operation_url("zaaktype_list")
+
+    def test_zaaktype_non_concept_allows_creating_a_concept(self):
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=date(2020, 1, 1),
+            concept=False,
+            zaaktype_omschrijving="zaaktype",
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 1,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2019-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {"naam": "ref"},
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+            "verantwoordelijke": "Organisatie eenheid X",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_overlap_with_two_concepts(self):
+        ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            identificatie=1,
+            datum_begin_geldigheid=date(2019, 1, 1),
+            datum_einde_geldigheid=date(2020, 1, 1),
+            concept=True,
+            zaaktype_omschrijving="zaaktype",
+        )
+
+        data = {
+            "omschrijving": "zaaktype",
+            "identificatie": 1,
+            "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "beginGeldigheid": "2019-02-01",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "doel": "doel",
+            "aanleiding": "aanleiding",
+            "indicatieInternOfExtern": "extern",
+            "handelingInitiator": "aanvragen",
+            "onderwerp": "dummy",
+            "handelingBehandelaar": "behandelen",
+            "doorlooptijd": "P7D",
+            "opschortingEnAanhoudingMogelijk": False,
+            "verlengingMogelijk": False,
+            "publicatieIndicatie": False,
+            "productenOfDiensten": [],
+            "referentieproces": {"naam": "ref"},
+            "besluittypen": [],
+            "gerelateerdeZaaktypen": [],
+            "versiedatum": "2019-02-01",
+            "verantwoordelijke": "Organisatie eenheid X",
+        }
+
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        error = get_validation_errors(response, "concept")
+        self.assertEqual(error["code"], "overlap")
+
+
 class ZaakTypeFilterAPITests(APITestCase):
     maxDiff = None
 
