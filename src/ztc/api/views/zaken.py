@@ -12,7 +12,7 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import ZaakType
+from ...datamodel.models import ZaakType, ZaakTypenRelatie
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -173,18 +173,37 @@ class ZaakTypeViewSet(
     def perform_create(self, serializer):
         """automatically create new zaaktype relations when creating a new version of a zaaktype"""
         serializer.save()
-        # if not serializer.data.get("gerelateerde_zaaktypen", []):
         for zaaktype in ZaakType.objects.all():
             for relatie in zaaktype.zaaktypenrelaties.all():
                 uuid = relatie.gerelateerd_zaaktype.split("/")[-1]
                 model = get_object_or_404(ZaakType, uuid=uuid)
-                if model.identificatie == serializer.data.get("identificatie", None):
-                    relatie.id = None
-                    uuid = serializer.data.get("url", None).split("/")[-1]
-                    relatie.gerelateerd_zaaktype = (
-                        relatie.gerelateerd_zaaktype.rsplit("/", 1)[0] + "/" + str(uuid)
-                    )
-                    relatie.save()
+                # breakpoint()
+                # if model.identificatie == serializer.data.get("identificatie", None):
+                #     relatie.id = None
+                #     uuid = serializer.data.get("url", None).split("/")[-1]
+                #     relatie.gerelateerd_zaaktype = (
+                #         relatie.gerelateerd_zaaktype.rsplit("/", 1)[0] + "/" + str(uuid)
+                #     )
+                #     relatie.save()
+                if serializer.data.get("gerelateerde_zaaktypen", None):
+                    for rel_zaaktype in serializer.data["gerelateerde_zaaktypen"]:
+                        if rel_zaaktype.get("zaaktype", None):
+                            uuid = rel_zaaktype["zaaktype"].split("/")[-1]
+                            model = get_object_or_404(ZaakType, uuid=uuid)
+                            query = model.zaaktypenrelaties.all()
+                            if query.filter(
+                                gerelateerd_zaaktype=serializer.data.get("url", None)
+                            ).exists():
+                                continue
+                            new_relation = ZaakTypenRelatie.objects.create(
+                                gerelateerd_zaaktype=serializer.data.get("url", None),
+                                zaaktype=model,
+                                aard_relatie=rel_zaaktype.get("aard_relatie", None),
+                                toelichting=rel_zaaktype.get("toelichting", None),
+                            )
+
+                            model.zaaktypenrelaties.add(new_relation)
+                            model.save()
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
