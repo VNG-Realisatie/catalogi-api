@@ -1,3 +1,4 @@
+import datetime
 import uuid
 from datetime import date
 
@@ -135,6 +136,69 @@ class ZaakTypeAPITests(APITestCase):
             "eindeObject": None,
         }
         self.assertEqual(expected, response.json())
+
+    def test_get_detail_params_geldigheid_no_besluittype(self):
+        zaaktype = ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            verantwoordelijke="Organisatie eenheid X",
+            objecttypen=[ZaakObjectTypeFactory(catalogus=self.catalogus)],
+            broncatalogus_url="https://catalogus.url/foo",
+            broncatalogus_domein="XYZ",
+            broncatalogus_rsin="100000000",
+            bronzaaktype_url="https://zaaktype.url/foo",
+            bronzaaktype_identificatie="1",
+            bronzaaktype_omschrijving="omschrijving",
+            datum_begin_geldigheid="2018-01-01",
+        )
+        besluittype = BesluitTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2018-01-01",
+            datum_einde_geldigheid="2019-01-01",
+        )
+        zaaktype.besluittypen.add(besluittype)
+
+        zaaktype_detail_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
+
+        response = self.client.get(
+            zaaktype_detail_url, {"datum_geldigheid": "2020-02-02"}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["besluittypen"], [])
+
+    def test_get_detail_params_geldigheid_find_besluittype(self):
+        zaaktype = ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            verantwoordelijke="Organisatie eenheid X",
+            objecttypen=[ZaakObjectTypeFactory(catalogus=self.catalogus)],
+            broncatalogus_url="https://catalogus.url/foo",
+            broncatalogus_domein="XYZ",
+            broncatalogus_rsin="100000000",
+            bronzaaktype_url="https://zaaktype.url/foo",
+            bronzaaktype_identificatie="1",
+            bronzaaktype_omschrijving="omschrijving",
+            datum_begin_geldigheid="2018-01-01",
+        )
+        besluittype = BesluitTypeFactory.create(
+            concept=False,
+            datum_begin_geldigheid="2018-01-01",
+            datum_einde_geldigheid="2022-01-01",
+        )
+        zaaktype.besluittypen.add(besluittype)
+
+        zaaktype_detail_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
+
+        response = self.client.get(
+            zaaktype_detail_url, {"datum_geldigheid": "2020-02-02"}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["besluittypen"],
+            [
+                f"http://testserver{get_operation_url('besluittype_retrieve', uuid=besluittype.uuid)}"
+            ],
+        )
 
     def test_get_detail_404(self):
         ZaakTypeFactory.create(catalogus=self.catalogus)

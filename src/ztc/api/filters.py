@@ -183,6 +183,14 @@ class ZaakTypeFilter(FilterSet):
         )
 
 
+class ZaakTypeDetailFilter(FilterSet):
+    datum_geldigheid = filters.DateFilter()
+
+    class Meta:
+        model = ZaakType
+        fields = ("datum_geldigheid",)
+
+
 class ZaakObjectTypeFilter(FilterSet):
     datum_geldigheid = filters.DateFilter(
         method=get_objects_between_geldigheid_dates,

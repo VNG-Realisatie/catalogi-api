@@ -12,6 +12,7 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
+from ...datamodel.constants import DATUM_GELDIGHEID_QUERY_PARAM
 from ...datamodel.models import ZaakType, ZaakTypenRelatie
 from ..filters import ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
@@ -193,8 +194,10 @@ class ZaakTypeViewSet(
                     model.zaaktypenrelaties.add(new_relation)
                     model.save()
 
+    @extend_schema(parameters=[DATUM_GELDIGHEID_QUERY_PARAM])
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
+        filter_datum_geldigheid = request.query_params.get("datum_geldigheid", None)
         serializer = extract_relevant_m2m(
             self.get_serializer(instance),
             [
@@ -204,6 +207,7 @@ class ZaakTypeViewSet(
                 "gerelateerde_zaaktypen",
             ],
             self.action,
+            filter_datum_geldigheid,
         )
         return Response(serializer.data)
 
