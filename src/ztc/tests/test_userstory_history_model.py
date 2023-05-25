@@ -210,7 +210,6 @@ class HistoryModelUserStoryTests(APITestCase):
             "besluittypen": ["foo", "foo2"],
             "beginGeldigheid": "2000-01-01",
             "eindeGeldigheid": "2000-01-02",
-            # todo normaal staat deze op None, waar word deze gezet bij nieuwe versie van een zaaktype?
             "versiedatum": "2000-01-01",
             "verantwoordelijke": "Organisatie eenheid X",
             "concept": True,
@@ -735,57 +734,6 @@ class HistoryModelMichielScenario1Test(APITestCase):
             f"http://testserver.com{get_operation_url('zaaktype_retrieve', uuid=zaaktype_1.uuid)}",
         )
 
-        # RESPONSE FOR MICHIEL #todo DELETE THIS BEFORE PRODUCTION DEPLOY
-
-        # URL_ZAAKTYPE_1 = 'http://testserver/api/v1/zaaktypen/cb709c0c-99c2-4298-82ef-4dd76ada9d57'
-
-        #   RESPONSE =
-        #   {'aanleiding': 'some test',
-        #  'beginGeldigheid': '2000-01-01',
-        #  'beginObject': None,
-        #  'besluittypen': [],
-        #  'broncatalogus': {'domein': None, 'rsin': None, 'url': None},
-        #  'bronzaaktype': {'identificatie': None, 'omschrijving': None, 'url': None},
-        #  'catalogus': 'http://testserver/api/v1/catalogussen/c998dd98-a387-473e-bbbf-dbec027e265b',
-        #  'concept': True,
-        #  'deelzaaktypen': [],
-        #  'doel': 'some test',
-        #  'doorlooptijd': 'P30D',
-        #  'eigenschappen': [],
-        #  'eindeGeldigheid': None,
-        #  'eindeObject': None,
-        #  'gerelateerdeZaaktypen': [{'aardRelatie': 'bijdrage',
-        #                             'toelichting': 'test relations',
-        #                             'zaaktype': 'http://testserver.com/api/v1/zaaktypen/cb709c0c-99c2-4298-82ef-4dd76ada9d57'}],
-        #  'handelingBehandelaar': 'uitvoeren',
-        #  'handelingInitiator': 'indienen',
-        #  'identificatie': 'zaaktype2',
-        #  'indicatieInternOfExtern': 'extern',
-        #  'informatieobjecttypen': [],
-        #  'omschrijving': 'some test',
-        #  'omschrijvingGeneriek': '',
-        #  'onderwerp': 'Klacht',
-        #  'opschortingEnAanhoudingMogelijk': False,
-        #  'productenOfDiensten': ['https://example.com/product/123'],
-        #  'publicatieIndicatie': True,
-        #  'publicatietekst': '',
-        #  'referentieproces': {'link': '', 'naam': 'ReferentieProces 0'},
-        #  'resultaattypen': [],
-        #  'roltypen': [],
-        #  'selectielijstProcestype': '',
-        #  'servicenorm': None,
-        #  'statustypen': [],
-        #  'toelichting': '',
-        #  'trefwoorden': [],
-        #  'url': 'http://testserver/api/v1/zaaktypen/aff5929e-3b7a-4dde-8ee3-41b35ef76af0',
-        #  'verantwoordelijke': 'Organisatie eenheid X',
-        #  'verantwoordingsrelatie': [],
-        #  'verlengingMogelijk': True,
-        #  'verlengingstermijn': 'P30D',
-        #  'versiedatum': '2000-01-01',
-        #  'vertrouwelijkheidaanduiding': 'openbaar',
-        #  'zaakobjecttypen': []}
-
     def post_zaaktype_1_V2(self):
         """Update einde geldigheid zaaktype 1 so we can post a second version of zaaktype 1"""
         zaaktype_1 = ZaakType.objects.filter(identificatie="zaaktype1")[0]
@@ -907,56 +855,6 @@ class HistoryModelMichielScenario1Test(APITestCase):
         zaaktype_1_v1 = ZaakType.objects.filter(
             identificatie="zaaktype1", datum_begin_geldigheid="2000-01-01"
         )[0]
-
-        # todo remove with deploy
-        # URL_ZAAKTYPE_1_V1 =http://testserver.com/api/v1/zaaktypen/603d5808-aa93-41ad-a1ba-5fabae7d122a
-
-        # response fore michiel
-        # [{'aanleiding': 'some test',
-        #   'beginGeldigheid': '2000-01-01',
-        #   'beginObject': None,
-        #   'besluittypen': [],
-        #   'broncatalogus': {'domein': None, 'rsin': None, 'url': None},
-        #   'bronzaaktype': {'identificatie': None, 'omschrijving': None, 'url': None},
-        #   'catalogus': 'http://testserver.com/api/v1/catalogussen/b34197c6-7065-41d7-8234-6b490f2b5da4',
-        #   'concept': False,
-        #   'deelzaaktypen': [],
-        #   'doel': 'some test',
-        #   'doorlooptijd': 'P30D',
-        #   'eigenschappen': [],
-        #   'eindeGeldigheid': None,
-        #   'eindeObject': None,
-        #   'gerelateerdeZaaktypen': [{'aardRelatie': 'bijdrage',
-        #                              'toelichting': 'test relations',
-        #                              'zaaktype': 'http://testserver.com/api/v1/zaaktypen/603d5808-aa93-41ad-a1ba-5fabae7d122a'}],
-        #   'handelingBehandelaar': 'uitvoeren',
-        #   'handelingInitiator': 'indienen',
-        #   'identificatie': 'zaaktype2',
-        #   'indicatieInternOfExtern': 'extern',
-        #   'informatieobjecttypen': [],
-        #   'omschrijving': 'some test',
-        #   'omschrijvingGeneriek': '',
-        #   'onderwerp': 'Klacht',
-        #   'opschortingEnAanhoudingMogelijk': False,
-        #   'productenOfDiensten': ['https://example.com/product/123'],
-        #   'publicatieIndicatie': True,
-        #   'publicatietekst': '',
-        #   'referentieproces': {'link': '', 'naam': 'ReferentieProces 0'},
-        #   'resultaattypen': [],
-        #   'roltypen': [],
-        #   'selectielijstProcestype': '',
-        #   'servicenorm': None,
-        #   'statustypen': [],
-        #   'toelichting': '',
-        #   'trefwoorden': [],
-        #   'url': 'http://testserver.com/api/v1/zaaktypen/fffbbf6b-de25-49a6-ad0f-4fd0d9e962cf',
-        #   'verantwoordelijke': 'Organisatie eenheid X',
-        #   'verantwoordingsrelatie': [],
-        #   'verlengingMogelijk': True,
-        #   'verlengingstermijn': 'P30D',
-        #   'versiedatum': '2000-01-01',
-        #   'vertrouwelijkheidaanduiding': 'openbaar',
-        #   'zaakobjecttypen': []}]
 
         self.assertEqual(
             data_zaaktype_list[0]["gerelateerdeZaaktypen"][0]["zaaktype"],
@@ -1116,55 +1014,6 @@ class HistoryModelMichielScenario2Test(APITestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        # todo remove
-        # URL_BESLUITTYPE_1 = http://testserver.com/api/v1/besluittypen/75869517-4412-45cf-b427-b3ef1a2fbe13
-
-        # RESPONSE FOR MICHIEL
-        # {'aanleiding': 'some test',
-        #  'beginGeldigheid': '2000-01-01',
-        #  'beginObject': None,
-        #  'besluittypen': ['http://testserver.com/api/v1/besluittypen/75869517-4412-45cf-b427-b3ef1a2fbe13'],
-        #  'broncatalogus': {'domein': None, 'rsin': None, 'url': None},
-        #  'bronzaaktype': {'identificatie': None, 'omschrijving': None, 'url': None},
-        #  'catalogus': 'http://testserver.com/api/v1/catalogussen/0e7490d6-7b60-4a1c-91ac-7f06cdc227d8',
-        #  'concept': False,
-        #  'deelzaaktypen': [],
-        #  'doel': 'some test',
-        #  'doorlooptijd': 'P30D',
-        #  'eigenschappen': [],
-        #  'eindeGeldigheid': None,
-        #  'eindeObject': None,
-        #  'gerelateerdeZaaktypen': [],
-        #  'handelingBehandelaar': 'uitvoeren',
-        #  'handelingInitiator': 'indienen',
-        #  'identificatie': 'zaaktype1',
-        #  'indicatieInternOfExtern': 'extern',
-        #  'informatieobjecttypen': [
-        #      'http://testserver.com/api/v1/informatieobjecttypen/0ca722dc-8595-4cea-a1da-ab8d15b04ca0'],
-        #  'omschrijving': 'some test',
-        #  'omschrijvingGeneriek': '',
-        #  'onderwerp': 'Klacht',
-        #  'opschortingEnAanhoudingMogelijk': False,
-        #  'productenOfDiensten': ['https://example.com/product/123'],
-        #  'publicatieIndicatie': True,
-        #  'publicatietekst': '',
-        #  'referentieproces': {'link': '', 'naam': 'ReferentieProces 0'},
-        #  'resultaattypen': [],
-        #  'roltypen': [],
-        #  'selectielijstProcestype': '',
-        #  'servicenorm': None,
-        #  'statustypen': [],
-        #  'toelichting': 'IAM GOING TO CHANGE',
-        #  'trefwoorden': [],
-        #  'url': 'http://testserver.com/api/v1/zaaktypen/3bc5ebf5-c644-4407-bf36-56bfa9c295e2',
-        #  'verantwoordelijke': 'Organisatie eenheid X',
-        #  'verantwoordingsrelatie': [],
-        #  'verlengingMogelijk': True,
-        #  'verlengingstermijn': 'P30D',
-        #  'versiedatum': '2000-01-01',
-        #  'vertrouwelijkheidaanduiding': 'openbaar',
-        #  'zaakobjecttypen': []}
-
     def post_besluittype_2(self):
         besluittype_1 = BesluitType.objects.get()
         besluittype_1_url = reverse(besluittype_1)
@@ -1221,55 +1070,6 @@ class HistoryModelMichielScenario2Test(APITestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        # todo remove this
-        # UUID_BESLUITTYPE_V2 = 4a51de0c-6c36-4ef7-bd63-134d1d59cb3f
-
-        # RESPONSE FOR MICHIEL
-        # {'aanleiding': 'some test',
-        #  'beginGeldigheid': '2000-01-01',
-        #  'beginObject': None,
-        #  'besluittypen': ['http://testserver.com/api/v1/besluittypen/63333f65-9382-43f3-93c0-b091150f9d47'],
-        #  'broncatalogus': {'domein': None, 'rsin': None, 'url': None},
-        #  'bronzaaktype': {'identificatie': None, 'omschrijving': None, 'url': None},
-        #  'catalogus': 'http://testserver.com/api/v1/catalogussen/edcd8451-848d-4272-956c-e351c47321c4',
-        #  'concept': False,
-        #  'deelzaaktypen': [],
-        #  'doel': 'some test',
-        #  'doorlooptijd': 'P30D',
-        #  'eigenschappen': [],
-        #  'eindeGeldigheid': None,
-        #  'eindeObject': None,
-        #  'gerelateerdeZaaktypen': [],
-        #  'handelingBehandelaar': 'uitvoeren',
-        #  'handelingInitiator': 'indienen',
-        #  'identificatie': 'zaaktype1',
-        #  'indicatieInternOfExtern': 'extern',
-        #  'informatieobjecttypen': [
-        #      'http://testserver.com/api/v1/informatieobjecttypen/b9688c75-45c4-49de-9560-f623aea01ee0'],
-        #  'omschrijving': 'some test',
-        #  'omschrijvingGeneriek': '',
-        #  'onderwerp': 'Klacht',
-        #  'opschortingEnAanhoudingMogelijk': False,
-        #  'productenOfDiensten': ['https://example.com/product/123'],
-        #  'publicatieIndicatie': True,
-        #  'publicatietekst': '',
-        #  'referentieproces': {'link': '', 'naam': 'ReferentieProces 0'},
-        #  'resultaattypen': [],
-        #  'roltypen': [],
-        #  'selectielijstProcestype': '',
-        #  'servicenorm': None,
-        #  'statustypen': [],
-        #  'toelichting': 'IAM GOING TO CHANGE',
-        #  'trefwoorden': [],
-        #  'url': 'http://testserver.com/api/v1/zaaktypen/022e1cd5-580f-4479-91c3-a4edede20cb3',
-        #  'verantwoordelijke': 'Organisatie eenheid X',
-        #  'verantwoordingsrelatie': [],
-        #  'verlengingMogelijk': True,
-        #  'verlengingstermijn': 'P30D',
-        #  'versiedatum': '2000-01-01',
-        #  'vertrouwelijkheidaanduiding': 'openbaar',
-        #  'zaakobjecttypen': []}
-
     def get_zaaktype_1_with_besluittype_1_V1(self):
         zaaktype_1 = ZaakType.objects.filter(identificatie="zaaktype1")[0]
         besluittype_1 = BesluitType.objects.filter(
@@ -1303,54 +1103,6 @@ class HistoryModelMichielScenario2Test(APITestCase):
             identificatie="zaaktype1", datum_begin_geldigheid="2000-01-01"
         )[0]
 
-        # todo remove with deploy
-        # besluittype_v1_UUID =3f54a1a7-fe15-4cf7-9b6d-1263b3d0c61d
-
-        # RESPONSE FOR MICHIEL
-        # {'aanleiding': 'some test',
-        #  'beginGeldigheid': '2000-01-01',
-        #  'beginObject': None,
-        #  'besluittypen': ['http://testserver.com/api/v1/besluittypen/3f54a1a7-fe15-4cf7-9b6d-1263b3d0c61d'],
-        #  'broncatalogus': {'domein': None, 'rsin': None, 'url': None},
-        #  'bronzaaktype': {'identificatie': None, 'omschrijving': None, 'url': None},
-        #  'catalogus': 'http://testserver.com/api/v1/catalogussen/224f9e98-2141-4ecc-a0e9-4e7670b98107',
-        #  'concept': False,
-        #  'deelzaaktypen': [],
-        #  'doel': 'some test',
-        #  'doorlooptijd': 'P30D',
-        #  'eigenschappen': [],
-        #  'eindeGeldigheid': None,
-        #  'eindeObject': None,
-        #  'gerelateerdeZaaktypen': [],
-        #  'handelingBehandelaar': 'uitvoeren',
-        #  'handelingInitiator': 'indienen',
-        #  'identificatie': 'zaaktype1',
-        #  'indicatieInternOfExtern': 'extern',
-        #  'informatieobjecttypen': [],
-        #  'omschrijving': 'some test',
-        #  'omschrijvingGeneriek': '',
-        #  'onderwerp': 'Klacht',
-        #  'opschortingEnAanhoudingMogelijk': False,
-        #  'productenOfDiensten': ['https://example.com/product/123'],
-        #  'publicatieIndicatie': True,
-        #  'publicatietekst': '',
-        #  'referentieproces': {'link': '', 'naam': 'ReferentieProces 0'},
-        #  'resultaattypen': [],
-        #  'roltypen': [],
-        #  'selectielijstProcestype': '',
-        #  'servicenorm': None,
-        #  'statustypen': [],
-        #  'toelichting': 'IAM GOING TO CHANGE',
-        #  'trefwoorden': [],
-        #  'url': 'http://testserver.com/api/v1/zaaktypen/0c358381-3a0a-43e3-8cda-494848b7d4f7',
-        #  'verantwoordelijke': 'Organisatie eenheid X',
-        #  'verantwoordingsrelatie': [],
-        #  'verlengingMogelijk': True,
-        #  'verlengingstermijn': 'P30D',
-        #  'versiedatum': '2000-01-01',
-        #  'vertrouwelijkheidaanduiding': 'openbaar',
-        #  'zaakobjecttypen': []}
-
         self.assertEqual(
             data_zaaktype_list[0]["besluittypen"][0],
             f"http://testserver.com{get_operation_url('besluittype_retrieve', uuid=besluittype_v1.uuid)}",
@@ -1373,9 +1125,7 @@ class HistoryModelUserStory2256(APITestCase):
 
         self.post_zaaktype_3()
         self.publish_zaaktype_3()
-        self.get_zaaktype_list()
 
-        self.get_zaaktype_list()
         self.get_zaaktype_3()
 
     def post_zaaktype_1(self):
@@ -1485,11 +1235,6 @@ class HistoryModelUserStory2256(APITestCase):
                     "aard_relatie": AardRelatieChoices.bijdrage,
                     "toelichting": "test relations",
                 },
-                # {
-                #     "zaaktype": "zaaktype2",
-                #     "aard_relatie": AardRelatieChoices.bijdrage,
-                #     "toelichting": "test relations",
-                # },
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
@@ -1528,19 +1273,15 @@ class HistoryModelUserStory2256(APITestCase):
         response_3_publish = self.client.post(zaaktype_3_publish)
         self.assertEqual(response_3_publish.status_code, status.HTTP_200_OK)
 
-    def get_zaaktype_list(self):
-        zaaktype_list_url = get_operation_url("zaaktype_list")
-        response = self.client.get(
-            zaaktype_list_url,
-            {"datumGeldigheid": str(datetime.now().strftime("%Y-%m-%d"))},
-            SERVER_NAME="testserver.com",
-        )
-
-        self.assertEqual(response.status_code, 200)
-        data_zaaktype_list = response.json()["results"]
-
     def get_zaaktype_3(self):
         zaaktype_1 = ZaakType.objects.filter(identificatie="zaaktype1")[0]
+        zaaktype_2 = ZaakType.objects.filter(
+            identificatie="zaaktype2",
+            datum_einde_geldigheid=(datetime.now() - timedelta(days=0)).strftime(
+                "%Y-%m-%d"
+            ),
+        )[0]
+
         zaaktype_detail_url = get_operation_url(
             "zaaktype_retrieve", uuid=zaaktype_1.uuid
         )
@@ -1549,3 +1290,7 @@ class HistoryModelUserStory2256(APITestCase):
 
         self.assertEqual(response.status_code, 200)
         data = response.json()
+        self.assertEqual(
+            data["gerelateerdeZaaktypen"][0]["zaaktype"],
+            f"http://testserver.com{get_operation_url('zaaktype_retrieve', uuid=zaaktype_2.uuid)}",
+        )
