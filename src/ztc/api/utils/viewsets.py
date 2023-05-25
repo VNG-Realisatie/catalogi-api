@@ -168,7 +168,11 @@ def get_valid_m2m_objects(m2m_field: str, uuid_from_url, date=None):
                 uuid=uuid_from_url,
             )
         else:
-            search_parameter = Q(datum_einde_geldigheid=None, uuid=uuid_from_url)
+            search_parameter = Q(
+                datum_einde_geldigheid=None,
+                datum_begin_geldigheid__lte=datetime.datetime.now(),
+                uuid=uuid_from_url,
+            )
 
         return MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(search_parameter)
     return qs_old_version
