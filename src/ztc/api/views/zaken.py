@@ -248,6 +248,7 @@ class ZaakTypeViewSet(
         )
 
         page = self.paginate_queryset(queryset)
+
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             serializer = extract_relevant_m2m(
@@ -259,7 +260,7 @@ class ZaakTypeViewSet(
                     "gerelateerde_zaaktypen",
                 ],
                 self.action,
-                filters.get("datumGeldigheid", None),
+                filters.get("datum_geldigheid", None),
             )
             return self.get_paginated_response(serializer.data)
 
@@ -273,7 +274,7 @@ class ZaakTypeViewSet(
                 "gerelateerde_zaaktypen",
             ],
             self.action,
-            filters.get("datumGeldigheid", None),
+            filters.get("datum_geldigheid", None),
         )
 
         return Response(serializer.data)

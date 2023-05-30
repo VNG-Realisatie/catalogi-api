@@ -1088,7 +1088,7 @@ class HistoryModelMichielScenario2Test(APITestCase):
         zaaktype_list_url = get_operation_url("zaaktype_list")
         response = self.client.get(
             zaaktype_list_url,
-            {"datumGeldigheid": "2000-01-01", "identificatie": "zaaktype1"},
+            {"datumGeldigheid": "2000-01-02", "identificatie": "zaaktype1"},
             SERVER_NAME="testserver.com",
         )
 
@@ -1293,8 +1293,6 @@ class HistoryModelUserStory2256(APITestCase):
             "zaaktype_retrieve", uuid=zaaktype_1.uuid
         )
 
-        response = self.client.get(
-            zaaktype_detail_url, SERVER_NAME="testserver.com"
-        )  # deze moet z1 terug geven
+        response = self.client.get(zaaktype_detail_url, SERVER_NAME="testserver.com")
         self.assertEqual(response.status_code, 200)
         data = response.json()
