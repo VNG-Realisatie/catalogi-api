@@ -32,7 +32,7 @@ STATUS_HELP_TEXT = """filter objects depending on their concept status:
 DATUM_GELDIGHEID_HELP_TEXT = "filter objecten op hun geldigheids datum."
 
 
-def get_objects_between_geldigheid_dates(queryset, name, value):
+def get_objects_between_geldigheid_dates(queryset, name, value, *args, **kwargs):
     qs_old_version = queryset.filter(
         datum_begin_geldigheid__lte=value, datum_einde_geldigheid__gte=value
     )
@@ -40,6 +40,11 @@ def get_objects_between_geldigheid_dates(queryset, name, value):
         qs_most_recent_version = queryset.filter(datum_einde_geldigheid=None)
         return qs_most_recent_version
     return qs_old_version
+
+
+def detail_filter(queryset, name, value):
+    """filtering is handled in the viewset"""
+    return queryset
 
 
 def status_filter(queryset, name, value):
@@ -184,7 +189,10 @@ class ZaakTypeFilter(FilterSet):
 
 
 class ZaakTypeDetailFilter(FilterSet):
-    datum_geldigheid = filters.DateFilter()
+    datum_geldigheid = filters.DateFilter(
+        method=detail_filter,
+        help_text=DATUM_GELDIGHEID_HELP_TEXT,
+    )
 
     class Meta:
         model = ZaakType

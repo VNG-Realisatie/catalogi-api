@@ -25,6 +25,6 @@ class SelectielijstKlasseProcestermijn(DjangoChoices):
 DATUM_GELDIGHEID_QUERY_PARAM = OpenApiParameter(
     name="datumGeldigheid",
     location=OpenApiParameter.QUERY,
-    description="filters the correlated m2m related objects on the given date",
+    description="filter op datumGeldigheid voor het zelf en alle onderliggende objecten",
     type=OpenApiTypes.STR,
 )

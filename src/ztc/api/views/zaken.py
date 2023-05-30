@@ -1,9 +1,12 @@
+from datetime import datetime
+
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.settings import api_settings
@@ -14,7 +17,7 @@ from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.constants import DATUM_GELDIGHEID_QUERY_PARAM
 from ...datamodel.models import ZaakType, ZaakTypenRelatie
-from ..filters import ZaakTypeFilter
+from ..filters import ZaakTypeDetailFilter, ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
@@ -197,7 +200,10 @@ class ZaakTypeViewSet(
     @extend_schema(parameters=[DATUM_GELDIGHEID_QUERY_PARAM])
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        filter_datum_geldigheid = request.query_params.get("datum_geldigheid", None)
+        filter_datum_geldigheid = request.query_params.get("datumGeldigheid", None)
+        if filter_datum_geldigheid:
+            self.validate_detail_geldigheid(instance, filter_datum_geldigheid)
+
         serializer = extract_relevant_m2m(
             self.get_serializer(instance),
             [
@@ -210,6 +216,15 @@ class ZaakTypeViewSet(
             filter_datum_geldigheid,
         )
         return Response(serializer.data)
+
+    @property
+    def filterset_class(self):
+        """
+        To support filtering by versie and datum geldigheid for detail view
+        """
+        if self.detail:
+            return ZaakTypeDetailFilter
+        return ZaakTypeFilter
 
     @extend_schema(
         request=ZaakTypeUpdateSerializer,
@@ -244,7 +259,7 @@ class ZaakTypeViewSet(
                     "gerelateerde_zaaktypen",
                 ],
                 self.action,
-                filters.get("datum_geldigheid", None),
+                filters.get("datumGeldigheid", None),
             )
             return self.get_paginated_response(serializer.data)
 
@@ -258,7 +273,28 @@ class ZaakTypeViewSet(
                 "gerelateerde_zaaktypen",
             ],
             self.action,
-            filters.get("datum_geldigheid", None),
+            filters.get("datumGeldigheid", None),
         )
 
         return Response(serializer.data)
+
+    def validate_detail_geldigheid(self, instance, filter_datum_geldigheid):
+        """validates whether the searched zaaktype is valid on the given date"""
+        filter_datum_geldigheid = datetime.strptime(
+            filter_datum_geldigheid, "%Y-%m-%d"
+        ).date()
+        if (
+            instance.datum_einde_geldigheid == None
+            and instance.datum_begin_geldigheid <= filter_datum_geldigheid
+        ):
+            return
+        elif (
+            instance.datum_begin_geldigheid
+            <= filter_datum_geldigheid
+            <= instance.datum_einde_geldigheid
+        ):
+            return
+        else:
+            raise NotFound(
+                detail=f"Zaaktype {instance.uuid} is niet geldig op {filter_datum_geldigheid}"
+            )

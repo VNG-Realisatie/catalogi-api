@@ -189,7 +189,7 @@ class ZaakTypeAPITests(APITestCase):
         zaaktype_detail_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
 
         response = self.client.get(
-            zaaktype_detail_url, {"datum_geldigheid": "2020-02-02"}
+            zaaktype_detail_url, {"datumGeldigheid": "2020-02-02"}
         )
 
         self.assertEqual(response.status_code, 200)

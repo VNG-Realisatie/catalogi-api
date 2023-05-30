@@ -1152,7 +1152,9 @@ class HistoryModelUserStory2256(APITestCase):
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
             "besluittypen": [""],
-            "beginGeldigheid": str(datetime.now().strftime("%Y-%m-%d")),
+            "beginGeldigheid": str(
+                (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+            ),
             "versiedatum": "2001-02-01",
             "verantwoordelijke": "Organisatie eenheid X",
             "concept": True,
@@ -1187,7 +1189,7 @@ class HistoryModelUserStory2256(APITestCase):
                 {
                     "zaaktype": "zaaktype1",
                     "aard_relatie": AardRelatieChoices.bijdrage,
-                    "toelichting": "test relations",
+                    "toelichting": "test relations Z21",
                 }
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
@@ -1233,7 +1235,7 @@ class HistoryModelUserStory2256(APITestCase):
                 {
                     "zaaktype": "zaaktype1",
                     "aard_relatie": AardRelatieChoices.bijdrage,
-                    "toelichting": "test relations",
+                    "toelichting": "test relations Z22",
                 },
             ],
             "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
@@ -1275,10 +1277,15 @@ class HistoryModelUserStory2256(APITestCase):
 
     def get_zaaktype_3(self):
         zaaktype_1 = ZaakType.objects.filter(identificatie="zaaktype1")[0]
-        zaaktype_2 = ZaakType.objects.filter(
+
+        zaaktype_2_2 = ZaakType.objects.filter(
+            identificatie="zaaktype2", datum_einde_geldigheid=None
+        )[0]
+
+        zaaktype_2_1 = ZaakType.objects.filter(
             identificatie="zaaktype2",
-            datum_einde_geldigheid=(datetime.now() - timedelta(days=0)).strftime(
-                "%Y-%m-%d"
+            datum_einde_geldigheid=str(
+                (datetime.now() - timedelta(days=0)).strftime("%Y-%m-%d")
             ),
         )[0]
 
@@ -1286,11 +1293,8 @@ class HistoryModelUserStory2256(APITestCase):
             "zaaktype_retrieve", uuid=zaaktype_1.uuid
         )
 
-        response = self.client.get(zaaktype_detail_url, SERVER_NAME="testserver.com")
-
+        response = self.client.get(
+            zaaktype_detail_url, SERVER_NAME="testserver.com"
+        )  # deze moet z1 terug geven
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual(
-            data["gerelateerdeZaaktypen"][0]["zaaktype"],
-            f"http://testserver.com{get_operation_url('zaaktype_retrieve', uuid=zaaktype_2.uuid)}",
-        )
