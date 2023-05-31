@@ -633,19 +633,6 @@ class ZaakTypeAPITests(APITestCase):
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "concept-relation")
 
-    def test_publish_zaaktype_fail_not_concept_iotype(self):
-        zaaktype = ZaakTypeFactory.create()
-        ZaakInformatieobjectTypeFactory.create(zaaktype=zaaktype)
-
-        zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)
-
-        response = self.client.post(zaaktype_url)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], "concept-relation")
-
     def test_publish_zaaktype_fail_concept_deelzaaktype(self):
         deelzaaktype = ZaakTypeFactory.create(concept=True, catalogus=self.catalogus)
         zaaktype = ZaakTypeFactory.create(catalogus=self.catalogus)
@@ -796,7 +783,7 @@ class ZaakTypeAPITests(APITestCase):
 
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
         ZaakInformatieobjectTypeFactory.create(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         response = self.client.delete(zaaktype_url)
@@ -837,26 +824,6 @@ class ZaakTypeAPITests(APITestCase):
         error = get_validation_errors(response, "nonFieldErrors")
         self.assertEqual(error["code"], "non-concept-relation")
 
-    def test_delete_zaaktype_related_to_non_concept_informatieobjecttype_fails(self):
-        catalogus = CatalogusFactory.create()
-
-        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
-        zaaktype_url = reverse(zaaktype)
-
-        informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=catalogus, concept=False
-        )
-        ZaakInformatieobjectTypeFactory.create(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
-        )
-
-        response = self.client.delete(zaaktype_url)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], "non-concept-relation")
-
     def test_update_zaaktype_not_related_to_non_concept_besluittypen(self):
         catalogus = CatalogusFactory.create()
 
@@ -865,55 +832,6 @@ class ZaakTypeAPITests(APITestCase):
 
         besluittype = BesluitTypeFactory.create(
             catalogus=catalogus, zaaktypen=[zaaktype]
-        )
-
-        data = {
-            "identificatie": 0,
-            "doel": "some test",
-            "aanleiding": "aangepast",
-            "indicatieInternOfExtern": InternExtern.extern,
-            "handelingInitiator": "indienen",
-            "onderwerp": "Klacht",
-            "handelingBehandelaar": "uitvoeren",
-            "doorlooptijd": "P30D",
-            "opschortingEnAanhoudingMogelijk": False,
-            "verlengingMogelijk": True,
-            "verlengingstermijn": "P30D",
-            "publicatieIndicatie": True,
-            "verantwoordingsrelatie": [],
-            "productenOfDiensten": ["https://example.com/product/123"],
-            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
-            "omschrijving": "some test",
-            "gerelateerdeZaaktypen": [
-                {
-                    "zaaktype": "http://example.com/zaaktype/1",
-                    "aard_relatie": AardRelatieChoices.bijdrage,
-                    "toelichting": "test relations",
-                }
-            ],
-            "referentieproces": {"naam": "ReferentieProces 0", "link": ""},
-            "catalogus": reverse(catalogus),
-            "besluittypen": [],
-            "beginGeldigheid": "2018-01-01",
-            "versiedatum": "2018-01-01",
-            "verantwoordelijke": "Organisatie eenheid X",
-        }
-
-        response = self.client.put(zaaktype_url, data)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["aanleiding"], "aangepast")
-        zaaktype.delete()
-
-    def test_update_zaaktype_not_related_to_non_concept_informatieobjecttypen(self):
-        catalogus = CatalogusFactory.create()
-
-        zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
-        zaaktype_url = reverse(zaaktype)
-
-        informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
-        ZaakInformatieobjectTypeFactory.create(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
         )
 
         data = {
@@ -1033,7 +951,7 @@ class ZaakTypeAPITests(APITestCase):
 
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
         ZaakInformatieobjectTypeFactory.create(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         response = self.client.patch(zaaktype_url, {"aanleiding": "aangepast"})
@@ -1102,7 +1020,7 @@ class ZaakTypeAPITests(APITestCase):
             catalogus=catalogus, concept=False
         )
         ZaakInformatieobjectTypeFactory.create(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         response = self.client.patch(zaaktype_url, {"eindeGeldigheid": "2020-01-01"})

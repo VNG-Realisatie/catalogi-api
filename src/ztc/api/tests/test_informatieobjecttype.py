@@ -129,7 +129,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         ziot = ZaakInformatieobjectTypeFactory.create(
             zaaktype=zaaktype,
-            informatieobjecttype=informatieobjecttype,
+            informatieobjecttype=informatieobjecttype.omschrijving,
             volgnummer=1,
             richting="richting",
         )
@@ -279,7 +279,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         zaaktype = ZaakTypeFactory.create()
         ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -303,23 +303,6 @@ class InformatieObjectTypeAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(InformatieObjectType.objects.exists())
 
-    def test_delete_informatieobjecttype_related_to_non_concept_zaaktype_fails(self):
-        informatieobjecttype = InformatieObjectTypeFactory.create()
-
-        zaaktype = ZaakTypeFactory.create(concept=False)
-        ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
-        )
-
-        informatieobjecttype_url = reverse(informatieobjecttype)
-
-        response = self.client.delete(informatieobjecttype_url)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-        error = get_validation_errors(response, "nonFieldErrors")
-        self.assertEqual(error["code"], "non-concept-relation")
-
     def test_delete_informatieobjecttype_related_to_non_concept_besluittype_fails(self):
         informatieobjecttype = InformatieObjectTypeFactory.create()
 
@@ -342,7 +325,7 @@ class InformatieObjectTypeAPITests(APITestCase):
 
         zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
         ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -392,7 +375,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
         zaaktype = ZaakTypeFactory.create(catalogus=catalogus)
         ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -439,7 +422,7 @@ class InformatieObjectTypeAPITests(APITestCase):
         informatieobjecttype = InformatieObjectTypeFactory.create(catalogus=catalogus)
         zaaktype = ZaakTypeFactory.create(catalogus=catalogus, concept=False)
         ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)

@@ -353,7 +353,6 @@ class HaaglandenMixin(object):
             informatieobjectcategorie="Aanvraag",
             vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
-            zaaktypen=[self.zaaktype],
             # TODO: following fields are in haaglanden doc but not in the datamodel
             # volgnummer=1  # is pk...
             # bron=ontvangen
@@ -367,7 +366,6 @@ class HaaglandenMixin(object):
             informatieobjectcategorie="Brief",
             vertrouwelijkheidaanduiding=VertrouwelijkheidsAanduiding.zaakvertrouwelijk,
             model=[],  # ArrayField
-            zaaktypen=[self.zaaktype],
             # TODO: following fields are in haaglanden doc but not in the datamodel
             # volgnummer=1  # is pk...
             # bron=ontvangen of uitgaand
