@@ -9793,10 +9793,12 @@ paths:
               value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
               summary: Meerdere ETag-waardes
         - in: query
-          name: datum_geldigheid
+          name: datumGeldigheid
           schema:
             type: string
-          description: filters the correlated m2m related objects on the given date
+          description:
+            filter op datumGeldigheid voor het zelf en alle onderliggende
+            objecten
       tags:
         - zaaktypen
       security:

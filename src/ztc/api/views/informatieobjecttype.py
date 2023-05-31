@@ -95,41 +95,29 @@ class InformatieObjectTypeViewSet(
     concept_related_fields = ["besluittypen", "zaaktypen"]
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = extract_relevant_m2m(
-            self.get_serializer(instance), ["besluittypen", "zaaktypen"], self.action
-        )
-        return Response(serializer.data)
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output. Two special scenarios have been added for the retrieve and list operations. These are used to filter the m2m relations based on the geldigheid of the underlying objects.
+        """
+        serializer = super().get_serializer(*args, **kwargs)
 
-    def list(self, request, *args, **kwargs):
-        self._check_query_params(request)
-        queryset = self.filter_queryset(self.get_queryset())
-        filters = (
-            self.filter_backends[0]()
-            .get_filterset_kwargs(self.request, queryset, self)
-            .get("data", {})
-        )
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
+        if not self.request:
+            return serializer
+
+        if self.action in ["list", "retrieve"]:
+            filter_datum_geldigheid = self.request.query_params.get(
+                "datumGeldigheid", None
+            )
+
             serializer = extract_relevant_m2m(
                 serializer,
                 ["besluittypen", "zaaktypen"],
                 self.action,
-                filters.get("datum_geldigheid", None),
+                filter_datum_geldigheid,
             )
-            return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        serializer = extract_relevant_m2m(
-            serializer,
-            ["besluittypen", "zaaktypen"],
-            self.action,
-            filters.get("datum_geldigheid", None),
-        )
-
-        return Response(serializer.data)
+        return serializer
 
 
 InformatieObjectTypeViewSet.publish = swagger_publish_schema(

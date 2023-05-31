@@ -1,12 +1,9 @@
-from datetime import datetime
-
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.settings import api_settings
@@ -30,6 +27,7 @@ from ..serializers import (
     ZaakTypeSerializer,
     ZaakTypeUpdateSerializer,
 )
+from ..utils.validators import validate_detail_geldigheid
 from ..utils.viewsets import extract_relevant_m2m, m2m_array_of_str_to_url
 from ..validators import ZaaktypeGeldigheidValidator
 from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
@@ -199,23 +197,7 @@ class ZaakTypeViewSet(
 
     @extend_schema(parameters=[DATUM_GELDIGHEID_QUERY_PARAM])
     def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        filter_datum_geldigheid = request.query_params.get("datumGeldigheid", None)
-        if filter_datum_geldigheid:
-            self.validate_detail_geldigheid(instance, filter_datum_geldigheid)
-
-        serializer = extract_relevant_m2m(
-            self.get_serializer(instance),
-            [
-                "besluittypen",
-                "informatieobjecttypen",
-                "deelzaaktypen",
-                "gerelateerde_zaaktypen",
-            ],
-            self.action,
-            filter_datum_geldigheid,
-        )
-        return Response(serializer.data)
+        return super(viewsets.ModelViewSet, self).retrieve(request, *args, **kwargs)
 
     @property
     def filterset_class(self):
@@ -238,19 +220,25 @@ class ZaakTypeViewSet(
         )
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
-    def list(self, request, *args, **kwargs):
-        self._check_query_params(request)
-        queryset = self.filter_queryset(self.get_queryset())
-        filters = (
-            self.filter_backends[0]()
-            .get_filterset_kwargs(self.request, queryset, self)
-            .get("data", {})
-        )
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output. Two special scenarios have been added for the retrieve and list operations. These are used to filter the m2m relations based on the geldigheid of the underlying objects.
+        """
+        serializer = super().get_serializer(*args, **kwargs)
 
-        page = self.paginate_queryset(queryset)
+        if not self.request:
+            return serializer
 
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
+        if self.action in ["list", "retrieve"]:
+            filter_datum_geldigheid = self.request.query_params.get(
+                "datumGeldigheid", None
+            )
+            if self.detail:
+                instance = self.get_object()
+            if filter_datum_geldigheid and self.detail:
+                validate_detail_geldigheid(instance, filter_datum_geldigheid)
+
             serializer = extract_relevant_m2m(
                 serializer,
                 [
@@ -260,42 +248,7 @@ class ZaakTypeViewSet(
                     "gerelateerde_zaaktypen",
                 ],
                 self.action,
-                filters.get("datum_geldigheid", None),
+                filter_datum_geldigheid,
             )
-            return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        serializer = extract_relevant_m2m(
-            serializer,
-            [
-                "besluittypen",
-                "informatieobjecttypen",
-                "deelzaaktypen",
-                "gerelateerde_zaaktypen",
-            ],
-            self.action,
-            filters.get("datum_geldigheid", None),
-        )
-
-        return Response(serializer.data)
-
-    def validate_detail_geldigheid(self, instance, filter_datum_geldigheid):
-        """validates whether the searched zaaktype is valid on the given date"""
-        filter_datum_geldigheid = datetime.strptime(
-            filter_datum_geldigheid, "%Y-%m-%d"
-        ).date()
-        if (
-            instance.datum_einde_geldigheid == None
-            and instance.datum_begin_geldigheid <= filter_datum_geldigheid
-        ):
-            return
-        elif (
-            instance.datum_begin_geldigheid
-            <= filter_datum_geldigheid
-            <= instance.datum_einde_geldigheid
-        ):
-            return
-        else:
-            raise NotFound(
-                detail=f"Zaaktype {instance.uuid} is niet geldig op {filter_datum_geldigheid}"
-            )
+        return serializer

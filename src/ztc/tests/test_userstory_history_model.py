@@ -450,7 +450,6 @@ class HistoryModelUserStoryTests(APITestCase):
         zaaktype_detail_url = get_operation_url(
             "zaaktype_retrieve", uuid=zaaktype_2.uuid
         )
-
         response = self.client.get(zaaktype_detail_url)
         besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[0]
         besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[
@@ -1282,17 +1281,23 @@ class HistoryModelUserStory2256(APITestCase):
             identificatie="zaaktype2", datum_einde_geldigheid=None
         )[0]
 
-        zaaktype_2_1 = ZaakType.objects.filter(
-            identificatie="zaaktype2",
-            datum_einde_geldigheid=str(
-                (datetime.now() - timedelta(days=0)).strftime("%Y-%m-%d")
-            ),
-        )[0]
-
         zaaktype_detail_url = get_operation_url(
             "zaaktype_retrieve", uuid=zaaktype_1.uuid
         )
 
-        response = self.client.get(zaaktype_detail_url, SERVER_NAME="testserver.com")
+        response = self.client.get(
+            zaaktype_detail_url,
+            {
+                "datumGeldigheid": str(
+                    (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+                )
+            },
+            SERVER_NAME="testserver.com",
+        )
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
+        self.assertEqual(
+            data["gerelateerdeZaaktypen"][0]["zaaktype"],
+            f"http://testserver.com{get_operation_url('zaaktype_retrieve', uuid=zaaktype_2_2.uuid)}",
+        )
