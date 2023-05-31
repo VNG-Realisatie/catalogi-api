@@ -109,7 +109,6 @@ class InformatieObjectTypeViewSet(
             filter_datum_geldigheid = self.request.query_params.get(
                 "datumGeldigheid", None
             )
-
             serializer = extract_relevant_m2m(
                 serializer,
                 ["besluittypen", "zaaktypen"],

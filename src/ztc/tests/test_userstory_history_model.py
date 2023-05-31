@@ -451,20 +451,25 @@ class HistoryModelUserStoryTests(APITestCase):
             "zaaktype_retrieve", uuid=zaaktype_2.uuid
         )
         response = self.client.get(zaaktype_detail_url)
-        besluittype = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[0]
-        besluittype_2 = BesluitType.objects.filter(datum_begin_geldigheid="2016-01-01")[
-            1
-        ]
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["besluittypen"]), 2)
+        self.assertEqual((response.json()["informatieobjecttypen"][0]), "test")
 
     def get_informatieobjecttype(self):
         informatieobjecttype = InformatieObjectType.objects.get()
         informatieobjecttype_detail_url = get_operation_url(
             "informatieobjecttype_retrieve", uuid=informatieobjecttype.uuid
         )
+        z2 = ZaakType.objects.filter(datum_begin_geldigheid="2016-01-01")[0]
 
         response = self.client.get(informatieobjecttype_detail_url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(
+            (response.json()["zaaktypen"][0]),
+            f"http://testserver{get_operation_url('zaaktype_retrieve', uuid=z2.uuid)}",
+        )
 
     def update_zaaktype_2(self):
         zaaktype_2 = ZaakType.objects.filter(datum_begin_geldigheid="2011-01-01")[0]
