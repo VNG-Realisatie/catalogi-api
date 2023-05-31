@@ -138,7 +138,6 @@ def extract_relevant_m2m(serializer, m2m_fields: list, action: str, date=None):
 
                 else:
                     uuid_from_url = uuid.UUID(m2m_object.rsplit("/", 1)[1]).hex
-
                 valid_m2m = get_valid_m2m_objects(m2m_field, uuid_from_url, date)
                 if valid_m2m:
                     valid_urls.append(m2m_object)

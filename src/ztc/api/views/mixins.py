@@ -84,7 +84,6 @@ class ConceptFilterMixin:
         filters = self.get_concept_filter()
         if not isinstance(filters, models.Q):
             filters = models.Q(**filters)
-
         return qs.filter(filters)
 
 

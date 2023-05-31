@@ -98,13 +98,10 @@ class ZaakTypeInformatieObjectTypeViewSet(
     def get_concept(self, instance):
         ziot = self.get_object()
         zaaktype = getattr(instance, "zaaktype", None) or ziot.zaaktype
-        informatieobjecttype = (
-            getattr(instance, "informatieobjecttype", None) or ziot.informatieobjecttype
-        )
-        return zaaktype.concept or informatieobjecttype.concept
+        return zaaktype.concept
 
     def get_concept_filter(self):
-        return ~(Q(zaaktype__concept=True) | Q(informatieobjecttype__concept=True))
+        return ~(Q(zaaktype__concept=True))
 
     def perform_destroy(self, instance):
         forced_delete = self.request.jwt_auth.has_auth(
@@ -120,52 +117,52 @@ class ZaakTypeInformatieObjectTypeViewSet(
 
         super().perform_destroy(instance)
 
-    @extend_schema(
-        request=ZaakTypeInformatieObjectTypeCreateSerializer,
-        responses={201: ZaakTypeInformatieObjectTypeSerializer},
-    )
-    def create(self, request, *args, **kwargs):
-        search_parameter = Q(omschrijving=request.data["informatieobjecttype"])
-        iots = InformatieObjectType.objects.filter(search_parameter)
-        for iot in iots:
-            data = request.data.copy()
-            data[
-                "informatieobjecttype"
-            ] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(iot.uuid)}"
-            serializer = self.get_serializer(data=data)
-            serializer.is_valid(raise_exception=True)
-            self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
-        )
-
-    @extend_schema(
-        request=ZaakTypeInformatieObjectTypeUpdateSerializer,
-        responses={200: ZaakTypeInformatieObjectTypeSerializer},
-    )
-    def update(self, request, *args, **kwargs):
-        """
-        Update multiple ZIOT instances with `informatieobjecttype__omschrijving` as input. Update all correlated ZIOTs
-        """
-        partial = kwargs.pop("partial", False)
-        instance = self.get_object()
-
-        search_parameter = Q(
-            informatieobjecttype__omschrijving=instance.informatieobjecttype.omschrijving,
-            informatieobjecttype__catalogus=instance.informatieobjecttype.catalogus,
-            zaaktype__catalogus=instance.zaaktype.catalogus,
-        )
-        ziots = ZaakInformatieobjectType.objects.filter(search_parameter)
-
-        for ziot in ziots:
-            data = request.data.copy()
-            data[
-                "informatieobjecttype"
-            ] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(ziot.informatieobjecttype.uuid)}"
-
-            serializer = self.get_serializer(ziot, data=data, partial=partial)
-            serializer.is_valid(raise_exception=True)
-            self.perform_update(serializer)
-
-        return Response(serializer.data)
+    # @extend_schema(
+    #     request=ZaakTypeInformatieObjectTypeCreateSerializer,
+    #     responses={201: ZaakTypeInformatieObjectTypeSerializer},
+    # )
+    # def create(self, request, *args, **kwargs):
+    #     search_parameter = Q(omschrijving=request.data["informatieobjecttype"])
+    #     iots = InformatieObjectType.objects.filter(search_parameter)
+    #     for iot in iots:
+    #         data = request.data.copy()
+    #         data[
+    #             "informatieobjecttype"
+    #         ] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(iot.uuid)}"
+    #         serializer = self.get_serializer(data=data)
+    #         serializer.is_valid(raise_exception=True)
+    #         self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     return Response(
+    #         serializer.data, status=status.HTTP_201_CREATED, headers=headers
+    #     )
+    #
+    # @extend_schema(
+    #     request=ZaakTypeInformatieObjectTypeUpdateSerializer,
+    #     responses={200: ZaakTypeInformatieObjectTypeSerializer},
+    # )
+    # def update(self, request, *args, **kwargs):
+    #     """
+    #     Update multiple ZIOT instances with `informatieobjecttype__omschrijving` as input. Update all correlated ZIOTs
+    #     """
+    #     partial = kwargs.pop("partial", False)
+    #     instance = self.get_object()
+    #
+    #     search_parameter = Q(
+    #         informatieobjecttype__omschrijving=instance.informatieobjecttype.omschrijving,
+    #         informatieobjecttype__catalogus=instance.informatieobjecttype.catalogus,
+    #         zaaktype__catalogus=instance.zaaktype.catalogus,
+    #     )
+    #     ziots = ZaakInformatieobjectType.objects.filter(search_parameter)
+    #
+    #     for ziot in ziots:
+    #         data = request.data.copy()
+    #         data[
+    #             "informatieobjecttype"
+    #         ] = f"{build_absolute_url(self.action, request)}/informatieobjecttypen/{str(ziot.informatieobjecttype.uuid)}"
+    #
+    #         serializer = self.get_serializer(ziot, data=data, partial=partial)
+    #         serializer.is_valid(raise_exception=True)
+    #         self.perform_update(serializer)
+    #
+    #     return Response(serializer.data)
