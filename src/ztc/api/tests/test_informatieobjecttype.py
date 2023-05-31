@@ -57,7 +57,6 @@ class InformatieObjectTypeAPITests(APITestCase):
         besluittype = BesluitTypeFactory(catalogus=self.catalogus)
         informatieobjecttype = InformatieObjectTypeFactory(
             catalogus=self.catalogus,
-            zaaktypen=None,
             model=["http://www.example.com"],
             trefwoord=["abc", "def"],
             datum_begin_geldigheid="2019-01-01",
@@ -65,9 +64,13 @@ class InformatieObjectTypeAPITests(APITestCase):
         )
 
         zaaktype = ZaakTypeFactory(catalogus=self.catalogus)
+        zaaktype2 = ZaakTypeFactory(catalogus=self.catalogus)
 
         ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
+        )
+        ZaakInformatieobjectTypeFactory(
+            zaaktype=zaaktype2, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         informatieobjecttype_detail_url = get_operation_url(
@@ -88,7 +91,10 @@ class InformatieObjectTypeAPITests(APITestCase):
             "concept": True,
             "informatieobjectcategorie": "informatieobjectcategorie",
             "trefwoord": ["abc", "def"],
-            "zaaktypen": [f"http://testserver{reverse(zaaktype)}"],
+            "zaaktypen": [
+                f"http://testserver{reverse(zaaktype)}",
+                f"http://testserver{reverse(zaaktype2)}",
+            ],
             "besluittypen": [f"http://testserver{reverse(besluittype)}"],
             "beginObject": None,
             "eindeObject": None,
@@ -101,6 +107,9 @@ class InformatieObjectTypeAPITests(APITestCase):
             },
         }
         self.assertEqual(expected, response.json())
+        from pprint import pprint
+
+        pprint(response.json())
 
     @skip("Not MVP yet")
     def test_is_relevant_voor(self):

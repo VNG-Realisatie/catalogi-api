@@ -102,8 +102,6 @@ class ZaakTypeViewSet(
 
     queryset = ZaakType.objects.prefetch_related(
         "statustypen",
-        "zaaktypenrelaties",
-        "informatieobjecttypen",
         "statustypen",
         "resultaattypen",
         "eigenschap_set",
@@ -123,7 +121,7 @@ class ZaakTypeViewSet(
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
         "publish": SCOPE_CATALOGI_WRITE,
     }
-    concept_related_fields = ["besluittypen", "informatieobjecttypen"]
+    concept_related_fields = ["besluittypen"]
     notifications_kanaal = KANAAL_ZAAKTYPEN
     relation_fields = ["zaaktypenrelaties"]
 
@@ -243,7 +241,7 @@ class ZaakTypeViewSet(
                 serializer,
                 [
                     "besluittypen",
-                    "informatieobjecttypen",
+                    # "informatieobjecttypen", #todo how should non urls behandled
                     "deelzaaktypen",
                     "gerelateerde_zaaktypen",
                 ],

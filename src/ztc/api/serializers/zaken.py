@@ -13,7 +13,12 @@ from vng_api_common.serializers import (
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
-from ...datamodel.models import ZaakType, ZaakTypenRelatie
+from ...datamodel.models import (
+    InformatieObjectType,
+    ZaakInformatieobjectType,
+    ZaakType,
+    ZaakTypenRelatie,
+)
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
@@ -62,6 +67,12 @@ class ZaakTypenRelatieCreateSerializer(ZaakTypenRelatieSerializer):
     )
 
 
+class ZaakInformatieobjectTypeSlugSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ZaakInformatieobjectType
+        fields = ["informatieobjecttype"]
+
+
 class ZaakTypeSerializer(
     NestedGegevensGroepMixin,
     NestedCreateMixin,
@@ -88,6 +99,17 @@ class ZaakTypeSerializer(
             "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
         ),
     )
+    informatieobjecttypen = serializers.SerializerMethodField()
+
+    def get_informatieobjecttypen(self, obj):
+        q1 = ZaakInformatieobjectType.objects.filter(zaaktype=obj)
+        serializer = ZaakInformatieobjectTypeSlugSerializer(q1, many=True)
+        return_list = []
+        for odict in serializer.data:
+            for key, value in odict.items():
+                return_list.append(value)
+
+        return return_list
 
     class Meta:
         model = ZaakType
@@ -155,13 +177,13 @@ class ZaakTypeSerializer(
                     ResourceValidator("ProcesType", settings.REFERENTIELIJSTEN_API_SPEC)
                 ]
             },
-            "informatieobjecttypen": {
-                "read_only": True,
-                "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-                ),
-            },
+            # "informatieobjecttypen": {
+            #     "read_only": True,
+            #     "lookup_field": "uuid",
+            #     "help_text": _(
+            #         "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+            #     ),
+            # },
             "besluittypen": {
                 "label": _("heeft relevante besluittypen"),
                 "lookup_field": "uuid",

@@ -1,4 +1,3 @@
-import datetime
 import uuid
 from datetime import date
 
@@ -15,11 +14,7 @@ from vng_api_common.tests import (
 )
 from zds_client.tests.mocks import mock_client
 
-from ztc.api.validators import (
-    ConceptUpdateValidator,
-    M2MConceptCreateValidator,
-    M2MConceptUpdateValidator,
-)
+from ztc.api.validators import ConceptUpdateValidator
 from ztc.datamodel.choices import AardRelatieChoices, InternExtern
 from ztc.datamodel.models import ZaakType
 from ztc.datamodel.tests.factories import (
@@ -108,6 +103,88 @@ class ZaakTypeAPITests(APITestCase):
             "omschrijving": "",
             "eigenschappen": [],
             "informatieobjecttypen": [],
+            "deelzaaktypen": [],
+            "gerelateerdeZaaktypen": [],
+            "statustypen": [],
+            "resultaattypen": [],
+            "roltypen": [],
+            "besluittypen": [],
+            "beginGeldigheid": "2018-01-01",
+            "eindeGeldigheid": None,
+            "beginObject": None,
+            "eindeObject": None,
+            "versiedatum": "2018-01-01",
+            "concept": True,
+            "verantwoordelijke": "Organisatie eenheid X",
+            "zaakobjecttypen": [f"http://testserver{zaakobjecttype_url}"],
+            "broncatalogus": {
+                "url": "https://catalogus.url/foo",
+                "domein": "XYZ",
+                "rsin": "100000000",
+            },
+            "bronzaaktype": {
+                "url": "https://zaaktype.url/foo",
+                "identificatie": "1",
+                "omschrijving": "omschrijving",
+            },
+            "beginObject": None,
+            "eindeObject": None,
+        }
+        self.assertEqual(expected, response.json())
+
+    def test_get_detail_with_ziot(self):
+        zaaktype = ZaakTypeFactory.create(
+            catalogus=self.catalogus,
+            verantwoordelijke="Organisatie eenheid X",
+            objecttypen=[ZaakObjectTypeFactory(catalogus=self.catalogus)],
+            broncatalogus_url="https://catalogus.url/foo",
+            broncatalogus_domein="XYZ",
+            broncatalogus_rsin="100000000",
+            bronzaaktype_url="https://zaaktype.url/foo",
+            bronzaaktype_identificatie="1",
+            bronzaaktype_omschrijving="omschrijving",
+        )
+        zaaktype_detail_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
+        zaakobjecttype_url = get_operation_url(
+            "zaakobjecttype_retrieve", uuid=zaaktype.objecttypen.first().uuid
+        )
+
+        ziot = ZaakInformatieobjectTypeFactory.create(
+            zaaktype=zaaktype, informatieobjecttype="omschrijving_1"
+        )
+
+        response = self.client.get(zaaktype_detail_url)
+
+        self.assertEqual(response.status_code, 200)
+
+        expected = {
+            "url": f"http://testserver{zaaktype_detail_url}",
+            "identificatie": zaaktype.identificatie,
+            "productenOfDiensten": ["https://example.com/product/123"],
+            "publicatieIndicatie": zaaktype.publicatie_indicatie,
+            "trefwoorden": [],
+            "toelichting": "",
+            "handelingInitiator": zaaktype.handeling_initiator,
+            "aanleiding": zaaktype.aanleiding,
+            "verlengingstermijn": None if not zaaktype.verlenging_mogelijk else "P30D",
+            "opschortingEnAanhoudingMogelijk": zaaktype.opschorting_en_aanhouding_mogelijk,
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "indicatieInternOfExtern": zaaktype.indicatie_intern_of_extern,
+            "verlengingMogelijk": zaaktype.verlenging_mogelijk,
+            "handelingBehandelaar": zaaktype.handeling_behandelaar,
+            "doel": zaaktype.doel,
+            "onderwerp": zaaktype.onderwerp,
+            "publicatietekst": "",
+            "omschrijvingGeneriek": "",
+            "vertrouwelijkheidaanduiding": "",
+            "verantwoordingsrelatie": [],
+            "selectielijstProcestype": zaaktype.selectielijst_procestype,
+            "servicenorm": None,
+            "referentieproces": {"naam": zaaktype.referentieproces_naam, "link": ""},
+            "doorlooptijd": "P30D",
+            "omschrijving": "",
+            "eigenschappen": [],
+            "informatieobjecttypen": ["omschrijving_1"],
             "deelzaaktypen": [],
             "gerelateerdeZaaktypen": [],
             "statustypen": [],
