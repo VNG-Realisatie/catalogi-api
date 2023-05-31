@@ -92,7 +92,7 @@ class InformatieObjectTypeViewSet(
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
         "publish": SCOPE_CATALOGI_WRITE,
     }
-    concept_related_fields = ["besluittypen", "zaaktypen"]
+    concept_related_fields = ["besluittypen"]
     notifications_kanaal = KANAAL_INFORMATIEOBJECTTYPEN
 
     def get_serializer(self, *args, **kwargs):

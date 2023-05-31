@@ -152,16 +152,16 @@ class InformatieObjectType(
         ),
     )
 
-    zaaktypen = models.ManyToManyField(
-        "datamodel.ZaakType",
-        blank=True,
-        verbose_name=_("zaaktypen"),
-        related_name="informatieobjecttypen",
-        through="datamodel.ZaakInformatieobjectType",
-        help_text=_(
-            "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit INFORMATIEOBJECTTYPE"
-        ),
-    )
+    # zaaktypen = models.ManyToManyField(
+    #     "datamodel.ZaakType",
+    #     blank=True,
+    #     verbose_name=_("zaaktypen"),
+    #     related_name="informatieobjecttypen",
+    #     through="datamodel.ZaakInformatieobjectType",
+    #     help_text=_(
+    #         "ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit INFORMATIEOBJECTTYPE"
+    #     ),
+    # )
 
     class Meta:
         # unique_together = ("catalogus", "omschrijving")
