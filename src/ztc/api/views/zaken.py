@@ -240,7 +240,7 @@ class ZaakTypeViewSet(
                 serializer,
                 [
                     "besluittypen",
-                    # "informatieobjecttypen", #todo how should non urls behandled
+                    "informatieobjecttypen",
                     "deelzaaktypen",
                     "gerelateerde_zaaktypen",
                 ],

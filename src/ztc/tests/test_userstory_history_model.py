@@ -114,6 +114,20 @@ class HistoryModelUserStoryTests(APITestCase):
             "omschrijving": "test",
             "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
             "beginGeldigheid": "2017-01-01",
+            "eindeGeldigheid": "2020-01-01",
+            "informatieobjectcategorie": "test",
+        }
+        informatieobjecttypen_list_url = get_operation_url("informatieobjecttype_list")
+
+        response = self.client.post(informatieobjecttypen_list_url, data)
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        data = {
+            "catalogus": f"http://testserver{self.catalogus_detail_url}",
+            "omschrijving": "test2",
+            "vertrouwelijkheidaanduiding": VertrouwelijkheidsAanduiding.openbaar,
+            "beginGeldigheid": "2017-01-01",
             "informatieobjectcategorie": "test",
         }
         informatieobjecttypen_list_url = get_operation_url("informatieobjecttype_list")
@@ -123,7 +137,9 @@ class HistoryModelUserStoryTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def post_besluittype_1(self):
-        informatieobjecttype = InformatieObjectType.objects.get()
+        informatieobjecttype = InformatieObjectType.objects.filter(omschrijving="test")[
+            0
+        ]
         besluittype_list_url = reverse("besluittype-list")
         data = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
@@ -234,6 +250,20 @@ class HistoryModelUserStoryTests(APITestCase):
         response = self.client.post(list_url, data)
         self.assertEqual(response.status_code, 201)
 
+        list_url = reverse_lazy(ZaakInformatieobjectType)
+        zaaktype = ZaakType.objects.get()
+        zaaktype_detail_url = get_operation_url("zaaktype_retrieve", uuid=zaaktype.uuid)
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_detail_url}",
+            "informatieobjecttype": "test2",
+            "volgnummer": 13,
+            "richting": RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, 201)
+
     def post_ziot_2(self):
         list_url = reverse_lazy(ZaakInformatieobjectType)
         zaaktype_2 = ZaakType.objects.filter(datum_begin_geldigheid="2011-01-01")[0]
@@ -243,6 +273,16 @@ class HistoryModelUserStoryTests(APITestCase):
         data = {
             "zaaktype": f"http://testserver{zaaktype_detail_url}",
             "informatieobjecttype": "test",
+            "volgnummer": 13,
+            "richting": RichtingChoices.inkomend,
+        }
+
+        response = self.client.post(list_url, data)
+        self.assertEqual(response.status_code, 201)
+
+        data = {
+            "zaaktype": f"http://testserver{zaaktype_detail_url}",
+            "informatieobjecttype": "test2",
             "volgnummer": 13,
             "richting": RichtingChoices.inkomend,
         }
@@ -293,7 +333,23 @@ class HistoryModelUserStoryTests(APITestCase):
         self.assertEqual(response_besluittype_publish.status_code, 200)
 
     def publish_informatieobject_1(self):
-        informatieobjecttype = InformatieObjectType.objects.get()
+        informatieobjecttype = InformatieObjectType.objects.filter(omschrijving="test")[
+            0
+        ]
+
+        informatieobjecttypee_url = get_operation_url(
+            "informatieobjecttype_publish", uuid=informatieobjecttype.uuid
+        )
+
+        response_informatieobjecttypee_url = self.client.post(informatieobjecttypee_url)
+
+        self.assertEqual(
+            response_informatieobjecttypee_url.status_code, status.HTTP_200_OK
+        )
+
+        informatieobjecttype = InformatieObjectType.objects.filter(
+            omschrijving="test2"
+        )[0]
 
         informatieobjecttypee_url = get_operation_url(
             "informatieobjecttype_publish", uuid=informatieobjecttype.uuid
@@ -363,7 +419,9 @@ class HistoryModelUserStoryTests(APITestCase):
         self.assertEqual(response_2_publish.status_code, status.HTTP_200_OK)
 
     def post_besluittype_2(self):
-        informatieobjecttype = InformatieObjectType.objects.get()
+        informatieobjecttype = InformatieObjectType.objects.filter(omschrijving="test")[
+            0
+        ]
         besluittype_list_url = reverse("besluittype-list")
         data = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
@@ -403,7 +461,9 @@ class HistoryModelUserStoryTests(APITestCase):
         self.assertEqual(response_besluit_2.status_code, 201)
 
     def post_besluittype_3(self):
-        informatieobjecttype = InformatieObjectType.objects.get()
+        informatieobjecttype = InformatieObjectType.objects.filter(omschrijving="test")[
+            0
+        ]
         besluittype_list_url = reverse("besluittype-list")
         data = {
             "catalogus": f"http://testserver{self.catalogus_detail_url}",
@@ -450,14 +510,24 @@ class HistoryModelUserStoryTests(APITestCase):
         zaaktype_detail_url = get_operation_url(
             "zaaktype_retrieve", uuid=zaaktype_2.uuid
         )
+        informatieobjecttype = InformatieObjectType.objects.filter(
+            omschrijving="test2"
+        )[0]
+
         response = self.client.get(zaaktype_detail_url)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()["besluittypen"]), 2)
-        self.assertEqual((response.json()["informatieobjecttypen"][0]), "test")
+
+        self.assertEqual(
+            (response.json()["informatieobjecttypen"][0]),
+            f"http://testserver{get_operation_url('informatieobjecttype_retrieve', uuid=informatieobjecttype.uuid)}",
+        )
 
     def get_informatieobjecttype(self):
-        informatieobjecttype = InformatieObjectType.objects.get()
+        informatieobjecttype = InformatieObjectType.objects.filter(omschrijving="test")[
+            0
+        ]
         informatieobjecttype_detail_url = get_operation_url(
             "informatieobjecttype_retrieve", uuid=informatieobjecttype.uuid
         )

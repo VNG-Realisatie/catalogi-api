@@ -153,6 +153,8 @@ class ZaakTypeAPITests(APITestCase):
             zaaktype=zaaktype, informatieobjecttype="omschrijving_1"
         )
 
+        info = InformatieObjectTypeFactory.create(omschrijving="omschrijving_1")
+
         response = self.client.get(zaaktype_detail_url)
 
         self.assertEqual(response.status_code, 200)
@@ -184,7 +186,7 @@ class ZaakTypeAPITests(APITestCase):
             "doorlooptijd": "P30D",
             "omschrijving": "",
             "eigenschappen": [],
-            "informatieobjecttypen": ["omschrijving_1"],
+            "informatieobjecttypen": [f"http://testserver{get_operation_url('informatieobjecttype_retrieve', uuid=info.uuid)}"],
             "deelzaaktypen": [],
             "gerelateerdeZaaktypen": [],
             "statustypen": [],

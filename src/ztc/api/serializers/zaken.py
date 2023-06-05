@@ -10,6 +10,7 @@ from vng_api_common.serializers import (
     NestedGegevensGroepMixin,
     add_choice_values_help_text,
 )
+from vng_api_common.tests import reverse
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
@@ -102,13 +103,21 @@ class ZaakTypeSerializer(
     informatieobjecttypen = serializers.SerializerMethodField()
 
     def get_informatieobjecttypen(self, obj):
+        request = self.context.get("request")
         q1 = ZaakInformatieobjectType.objects.filter(zaaktype=obj)
         serializer = ZaakInformatieobjectTypeSlugSerializer(q1, many=True)
+        filter_list = []
         return_list = []
         for odict in serializer.data:
             for key, value in odict.items():
-                return_list.append(value)
-
+                filter_list.append(value)
+        q2 = InformatieObjectType.objects.filter(omschrijving__in=filter_list)
+        for obj in q2:
+            return_list.append(
+                request.build_absolute_uri(
+                    reverse("informatieobjecttype-detail", kwargs={"uuid": obj.uuid})
+                )
+            )
         return return_list
 
     class Meta:
