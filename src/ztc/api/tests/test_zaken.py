@@ -186,7 +186,9 @@ class ZaakTypeAPITests(APITestCase):
             "doorlooptijd": "P30D",
             "omschrijving": "",
             "eigenschappen": [],
-            "informatieobjecttypen": [f"http://testserver{get_operation_url('informatieobjecttype_retrieve', uuid=info.uuid)}"],
+            "informatieobjecttypen": [
+                f"http://testserver{get_operation_url('informatieobjecttype_retrieve', uuid=info.uuid)}"
+            ],
             "deelzaaktypen": [],
             "gerelateerdeZaaktypen": [],
             "statustypen": [],
