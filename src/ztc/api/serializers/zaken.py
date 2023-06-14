@@ -24,10 +24,7 @@ from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
     DeelzaaktypeCatalogusValidator,
-    M2MConceptCreateValidator,
-    M2MConceptUpdateValidator,
     ZaaktypeDoubleConceptValidator,
-    ZaaktypeGeldigheidValidator,
 )
 
 

@@ -4,6 +4,8 @@ from urllib.parse import urlparse
 
 from django.db.models import Q
 
+from vng_api_common.tests import reverse
+
 from ztc.datamodel.models import (
     BesluitType,
     InformatieObjectType,
@@ -112,7 +114,12 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
                 search_parameter
             )
             for m2m_object in m2m_objects:
-                build_url = f"{build_absolute_url(action, request)}/{MAPPING_FIELD_TO_MODEL[m2m_field]._meta.verbose_name_plural.title().lower()}/{str(m2m_object.uuid)}"
+                build_url = request.build_absolute_uri(
+                    reverse(
+                        f"{MAPPING_FIELD_TO_MODEL[m2m_field]._meta.verbose_name.title().lower()}-detail",
+                        kwargs={"uuid": m2m_object.uuid},
+                    )
+                )
                 if m2m_field == "gerelateerde_zaaktypen":
                     new_m2m_str = m2m_str.copy()
                     new_m2m_str.update({"zaaktype": build_url})
