@@ -102,7 +102,7 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
             search_parameter = (
                 Q(omschrijving=m2m_str)
                 if MAPPING_FIELD_TO_MODEL[m2m_field]
-                   in [BesluitType, InformatieObjectType]
+                in [BesluitType, InformatieObjectType]
                 else Q(
                     identificatie=m2m_str
                     if m2m_field != "gerelateerde_zaaktypen"
@@ -182,7 +182,7 @@ def get_valid_m2m_objects(m2m_field: str, uuid_from_url, date=None):
     return qs_old_version
 
 
-def has_valid_non_concept_m2m_relations(instance,m2m):
+def has_valid_non_concept_m2m_relations(instance, m2m):
     """
     Check if the object has m2m relations, and if it does, check if these are valid within the time frame of their ZaakType.
     """
@@ -209,5 +209,3 @@ def has_valid_non_concept_m2m_relations(instance,m2m):
         return False
 
     return True
-
-

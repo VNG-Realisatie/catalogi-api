@@ -1377,6 +1377,7 @@ class HistoryModelUserStory2256(APITestCase):
             f"http://testserver.com{get_operation_url('zaaktype_retrieve', uuid=zaaktype_2_2.uuid)}",
         )
 
+
 class HistoryModelPublishRestrictionsTest(APITestCase):
     maxDiff = None
     heeft_alle_autorisaties = False
