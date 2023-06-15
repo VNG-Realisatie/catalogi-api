@@ -626,6 +626,7 @@ class ZaakTypeAPITests(APITestCase):
     def test_publish_zaaktype_fail_not_concept_besluittype(self):
         zaaktype = ZaakTypeFactory.create()
         besluittype = BesluitTypeFactory.create()
+
         zaaktype.besluittypen.add(besluittype)
 
         zaaktype_url = get_operation_url("zaaktype_publish", uuid=zaaktype.uuid)

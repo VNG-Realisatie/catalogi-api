@@ -13,7 +13,7 @@ from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
 from ...datamodel.constants import DATUM_GELDIGHEID_QUERY_PARAM
-from ...datamodel.models import ZaakType, ZaakTypenRelatie
+from ...datamodel.models import ZaakType, ZaakTypenRelatie, BesluitType
 from ..filters import ZaakTypeDetailFilter, ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
@@ -28,7 +28,7 @@ from ..serializers import (
     ZaakTypeUpdateSerializer,
 )
 from ..utils.validators import validate_detail_geldigheid
-from ..utils.viewsets import extract_relevant_m2m, m2m_array_of_str_to_url
+from ..utils.viewsets import extract_relevant_m2m, m2m_array_of_str_to_url, has_valid_non_concept_m2m_relations
 from ..validators import ZaaktypeGeldigheidValidator
 from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
 
@@ -136,11 +136,10 @@ class ZaakTypeViewSet(
     @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()
-        # check related objects
-        if (
-            instance.besluittypen.filter(concept=True).exists()
-            or instance.deelzaaktypen.filter(concept=True).exists()
-        ):
+
+        if not has_valid_non_concept_m2m_relations(instance,
+                                                   instance.deelzaaktypen) or not has_valid_non_concept_m2m_relations(instance,
+            instance.besluittypen):
             msg = _("All related resources should be published")
             raise ValidationError(
                 {api_settings.NON_FIELD_ERRORS_KEY: msg}, code="concept-relation"
