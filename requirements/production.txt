@@ -263,7 +263,7 @@ pytz==2022.1
     # via
     #   -r requirements/base.txt
     #   django
-pyyaml==6.0
+pyyaml==6.0.1
     # via
     #   -r requirements/base.txt
     #   drf-spectacular
