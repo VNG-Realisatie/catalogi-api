@@ -3,10 +3,13 @@ from django.utils.translation import gettext as _
 from rest_framework import serializers
 from vng_api_common.constants import VertrouwelijkheidsAanduiding
 from vng_api_common.serializers import add_choice_values_help_text
+from vng_api_common.tests import reverse
 
 from ...datamodel.models import (
     InformatieObjectType,
     InformatieObjectTypeOmschrijvingGeneriek,
+    ZaakInformatieobjectType,
+    ZaakType,
 )
 from ..validators import ConceptUpdateValidator
 
@@ -23,6 +26,12 @@ class InformatieObjectTypeOmschrijvingGeneriekSerializer(serializers.ModelSerial
         )
 
 
+class ZaakInformatieobjectTypeSlugSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ZaakInformatieobjectType
+        fields = ["zaaktype"]
+
+
 class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
     """
     Serializer based on ``IOT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
@@ -31,6 +40,25 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
     omschrijving_generiek = InformatieObjectTypeOmschrijvingGeneriekSerializer(
         required=False
     )
+
+    zaaktypen = serializers.SerializerMethodField()
+
+    def get_zaaktypen(self, obj):
+        q1 = ZaakInformatieobjectType.objects.filter(
+            informatieobjecttype=obj.omschrijving
+        )
+        serializer = ZaakInformatieobjectTypeSlugSerializer(q1, many=True)
+        request = self.context.get("request")
+        return_list = []
+        for odict in serializer.data:
+            for key, value in odict.items():
+                related_model = ZaakType.objects.get(id=value)
+                return_list.append(
+                    request.build_absolute_uri(
+                        reverse("zaaktype-detail", kwargs={"uuid": related_model.uuid})
+                    )
+                )
+        return return_list
 
     class Meta:
         model = InformatieObjectType
@@ -42,14 +70,6 @@ class InformatieObjectTypeSerializer(serializers.HyperlinkedModelSerializer):
             "begin_object": {"source": "datum_begin_object"},
             "einde_object": {"source": "datum_einde_object"},
             "concept": {"read_only": True},
-            "zaaktypen": {
-                "lookup_field": "uuid",
-                "read_only": True,
-                "help_text": _(
-                    "URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant"
-                    " kunnen zijn voor ZAAKen van dit ZAAKTYPE."
-                ),
-            },
             "besluittypen": {
                 "lookup_field": "uuid",
                 "read_only": True,

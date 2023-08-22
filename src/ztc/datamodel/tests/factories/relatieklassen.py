@@ -11,9 +11,10 @@ from ...models import (
 
 class ZaakInformatieobjectTypeFactory(factory.django.DjangoModelFactory):
     zaaktype = factory.SubFactory("ztc.datamodel.tests.factories.ZaakTypeFactory")
-    informatieobjecttype = factory.SubFactory(
-        "ztc.datamodel.tests.factories.InformatieObjectTypeFactory", zaaktypen=None
-    )
+    # informatieobjecttype = factory.SubFactory(
+    #     "ztc.datamodel.tests.factories.InformatieObjectTypeFactory", zaaktypen=None
+    # )
+    informatieobjecttype = factory.fuzzy.FuzzyText(length=15)
     volgnummer = factory.sequence(lambda x: x)
     richting = RichtingChoices.inkomend
 

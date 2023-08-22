@@ -90,7 +90,6 @@ class InformatieObjectTypeFilterTests(APITestCase):
 
     def test_filter_by_valid_url_object_does_not_exist(self):
         informatieobjecttype = InformatieObjectTypeFactory.create(concept=False)
-        informatieobjecttype.zaaktypen.clear()
 
         response = self.client.get(
             reverse(InformatieObjectType), {"catalogus": "https://google.com"}
@@ -173,7 +172,7 @@ class ZaakInformatieobjectTypeFilterTests(APITestCase):
     heeft_alle_autorisaties = True
 
     def test_filter_by_invalid_url(self):
-        for query_param in ["zaaktype", "informatieobjecttype"]:
+        for query_param in ["zaaktype"]:
             with self.subTest(query_param=query_param):
                 response = self.client.get(
                     reverse(ZaakInformatieobjectType), {query_param: "bla"}
@@ -215,7 +214,6 @@ class ZaakTypeFilterTests(APITestCase):
 
     def test_filter_by_valid_url_object_does_not_exist(self):
         zaaktype = ZaakTypeFactory.create(concept=False)
-        zaaktype.informatieobjecttypen.clear()
 
         response = self.client.get(
             reverse(ZaakType), {"catalogus": "https://google.com"}

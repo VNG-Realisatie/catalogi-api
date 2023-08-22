@@ -26,9 +26,9 @@ class InformatieObjectTypeFactory(factory.django.DjangoModelFactory):
     model = []  # ArrayField has blank=True but not null=True
     informatieobjectcategorie = "informatieobjectcategorie"
     catalogus = factory.SubFactory(CatalogusFactory)
-    zaaktypen = factory.RelatedFactory(
-        ZaakInformatieobjectTypeFactory, "informatieobjecttype"
-    )
+    # zaaktypen = factory.RelatedFactory(
+    #     ZaakInformatieobjectTypeFactory, "informatieobjecttype"
+    # )
     datum_begin_geldigheid = date(2018, 1, 1)
 
     class Meta:

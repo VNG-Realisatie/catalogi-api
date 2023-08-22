@@ -1,7 +1,7 @@
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,8 +12,9 @@ from vng_api_common.schema import COMMON_ERRORS
 from vng_api_common.serializers import FoutSerializer, ValidatieFoutSerializer
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import BesluitType, ZaakType
-from ..filters import ZaakTypeFilter
+from ...datamodel.constants import DATUM_GELDIGHEID_QUERY_PARAM
+from ...datamodel.models import BesluitType, ZaakType, ZaakTypenRelatie
+from ..filters import ZaakTypeDetailFilter, ZaakTypeFilter
 from ..kanalen import KANAAL_ZAAKTYPEN
 from ..scopes import (
     SCOPE_CATALOGI_FORCED_DELETE,
@@ -28,7 +29,13 @@ from ..serializers import (
     ZaakTypeSerializer,
     ZaakTypeUpdateSerializer,
 )
-from ..utils.viewsets import extract_relevant_m2m, m2m_array_of_str_to_url
+from ..utils.validators import validate_detail_geldigheid
+from ..utils.viewsets import (
+    extract_relevant_m2m,
+    has_valid_non_concept_m2m_relations,
+    m2m_array_of_str_to_url,
+)
+from ..validators import ZaaktypeGeldigheidValidator
 from .mixins import ConceptMixin, ForcedCreateUpdateMixin, M2MConceptDestroyMixin
 
 
@@ -101,8 +108,6 @@ class ZaakTypeViewSet(
 
     queryset = ZaakType.objects.prefetch_related(
         "statustypen",
-        "zaaktypenrelaties",
-        "informatieobjecttypen",
         "statustypen",
         "resultaattypen",
         "eigenschap_set",
@@ -122,11 +127,10 @@ class ZaakTypeViewSet(
         "destroy": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_DELETE,
         "publish": SCOPE_CATALOGI_WRITE,
     }
-    concept_related_fields = ["besluittypen", "informatieobjecttypen"]
+    concept_related_fields = ["besluittypen"]
     notifications_kanaal = KANAAL_ZAAKTYPEN
     relation_fields = ["zaaktypenrelaties"]
 
-    @action(detail=True, methods=["post"])
     @extend_schema(
         responses={
             status.HTTP_200_OK: serializer_class,
@@ -135,18 +139,21 @@ class ZaakTypeViewSet(
             **{exc.status_code: FoutSerializer for exc in COMMON_ERRORS},
         },
     )
+    @action(detail=True, methods=["post"])
     def publish(self, request, *args, **kwargs):
         instance = self.get_object()
-        # check related objects
-        if (
-            instance.besluittypen.filter(concept=True).exists()
-            or instance.informatieobjecttypen.filter(concept=True).exists()
-            or instance.deelzaaktypen.filter(concept=True).exists()
-        ):
+
+        if not has_valid_non_concept_m2m_relations(
+            instance, instance.deelzaaktypen
+        ) or not has_valid_non_concept_m2m_relations(instance, instance.besluittypen):
             msg = _("All related resources should be published")
             raise ValidationError(
                 {api_settings.NON_FIELD_ERRORS_KEY: msg}, code="concept-relation"
             )
+
+        geldigheid_validator = ZaaktypeGeldigheidValidator()
+        geldigheid_validator.set_context(serializer=self.get_serializer(instance))
+        geldigheid_validator()
 
         instance.concept = False
         instance.save()
@@ -160,28 +167,48 @@ class ZaakTypeViewSet(
         responses={201: ZaakTypeSerializer},
     )
     def create(self, request, *args, **kwargs):
-
         request = m2m_array_of_str_to_url(
             request,
             ["besluittypen", "deelzaaktypen", "gerelateerde_zaaktypen"],
             self.action,
         )
-
         return super(viewsets.ModelViewSet, self).create(request, *args, **kwargs)
 
+    def perform_create(self, serializer):
+        """automatically create new zaaktype relations when creating a new version of a zaaktype"""
+        serializer.save()
+        if serializer.data.get("gerelateerde_zaaktypen", None):
+            for rel_zaaktype in serializer.data["gerelateerde_zaaktypen"]:
+                if rel_zaaktype.get("zaaktype", None):
+                    uuid = rel_zaaktype["zaaktype"].split("/")[-1]
+                    model = get_object_or_404(ZaakType, uuid=uuid)
+                    query = model.zaaktypenrelaties.all()
+                    if query.filter(
+                        gerelateerd_zaaktype=serializer.data.get("url", None)
+                    ).exists():
+                        continue
+                    new_relation = ZaakTypenRelatie.objects.create(
+                        gerelateerd_zaaktype=serializer.data.get("url", None),
+                        zaaktype=model,
+                        aard_relatie=rel_zaaktype.get("aard_relatie", None),
+                        toelichting=rel_zaaktype.get("toelichting", None),
+                    )
+
+                    model.zaaktypenrelaties.add(new_relation)
+                    model.save()
+
+    @extend_schema(parameters=[DATUM_GELDIGHEID_QUERY_PARAM])
     def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = extract_relevant_m2m(
-            self.get_serializer(instance),
-            [
-                "besluittypen",
-                "informatieobjecttypen",
-                "deelzaaktypen",
-                "gerelateerde_zaaktypen",
-            ],
-            self.action,
-        )
-        return Response(serializer.data)
+        return super(viewsets.ModelViewSet, self).retrieve(request, *args, **kwargs)
+
+    @property
+    def filterset_class(self):
+        """
+        To support filtering by versie and datum geldigheid for detail view
+        """
+        if self.detail:
+            return ZaakTypeDetailFilter
+        return ZaakTypeFilter
 
     @extend_schema(
         request=ZaakTypeUpdateSerializer,
@@ -195,18 +222,25 @@ class ZaakTypeViewSet(
         )
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
-    def list(self, request, *args, **kwargs):
-        self._check_query_params(request)
-        queryset = self.filter_queryset(self.get_queryset())
-        filters = (
-            self.filter_backends[0]()
-            .get_filterset_kwargs(self.request, queryset, self)
-            .get("data", {})
-        )
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output. Two special scenarios have been added for the retrieve and list operations. These are used to filter the m2m relations based on the geldigheid of the underlying objects.
+        """
+        serializer = super().get_serializer(*args, **kwargs)
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
+        if not self.request:
+            return serializer
+
+        if self.action in ["list", "retrieve"]:
+            filter_datum_geldigheid = self.request.query_params.get(
+                "datumGeldigheid", None
+            )
+            if self.detail:
+                instance = self.get_object()
+            if filter_datum_geldigheid and self.detail:
+                validate_detail_geldigheid(instance, filter_datum_geldigheid)
+
             serializer = extract_relevant_m2m(
                 serializer,
                 [
@@ -216,21 +250,7 @@ class ZaakTypeViewSet(
                     "gerelateerde_zaaktypen",
                 ],
                 self.action,
-                filters.get("datum_geldigheid", None),
+                filter_datum_geldigheid,
             )
-            return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        serializer = extract_relevant_m2m(
-            serializer,
-            [
-                "besluittypen",
-                "informatieobjecttypen",
-                "deelzaaktypen",
-                "gerelateerde_zaaktypen",
-            ],
-            self.action,
-            filters.get("datum_geldigheid", None),
-        )
-
-        return Response(serializer.data)
+        return serializer

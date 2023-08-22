@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from django.conf import settings
 from django.utils.module_loading import import_string
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework.exceptions import ErrorDetail
+from rest_framework.exceptions import ErrorDetail, NotFound
 from rest_framework.serializers import ValidationError
 from vng_api_common.constants import (
     BrondatumArchiefprocedureAfleidingswijze as Afleidingswijze,
@@ -241,3 +243,25 @@ class BrondatumArchiefprocedureValidator:
                     }
                 )
             raise ValidationError(error_dict)
+
+
+def validate_detail_geldigheid(instance, filter_datum_geldigheid):
+    """validates whether the searched zaaktype is valid on the given date"""
+    filter_datum_geldigheid = datetime.strptime(
+        filter_datum_geldigheid, "%Y-%m-%d"
+    ).date()
+    if (
+        instance.datum_einde_geldigheid == None
+        and instance.datum_begin_geldigheid <= filter_datum_geldigheid
+    ):
+        return
+    elif (
+        instance.datum_begin_geldigheid
+        <= filter_datum_geldigheid
+        <= instance.datum_einde_geldigheid
+    ):
+        return
+    else:
+        raise NotFound(
+            detail=f"Zaaktype {instance.uuid} is niet geldig op {filter_datum_geldigheid}"
+        )

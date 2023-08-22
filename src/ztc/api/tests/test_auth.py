@@ -110,7 +110,7 @@ class PublishedTypesForcedDeletionTests(_APITestCase):
 
         zaaktype = ZaakTypeFactory.create(concept=False)
         ZaakInformatieobjectTypeFactory(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         informatieobjecttype_url = reverse(informatieobjecttype)
@@ -212,10 +212,10 @@ class PublishedTypesForcedDeletionTests(_APITestCase):
         zaaktype_url = reverse(zaaktype)
 
         informatieobjecttype = InformatieObjectTypeFactory.create(
-            catalogus=catalogus, concept=False, zaaktypen=[]
+            catalogus=catalogus, concept=False
         )
         ZaakInformatieobjectTypeFactory.create(
-            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype
+            zaaktype=zaaktype, informatieobjecttype=informatieobjecttype.omschrijving
         )
 
         response = self.client.delete(zaaktype_url)

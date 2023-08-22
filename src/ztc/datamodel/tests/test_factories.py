@@ -60,8 +60,8 @@ class FactoryTests(TestCase):
         InformatieObjectTypeFactory.create()
 
         self.assertEqual(InformatieObjectType.objects.count(), 1)
-        self.assertEqual(ZaakInformatieobjectType.objects.count(), 1)
-        self.assertEqual(ZaakType.objects.count(), 1)
+        self.assertEqual(ZaakInformatieobjectType.objects.count(), 0)
+        self.assertEqual(ZaakType.objects.count(), 0)
 
     @skip("ZaakInformatieobjectTypeArchiefregime is disabled at the moment")
     def test_zaak_informatieobject_type_archiefregime_factory(self):

@@ -338,3 +338,4 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + (
 
 # URL for documentation that's shown in API schema
 DOCUMENTATION_URL = "https://vng-realisatie.github.io/gemma-zaken"
+NOTIFICATIONS_DISABLED = True  # During dev unable to create 'notifications_api_service' required for sending notifications.

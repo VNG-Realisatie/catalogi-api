@@ -57,13 +57,16 @@ class BesluitTypeAPITests(APITestCase):
             catalogus=self.catalogus, datum_begin_geldigheid="2018-01-01"
         )
 
-        resultaattype = ResultaatTypeFactory(zaaktype=zaaktype)
+        resultaattype = ResultaatTypeFactory(
+            zaaktype=zaaktype, datum_begin_geldigheid="2018-01-01"
+        )
 
         besluittype = BesluitTypeFactory(
             catalogus=self.catalogus,
             zaaktypen=[zaaktype],
             resultaattypen=[resultaattype],
             publicatie_indicatie=True,
+            datum_begin_geldigheid="2018-01-01",
         )
 
         zaaktype_url = reverse("zaaktype-detail", kwargs={"uuid": zaaktype.uuid})
