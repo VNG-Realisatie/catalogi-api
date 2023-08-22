@@ -188,7 +188,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedBesluitTypeList'
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: {}
+                      description: Unspecified response body
           description: OK
         '400':
           headers:
@@ -500,7 +520,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BesluitType'
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: OK
         '401':
           headers:
@@ -804,7 +826,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedBesluitType'
+              type: object
+              additionalProperties: {}
+              description: Unspecified request body
       security:
       - JWT-Claims:
         - (catalogi.schrijven | catalogi.geforceerd-schrijven)
@@ -819,7 +843,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BesluitType'
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: OK
         '400':
           headers:
@@ -960,8 +986,20 @@ paths:
       - JWT-Claims:
         - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
       responses:
-        '204':
-          description: No content
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: OK
         '401':
           headers:
             API-version:
@@ -2797,7 +2835,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedInformatieObjectTypeList'
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: {}
+                      description: Unspecified response body
           description: OK
         '400':
           headers:
@@ -2926,19 +2984,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InformatieObjectType'
-        required: true
+              type: object
+              additionalProperties: {}
+              description: Unspecified request body
       security:
       - JWT-Claims:
         - catalogi.schrijven
       responses:
-        '201':
+        '200':
           headers:
-            Location:
-              schema:
-                type: string
-                format: uri
-              description: URL waar de resource leeft.
             API-version:
               schema:
                 type: string
@@ -2947,8 +3001,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InformatieObjectType'
-          description: Created
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: OK
         '400':
           headers:
             API-version:
@@ -3109,7 +3165,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InformatieObjectType'
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: OK
         '401':
           headers:
@@ -3247,8 +3305,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/InformatieObjectType'
-        required: true
+              type: object
+              additionalProperties: {}
+              description: Unspecified request body
       security:
       - JWT-Claims:
         - (catalogi.schrijven | catalogi.geforceerd-schrijven)
@@ -3263,7 +3322,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InformatieObjectType'
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: OK
         '400':
           headers:
@@ -3413,7 +3474,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedInformatieObjectType'
+              type: object
+              additionalProperties: {}
+              description: Unspecified request body
       security:
       - JWT-Claims:
         - (catalogi.schrijven | catalogi.geforceerd-schrijven)
@@ -3428,7 +3491,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/InformatieObjectType'
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: OK
         '400':
           headers:
@@ -3570,8 +3635,20 @@ paths:
       - JWT-Claims:
         - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
       responses:
-        '204':
-          description: No content
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: OK
         '401':
           headers:
             API-version:
@@ -7846,10 +7923,9 @@ paths:
       - name: informatieobjecttype
         required: false
         in: query
-        description: URL-referentie naar het INFORMATIEOBJECTTYPE.
+        description: informatieobjecttype
         schema:
           type: string
-          format: uri
       - name: richting
         required: false
         in: query
@@ -8024,7 +8100,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ZaakTypeInformatieObjectTypeCreate'
+              $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
         required: true
       security:
       - JWT-Claims:
@@ -8346,7 +8422,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ZaakTypeInformatieObjectTypeUpdate'
+              $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
         required: true
       security:
       - JWT-Claims:
@@ -8887,7 +8963,7 @@ paths:
       - zaaktypen
       security:
       - JWT-Claims:
-        - catalogi.lezen
+        - (catalogi.lezen | documenten.lezen | zaken.lezen)
       responses:
         '200':
           headers:
@@ -8899,7 +8975,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedZaakTypeList'
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: {}
+                      description: Unspecified response body
           description: OK
         '400':
           headers:
@@ -9193,11 +9289,17 @@ paths:
           MultipleValues:
             value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
             summary: Meerdere ETag-waardes
+      - in: query
+        name: datumGeldigheid
+        schema:
+          type: string
+        description: filter op datumGeldigheid voor het zelf en alle onderliggende
+          objecten
       tags:
       - zaaktypen
       security:
       - JWT-Claims:
-        - catalogi.lezen
+        - (catalogi.lezen | documenten.lezen | zaken.lezen)
       responses:
         '200':
           headers:
@@ -9215,7 +9317,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ZaakType'
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: OK
         '401':
           headers:
@@ -9521,7 +9625,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatchedZaakType'
+              type: object
+              additionalProperties: {}
+              description: Unspecified request body
       security:
       - JWT-Claims:
         - (catalogi.schrijven | catalogi.geforceerd-schrijven)
@@ -9536,7 +9642,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ZaakType'
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
           description: OK
         '400':
           headers:
@@ -9677,8 +9785,20 @@ paths:
       - JWT-Claims:
         - (catalogi.schrijven | catalogi.geforceerd-verwijderen)
       responses:
-        '204':
-          description: No content
+        '200':
+          headers:
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: OK
         '401':
           headers:
             API-version:
@@ -9869,8 +9989,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ZaakType'
-        required: true
+              type: object
+              additionalProperties: {}
+              description: Unspecified request body
       security:
       - JWT-Claims:
         - catalogi.schrijven
@@ -9887,6 +10008,66 @@ paths:
               schema:
                 $ref: '#/components/schemas/ZaakType'
           description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatieFout'
+          description: Bad request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Not found
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Forbidden
+        '406':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Not acceptable
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Conflict
+        '410':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Gone
+        '415':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Unsupported media type
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Too many requests
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Fout'
+          description: Internal server error
 components:
   responses:
     '400':
@@ -11053,16 +11234,9 @@ components:
             deze API.
           title: concept
         zaaktypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
+          type: string
           readOnly: true
-          description: URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant
-            kunnen zijn voor ZAAKen van dit ZAAKTYPE.
           title: zaaktypen
-          uniqueItems: true
         besluittypen:
           type: array
           items:
@@ -11182,26 +11356,6 @@ components:
       - zaakcoordinator
       - mede_initiator
       type: string
-    PaginatedBesluitTypeList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BesluitType'
     PaginatedCatalogusList:
       type: object
       properties:
@@ -11242,26 +11396,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Eigenschap'
-    PaginatedInformatieObjectTypeList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InformatieObjectType'
     PaginatedResultaatTypeList:
       type: object
       properties:
@@ -11362,168 +11496,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ZaakTypeInformatieObjectType'
-    PaginatedZaakTypeList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZaakType'
-    PatchedBesluitType:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          title: url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          minLength: 1
-          maxLength: 1000
-        catalogus:
-          type: string
-          format: uri
-          description: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.
-          title: catalogus
-        zaaktypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
-          title: zaaktypen
-          uniqueItems: true
-        omschrijving:
-          type: string
-          description: Omschrijving van de aard van BESLUITen van het BESLUITTYPE.
-          title: omschrijving
-          maxLength: 80
-        omschrijvingGeneriek:
-          type: string
-          description: Algemeen gehanteerde omschrijving van de aard van BESLUITen
-            van het BESLUITTYPE
-          title: omschrijving generiek
-          maxLength: 80
-        besluitcategorie:
-          type: string
-          description: Typering van de aard van BESLUITen van het BESLUITTYPE.
-          title: besluitcategorie
-          maxLength: 40
-        reactietermijn:
-          type: string
-          nullable: true
-          description: Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend-
-            of publicatiedatum, waarbinnen verweer tegen een besluit van het besluittype
-            mogelijk is.
-          title: reactietermijn
-          format: duration
-        publicatieIndicatie:
-          type: boolean
-          description: Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten
-            worden.
-          title: publicatie indicatie
-        publicatietekst:
-          type: string
-          description: De generieke tekst van de publicatie van BESLUITen van dit
-            BESLUITTYPE
-          title: publicatietekst
-        publicatietermijn:
-          type: string
-          nullable: true
-          description: Een tijdsduur in ISO 8601 formaat, gerekend vanaf de verzend-
-            of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten
-            blijven.
-          title: publicatietermijn
-          format: duration
-        toelichting:
-          type: string
-          description: Een eventuele toelichting op dit BESLUITTYPE.
-          title: toelichting
-        informatieobjecttypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
-            waarin besluiten van dit BESLUITTYPE worden vastgelegd.
-          title: informatieobjecttypen
-          uniqueItems: true
-        beginGeldigheid:
-          type: string
-          format: date
-          description: De datum waarop het is ontstaan.
-          title: datum begin geldigheid
-        eindeGeldigheid:
-          type: string
-          format: date
-          nullable: true
-          description: De datum waarop het is opgeheven.
-          title: datum einde geldigheid
-        beginObject:
-          type: string
-          format: date
-          nullable: true
-          description: De datum waarop de eerst versie van het object ontstaan is.
-          title: datum begin object
-        eindeObject:
-          type: string
-          format: date
-          nullable: true
-          description: De datum van de aller laatste versie van het object.
-          title: datum einde object
-        concept:
-          type: boolean
-          readOnly: true
-          description: Geeft aan of het object een concept betreft. Concepten zijn
-            niet-definitieve versies en zouden niet gebruikt moeten worden buiten
-            deze API.
-          title: concept
-        resultaattypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: Is resultaat van
-          readOnly: true
-          title: Is resultaat van
-          description: Het BESLUITTYPE van besluiten die gepaard gaan met resultaten
-            van het RESULTAATTYPE.
-          uniqueItems: true
-        resultaattypenOmschrijving:
-          type: array
-          items:
-            type: string
-            title: ''
-          readOnly: true
-          description: Omschrijving van de aard van resultaten van het RESULTAATTYPE.
-          title: is resultaat van
-          uniqueItems: true
-        vastgelegdIn:
-          type: array
-          items:
-            type: string
-            title: ''
-          readOnly: true
-          description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
-          title: informatieobjecttypen
-          uniqueItems: true
     PatchedEigenschap:
       type: object
       properties:
@@ -11604,117 +11576,6 @@ components:
           nullable: true
           description: De datum van de aller laatste versie van het object.
           title: datum einde object
-    PatchedInformatieObjectType:
-      type: object
-      description: Serializer based on ``IOT-basis`` specified in XSD ``ztc0310_ent_basis.xsd``.
-      properties:
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          title: url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          minLength: 1
-          maxLength: 1000
-        catalogus:
-          type: string
-          format: uri
-          description: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
-            behoort.
-          title: Catalogus
-        omschrijving:
-          type: string
-          description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
-          title: omschrijving
-          maxLength: 80
-        vertrouwelijkheidaanduiding:
-          allOf:
-          - $ref: '#/components/schemas/VertrouwelijkheidaanduidingEnum'
-          description: |-
-            Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE voor de openbaarheid bestemd zijn.
-
-            Uitleg bij mogelijke waarden:
-
-            * `openbaar` - Openbaar
-            * `beperkt_openbaar` - Beperkt openbaar
-            * `intern` - Intern
-            * `zaakvertrouwelijk` - Zaakvertrouwelijk
-            * `vertrouwelijk` - Vertrouwelijk
-            * `confidentieel` - Confidentieel
-            * `geheim` - Geheim
-            * `zeer_geheim` - Zeer geheim
-          title: vertrouwelijkheidaanduiding
-        beginGeldigheid:
-          type: string
-          format: date
-          description: De datum waarop het is ontstaan.
-          title: datum begin geldigheid
-        eindeGeldigheid:
-          type: string
-          format: date
-          nullable: true
-          description: De datum waarop het is opgeheven.
-          title: datum einde geldigheid
-        beginObject:
-          type: string
-          format: date
-          nullable: true
-          description: De datum waarop de eerst versie van het object ontstaan is.
-          title: datum begin object
-        eindeObject:
-          type: string
-          format: date
-          nullable: true
-          description: De datum van de aller laatste versie van het object.
-          title: datum einde object
-        concept:
-          type: boolean
-          readOnly: true
-          description: Geeft aan of het object een concept betreft. Concepten zijn
-            niet-definitieve versies en zouden niet gebruikt moeten worden buiten
-            deze API.
-          title: concept
-        zaaktypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant
-            kunnen zijn voor ZAAKen van dit ZAAKTYPE.
-          title: zaaktypen
-          uniqueItems: true
-        besluittypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
-            waarin besluiten van dit BESLUITTYPE worden vastgelegd.
-          title: informatieobjecttypen
-          uniqueItems: true
-        informatieobjectcategorie:
-          type: string
-          title: Categorie
-          description: Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
-          maxLength: 80
-        trefwoord:
-          type: array
-          items:
-            type: string
-            maxLength: 30
-          description: Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE
-            kunnen worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar
-            te onderscheiden.)
-          title: trefwoord
-        omschrijvingGeneriek:
-          allOf:
-          - $ref: '#/components/schemas/InformatieObjectTypeOmschrijvingGeneriek'
-          title: omschrijving generiek
     PatchedResultaatType:
       type: object
       description: |-
@@ -12186,335 +12047,6 @@ components:
           description: URL-referentie naar de CATALOGUS waartoe dit ZAAKOBJECTTYPE
             behoort.
           title: Catalogus
-    PatchedZaakType:
-      type: object
-      description: |-
-        Set gegevensgroepdata from validated nested data.
-
-        Usage: include the mixin on the ModelSerializer that has gegevensgroepen.
-      properties:
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          title: url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          minLength: 1
-          maxLength: 1000
-        identificatie:
-          type: string
-          description: Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin
-            het ZAAKTYPE voorkomt.
-          title: identificatie
-          maxLength: 50
-        omschrijving:
-          type: string
-          description: Omschrijving van de aard van ZAAKen van het ZAAKTYPE.
-          title: omschrijving
-          maxLength: 80
-        omschrijvingGeneriek:
-          type: string
-          description: Algemeen gehanteerde omschrijving van de aard van ZAAKen van
-            het ZAAKTYPE
-          title: omschrijving generiek
-          maxLength: 80
-        vertrouwelijkheidaanduiding:
-          allOf:
-          - $ref: '#/components/schemas/VertrouwelijkheidaanduidingEnum'
-          description: |-
-            Aanduiding van de mate waarin zaakdossiers van ZAAKen van dit ZAAKTYPE voor de openbaarheid bestemd zijn. Indien de zaak bij het aanmaken geen vertrouwelijkheidaanduiding krijgt, dan wordt deze waarde gezet.
-
-            Uitleg bij mogelijke waarden:
-
-            * `openbaar` - Openbaar
-            * `beperkt_openbaar` - Beperkt openbaar
-            * `intern` - Intern
-            * `zaakvertrouwelijk` - Zaakvertrouwelijk
-            * `vertrouwelijk` - Vertrouwelijk
-            * `confidentieel` - Confidentieel
-            * `geheim` - Geheim
-            * `zeer_geheim` - Zeer geheim
-          title: vertrouwelijkheidaanduiding
-        doel:
-          type: string
-          description: Een omschrijving van hetgeen beoogd is te bereiken met een
-            zaak van dit zaaktype.
-          title: doel
-        aanleiding:
-          type: string
-          description: Een omschrijving van de gebeurtenis die leidt tot het starten
-            van een ZAAK van dit ZAAKTYPE.
-          title: aanleiding
-        toelichting:
-          type: string
-          description: Een eventuele toelichting op dit zaaktype, zoals een beschrijving
-            van het procesverloop op de hoofdlijnen.
-          title: toelichting
-        indicatieInternOfExtern:
-          allOf:
-          - $ref: '#/components/schemas/IndicatieInternOfExternEnum'
-          description: |-
-            Een aanduiding waarmee onderscheid wordt gemaakt tussen ZAAKTYPEn die Intern respectievelijk Extern geïnitieerd worden. Indien van beide sprake kan zijn, dan prevaleert de externe initiatie.
-
-            Uitleg bij mogelijke waarden:
-
-            * `inkomend` - Inkomend
-            * `intern` - Intern
-            * `uitgaand` - Uitgaand
-          title: indicatie intern of extern
-        handelingInitiator:
-          type: string
-          description: Werkwoord dat hoort bij de handeling die de initiator verricht
-            bij dit zaaktype. Meestal 'aanvragen', 'indienen' of 'melden'. Zie ook
-            het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_initiator
-          title: handeling initiator
-          maxLength: 20
-        onderwerp:
-          type: string
-          description: 'Het onderwerp van ZAAKen van dit ZAAKTYPE. In veel gevallen
-            nauw gerelateerd aan de product- of dienstnaam uit de Producten- en Dienstencatalogus
-            (PDC). Bijvoorbeeld: ''Evenementenvergunning'', ''Geboorte'', ''Klacht''.
-            Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.onderwerp'
-          title: onderwerp
-          maxLength: 80
-        handelingBehandelaar:
-          type: string
-          description: Werkwoord dat hoort bij de handeling die de behandelaar verricht
-            bij het afdoen van ZAAKen van dit ZAAKTYPE. Meestal 'behandelen', 'uitvoeren',
-            'vaststellen' of 'onderhouden'. Zie ook het IOB model op https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/attribuutsoort/zaaktype.handeling_behandelaar
-          title: handeling behandelaar
-          maxLength: 20
-        doorlooptijd:
-          type: string
-          description: De periode waarbinnen volgens wet- en regelgeving een ZAAK
-            van het ZAAKTYPE afgerond dient te zijn, in kalenderdagen.
-          title: doorlooptijd behandeling
-          format: duration
-        servicenorm:
-          type: string
-          nullable: true
-          description: De periode waarbinnen verwacht wordt dat een ZAAK van het ZAAKTYPE
-            afgerond wordt conform de geldende servicenormen van de zaakbehandelende
-            organisatie(s).
-          title: servicenorm behandeling
-          format: duration
-        opschortingEnAanhoudingMogelijk:
-          type: boolean
-          title: Opschorting/aanhouding mogelijk
-          description: Aanduiding die aangeeft of ZAAKen van dit mogelijk ZAAKTYPE
-            kunnen worden opgeschort en/of aangehouden.
-        verlengingMogelijk:
-          type: boolean
-          description: Aanduiding die aangeeft of de Doorlooptijd behandeling van
-            ZAAKen van dit ZAAKTYPE kan worden verlengd.
-          title: verlenging mogelijk
-        verlengingstermijn:
-          type: string
-          nullable: true
-          description: Een tijdsduur in ISO 8601 formaat waarmee de Doorlooptijd behandeling
-            van ZAAKen van dit ZAAKTYPE kan worden verlengd. Mag alleen een waarde
-            bevatten als verlenging mogelijk is.
-          title: verlengingstermijn
-          format: duration
-        trefwoorden:
-          type: array
-          items:
-            type: string
-            title: Trefwoord
-            maxLength: 30
-          description: Een trefwoord waarmee ZAAKen van het ZAAKTYPE kunnen worden
-            gekarakteriseerd.
-          title: trefwoorden
-        publicatieIndicatie:
-          type: boolean
-          description: Aanduiding of (het starten van) een ZAAK dit ZAAKTYPE gepubliceerd
-            moet worden.
-          title: publicatie indicatie
-        publicatietekst:
-          type: string
-          description: De generieke tekst van de publicatie van ZAAKen van dit ZAAKTYPE.
-          title: publicatietekst
-        verantwoordingsrelatie:
-          type: array
-          items:
-            type: string
-            maxLength: 40
-          description: De relatie tussen ZAAKen van dit ZAAKTYPE en de beleidsmatige
-            en/of financiële verantwoording.
-          title: verantwoordingsrelatie
-        productenOfDiensten:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: URL naar product/dienst
-            maxLength: 1000
-          description: Het product of de dienst die door ZAAKen van dit ZAAKTYPE wordt
-            voortgebracht.
-          title: producten of diensten
-        selectielijstProcestype:
-          type: string
-          format: uri
-          description: URL-referentie naar een vanuit archiveringsoptiek onderkende
-            groep processen met dezelfde kenmerken (PROCESTYPE in de Selectielijst
-            API).
-          title: selectielijst procestype
-          maxLength: 200
-        referentieproces:
-          allOf:
-          - $ref: '#/components/schemas/ReferentieProces'
-          description: Het Referentieproces dat ten grondslag ligt aan dit ZAAKTYPE.
-          title: referentieproces
-        verantwoordelijke:
-          type: string
-          description: De (soort) organisatorische eenheid of (functie van) medewerker
-            die verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE.
-          title: verantwoordelijke
-          maxLength: 50
-        zaakobjecttypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          title: Zaaktype
-          uniqueItems: true
-        broncatalogus:
-          allOf:
-          - $ref: '#/components/schemas/BronCatalogus'
-          description: De CATALOGUS waaraan het ZAAKTYPE is ontleend.
-          title: broncatalogus
-        bronzaaktype:
-          allOf:
-          - $ref: '#/components/schemas/BronZaaktype'
-          description: Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.
-          title: bronzaaktype
-        catalogus:
-          type: string
-          format: uri
-          description: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.
-          title: Catalogus
-        statustypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen
-            dit ZAAKTYPE.
-          title: Zaaktype
-          uniqueItems: true
-        resultaattypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen
-            dit ZAAKTYPE.
-          title: is relevant voor
-          uniqueItems: true
-        eigenschappen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn
-            in ZAKEN van dit ZAAKTYPE.
-          title: Zaaktype
-          uniqueItems: true
-        informatieobjecttypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          title: zaaktypen
-          uniqueItems: true
-        roltypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
-          readOnly: true
-          description: URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit
-            ZAAKTYPE.
-          title: Zaaktype
-          uniqueItems: true
-        besluittypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: heeft relevante besluittypen
-          title: heeft relevante besluittypen
-          description: URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen
-            dit ZAAKTYPE.
-          uniqueItems: true
-        deelzaaktypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            nullable: true
-            title: ''
-          description: De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen
-            bij ZAAKen van dit ZAAKTYPE.
-          title: deelzaaktypen
-          uniqueItems: true
-        gerelateerdeZaaktypen:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZaakTypenRelatie'
-          description: De ZAAKTYPEn van zaken die relevant zijn voor zaken van dit
-            ZAAKTYPE.
-          title: zaaktype van
-        beginGeldigheid:
-          type: string
-          format: date
-          description: De datum waarop het is ontstaan.
-          title: datum begin geldigheid
-        eindeGeldigheid:
-          type: string
-          format: date
-          nullable: true
-          description: De datum waarop het is opgeheven.
-          title: datum einde geldigheid
-        beginObject:
-          type: string
-          format: date
-          nullable: true
-          description: De datum waarop de eerst versie van het object ontstaan is.
-          title: datum begin object
-        eindeObject:
-          type: string
-          format: date
-          nullable: true
-          description: De datum van de aller laatste versie van het object.
-          title: datum einde object
-        versiedatum:
-          type: string
-          format: date
-          description: De datum waarop de (gewijzigde) kenmerken van het ZAAKTYPE
-            geldig zijn geworden
-          title: versiedatum
-        concept:
-          type: boolean
-          readOnly: true
-          description: Geeft aan of het object een concept betreft. Concepten zijn
-            niet-definitieve versies en zouden niet gebruikt moeten worden buiten
-            deze API.
-          title: concept
     PatchedZaakTypeInformatieObjectType:
       type: object
       description: |-
@@ -12549,14 +12081,8 @@ components:
           title: catalogus
         informatieobjecttype:
           type: string
-          format: uri
-          title: Informatie object type
-          description: URL-referentie naar het INFORMATIEOBJECTTYPE.
-        informatieobjecttypeOmschrijving:
-          type: string
-          readOnly: true
-          description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
-          title: informatie object type
+          title: informatieobjecttype
+          maxLength: 100
         volgnummer:
           type: integer
           maximum: 999
@@ -13790,16 +13316,9 @@ components:
           title: Zaaktype
           uniqueItems: true
         informatieobjecttypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
+          type: string
           readOnly: true
-          description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          title: zaaktypen
-          uniqueItems: true
+          title: informatieobjecttypen
         roltypen:
           type: array
           items:
@@ -14149,16 +13668,9 @@ components:
           title: Zaaktype
           uniqueItems: true
         informatieobjecttypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
+          type: string
           readOnly: true
-          description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          title: zaaktypen
-          uniqueItems: true
+          title: informatieobjecttypen
         roltypen:
           type: array
           items:
@@ -14294,14 +13806,8 @@ components:
           title: catalogus
         informatieobjecttype:
           type: string
-          format: uri
-          title: Informatie object type
-          description: URL-referentie naar het INFORMATIEOBJECTTYPE.
-        informatieobjecttypeOmschrijving:
-          type: string
-          readOnly: true
-          description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
-          title: informatie object type
+          title: informatieobjecttype
+          maxLength: 100
         volgnummer:
           type: integer
           maximum: 999
@@ -14331,161 +13837,6 @@ components:
       required:
       - catalogus
       - informatieobjecttype
-      - informatieobjecttypeOmschrijving
-      - richting
-      - url
-      - volgnummer
-      - zaaktype
-      - zaaktypeIdentificatie
-    ZaakTypeInformatieObjectTypeCreate:
-      type: object
-      description: |-
-        Represent a ZaakTypeInformatieObjectType.
-
-        Relatie met informatieobjecttype dat relevant is voor zaaktype.
-      properties:
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          title: url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          minLength: 1
-          maxLength: 1000
-        zaaktype:
-          type: string
-          format: uri
-          description: URL-referentie naar het ZAAKTYPE.
-          title: zaaktype
-        zaaktypeIdentificatie:
-          type: string
-          readOnly: true
-          description: Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin
-            het ZAAKTYPE voorkomt.
-          title: zaaktype
-        catalogus:
-          type: string
-          format: uri
-          readOnly: true
-          title: catalogus
-        informatieobjecttype:
-          type: string
-          description: '`Omschrijvingen` van het INFORMATIEOBJECTTYPE van informatieobjecten
-            waarin besluiten van dit BESLUITTYPE worden vastgelegd.'
-          title: informatie object type
-        informatieobjecttypeOmschrijving:
-          type: string
-          readOnly: true
-          description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
-          title: informatie object type
-        volgnummer:
-          type: integer
-          maximum: 999
-          minimum: 1
-          description: Uniek volgnummer van het ZAAK-INFORMATIEOBJECTTYPE binnen het
-            ZAAKTYPE.
-          title: volgnummer
-        richting:
-          allOf:
-          - $ref: '#/components/schemas/RichtingEnum'
-          description: |-
-            Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE.
-
-            Uitleg bij mogelijke waarden:
-
-            * `inkomend` - Inkomend
-            * `intern` - Intern
-            * `uitgaand` - Uitgaand
-          title: richting
-        statustype:
-          type: string
-          format: uri
-          nullable: true
-          title: Status type
-          description: URL-referentie naar het STATUSTYPE waarbij deze INFORMATIEOBJECTTYPEn
-            verplicht aanwezig moeten zijn.
-      required:
-      - catalogus
-      - informatieobjecttype
-      - informatieobjecttypeOmschrijving
-      - richting
-      - url
-      - volgnummer
-      - zaaktype
-      - zaaktypeIdentificatie
-    ZaakTypeInformatieObjectTypeUpdate:
-      type: object
-      description: |-
-        Represent a ZaakTypeInformatieObjectType.
-
-        Relatie met informatieobjecttype dat relevant is voor zaaktype.
-      properties:
-        url:
-          type: string
-          format: uri
-          readOnly: true
-          title: url
-          description: URL-referentie naar dit object. Dit is de unieke identificatie
-            en locatie van dit object.
-          minLength: 1
-          maxLength: 1000
-        zaaktype:
-          type: string
-          format: uri
-          description: URL-referentie naar het ZAAKTYPE.
-          title: zaaktype
-        zaaktypeIdentificatie:
-          type: string
-          readOnly: true
-          description: Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin
-            het ZAAKTYPE voorkomt.
-          title: zaaktype
-        catalogus:
-          type: string
-          format: uri
-          readOnly: true
-          title: catalogus
-        informatieobjecttype:
-          type: string
-          description: '`Omschrijvingen` van het INFORMATIEOBJECTTYPE van informatieobjecten
-            waarin besluiten van dit BESLUITTYPE worden vastgelegd.'
-          title: informatie object type
-        informatieobjecttypeOmschrijving:
-          type: string
-          readOnly: true
-          description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
-          title: informatie object type
-        volgnummer:
-          type: integer
-          maximum: 999
-          minimum: 1
-          description: Uniek volgnummer van het ZAAK-INFORMATIEOBJECTTYPE binnen het
-            ZAAKTYPE.
-          title: volgnummer
-        richting:
-          allOf:
-          - $ref: '#/components/schemas/RichtingEnum'
-          description: |-
-            Aanduiding van de richting van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE.
-
-            Uitleg bij mogelijke waarden:
-
-            * `inkomend` - Inkomend
-            * `intern` - Intern
-            * `uitgaand` - Uitgaand
-          title: richting
-        statustype:
-          type: string
-          format: uri
-          nullable: true
-          title: Status type
-          description: URL-referentie naar het STATUSTYPE waarbij deze INFORMATIEOBJECTTYPEn
-            verplicht aanwezig moeten zijn.
-      required:
-      - catalogus
-      - informatieobjecttype
-      - informatieobjecttypeOmschrijving
       - richting
       - url
       - volgnummer
@@ -14735,16 +14086,9 @@ components:
           title: Zaaktype
           uniqueItems: true
         informatieobjecttypen:
-          type: array
-          items:
-            type: string
-            format: uri
-            title: ''
+          type: string
           readOnly: true
-          description: URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk
-            zijn binnen dit ZAAKTYPE.
-          title: zaaktypen
-          uniqueItems: true
+          title: informatieobjecttypen
         roltypen:
           type: array
           items:

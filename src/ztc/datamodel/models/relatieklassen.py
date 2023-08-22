@@ -30,12 +30,7 @@ class ZaakInformatieobjectType(ETagMixin, models.Model):
         on_delete=models.CASCADE,
         help_text=_("URL-referentie naar het ZAAKTYPE."),
     )
-    informatieobjecttype = models.ForeignKey(
-        "datamodel.InformatieObjectType",
-        on_delete=models.CASCADE,
-        verbose_name=_("informatie object type"),
-        help_text=_("URL-referentie naar het INFORMATIEOBJECTTYPE."),
-    )
+    informatieobjecttype = models.CharField(max_length=100)
 
     volgnummer = models.PositiveSmallIntegerField(
         _("volgnummer"),

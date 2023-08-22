@@ -24,14 +24,14 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         ),
     )
 
-    informatieobjecttype_omschrijving = serializers.SlugRelatedField(
-        source="informatieobjecttype",
-        read_only=True,
-        slug_field="omschrijving",
-        help_text=_(
-            "Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE."
-        ),
-    )
+    # informatieobjecttype_omschrijving = serializers.SlugRelatedField(
+    #     source="informatieobjecttype",
+    #     read_only=True,
+    #     slug_field="omschrijving",
+    #     help_text=_(
+    #         "Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE."
+    #     ),
+    # )
 
     catalogus = serializers.HyperlinkedRelatedField(
         source="zaaktype.catalogus",
@@ -48,7 +48,7 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
             "zaaktype_identificatie",
             "catalogus",
             "informatieobjecttype",
-            "informatieobjecttype_omschrijving",
+            # "informatieobjecttype_omschrijving",
             "volgnummer",
             "richting",
             "statustype",
@@ -56,12 +56,12 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
             "zaaktype": {"lookup_field": "uuid"},
-            "informatieobjecttype": {"lookup_field": "uuid"},
+            # "informatieobjecttype": {"lookup_field": "uuid"},
             "statustype": {"lookup_field": "uuid"},
         }
-        validators = [
-            ZaakInformatieObjectTypeCatalogusValidator(),
-        ]
+        # validators = [
+        #     ZaakInformatieObjectTypeCatalogusValidator(),
+        # ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -75,25 +75,14 @@ class ZaakTypeInformatieObjectTypeSerializer(serializers.HyperlinkedModelSeriali
 
         if self.instance:
             zaaktype = validated_data.get("zaaktype") or self.instance.zaaktype
-            informatieobjecttype = (
-                validated_data.get("informatieobjecttype")
-                or self.instance.informatieobjecttype
-            )
 
-            if (
-                not (zaaktype.concept or informatieobjecttype.concept)
-                and not allow_action_with_force
-            ):
+            if not zaaktype.concept and not allow_action_with_force:
                 message = _("Objects related to non-concept objects can't be updated")
                 raise serializers.ValidationError(message, code="non-concept-relation")
         else:
             zaaktype = validated_data.get("zaaktype")
-            informatieobjecttype = validated_data.get("informatieobjecttype")
 
-            if (
-                not (zaaktype.concept or informatieobjecttype.concept)
-                and not allow_action_with_force
-            ):
+            if not zaaktype.concept and not allow_action_with_force:
                 message = _(
                     "Creating relations between non-concept objects is forbidden"
                 )

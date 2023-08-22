@@ -263,7 +263,7 @@ pytz==2022.1
     # via
     #   -r requirements/base.txt
     #   django
-pyyaml==6.0
+pyyaml==6.0.1
     # via
     #   -r requirements/base.txt
     #   drf-spectacular
@@ -324,7 +324,7 @@ urllib3==1.26.10
     #   requests
 uwsgi==2.0.20
     # via -r requirements/production.in
-vng-api-common==2.0.4
+vng-api-common==2.0.5
     # via -r requirements/base.txt
 webencodings==0.5.1
     # via

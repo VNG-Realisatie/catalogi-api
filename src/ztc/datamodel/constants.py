@@ -1,6 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
 
 from djchoices import ChoiceItem, DjangoChoices
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiParameter
 
 
 class SelectielijstKlasseProcestermijn(DjangoChoices):
@@ -18,3 +20,11 @@ class SelectielijstKlasseProcestermijn(DjangoChoices):
             "procestermijn en bewaartermijn samen een bewaartermijn vormen die direct kan gaan lopen na de procesfase."
         ),
     )
+
+
+DATUM_GELDIGHEID_QUERY_PARAM = OpenApiParameter(
+    name="datumGeldigheid",
+    location=OpenApiParameter.QUERY,
+    description="filter op datumGeldigheid voor het zelf en alle onderliggende objecten",
+    type=OpenApiTypes.STR,
+)

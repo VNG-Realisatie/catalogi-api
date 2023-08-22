@@ -1,13 +1,11 @@
 from django.utils.translation import gettext as _
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from notifications_api_common.viewsets import NotificationViewSetMixin
 from rest_framework import viewsets
-from rest_framework.response import Response
 from vng_api_common.caching import conditional_retrieve
 from vng_api_common.viewsets import CheckQueryParamsMixin
 
-from ...datamodel.models import BesluitType, ZaakType
+from ...datamodel.models import BesluitType
 from ..filters import BesluitTypeFilter
 from ..kanalen import KANAAL_BESLUITTYPEN
 from ..scopes import (
@@ -121,44 +119,43 @@ class BesluitTypeViewSet(
         )
         return super(viewsets.ModelViewSet, self).update(request, *args, **kwargs)
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = extract_relevant_m2m(
-            self.get_serializer(instance),
-            ["zaaktypen", "informatieobjecttypen", "resultaattypen"],
-            self.action,
-        )
-        return Response(serializer.data)
+    def get_serializer(self, *args, **kwargs):
+        """
+        Return the serializer instance that should be used for validating and
+        deserializing input, and for serializing output. Two special scenarios have been added for the retrieve and list operations. These are used to filter the m2m relations based on the geldigheid of the underlying objects.
+        """
+        if getattr(self, "swagger_fake_view", False):
+            return BesluitType.objects.none()
 
-    def list(self, request, *args, **kwargs):
-        self._check_query_params(request)
-        queryset = self.filter_queryset(self.get_queryset())
-        filters = (
-            self.filter_backends[0]()
-            .get_filterset_kwargs(self.request, queryset, self)
-            .get("data", {})
-        )
+        serializer = super().get_serializer(*args, **kwargs)
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
+        if not self.request:
+            return serializer
+
+        if self.action in ["list", "retrieve"]:
+            filter_datum_geldigheid = self.request.query_params.get(
+                "datumGeldigheid", None
+            )
+
             serializer = extract_relevant_m2m(
                 serializer,
                 ["zaaktypen", "informatieobjecttypen", "resultaattypen"],
                 self.action,
-                filters.get("datum_geldigheid", None),
+                filter_datum_geldigheid,
             )
-            return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
-        serializer = extract_relevant_m2m(
-            serializer,
-            ["zaaktypen", "informatieobjecttypen", "resultaattypen"],
-            self.action,
-            filters.get("datum_geldigheid", None),
+        return serializer
+
+    def perform_create(self, serializer):
+        """automatically create new zaaktype relations when creating a new version of a besluittype"""
+        new_besluittype = serializer.save()
+        besluittypen = BesluitType.objects.filter(
+            omschrijving=serializer.data.get("omschrijving", [])
         )
-
-        return Response(serializer.data)
+        for besluittype in besluittypen:
+            for zaaktype in besluittype.zaaktypen.all():
+                new_besluittype.zaaktypen.add(zaaktype)
+                new_besluittype.save()
 
 
 BesluitTypeViewSet.publish = swagger_publish_schema(BesluitTypeViewSet)

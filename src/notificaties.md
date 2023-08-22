@@ -27,8 +27,6 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 **Resources en acties**
 
 
-* <code>besluittype</code>: create, update, destroy
-
 
 ### informatieobjecttypen
 
@@ -48,8 +46,6 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 **Resources en acties**
 
 
-* <code>informatieobjecttype</code>: create, update, destroy
-
 
 ### zaaktypen
 
@@ -68,7 +64,5 @@ De architectuur van de notificaties staat beschreven op <a href="https://github.
 
 **Resources en acties**
 
-
-* <code>zaaktype</code>: create, update, destroy
 
 

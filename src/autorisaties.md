@@ -47,6 +47,17 @@ Zie de repository van de [Autorisaties API](https://github.com/VNG-Realisatie/au
 * schrijfoperaties uit te voeren in de API. Alle resources zijn beschikbaar.
 
 
+### documenten.lezen
+
+**Scope**
+`documenten.lezen`
+
+
+**Laat toe om**:
+
+* leesoperaties uit te voeren vanaf de Documenten API. Alle resources zijn beschikbaar.
+
+
 ### notificaties.publiceren
 
 **Scope**
@@ -59,5 +70,16 @@ Zie de repository van de [Autorisaties API](https://github.com/VNG-Realisatie/au
 **Scope**
 `notificaties.publiceren`
 
+
+
+### zaken.lezen
+
+**Scope**
+`zaken.lezen`
+
+
+**Laat toe om**:
+
+* leesoperaties uit te voeren vanaf de Zaken API. Alle resources zijn beschikbaar.
 
 

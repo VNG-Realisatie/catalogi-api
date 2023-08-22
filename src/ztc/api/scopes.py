@@ -15,6 +15,24 @@ SCOPE_CATALOGI_READ = Scope(
 """,
 )
 
+SCOPE_DOCUMENTEN_READ = Scope(
+    "documenten.lezen",
+    description="""
+**Laat toe om**:
+
+* leesoperaties uit te voeren vanaf de Documenten API. Alle resources zijn beschikbaar.
+""",
+)
+
+SCOPE_ZAKEN_READ = Scope(
+    "zaken.lezen",
+    description="""
+**Laat toe om**:
+
+* leesoperaties uit te voeren vanaf de Zaken API. Alle resources zijn beschikbaar.
+""",
+)
+
 SCOPE_CATALOGI_WRITE = Scope(
     "catalogi.schrijven",
     description="""

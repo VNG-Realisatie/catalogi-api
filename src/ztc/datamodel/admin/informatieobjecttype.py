@@ -104,5 +104,5 @@ class InformatieObjectTypeAdmin(
     readonly_fields = ("uuid",)
     inlines = (
         BesluitTypenInline,
-        ZaakInformatieobjectTypeInline,
+        # ZaakInformatieobjectTypeInline,
     )  # zaaktypes

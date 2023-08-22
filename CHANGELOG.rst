@@ -1,6 +1,48 @@
 ===========
 Wijzigingen
 ===========
+1.3.0 (2023-08-22)
+===========
+
+Implementation changes
+----------------------
+
+`Issue 1838`_:
+
+* Added feature in perform_create to automatically add zaaktype relations
+* Added feature in perform_create to besluittype to add zaaktype relations
+* Added query parameter "datumGeldigheid" to the GET (retrieve) request
+* Changed: Moved geldigheid datum validation into the PUBLISH operation from the POST operation
+* Changed: Updated perform_create for gerelateerde_zaken to create correct relations
+* Changed: Refactored views and updated openapi documentation
+* Changed: ZIOT relatie class now uses a char model instead of a foreignfield model for informatieobjecttype
+* Changed: informatieobjecttype correlates its zaaktype now through a custom serializer
+* Changed: zaaktype now correlates its informatieobjecttype through a custom serializer
+* Changed: zaaktype serializer outputs informatieobject URL instead of omschrijvingen
+* Changed: Disabled notification in base
+* Changed: post to block creation of two concepts for one zaaktype
+* Changed: Zaken publish restrictions adapted to the new history model
+* Fixed: Query parameter in retrieve /zaaktypen gave incorrect dates
+* Fixed: Unit test using incorrect ZIOT information
+* Fixed: URL creation in viewsets
+* Removed: NotificationViewSetMixin from imports
+* Removed hard-coded strings in extract_relevant_m2m
+* Updated favicon to VNG logo
+
+`Issue 2262`_:
+
+* Introduce two new scopes, 'documenten.lezen' and 'zaken.lezen', in the catalogi-api.
+* These new scopes inherit permissions from the existing 'catalogi.lezen' scope.
+* The addition of these scopes is essential to support the new expand model.
+* The expand model involves requesting data from the catalogi-api via the documenten-api and zaken-api.
+
+
+API spec changes
+-----------------
+
+.. _Issue 1838: https://github.com/VNG-Realisatie/gemma-zaken/issues/1838
+.. _Issue 2262: https://github.com/VNG-Realisatie/gemma-zaken/issues/2262
+
 1.2.1 (2023-02-14)
 ===========
 

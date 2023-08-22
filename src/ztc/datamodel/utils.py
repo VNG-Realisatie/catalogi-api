@@ -26,3 +26,14 @@ def get_overlapping_zaaktypes(
         query = query.exclude(pk=instance.pk)
 
     return query
+
+
+def get_overlapping_concept_zaaktypes(
+    catalogus: Catalogus,
+    identificatie: str,
+) -> QuerySet:
+    query = ZaakType.objects.filter(
+        Q(catalogus=catalogus), Q(identificatie=identificatie), Q(concept=True)  # noqa
+    )
+
+    return query

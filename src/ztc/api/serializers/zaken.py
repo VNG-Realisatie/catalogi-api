@@ -10,17 +10,21 @@ from vng_api_common.serializers import (
     NestedGegevensGroepMixin,
     add_choice_values_help_text,
 )
+from vng_api_common.tests import reverse
 from vng_api_common.validators import ResourceValidator
 
 from ...datamodel.choices import AardRelatieChoices, RichtingChoices
-from ...datamodel.models import ZaakType, ZaakTypenRelatie
+from ...datamodel.models import (
+    InformatieObjectType,
+    ZaakInformatieobjectType,
+    ZaakType,
+    ZaakTypenRelatie,
+)
 from ..utils.validators import RelationCatalogValidator
 from ..validators import (
     ConceptUpdateValidator,
     DeelzaaktypeCatalogusValidator,
-    M2MConceptCreateValidator,
-    M2MConceptUpdateValidator,
-    ZaaktypeGeldigheidValidator,
+    ZaaktypeDoubleConceptValidator,
 )
 
 
@@ -61,6 +65,12 @@ class ZaakTypenRelatieCreateSerializer(ZaakTypenRelatieSerializer):
     )
 
 
+class ZaakInformatieobjectTypeSlugSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ZaakInformatieobjectType
+        fields = ["informatieobjecttype"]
+
+
 class ZaakTypeSerializer(
     NestedGegevensGroepMixin,
     NestedCreateMixin,
@@ -87,6 +97,25 @@ class ZaakTypeSerializer(
             "Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend."
         ),
     )
+    informatieobjecttypen = serializers.SerializerMethodField()
+
+    def get_informatieobjecttypen(self, obj):
+        request = self.context.get("request")
+        q1 = ZaakInformatieobjectType.objects.filter(zaaktype=obj)
+        serializer = ZaakInformatieobjectTypeSlugSerializer(q1, many=True)
+        filter_list = []
+        return_list = []
+        for odict in serializer.data:
+            for key, value in odict.items():
+                filter_list.append(value)
+        q2 = InformatieObjectType.objects.filter(omschrijving__in=filter_list)
+        for obj in q2:
+            return_list.append(
+                request.build_absolute_uri(
+                    reverse("informatieobjecttype-detail", kwargs={"uuid": obj.uuid})
+                )
+            )
+        return return_list
 
     class Meta:
         model = ZaakType
@@ -154,13 +183,13 @@ class ZaakTypeSerializer(
                     ResourceValidator("ProcesType", settings.REFERENTIELIJSTEN_API_SPEC)
                 ]
             },
-            "informatieobjecttypen": {
-                "read_only": True,
-                "lookup_field": "uuid",
-                "help_text": _(
-                    "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
-                ),
-            },
+            # "informatieobjecttypen": {
+            #     "read_only": True,
+            #     "lookup_field": "uuid",
+            #     "help_text": _(
+            #         "URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE."
+            #     ),
+            # },
             "besluittypen": {
                 "label": _("heeft relevante besluittypen"),
                 "lookup_field": "uuid",
@@ -207,7 +236,7 @@ class ZaakTypeSerializer(
         }
 
         validators = [
-            ZaaktypeGeldigheidValidator(),
+            ZaaktypeDoubleConceptValidator(),
             RelationCatalogValidator("besluittypen"),
             ConceptUpdateValidator(),
             DeelzaaktypeCatalogusValidator(),

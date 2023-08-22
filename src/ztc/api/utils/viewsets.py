@@ -4,6 +4,8 @@ from urllib.parse import urlparse
 
 from django.db.models import Q
 
+from vng_api_common.tests import reverse
+
 from ztc.datamodel.models import (
     BesluitType,
     InformatieObjectType,
@@ -12,9 +14,12 @@ from ztc.datamodel.models import (
 )
 
 
-def is_url(pattern: str):
-    is_url = urlparse(pattern)
-    return all([is_url.scheme, is_url.netloc])
+def is_valid_url(url):
+    try:
+        result = urlparse(url)
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
 
 
 def build_absolute_url(action, request):
@@ -88,7 +93,6 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
     The m2m array 'm2m_field' (like 'besluittypen') is transformed to an array of urls, which are required for the
     m2m relationship.
     """
-
     for m2m_field in m2m_fields:
         m2m_data = request.data.get(m2m_field, []).copy()
         if m2m_data:
@@ -110,14 +114,18 @@ def m2m_array_of_str_to_url(request, m2m_fields: list, action: str):
                 search_parameter
             )
             for m2m_object in m2m_objects:
-                build_url = f"{build_absolute_url(action, request)}/{MAPPING_FIELD_TO_MODEL[m2m_field]._meta.verbose_name_plural.title().lower()}/{str(m2m_object.uuid)}"
+                build_url = request.build_absolute_uri(
+                    reverse(
+                        f"{MAPPING_FIELD_TO_MODEL[m2m_field]._meta.verbose_name.title().lower()}-detail",
+                        kwargs={"uuid": m2m_object.uuid},
+                    )
+                )
                 if m2m_field == "gerelateerde_zaaktypen":
                     new_m2m_str = m2m_str.copy()
                     new_m2m_str.update({"zaaktype": build_url})
                     request.data[m2m_field].extend([new_m2m_str])
                 else:
                     request.data[m2m_field].extend([build_url])
-
     return request
 
 
@@ -127,13 +135,19 @@ def extract_relevant_m2m(serializer, m2m_fields: list, action: str, date=None):
         data = serializer.data if action == "list" else [serializer.data]
         for query_object in data:
             valid_urls = []
-            for m2m_url in query_object[m2m_field]:
-                uuid_from_url = uuid.UUID(m2m_url.rsplit("/", 1)[1]).hex
+            for m2m_object in query_object[m2m_field]:
+                if isinstance(m2m_object, dict):
+                    for key, value in m2m_object.items():
+                        if is_valid_url(value):
+                            uuid_from_url = uuid.UUID(
+                                m2m_object[key].rsplit("/", 1)[1]
+                            ).hex
 
+                else:
+                    uuid_from_url = uuid.UUID(m2m_object.rsplit("/", 1)[1]).hex
                 valid_m2m = get_valid_m2m_objects(m2m_field, uuid_from_url, date)
-
                 if valid_m2m:
-                    valid_urls.append(m2m_url)
+                    valid_urls.append(m2m_object)
 
             query_object[m2m_field].clear()
             query_object[m2m_field].extend(valid_urls)
@@ -151,6 +165,47 @@ def get_valid_m2m_objects(m2m_field: str, uuid_from_url, date=None):
 
     qs_old_version = MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(search_parameter)
     if not qs_old_version:
-        search_parameter = Q(datum_einde_geldigheid=None, uuid=uuid_from_url)
+        if date:
+            search_parameter = Q(
+                datum_begin_geldigheid__lte=date,
+                datum_einde_geldigheid=None,
+                uuid=uuid_from_url,
+            )
+        else:
+            search_parameter = Q(
+                datum_einde_geldigheid=None,
+                datum_begin_geldigheid__lte=datetime.datetime.now(),
+                uuid=uuid_from_url,
+            )
+
         return MAPPING_FIELD_TO_MODEL[m2m_field].objects.filter(search_parameter)
     return qs_old_version
+
+
+def has_valid_non_concept_m2m_relations(instance, m2m):
+    """
+    Check if the object has m2m relations, and if it does, check if these are valid within the time frame of their ZaakType.
+    """
+    if m2m.all().exists():
+        search_parameter = Q(
+            datum_begin_geldigheid__lte=instance.datum_begin_geldigheid,
+            datum_einde_geldigheid__gte=instance.datum_begin_geldigheid,
+            concept=False,
+        )
+
+        qs_old_version = m2m.filter(search_parameter)
+        if not qs_old_version:
+            search_parameter = Q(
+                datum_begin_geldigheid__lte=instance.datum_begin_geldigheid,
+                datum_einde_geldigheid=None,
+                concept=False,
+            )
+            if m2m.filter(search_parameter):
+                return True
+
+        else:
+            return True
+
+        return False
+
+    return True
