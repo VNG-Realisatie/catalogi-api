@@ -228,7 +228,7 @@ class ZaakTypeViewSet(
         deserializing input, and for serializing output. Two special scenarios have been added for the retrieve and list operations. These are used to filter the m2m relations based on the geldigheid of the underlying objects.
         """
 
-        if getattr(self, 'swagger_fake_view', False):
+        if getattr(self, "swagger_fake_view", False):
             return ZaakType.objects.none()
 
         serializer = super().get_serializer(*args, **kwargs)
