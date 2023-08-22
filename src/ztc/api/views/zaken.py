@@ -20,6 +20,8 @@ from ..scopes import (
     SCOPE_CATALOGI_FORCED_WRITE,
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
+    SCOPE_DOCUMENTEN_READ,
+    SCOPE_ZAKEN_READ,
 )
 from ..serializers import (
     ZaakTypeCreateSerializer,
@@ -112,8 +114,8 @@ class ZaakTypeViewSet(
     lookup_field = "uuid"
     filterset_class = ZaakTypeFilter
     required_scopes = {
-        "list": SCOPE_CATALOGI_READ,
-        "retrieve": SCOPE_CATALOGI_READ,
+        "list": SCOPE_CATALOGI_READ | SCOPE_DOCUMENTEN_READ | SCOPE_ZAKEN_READ,
+        "retrieve": SCOPE_CATALOGI_READ | SCOPE_DOCUMENTEN_READ | SCOPE_ZAKEN_READ,
         "create": SCOPE_CATALOGI_WRITE,
         "update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,
         "partial_update": SCOPE_CATALOGI_WRITE | SCOPE_CATALOGI_FORCED_WRITE,

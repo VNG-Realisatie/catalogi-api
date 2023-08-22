@@ -35,6 +35,8 @@ from ..scopes import (
     SCOPE_CATALOGI_FORCED_WRITE,
     SCOPE_CATALOGI_READ,
     SCOPE_CATALOGI_WRITE,
+    SCOPE_DOCUMENTEN_READ,
+    SCOPE_ZAKEN_READ,
 )
 from .base import APITestCase
 
@@ -1645,3 +1647,25 @@ class ZaakTypeScopeTests(APITestCase, JWTAuthMixin):
 
         zaaktype.refresh_from_db()
         self.assertEqual(zaaktype.aanleiding, "aangepast")
+
+
+class ZaakTypeExpandDocumentsScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_DOCUMENTEN_READ]
+
+    def test_get_list_default_definitief(self):
+        ZaakTypeAPITests.test_get_list_default_definitief(self)
+
+    def test_get_detail(self):
+        ZaakTypeAPITests.test_get_detail(self)
+
+
+class ZaakTypeExpandZaakScopeTests(APITestCase, JWTAuthMixin):
+    heeft_alle_autorisaties = False
+    scopes = [SCOPE_ZAKEN_READ]
+
+    def test_get_list_default_definitief(self):
+        ZaakTypeAPITests.test_get_list_default_definitief(self)
+
+    def test_get_detail(self):
+        ZaakTypeAPITests.test_get_detail(self)
