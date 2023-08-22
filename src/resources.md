@@ -126,7 +126,7 @@ Uitleg bij mogelijke waarden:
 | beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
 | eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
 | concept | Geeft aan of het object een concept betreft. Concepten zijn niet-definitieve versies en zouden niet gebruikt moeten worden buiten deze API. | boolean | ja | ~~C~~​R​~~U~~​~~D~~ |
-| zaaktypen | URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| zaaktypen |  | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten waarin besluiten van dit BESLUITTYPE worden vastgelegd. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | informatieobjectcategorie | Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | string | ja | C​R​U​D |
 | trefwoord | Trefwoord(en) waarmee informatieobjecten van het INFORMATIEOBJECTTYPE kunnen worden gekarakteriseerd. (Gebruik een komma om waarden van elkaar te onderscheiden.) | array | nee | C​R​U​D |
@@ -307,7 +307,7 @@ Uitleg bij mogelijke waarden:
 | statustypen | URL-referenties naar de STATUSTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | resultaattypen | URL-referenties naar de RESULTAATTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | eigenschappen | URL-referenties naar de EIGENSCHAPPEN die aanwezig moeten zijn in ZAKEN van dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
-| informatieobjecttypen | URL-referenties naar de INFORMATIEOBJECTTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| informatieobjecttypen |  | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 | roltypen | URL-referenties naar de ROLTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | besluittypen | URL-referenties naar de BESLUITTYPEN die mogelijk zijn binnen dit ZAAKTYPE. | array | ja | C​R​U​D |
 | deelzaaktypen | De ZAAKTYPE(n) waaronder ZAAKen als deelzaak kunnen voorkomen bij ZAAKen van dit ZAAKTYPE. | array | nee | C​R​U​D |
