@@ -166,6 +166,7 @@ class ResultaatTypeAPITests(TypeCheckMixin, APITestCase):
                     "registratie": "",
                     "procestermijn": None,
                 },
+                "zaakobjecttypen": [],
                 "procesobjectaard": "proces aard",
                 "catalogus": f"http://testserver{catalogus_url}",
                 "beginGeldigheid": "2021-10-30",

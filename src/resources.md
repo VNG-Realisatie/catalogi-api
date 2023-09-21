@@ -178,6 +178,7 @@ Uitleg bij mogelijke waarden:
 | besluittypeOmschrijving | Omschrijving van de aard van BESLUITen van het BESLUITTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 | informatieobjecttypen | De INFORMATIEOBJECTTYPEn die verplicht aanwezig moeten zijn in het zaakdossier van ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet. | array | nee | C​R​U​D |
 | informatieobjecttypeOmschrijving | Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| zaakobjecttypen | De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
 
 ## RolType
 
@@ -231,6 +232,7 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | eindeGeldigheid | De datum waarop het is opgeheven. | string | nee | C​R​U​D |
 | beginObject | De datum waarop de eerst versie van het object ontstaan is. | string | nee | C​R​U​D |
 | eindeObject | De datum van de aller laatste versie van het object. | string | nee | C​R​U​D |
+| zaakobjecttype |  | string | ja | ~~C~~​R​~~U~~​~~D~~ |
 
 ## ZaakObjectType
 
@@ -248,8 +250,8 @@ Objecttype op [GEMMA Online](https://www.gemmaonline.nl/index.php/Imztc_2.1/doc/
 | relatieOmschrijving | Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE. | string | ja | C​R​U​D |
 | zaaktype | URL-referentie naar de ZAAKTYPE waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
 | zaaktypeIdentificatie | Unieke identificatie van het ZAAKTYPE binnen de CATALOGUS waarin het ZAAKTYPE voorkomt. | string | ja | ~~C~~​R​~~U~~​~~D~~ |
-| resultaattypen | URL-referenties naar de RESULTAATTYPEN. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
-| statustypen | URL-referenties naar de STATUSTYPEN. | array | ja | ~~C~~​R​~~U~~​~~D~~ |
+| resultaattypen | URL-referenties naar de RESULTAATTYPEN. | array | nee | C​R​U​D |
+| statustypen | URL-referenties naar de STATUSTYPEN. | array | nee | C​R​U​D |
 | catalogus | URL-referentie naar de CATALOGUS waartoe dit ZAAKOBJECTTYPE behoort. | string | ja | C​R​U​D |
 
 ## ZaakType
