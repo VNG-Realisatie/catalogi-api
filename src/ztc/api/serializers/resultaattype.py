@@ -108,6 +108,7 @@ class ResultaatTypeSerializer(
             "besluittype_omschrijving",
             "informatieobjecttypen",
             "informatieobjecttype_omschrijving",
+            "zaakobjecttypen",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
@@ -125,6 +126,7 @@ class ResultaatTypeSerializer(
                     "Waarde van de omschrijving-generiek referentie (attribuut `omschrijving`)"
                 ),
             },
+            "zaakobjecttypen": {"lookup_field": "uuid", "read_only": True},
             "zaaktype": {"lookup_field": "uuid", "label": _("is van")},
             "selectielijstklasse": {
                 "validators": [

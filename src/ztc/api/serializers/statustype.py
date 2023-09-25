@@ -68,6 +68,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "einde_geldigheid",
             "begin_object",
             "einde_object",
+            "zaakobjecttype",
         )
         extra_kwargs = {
             "url": {"lookup_field": "uuid"},
@@ -75,6 +76,7 @@ class StatusTypeSerializer(serializers.HyperlinkedModelSerializer):
             "omschrijving_generiek": {"source": "statustype_omschrijving_generiek"},
             "volgnummer": {"source": "statustypevolgnummer"},
             "zaaktype": {"lookup_field": "uuid"},
+            "zaakobjecttype": {"lookup_field": "uuid", "read_only": True},
             "eigenschappen": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},
             "einde_geldigheid": {"source": "datum_einde_geldigheid"},

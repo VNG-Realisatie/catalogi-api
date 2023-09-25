@@ -12559,6 +12559,19 @@ components:
           description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
           title: informatieobjecttypen
           uniqueItems: true
+        zaakobjecttypen:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: ''
+          readOnly: true
+          description:
+            De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan
+            ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan
+            worden gezet.
+          title: Zaakobjecttypen
+          uniqueItems: true
     PatchedRolType:
       type: object
       description: Adds nested create feature
@@ -12771,6 +12784,11 @@ components:
           nullable: true
           description: De datum van de aller laatste versie van het object.
           title: datum einde object
+        zaakobjecttype:
+          type: string
+          format: uri
+          readOnly: true
+          title: Zaakobjecttypen
     PatchedZaakObjectType:
       type: object
       properties:
@@ -12847,8 +12865,8 @@ components:
           items:
             type: string
             format: uri
+            nullable: true
             title: ''
-          readOnly: true
           description: URL-referenties naar de RESULTAATTYPEN.
           title: Zaakobjecttypen
           uniqueItems: true
@@ -12857,8 +12875,8 @@ components:
           items:
             type: string
             format: uri
+            nullable: true
             title: ''
-          readOnly: true
           description: URL-referenties naar de STATUSTYPEN.
           title: Zaakobjecttypen
           uniqueItems: true
@@ -13161,6 +13179,19 @@ components:
           description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
           title: informatieobjecttypen
           uniqueItems: true
+        zaakobjecttypen:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: ''
+          readOnly: true
+          description:
+            De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan
+            ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan
+            worden gezet.
+          title: Zaakobjecttypen
+          uniqueItems: true
       required:
         - besluittypeOmschrijving
         - informatieobjecttypeOmschrijving
@@ -13169,6 +13200,7 @@ components:
         - resultaattypeomschrijving
         - selectielijstklasse
         - url
+        - zaakobjecttypen
         - zaaktype
         - zaaktypeIdentificatie
     ResultaatTypeCreate:
@@ -13372,6 +13404,19 @@ components:
           description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
           title: informatieobjecttypen
           uniqueItems: true
+        zaakobjecttypen:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: ''
+          readOnly: true
+          description:
+            De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan
+            ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan
+            worden gezet.
+          title: Zaakobjecttypen
+          uniqueItems: true
       required:
         - besluittypeOmschrijving
         - besluittypen
@@ -13381,6 +13426,7 @@ components:
         - resultaattypeomschrijving
         - selectielijstklasse
         - url
+        - zaakobjecttypen
         - zaaktype
         - zaaktypeIdentificatie
     ResultaatTypeUpdate:
@@ -13584,6 +13630,19 @@ components:
           description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
           title: informatieobjecttypen
           uniqueItems: true
+        zaakobjecttypen:
+          type: array
+          items:
+            type: string
+            format: uri
+            title: ''
+          readOnly: true
+          description:
+            De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan
+            ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan
+            worden gezet.
+          title: Zaakobjecttypen
+          uniqueItems: true
       required:
         - besluittypeOmschrijving
         - besluittypen
@@ -13593,6 +13652,7 @@ components:
         - resultaattypeomschrijving
         - selectielijstklasse
         - url
+        - zaakobjecttypen
         - zaaktype
         - zaaktypeIdentificatie
     RichtingEnum:
@@ -13819,12 +13879,18 @@ components:
           nullable: true
           description: De datum van de aller laatste versie van het object.
           title: datum einde object
+        zaakobjecttype:
+          type: string
+          format: uri
+          readOnly: true
+          title: Zaakobjecttypen
       required:
         - catalogus
         - isEindstatus
         - omschrijving
         - url
         - volgnummer
+        - zaakobjecttype
         - zaaktype
         - zaaktypeIdentificatie
     ValidatieFout:
@@ -13956,8 +14022,8 @@ components:
           items:
             type: string
             format: uri
+            nullable: true
             title: ''
-          readOnly: true
           description: URL-referenties naar de RESULTAATTYPEN.
           title: Zaakobjecttypen
           uniqueItems: true
@@ -13966,8 +14032,8 @@ components:
           items:
             type: string
             format: uri
+            nullable: true
             title: ''
-          readOnly: true
           description: URL-referenties naar de STATUSTYPEN.
           title: Zaakobjecttypen
           uniqueItems: true
@@ -13984,8 +14050,6 @@ components:
         - catalogus
         - objecttype
         - relatieOmschrijving
-        - resultaattypen
-        - statustypen
         - url
         - zaaktype
         - zaaktypeIdentificatie

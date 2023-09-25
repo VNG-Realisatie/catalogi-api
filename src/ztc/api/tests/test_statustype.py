@@ -100,6 +100,7 @@ class StatusTypeAPITests(APITestCase):
             "eindeObject": None,
             "zaaktypeIdentificatie": zaaktype.identificatie,
             "catalogus": f"http://testserver{reverse(self.catalogus)}",
+            "zaakobjecttype": None,
         }
 
         self.assertEqual(expected, response.json())
