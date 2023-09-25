@@ -40,13 +40,13 @@ class ZaakObjectTypeSerializer(HyperlinkedModelSerializer):
             "zaaktype": {"lookup_field": "uuid"},
             "resultaattypen": {
                 "lookup_field": "uuid",
-                "read_only": True,
                 "help_text": _("URL-referenties naar de RESULTAATTYPEN."),
+                "required": False,
             },
             "statustypen": {
                 "lookup_field": "uuid",
-                "read_only": True,
                 "help_text": _("URL-referenties naar de STATUSTYPEN."),
+                "required": False,
             },
             "catalogus": {"lookup_field": "uuid"},
             "begin_geldigheid": {"source": "datum_begin_geldigheid"},

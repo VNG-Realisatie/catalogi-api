@@ -89,7 +89,7 @@ class ZaaktypeDoubleConceptValidator:
 
 class ConceptUpdateValidator:
     message = _(
-        "Het is niet toegestaan om een non-concept object bij te werken zonder de geforceerd-bijwerken scope"
+        "Het is niet toegestaan om een non-concept object bij te werken zonder de geforceerd-schrijven scope"
     )
     code = "non-concept-object"
 

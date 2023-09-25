@@ -1,6 +1,27 @@
 ===========
 Wijzigingen
 ===========
+
+===========
+1.3.1 (2023-9-25)
+===========
+
+`Issue 2302`_:
+
+* Changed: Catalogi referentie implementatie geeft tekstueel aan geforceerd-bijwerken ipv geforceerd-schrijven #2302
+
+`Issue 2334`_:
+
+* Changed: zaakobjecttype to resultaattype.py and statustype.py as read_only. Inside zaakobjecttype, resultaattype and statustype POSTable, not required. #2334
+
+API spec changes
+-----------------
+
+.. _Issue 2302: https://github.com/VNG-Realisatie/gemma-zaken/issues/2302
+.. _Issue 2262: https://github.com/VNG-Realisatie/gemma-zaken/issues/2262
+
+Implementation changes
+----------------------
 1.3.0 (2023-08-22)
 ===========
 
