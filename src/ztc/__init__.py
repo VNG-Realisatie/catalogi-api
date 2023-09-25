@@ -6,7 +6,7 @@
 import re
 from collections import namedtuple
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 __author__ = "Maykin Media B.V., VNG Realisatie"
 __homepage__ = "https://github.com/VNG-Realisatie/zaaktypecataloguscomponent/"
 __docformat__ = "restructuredtext"
